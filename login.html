@@ -214,27 +214,23 @@ window.location.href =
 
 }
 
-}
 async function forgotPassword(){
 
 const email = prompt("अपना रजिस्टर्ड ईमेल दर्ज करें");
 
-if(!email){
-return;
-}
+if(!email) return;
 
 const { error } =
 await supabase.auth.resetPasswordForEmail(email,{
-redirectTo:"https://sagunmanage.netlify.app/reset-password.html"
+  redirectTo:"https://smsystem-pages.sirplzwait.workers.dev/reset-password.html"
 });
 
 if(error){
-alert(error.message);
-return;
+  alert(error.message);
+  return;
 }
 
 alert("रीसेट लिंक आपके ईमेल पर भेज दिया गया है");
-
 }
 
 </script>
