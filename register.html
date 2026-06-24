@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Sagun Management System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { margin:0; height:100vh; display:flex; justify-content:center; align-items:center; background:linear-gradient(135deg,#800000,#ffd700); font-family:'Segoe UI',sans-serif; }
+        .register-box { width:400px; background:#fff; padding:30px; border-radius:20px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.3); }
+        input { width:92%; padding:12px; margin:8px 0; border:2px solid #800000; border-radius:10px; box-sizing:border-box; }
+        button { width:95%; padding:12px; margin-top:10px; border:none; border-radius:10px; background:#800000; color:white; font-weight:bold; cursor:pointer; }
+    </style>
+</head>
+<body>
+
+<div class="register-box">
+    <h2>नया रजिस्ट्रेशन</h2>
+    <input type="text" id="name" placeholder="पूरा नाम">
+    <input type="text" id="state" placeholder="राज्य">
+    <input type="text" id="mobile" placeholder="मोबाइल नंबर">
+    <input type="email" id="email" placeholder="ईमेल">
+    <input type="password" id="password" placeholder="पासवर्ड">
+    <input type="password" id="confirmPassword" placeholder="पासवर्ड पुनः दर्ज करें">
+    <button onclick="registerUser()">📝 रजिस्टर करें</button>
+</div>
+
+<script>
+    // Supabase Client initialization
+    const sb = window.supabase.createClient(
+        "https://rdlliurzgwwfjscgwssa.supabase.co",
+        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+    );
+
+    function generateKey(prefix) {
+        return prefix + "-" + Math.floor(100000 + Math.random() * 900000);
+    }
+
+    async function registerUser(){
+        const name = document.getElementById("name").value.trim();
+        const state = document.getElementById("state").value.trim();
+        const mobile = document.getElementById("mobile").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+        // Check fields
+        if(!name || !email || !password) return alert("सभी जानकारी भरें");
+        
+        // Check password match
+        if(password !== confirmPassword) return alert("पासवर्ड मैच नहीं हो रहा है!");
+
+        try {
+            const { data, error } = await sb.auth.signUp({ email, password });
+            if(error) throw error;
+
+            const user = data.user;
+            if(user) {
+              await sb.from("profiles").insert([{
+    id: user.id,
+    name: name,
+    state: state,
+    mobile: mobile,
+    admin_pass: generateKey("ADM"),
+    report_pass: generateKey("REP")
+}]);
+            }
+            alert("रजिस्ट्रेशन सफल! ईमेल चेक करें।");
+            window.location.href = "setup.html";
+        } catch(err) {
+            alert("Error: " + err.message);
+        }
+    }
+</script>
+</body>
+</html>

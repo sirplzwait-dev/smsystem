@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup - Sagun Management System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { 
+            margin: 0; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: linear-gradient(135deg, #800000, #ffd700); 
+            font-family: 'Segoe UI', sans-serif; 
+        }
+
+        .container { 
+            width: 350px; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 20px; 
+            text-align: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+        }
+
+        h2 { color: #800000; margin-bottom: 20px; }
+
+        input, select { 
+            width: 90%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            border: 2px solid #800000; 
+            border-radius: 10px; 
+            box-sizing: border-box; 
+            font-size: 15px;
+        }
+
+        label { display: block; text-align: left; margin-left: 18px; color: #5d0000; font-weight: bold; font-size: 14px; margin-top: 10px; }
+
+        button { 
+            width: 95%; 
+            padding: 12px; 
+            margin-top: 15px; 
+            border: none; 
+            border-radius: 10px; 
+            background: #800000; 
+            color: white; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer; 
+        }
+
+        button:hover { background: #5d0000; }
+        
+        .logout-btn { background: #333 !important; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>शादी का विवरण सेटअप</h2>
+    
+    <label>किसका प्रोग्राम है?</label>
+    <select id="weddingType" onchange="renderFields()">
+        <option value="">-- चुनें --</option>
+        <option value="boy">लड़का (तिलक)</option>
+        <option value="girl">लड़की (बरात)</option>
+    </select>
+    
+    <div id="fieldsContainer"></div>
+    
+    <input type="text" id="welcomeName" placeholder="स्वागत करने वाले का नाम">
+    <label>UPI QR Code:</label>
+<input type="file" id="qrPhoto" accept="image/*">
+    
+    <button onclick="submitSetup()">🚀 Apply Setup</button>
+    <button class="logout-btn" onclick="logout()">🚪 लॉग आउट</button>
+</div>
+
+<script>
+    const sb = window.supabase.createClient("https://rdlliurzgwwfjscgwssa.supabase.co", "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");
+
+    function renderFields() {
+        const type = document.getElementById('weddingType').value;
+        const container = document.getElementById('fieldsContainer');
+        if(!type) { container.innerHTML = ""; return; }
+        
+        container.innerHTML = `
+            <input type="date" id="eventDate">
+            <input type="text" id="name1" placeholder="लड़की का नाम">
+            <input type="text" id="name2" placeholder="लड़का का नाम">
+            <label>लड़की की फोटो:</label> <input type="file" id="photo1" accept="image/*">
+            <label>लड़के की फोटो:</label> <input type="file" id="photo2" accept="image/*">
+        `;
+    }
+
+    async function submitSetup() {
+	
+	const btn = document.querySelector('button');
+
+btn.disabled = true;
+btn.innerHTML = "⏳ Please Wait...";
+
+
+        const { data: { user } } = await sb.auth.getUser();
+        if(!user) return alert("Login करें!");
+
+        const photo1File = document.getElementById('photo1')?.files[0];
+        const photo2File = document.getElementById('photo2')?.files[0];
+const qrFile = document.getElementById('qrPhoto')?.files[0];
+let qr_url = "";
+if(qrFile){
+
+    const result = await sb.storage
+        .from('photos')
+        .upload(user.id + '/qr.jpg', qrFile, { upsert:true });
+
+    if(result.error){
+        alert(result.error.message);
+        return;
+    }
+
+    qr_url = sb.storage
+        .from('photos')
+        .getPublicUrl(user.id + '/qr.jpg')
+        .data.publicUrl;
+}
+
+
+        let brideUrl = "bride.jpg", groomUrl = "groom.jpg";
+
+       if(photo1File){
+
+    const result = await sb.storage
+        .from('photos')
+        .upload(user.id + '/bride.jpg', photo1File, { upsert:true });
+
+  
+
+    if(result.error){
+        alert(result.error.message);
+        return;
+    }
+
+    brideUrl =
+    sb.storage.from('photos')
+    .getPublicUrl(user.id + '/bride.jpg')
+    .data.publicUrl;
+	
+	
+
+
+}
+
+
+if(photo2File){
+
+    const result = await sb.storage
+        .from('photos')
+        .upload(user.id + '/groom.jpg', photo2File, { upsert:true });
+
+    
+
+    if(result.error){
+        alert(result.error.message);
+        return;
+    }
+
+    groomUrl =
+    sb.storage.from('photos')
+    .getPublicUrl(user.id + '/groom.jpg')
+    .data.publicUrl;
+	
+	
+}
+
+     const setupData = {
+    user_id: user.id,
+    wedding_type: document.getElementById('weddingType').value,
+    event_date: document.getElementById('eventDate').value,
+    bride_name: document.getElementById('name1').value,
+    groom_name: document.getElementById('name2').value,
+    welcome_name: document.getElementById('welcomeName').value,
+    bride_photo_url: brideUrl,
+    groom_photo_url: groomUrl,
+    qr_url: qr_url
+};
+
+        const { error } = await sb
+    .from("setup")
+    .upsert([setupData], {
+        onConflict: "user_id"
+    });
+      
+	  if (error) {
+    alert("Error: " + error.message);
+
+    btn.disabled = false;
+    btn.innerHTML = "🚀 Apply Setup";
+}
+	  
+	  
+	  else {
+
+    btn.innerHTML = "✅ Setup Successful";
+
+    setTimeout(() => {
+
+        alert("🎉 Setup Completed Successfully");
+        window.location.href = "index.html";
+
+    }, 1000);
+}
+    }
+
+    async function logout() {
+        if(confirm("क्या आप लॉग आउट करना चाहते हैं?")) {
+            await sb.auth.signOut();
+            window.location.href = "login.html";
+        }
+    }
+</script>
+</body>
+</html>

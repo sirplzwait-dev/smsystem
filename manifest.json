@@ -1,0 +1,14 @@
+{
+  "name": "Sagun Management System",
+  "short_name": "Sagun",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#800000",
+  "icons": [
+    {
+      "src": "appicon.ico",
+      "sizes": "256x256",
+      "type": "image/x-icon"
+    }
+  ]
+}

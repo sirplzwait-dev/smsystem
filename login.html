@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagun Management System Login</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+
+
+
+<style>
+
+
+
+
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#800000,#ffd700);
+font-family:'Segoe UI',sans-serif;
+}
+
+.login-box{
+width:350px;
+background:white;
+padding:30px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.logo{
+width:100px;
+height:100px;
+border-radius:50%;
+border:3px solid #800000;
+margin-bottom:10px;
+}
+
+h2{
+color:#800000;
+margin:10px 0;
+}
+
+input{
+width:90%;
+padding:12px;
+margin:8px 0;
+border:2px solid #800000;
+border-radius:10px;
+font-size:15px;
+box-sizing:border-box;
+}
+
+button{
+width:95%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#800000;
+color:white;
+font-size:16px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#5d0000;
+}
+
+.links{
+margin-top:15px;
+font-size:14px;
+}
+
+.links a{
+color:#800000;
+text-decoration:none;
+font-weight:bold;
+cursor:pointer;
+}
+
+.version{
+margin-top:15px;
+color:#777;
+font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+<img src="appicon.ico" class="logo">
+
+<h2>स्वागत है!</h2>
+<p>Sagun Management System</p>
+
+<input
+type="email"
+id="email"
+placeholder="ईमेल दर्ज करें">
+
+<input
+type="password"
+id="pass"
+placeholder="पासवर्ड">
+
+<button onclick="checkLogin()">
+🔐 लॉगिन करें
+</button>
+
+<div class="links">
+<a href="register.html">
+📝 रजिस्टर करें
+</a>
+&nbsp; | &nbsp;
+<a href="#" onclick="forgotPassword()">
+🔑 पासवर्ड भूल गए?
+</a>
+</div>
+
+<div class="version">
+Digital Wedding Management Platform
+</div>
+
+</div>
+
+<script>
+
+
+const supabase =
+window.supabase.createClient(
+"https://rdlliurzgwwfjscgwssa.supabase.co",
+"sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+);
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const { data:{ session } } =
+    await supabase.auth.getSession();
+
+    if(session){
+
+        const { data: setupData } =
+        await supabase
+        .from("setup")
+        .select("*")
+        .eq("user_id", session.user.id)
+        .limit(1);
+
+        if(setupData && setupData.length > 0){
+            window.location.href = "home.html";
+        }else{
+            window.location.href = "setup.html";
+        }
+    }
+});
+
+
+
+
+async function checkLogin(){
+
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("pass").value.trim();
+
+if(!email || !password){
+alert("ईमेल और पासवर्ड भरें");
+return;
+}
+
+const { data,error } =
+await supabase.auth.signInWithPassword({
+email,
+password
+});
+
+if(error){
+alert(error.message);
+return;
+}
+
+const userId = data.user.id;
+
+const { data: setupData } =
+await supabase
+.from("setup")
+.select("*")
+.eq("user_id", userId)
+.limit(1);
+
+if(setupData && setupData.length > 0){
+
+window.location.href =
+"home.html";
+
+}else{
+
+window.location.href =
+"setup.html";
+
+}
+
+}
+async function forgotPassword(){
+
+const email = prompt("अपना रजिस्टर्ड ईमेल दर्ज करें");
+
+if(!email){
+return;
+}
+
+const { error } =
+await supabase.auth.resetPasswordForEmail(email,{
+redirectTo:"https://sagunmanage.netlify.app/reset-password.html"
+});
+
+if(error){
+alert(error.message);
+return;
+}
+
+alert("रीसेट लिंक आपके ईमेल पर भेज दिया गया है");
+
+}
+
+</script>
+
+</body>
+</html>
