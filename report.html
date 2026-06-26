@@ -3,22 +3,9 @@
 <head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-const firebaseConfig = {
-    apiKey: "AIza...",
-    authDomain: "smsystem-5c133.firebaseapp.com",
-    databaseURL: "https://smsystem-5c133-default-rtdb.firebaseio.com",
-    projectId: "smsystem-5c133",
-    storageBucket: "smsystem-5c133.firebasestorage.app",
-    messagingSenderId: "241314405522",
-    appId: "1:241314405522:web:b9a906650b824702a61a4b"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-</script>
 
 
 
@@ -45,8 +32,14 @@ const db = firebase.database();
         th { background: #800000; color: #ffd700; padding: 10px; }
         td { padding: 8px; border-bottom: 1px solid #ddd; text-align: center; }
         .note-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-        input { width: 60px; padding: 5px; text-align: center; border: 1px solid #800000; border-radius: 4px; }
-        button { cursor: pointer; padding: 10px; border: none; border-radius: 6px; font-weight: bold; width: 100%; margin-top: 5px; }
+.note{
+    width:60px;
+    padding:5px;
+    text-align:center;
+    border:1px solid #800000;
+    border-radius:4px;
+}       
+	   button { cursor: pointer; padding: 10px; border: none; border-radius: 6px; font-weight: bold; width: 100%; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -140,14 +133,6 @@ placeholder="राशि"
 style="width:95%;padding:8px;margin-bottom:5px;"
 >
 
-<input
-id="resetPass"
-type="password"
-placeholder="Reset Password"
-style="width:95%;padding:8px;margin-bottom:5px;"
->
-		
-		
 		
 		
 		
@@ -157,7 +142,6 @@ style="width:95%;padding:8px;margin-bottom:5px;"
 		
         <button onclick="updateCash('withdraw')" style="background:#c0392b; color:white;">💸 Withdraw</button>
         <button onclick="updateCash('deposit')" style="background:#27ae60; color:white;">📥 Deposit</button>
-        <button onclick="resetCashHistory()" style="background:#333; color:white;">⚠️ Reset History</button>
         <div style="display: flex; gap: 5px;">
             <button onclick="window.location.href='index.html'" style="background:#ffd700; color:#800000;">🏠 Home</button>
             <button onclick="logout()" style="background:#333; color:white;">🚪 Logout</button>
@@ -166,581 +150,623 @@ style="width:95%;padding:8px;margin-bottom:5px;"
     </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const supabase =
-window.supabase.createClient(
+
+const sb = window.supabase.createClient(
 "https://rdlliurzgwwfjscgwssa.supabase.co",
 "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
 );
 
-async function loadReport(){
+let reportData=[];
 
-let tbody =
-document.getElementById("tableBody");
+function getOfflineGuests(){
 
-tbody.innerHTML = "";
-
-let total = 0;
-let cashTotal = 0;
-let upiTotal = 0;
-let count = 0;
-
-const {
-data:{user}
-}
-=
-await supabase.auth.getUser();
-
-if(!user){
-window.location.href="login.html";
-return;
-}
-
-const { data,error } =
-await supabase
-.from("guests")
-.select("*")
-.eq("user_id",user.id);
-
-if(error){
-console.log(error);
-return;
-}
-
-let search =
-document.getElementById("villageFilter")
-.value
-.toUpperCase();
-
-data.forEach((g)=>{
-
-let fullText =
-`${g.name||''}
- ${g.village||''}
- ${g.state||''}
- ${g.district||''}`
-.toUpperCase();
-
-if(search && !fullText.includes(search)){
-return;
-}
-
-let amt =
-Number(g.amount) || 0;
-
-count++;
-total += amt;
-
-if(g.payment_mode==="UPI"){
-upiTotal += amt;
-}else{
-cashTotal += amt;
-}
-
-tbody.innerHTML += `
-<tr>
-<td>${g.name||''}</td>
-<td>${g.state||''}</td>
-<td>${g.district||''}</td>
-<td>${g.village||''}</td>
-<td>${g.payment_mode||'Cash'}</td>
-<td>₹${amt}</td>
-</tr>
-`;
-
-});
-
-document.getElementById("totalGuests").innerText = count;
-document.getElementById("cashShagun").innerText = cashTotal;
-document.getElementById("upiShagun").innerText = upiTotal;
-document.getElementById("totalShagun").innerText = total;
-document.getElementById("totalWithdraw").innerText = 0;
-document.getElementById("balanceShagun").innerText = total;
-
-calcCash();
+    return JSON.parse(
+        localStorage.getItem("offlineGuests") || "[]"
+    );
 
 }
 
+async function getOnlineGuests(){
 
-async function backupData() {
-    const { data } = await supabase.from("guests").select("*");
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "Sagun_Backup.json";
-    a.click();
+    try{
+
+        const {
+            data:{user}
+        } = await sb.auth.getUser();
+
+        if(!user){
+            return [];
+        }
+
+        const {data,error}=await sb
+        .from("guests")
+        .select("*")
+        .eq("user_id",user.id)
+        .order("id",{ascending:false});
+
+        if(error){
+            console.log(error);
+            return [];
+        }
+
+        return data||[];
+
+    }catch(e){
+
+        console.log(e);
+
+        return [];
+
+    }
+
 }
-
-function exportExcel() {
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.table_to_sheet(document.getElementById("tableBody"));
-    XLSX.utils.book_append_sheet(wb, ws, "Report");
-    XLSX.writeFile(wb, "Shagun_Report.xlsx");
-}
-
-
-window.onload = function(){
-loadReport();
-};
-
-
-
-
-
-
-const supabase =
-window.supabase.createClient(
-"https://rdlliurzgwwfjscgwssa.supabase.co",
-"sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
-);
 
 async function loadReport(){
 
-let tbody =
-document.getElementById("tableBody");
+    const tbody=document.getElementById("tableBody");
 
-tbody.innerHTML = "";
+    tbody.innerHTML="";
 
-let total = 0;
-let cashTotal = 0;
-let upiTotal = 0;
-let count = 0;
+    const online=await getOnlineGuests();
 
-const {
-data:{user}
-}
-=
-await supabase.auth.getUser();
+    const offline=getOfflineGuests();
 
-if(!user){
-window.location.href="login.html";
-return;
-}
+    const map=new Map();
 
-const { data,error } =
-await supabase
-.from("guests")
-.select("*")
-.eq("user_id",user.id);
+    online.forEach(g=>{
 
-if(error){
-console.log(error);
-return;
-}
+        let key=
+        (g.name||"")+
+        (g.amount||"")+
+        (g.village||"");
 
-let search =
-document.getElementById("villageFilter")
-.value
-.toUpperCase();
-
-data.forEach((g)=>{
-
-let fullText =
-`${g.name||''}
- ${g.village||''}
- ${g.state||''}
- ${g.district||''}`
-.toUpperCase();
-
-if(search && !fullText.includes(search)){
-return;
-}
-
-let amt =
-Number(g.amount) || 0;
-
-count++;
-total += amt;
-
-if(g.payment_mode==="UPI"){
-upiTotal += amt;
-}else{
-cashTotal += amt;
-}
-
-tbody.innerHTML += `
-<tr>
-<td>${g.name||''}</td>
-<td>${g.state||''}</td>
-<td>${g.district||''}</td>
-<td>${g.village||''}</td>
-<td>${g.payment_mode||'Cash'}</td>
-<td>₹${amt}</td>
-</tr>
-`;
-
-});
-
-document.getElementById("totalGuests").innerText = count;
-document.getElementById("cashShagun").innerText = cashTotal;
-document.getElementById("upiShagun").innerText = upiTotal;
-document.getElementById("totalShagun").innerText = total;
-document.getElementById("totalWithdraw").innerText = 0;
-document.getElementById("balanceShagun").innerText = total;
-
-calcCash();
-
-}
-
-window.onload = function(){
-loadReport();
-};
-
-const supabase =
-window.supabase.createClient(
-"https://rdlliurzgwwfjscgwssa.supabase.co",
-"sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
-);
-
-async function loadReport(){
-
-let tbody =
-document.getElementById("tableBody");
-
-tbody.innerHTML = "";
-
-let total = 0;
-let cashTotal = 0;
-let upiTotal = 0;
-let count = 0;
-
-const {
-data:{user}
-}
-=
-await supabase.auth.getUser();
-
-if(!user){
-window.location.href="login.html";
-return;
-}
-
-const { data,error } =
-await supabase
-.from("guests")
-.select("*")
-.eq("user_id",user.id);
-
-if(error){
-console.log(error);
-return;
-}
-
-let search =
-document.getElementById("villageFilter")
-.value
-.toUpperCase();
-
-data.forEach((g)=>{
-
-let fullText =
-`${g.name||''}
- ${g.village||''}
- ${g.state||''}
- ${g.district||''}`
-.toUpperCase();
-
-if(search && !fullText.includes(search)){
-return;
-}
-
-let amt =
-Number(g.amount) || 0;
-
-count++;
-total += amt;
-
-if(g.payment_mode==="UPI"){
-upiTotal += amt;
-}else{
-cashTotal += amt;
-}
-
-tbody.innerHTML += `
-<tr>
-<td>${g.name||''}</td>
-<td>${g.state||''}</td>
-<td>${g.district||''}</td>
-<td>${g.village||''}</td>
-<td>${g.payment_mode||'Cash'}</td>
-<td>₹${amt}</td>
-</tr>
-`;
-
-});
-
-document.getElementById("totalGuests").innerText = count;
-document.getElementById("cashShagun").innerText = cashTotal;
-document.getElementById("upiShagun").innerText = upiTotal;
-document.getElementById("totalShagun").innerText = total;
-document.getElementById("totalWithdraw").innerText = 0;
-document.getElementById("balanceShagun").innerText = total;
-
-calcCash();
-
-}
-
-window.onload = function(){
-loadReport();
-};
-
-    "<b>लेन-देन इतिहास:</b><br>";
-
-    history.forEach((h,i)=>{
-
-        list.innerHTML += `
-        ${i+1}.
-        ${h.personName}
-        -
-        ${h.type === "withdraw"
-        ? "निकासी"
-        : "जमा"}
-
-        ₹${h.amount}
-        <br>
-        <small>${h.createdAt}</small>
-        <hr>
-        `;
+        map.set(key,g);
 
     });
 
+    offline.forEach(g=>{
+
+        let key=
+        (g.name||"")+
+        (g.amount||"")+
+        (g.village||"");
+
+        if(!map.has(key)){
+            map.set(key,g);
+        }
+
+    });
+
+    reportData=[...map.values()];
+
+    let search=document
+    .getElementById("villageFilter")
+    .value
+    .toUpperCase();
+
+    let total=0;
+    let cash=0;
+    let upi=0;
+    let count=0;
+
+    reportData.forEach(g=>{
+
+        let txt=`
+${g.name||""}
+${g.state||""}
+${g.district||""}
+${g.village||""}
+`
+        .toUpperCase();
+
+        if(search && !txt.includes(search)){
+            return;
+        }
+
+        let amt=Number(g.amount)||0;
+
+        count++;
+
+        total+=amt;
+
+        if(g.payment_mode==="UPI"){
+            upi+=amt;
+        }else{
+            cash+=amt;
+        }
+
+        tbody.innerHTML+=`
+<tr>
+<td>${g.name||""}</td>
+<td>${g.state||""}</td>
+<td>${g.district||""}</td>
+<td>${g.village||""}</td>
+<td>${g.payment_mode||"Cash"}</td>
+<td>₹${amt}</td>
+</tr>
+`;
+
+    });
+
+   document.getElementById("totalGuests").innerText = count;
+document.getElementById("cashShagun").innerText = cash;
+document.getElementById("upiShagun").innerText = upi;
+document.getElementById("totalShagun").innerText = total;
+
+loadHistory();
+
+}
+
+function calcCash(){
+
+    let cash=0;
+
+    document.querySelectorAll(".note").forEach(n=>{
+
+        cash +=
+        (Number(n.value)||0)
+        *
+        Number(n.dataset.val);
+
+    });
+
+    document.getElementById("cashTotal").innerText=cash;
+
+    let balance=
+    Number(
+        document.getElementById("balanceShagun").innerText
+    );
+
+    let diff=cash-balance;
+
+    document.getElementById("diffAmount").innerText=diff;
+
+    document.getElementById("diffAmount").style.color=
+    diff>=0?"green":"red";
+
 }
 
 
 
+async function backupData(){
+
+    const blob=new Blob(
+        [JSON.stringify(reportData,null,2)],
+        {type:"application/json"}
+    );
+
+    const a=document.createElement("a");
+
+    a.href=URL.createObjectURL(blob);
+
+    a.download="Sagun_Backup.json";
+
+    a.click();
+
+}
 
 
-    function logout() { if(confirm("लॉग आउट करें?")) window.location.href = "index.html"; }
 
-    function calcCash() {
-        let cash = 0;
-        document.querySelectorAll('.note').forEach(i => cash += (parseInt(i.value) || 0) * parseInt(i.getAttribute('data-val')));
-        document.getElementById('cashTotal').innerText = cash;
-        let diff = cash - parseInt(document.getElementById('balanceShagun').innerText);
-        let d = document.getElementById('diffAmount');
-        d.innerText = diff;
-        d.style.color = diff >= 0 ? "#27ae60" : "#c0392b";
+function exportExcel(){
+
+    const rows=reportData.map(g=>({
+
+        Name:g.name||"",
+
+        State:g.state||"",
+
+        District:g.district||"",
+
+        Village:g.village||"",
+
+        Mode:g.payment_mode||"Cash",
+
+        Amount:g.amount||0
+
+    }));
+
+    const wb=XLSX.utils.book_new();
+
+    const ws=XLSX.utils.json_to_sheet(rows);
+
+    XLSX.utils.book_append_sheet(
+        wb,
+        ws,
+        "Report"
+    );
+
+    XLSX.writeFile(
+        wb,
+        "Shagun_Report.xlsx"
+    );
+
+}
+
+
+function exportPDF(){
+
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF("p","mm","a4");
+
+    let total=0;
+    let cash=0;
+    let upi=0;
+
+    reportData.forEach(g=>{
+
+        total += Number(g.amount)||0;
+
+        if(g.payment_mode==="UPI"){
+            upi += Number(g.amount)||0;
+        }else{
+            cash += Number(g.amount)||0;
+        }
+
+    });
+
+    doc.setFontSize(18);
+    doc.setFont("helvetica","bold");
+    doc.text("SHAGUN REPORT",105,15,{align:"center"});
+
+    doc.setFontSize(10);
+
+    doc.text("Total Guests : "+reportData.length,14,25);
+    doc.text("Cash : "+cash,70,25);
+    doc.text("UPI : "+upi,110,25);
+    doc.text("Grand Total : "+total,150,25);
+
+    const rows = reportData.map((g,i)=>[
+        i+1,
+        g.name||"",
+        g.state||"",
+        g.district||"",
+        g.village||"",
+        g.payment_mode||"",
+        g.amount||0
+    ]);
+
+    doc.autoTable({
+
+        startY:32,
+
+        head:[[
+            "SL",
+            "NAME",
+            "STATE",
+            "DISTRICT",
+            "VILLAGE",
+            "MODE",
+            "AMOUNT"
+        ]],
+
+        body:rows,
+
+        theme:"grid",
+
+        headStyles:{
+            fillColor:[128,0,0],
+            textColor:[255,255,255],
+            halign:"center"
+        },
+
+        styles:{
+            fontSize:9,
+            cellPadding:2,
+            valign:"middle"
+        },
+
+        columnStyles:{
+            0:{cellWidth:10,halign:"center"},
+            1:{cellWidth:42},
+            2:{cellWidth:22},
+            3:{cellWidth:28},
+            4:{cellWidth:28},
+            5:{cellWidth:18,halign:"center"},
+            6:{cellWidth:22,halign:"right"}
+        }
+
+    });
+
+    let finalY = doc.lastAutoTable.finalY + 10;
+
+    doc.setFont("helvetica","bold");
+
+    doc.text("Cash Total : "+cash,14,finalY);
+
+    doc.text("UPI Total : "+upi,80,finalY);
+
+    doc.text("Grand Total : "+total,145,finalY);
+
+    doc.save("Shagun_Report.pdf");
+
+}
+let cashHistory =
+JSON.parse(localStorage.getItem("cashHistory") || "[]");
+
+function saveCashHistory(){
+    localStorage.setItem(
+        "cashHistory",
+        JSON.stringify(cashHistory)
+    );
+}
+
+
+async function loadHistory(){
+
+    const box = document.getElementById("historyList");
+    box.innerHTML = "";
+
+    let withdraw = 0;
+    let deposit = 0;
+
+    let history = [];
+
+    // Offline Data
+    const offline = JSON.parse(
+        localStorage.getItem("offlineCashHistory") || "[]"
+    );
+
+    history.push(...offline);
+
+    // Online Data
+    try{
+
+        const { data:{user} } = await sb.auth.getUser();
+
+        if(user){
+
+            const { data } = await sb
+                .from("cash_history")
+                .select("*")
+                .eq("user_id",user.id)
+                .order("created_at",{ascending:false});
+
+            if(data){
+
+                data.forEach(r=>{
+
+                    let key =
+                    r.person +
+                    r.amount +
+                    r.type +
+                    r.created_at;
+
+                    let found = offline.find(o=>
+
+                        (o.person+o.amount+o.type+o.created_at)==key
+
+                    );
+
+                    if(!found){
+                        history.push(r);
+                    }
+
+                });
+
+            }
+
+        }
+
+    }catch(e){
+
+        console.log(e);
+
     }
 
-window.onload = async () => {
+    history.sort((a,b)=>{
+
+        return new Date(b.created_at||b.date)
+        -
+        new Date(a.created_at||a.date);
+
+    });
+
+    history.forEach(h=>{
+
+        if(h.type==="withdraw"){
+            withdraw += Number(h.amount);
+        }
+
+        if(h.type==="deposit"){
+            deposit += Number(h.amount);
+        }
+
+        box.innerHTML += `
+<div style="padding:6px;border-bottom:1px solid #ddd;">
+<b>${h.type=="withdraw"?"💸":"📥"}</b>
+${h.person}
+₹${h.amount}
+<br>
+<small>${h.created_at || h.date}</small>
+</div>`;
+
+    });
+
+    document.getElementById("totalWithdraw").innerText = withdraw;
+
+    let total =
+    Number(document.getElementById("totalShagun").innerText);
+
+    document.getElementById("balanceShagun").innerText =
+    total - withdraw + deposit;
+
+    calcCash();
+
+}
+
+
+async function updateCash(type){
+
+    const person = document.getElementById("cashPerson").value.trim();
+    const amount = Number(document.getElementById("cashAmount").value);
+
+    if(person==="" || amount<=0){
+        alert("नाम और राशि दर्ज करें");
+        return;
+    }
+
+    const entry = {
+        person: person,
+        amount: amount,
+        type: type,
+        created_at: new Date().toISOString()
+    };
+
+    // 1. पहले Offline Save
+    let offline = JSON.parse(
+        localStorage.getItem("offlineCashHistory") || "[]"
+    );
+
+    offline.unshift(entry);
+
+    localStorage.setItem(
+        "offlineCashHistory",
+        JSON.stringify(offline)
+    );
+
+    // 2. अगर Internet है तो तुरंत Sync
+    if(navigator.onLine){
+
+        try{
+
+            const { data:{user} } = await sb.auth.getUser();
+
+            if(user){
+
+                await sb
+                .from("cash_history")
+                .insert([{
+                    user_id:user.id,
+                    person:person,
+                    amount:amount,
+                    type:type
+                }]);
+
+                // Sync सफल होने पर Offline से हटाओ
+                offline.shift();
+
+                localStorage.setItem(
+                    "offlineCashHistory",
+                    JSON.stringify(offline)
+                );
+
+            }
+
+        }catch(e){
+
+            console.log(e);
+
+        }
+
+    }
+
+    document.getElementById("cashPerson").value="";
+    document.getElementById("cashAmount").value="";
 
     await loadHistory();
+
+}
+
+async function syncCashHistory(){
+
+    if(!navigator.onLine){
+        return;
+    }
+
+    let offline = JSON.parse(
+        localStorage.getItem("offlineCashHistory") || "[]"
+    );
+
+    if(offline.length===0){
+        return;
+    }
+
+    const { data:{user} } = await sb.auth.getUser();
+
+    if(!user){
+        return;
+    }
+
+    for(const item of offline){
+
+        try{
+
+            await sb
+            .from("cash_history")
+            .insert([{
+                user_id:user.id,
+                person:item.person,
+                amount:item.amount,
+                type:item.type,
+                created_at:item.created_at
+            }]);
+
+        }catch(e){
+
+            console.log(e);
+
+            return;
+
+        }
+
+    }
+
+    localStorage.removeItem("offlineCashHistory");
+
+    await loadHistory();
+
+}
+
+
+async function logout(){
+
+    await sb.auth.signOut();
+
+    window.location.replace("login.html");
+
+}
+
+window.onload = async function(){
+
+    await syncCashHistory();
+
     await loadReport();
+
+    document
+    .getElementById("villageFilter")
+    .addEventListener("keyup", loadReport);
 
 };
 
 
+window.addEventListener("online", async ()=>{
 
+    await syncCashHistory();
 
-
-async function exportExcel() {
-
-    try {
-
-        const rows = [];
-
-        document
-        .querySelectorAll("#tableBody tr")
-        .forEach(row => {
-
-            const cols = row.querySelectorAll("td");
-
-            rows.push({
-                Name: cols[0]?.innerText || "",
-                State: cols[1]?.innerText || "",
-                District: cols[2]?.innerText || "",
-                Village: cols[3]?.innerText || "",
-                Mode: cols[4]?.innerText || "",
-                Amount: cols[5]?.innerText || ""
-            });
-
-        });
-
-        console.log("Export Rows =", rows);
-
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet(rows);
-
-        XLSX.utils.book_append_sheet(
-            wb,
-            ws,
-            "Shagun Report"
-        );
-
-        const filePath =
-    
-
-    } catch(err) {
-
-        console.error(err);
-        alert(err.message);
-
-    }
-
-}
-
-
-
-
-
-function exportPDF() {
-
-const { jsPDF } = window.jspdf;
-const doc = new jsPDF("p", "mm", "a4");
-
-// Header
-doc.setFillColor(128, 0, 0);
-doc.rect(0, 0, 210, 18, "F");
-
-doc.setTextColor(255, 255, 255);
-doc.setFontSize(16);
-doc.text("SHAGUN REPORT", 70, 12);
-
-// Summary
-doc.setFillColor(255,248,220);
-doc.rect(10,25,190,28,"F");
-
-doc.setTextColor(128,0,0);
-doc.setFontSize(10);
-
-doc.text("Guests : " + document.getElementById("totalGuests").innerText, 15, 33);
-doc.text("Cash : Rs. " + Number(document.getElementById("cashShagun").innerText).toLocaleString("en-IN"), 70, 33);
-doc.text("UPI : Rs. " + document.getElementById("upiShagun").innerText, 130, 33);
-
-doc.text("Total : Rs. " + document.getElementById("totalShagun").innerText, 15, 45);
-doc.text("Withdraw : Rs. " + document.getElementById("totalWithdraw").innerText, 70, 45);
-doc.text("Balance : Rs. " + document.getElementById("balanceShagun").innerText, 130, 45);
-
-let y = 65;
-
-// Table Header
-doc.setFillColor(128,0,0);
-doc.rect(10,y-5,190,8,"F");
-
-doc.setTextColor(255,255,255);
-
-doc.text("Name",15,y);
-doc.text("District",70,y);
-doc.text("Village",110,y);
-doc.text("Mode",155,y);
-doc.text("Amount",180,y);
-
-doc.setTextColor(0,0,0);
-
-y += 10;
-
-const rows = document.querySelectorAll("#tableBody tr");
-
-rows.forEach((row,index)=>{
-
-    const cols = row.querySelectorAll("td");
-
-    const name = cols[0]?.innerText || "";
-    const district = cols[2]?.innerText || "";
-    const village = cols[3]?.innerText || "";
-    const mode = cols[4]?.innerText || "";
-   const amount = cols[5]?.innerText
-   .replace(/[^0-9]/g, "") || "0";
-
-console.log("PDF Amount Raw =", cols[5]?.innerText);
-console.log("PDF Amount Clean =", amount);
-
-const amt = Number(amount).toLocaleString("en-IN");
-
-
-
-    if(index % 2 === 0){
-        doc.setFillColor(245,245,245);
-        doc.rect(10,y-5,190,8,"F");
-    }
-
-doc.text(name.substring(0,25),15,y);
-doc.text(district.substring(0,15),70,y);
-doc.text(village.substring(0,15),110,y);
-doc.text(mode,155,y);
-doc.text("Rs. " + amt,175,y);
-
-y += 8;
-
-    if(y > 270){
-
-        doc.addPage();
-        y = 20;
-
-        doc.setFillColor(128,0,0);
-        doc.rect(10,y-5,190,8,"F");
-
-        doc.setTextColor(255,255,255);
-
-        doc.text("Name",15,y);
-        doc.text("District",70,y);
-        doc.text("Village",110,y);
-        doc.text("Mode",155,y);
-        doc.text("Amount",180,y);
-
-        doc.setTextColor(0,0,0);
-
-        y += 10;
-    }
-});
-
-doc.save("Shagun_Report.pdf");
-
-}
-
-
-
-	
-	
-	async function updateCash(type){
-
-    const personName =
-    document.getElementById("cashPerson").value;
-
-    const amount =
-    Number(
-        document.getElementById("cashAmount").value
-    );
-
-    if(!personName){
-        alert("नाम दर्ज करें");
-        return;
-    }
-
-    if(!amount || amount <= 0){
-        alert("राशि दर्ज करें");
-        return;
-    }
-
-
-    document.getElementById("cashPerson").value = "";
-    document.getElementById("cashAmount").value = "";
-
-    await loadHistory();
     await loadReport();
 
-    alert("सफलतापूर्वक सेव");
-}
+});
 
 
 
-async function resetCashHistory(){
-
-    const pass =
-    document.getElementById("resetPass").value;
-
-    if(pass !== "admin123"){
-        alert("गलत पासवर्ड");
-        return;
-    }
-
-   
-
-	
-	
-	
-	
-}
 </script>
+
 </body>
 </html>
+
+

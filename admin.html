@@ -35,14 +35,64 @@
     </table>
 </div>
 
+<div class="card" style="margin-top:20px;">
+
+<h2>💰 Cash History</h2>
+
+<div style="display:flex;gap:15px;margin-bottom:15px;flex-wrap:wrap;">
+
+<div style="background:#c0392b;color:#fff;padding:10px;border-radius:8px;">
+Withdraw : ₹<span id="totalWithdraw">0</span>
+</div>
+
+<div style="background:#27ae60;color:#fff;padding:10px;border-radius:8px;">
+Deposit : ₹<span id="totalDeposit">0</span>
+</div>
+
+<button
+onclick="resetCashHistory()"
+style="background:#000;color:#fff;padding:10px 20px;border:none;border-radius:6px;cursor:pointer;">
+🗑 Reset Cash History
+</button>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+
+<th>Type</th>
+
+<th>Amount</th>
+
+<th>Date</th>
+
+<th>Delete</th>
+
+</tr>
+
+</thead>
+
+<tbody id="cashTableBody"></tbody>
+
+</table>
+
+</div>
+
+
+
 <script>
-const supabase = window.supabase.createClient(
+const sb = window.supabase.createClient(
     "https://rdlliurzgwwfjscgwssa.supabase.co",
     "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
 );
 
 async function loadData() {
-    const { data, error } = await supabase.from("guests").select("*");
+    const { data, error } = await sb.from("guests").select("*");
     if(error) { alert(error.message); return; }
 
     let tbody = document.getElementById('tableBody');
@@ -64,20 +114,134 @@ async function loadData() {
 
 async function deleteEntry(id) {
     if(confirm("रिकॉर्ड डिलीट करें?")) {
-        await supabase.from("guests").delete().eq("id", id);
+        await sb.from("guests").delete().eq("id", id);
         loadData();
     }
 }
 
 async function deleteAllData() {
     if(confirm("सारा डेटा डिलीट हो जाएगा! पक्का?")) {
-        // Supabase mein delete all ke liye filter lagana padta hai ya RLS check karein
-        await supabase.from("guests").delete().neq("id", 0); 
+        await sb.from("guests").delete().neq("id", 0); 
         loadData();
     }
 }
 
-window.onload = loadData;
+
+
+
+async function loadCashHistory(){
+
+    const tbody = document.getElementById("cashTableBody");
+
+    tbody.innerHTML = "";
+
+    let withdraw = 0;
+    let deposit = 0;
+
+    const { error } = await sb
+    .from("cash_history")
+        .from("cash_history")
+        .select("*")
+        .order("created_at",{ascending:false});
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    data.forEach(c=>{
+
+        if(c.type==="withdraw"){
+            withdraw += Number(c.amount);
+        }else{
+            deposit += Number(c.amount);
+        }
+
+        tbody.innerHTML += `
+<tr>
+<td>${c.person}</td>
+<td>${c.type}</td>
+<td>₹${c.amount}</td>
+<td>${new Date(c.created_at).toLocaleString()}</td>
+<td>
+<button
+onclick="deleteCashEntry(${c.id})"
+style="background:red;color:white;">
+🗑
+</button>
+</td>
+</tr>`;
+
+    });
+
+    document.getElementById("totalWithdraw").innerText = withdraw;
+    document.getElementById("totalDeposit").innerText = deposit;
+
+}
+
+async function deleteCashEntry(id){
+
+    if(!confirm("क्या इस Cash Entry को Delete करना चाहते हैं?")){
+        return;
+    }
+const { error } = await sb
+    .from("cash_history")
+        .delete()
+        .eq("id", id);
+
+    if(error){
+        alert(error.message);
+        return;
+    }
+
+    await loadCashHistory();
+
+}
+
+
+async function resetCashHistory(){
+
+    const pass = prompt("Admin Password दर्ज करें");
+
+    if(pass===null){
+        return;
+    }
+
+    if(pass.trim()!=="admin123"){
+        alert("Wrong Password");
+        return;
+    }
+
+    if(!confirm("पूरी Cash History Delete हो जाएगी. Continue?")){
+        return;
+    }
+
+    const { error } = await supabase
+        .from("cash_history")
+        .delete()
+        .neq("id",0);
+
+    if(error){
+        alert(error.message);
+        return;
+    }
+
+    alert("Cash History Reset Successfully");
+
+    await loadCashHistory();
+
+}
+
+
+
+window.onload = async ()=>{
+
+    await loadData();
+
+    await loadCashHistory();
+
+};
+
 </script>
 </body>
 </html>

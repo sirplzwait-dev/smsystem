@@ -7,10 +7,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
- 
+
+
+
 
 
 <style>
+
+
+
 
 body{
 margin:0;
@@ -188,7 +193,7 @@ alert(error.message);
 return;
 }
 
-const userId = data.user.id;
+const userId = data.user?.id;
 
 const { data: setupData } =
 await supabase
@@ -196,35 +201,40 @@ await supabase
 .select("*")
 .eq("user_id", userId)
 .limit(1);
+
 if(setupData && setupData.length > 0){
 
-    window.location.href = "home.html";
+window.location.href =
+"home.html";
 
 }else{
 
-    window.location.href = "setup.html";
+window.location.href =
+"setup.html";
 
 }
 
 }
-
 async function forgotPassword(){
 
-    const email = prompt("अपना रजिस्टर्ड ईमेल दर्ज करें");
+const email = prompt("अपना रजिस्टर्ड ईमेल दर्ज करें");
 
-    if(!email) return;
+if(!email){
+return;
+}
 
-    const { error } =
-    await supabase.auth.resetPasswordForEmail(email,{
-        redirectTo:"https://smsystem-pages.sirplzwait.workers.dev/reset-password.html"
-    });
+const { error } =
+await supabase.auth.resetPasswordForEmail(email,{
+redirectTo:"https://smsystem-pages.sirplzwait.workers.dev/reset-password.html"
+});
 
-    if(error){
-        alert(error.message);
-        return;
-    }
+if(error){
+alert(error.message);
+return;
+}
 
-    alert("रीसेट लिंक आपके ईमेल पर भेज दिया गया है");
+alert("रीसेट लिंक आपके ईमेल पर भेज दिया गया है");
+
 }
 
 </script>
