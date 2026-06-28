@@ -133,6 +133,8 @@ const verify = await fetch(
 });
 
 const verifyResult = await verify.json();
+console.log(verifyResult);
+alert(JSON.stringify(verifyResult));
 
 if(!verifyResult.success){
 
