@@ -220,37 +220,29 @@ z-index:9999;
 }
 
 .cropBox{
-
-width:95%;
-
-max-width:500px;
-
-background:#fff;
-
-padding:15px;
-
-border-radius:15px;
-
+    width:95%;
+    max-width:500px;
+    max-height:95vh;
+    background:#fff;
+    padding:15px;
+    border-radius:15px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
 }
-
 .cropBox img{
-
-max-width:100%;
-
-display:block;
-
+    display:block;
+    width:100%;
+    max-height:60vh;
+    object-fit:contain;
 }
 
 .tools{
-
-display:flex;
-
-gap:8px;
-
-margin-top:15px;
-
-flex-wrap:wrap;
-
+    display:flex;
+    gap:8px;
+    margin-top:15px;
+    flex-wrap:wrap;
+    overflow-y:auto;
 }
 
 .tools button{
@@ -288,6 +280,30 @@ width:0%;
 background:#800000;
 
 }
+
+
+@media (max-width:600px){
+
+.cropBox{
+    width:100%;
+    height:100vh;
+    max-height:100vh;
+    border-radius:0;
+    padding:10px;
+}
+
+.cropBox img{
+    max-height:55vh;
+}
+
+.tools button{
+    flex:1 1 45%;
+    font-size:14px;
+    padding:12px;
+}
+
+}
+
 
 </style>
 
@@ -514,19 +530,22 @@ function openCrop(file, inputId, previewId) {
             cropper.destroy();
         }
 
-        cropper = new Cropper(cropImage, {
-            aspectRatio: 1,
-            viewMode: 1,
-            dragMode: "move",
-            autoCropArea: 1,
-            responsive: true,
-            background: false,
-            movable: true,
-            zoomable: true,
-            rotatable: true,
-            scalable: true
-        });
-
+    cropper = new Cropper(cropImage,{
+    aspectRatio:1,
+    viewMode:1,
+    autoCropArea:1,
+    responsive:true,
+    restore:false,
+    checkOrientation:false,
+    modal:true,
+    guides:false,
+    dragMode:"move",
+    background:false,
+    movable:true,
+    zoomable:true,
+    rotatable:true,
+    scalable:true
+});
     };
 
     reader.readAsDataURL(file);
