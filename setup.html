@@ -16,6 +16,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
 
 <style>
 
@@ -511,11 +512,41 @@ document.getElementById("qrPhoto").addEventListener("change", function (e) {
 
 // ===== OPEN CROPPER =====
 
-function openCrop(file, inputId, previewId) {
+async function openCrop(file, inputId, previewId) {
 
     if (!file) return;
+	
+	
+	
+	
+	// HEIC/HEIF → JPG Convert
+if (
+    file.type === "image/heic" ||
+    file.type === "image/heif" ||
+    file.name.toLowerCase().endsWith(".heic") ||
+    file.name.toLowerCase().endsWith(".heif")
+) {
+    try {
 
-    currentInput = inputId;
+        const jpgBlob = await heic2any({
+            blob: file,
+            toType: "image/jpeg",
+            quality: 0.9
+        });
+
+        file = new File(
+            [jpgBlob],
+            file.name.replace(/\.(heic|heif)$/i, ".jpg"),
+            { type: "image/jpeg" }
+        );
+
+    } catch (err) {
+        alert("HEIC photo convert nahi ho paayi.");
+        return;
+    }
+}
+	
+    currentInput = inputId;	
     currentPreview = previewId;
 
     const reader = new FileReader();
