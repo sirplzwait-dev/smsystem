@@ -133,17 +133,12 @@ const verify = await fetch(
 });
 
 const verifyResult = await verify.json();
-console.log(verifyResult);
-alert(JSON.stringify(verifyResult));
 
-if(!verifyResult.success){
-
+if (!verifyResult.success) {
     btn.disabled = false;
     btn.innerHTML = "📝 रजिस्टर करें";
-
     return alert("CAPTCHA Verification Failed");
 }
-
 
 
 
@@ -170,13 +165,10 @@ if(user){
 
     if(profileError) throw profileError;
 }
-
 btn.innerHTML = "✅ Registration Successful";
 
-alert("रजिस्ट्रेशन सफल! ईमेल चेक करें।");
-
 setTimeout(() => {
-    window.location.href = "setup.html";
+    window.location.replace("setup.html");
 }, 1000);
 }
 		catch(err) {
