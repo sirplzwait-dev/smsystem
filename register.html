@@ -5,12 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Sagun Management System</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         body { margin:0; height:100vh; display:flex; justify-content:center; align-items:center; background:linear-gradient(135deg,#800000,#ffd700); font-family:'Segoe UI',sans-serif; }
         .register-box { width:400px; background:#fff; padding:30px; border-radius:20px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.3); }
         input { width:92%; padding:12px; margin:8px 0; border:2px solid #800000; border-radius:10px; box-sizing:border-box; }
         button { width:95%; padding:12px; margin-top:10px; border:none; border-radius:10px; background:#800000; color:white; font-weight:bold; cursor:pointer; }
-    </style>
+    
+	button:disabled{
+    background:#888;
+    cursor:not-allowed;
+    opacity:.8;
+}
+
+.loader{
+    display:inline-block;
+    width:18px;
+    height:18px;
+    border:3px solid rgba(255,255,255,.3);
+    border-top:3px solid #fff;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+    vertical-align:middle;
+    margin-right:8px;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+	
+	</style>
 </head>
 <body>
 
@@ -21,8 +47,17 @@
     <input type="text" id="mobile" placeholder="मोबाइल नंबर">
     <input type="email" id="email" placeholder="ईमेल">
     <input type="password" id="password" placeholder="पासवर्ड">
-    <input type="password" id="confirmPassword" placeholder="पासवर्ड पुनः दर्ज करें">
-    <button onclick="registerUser()">📝 रजिस्टर करें</button>
+  <input type="password" id="confirmPassword" placeholder="पासवर्ड पुनः दर्ज करें">
+
+<div class="cf-turnstile"
+     data-sitekey="0x4AAAAAADsJ5QnV0fxq-nS0">
+</div>
+
+<br>
+
+<button id="registerBtn" onclick="registerUser()">
+    📝 रजिस्टर करें
+</button>
 </div>
 
 <script>
@@ -37,6 +72,18 @@
     }
 
     async function registerUser(){
+	
+	
+	const btn = document.getElementById("registerBtn");
+
+if(btn.disabled) return;
+
+btn.disabled = true;
+btn.innerHTML = '<span class="loader"></span> कृपया प्रतीक्षा करें...<br><small>रजिस्ट्रेशन किया जा रहा है</small>';
+	
+	
+	
+	
         const name = document.getElementById("name").value.trim();
         const state = document.getElementById("state").value.trim();
         const mobile = document.getElementById("mobile").value.trim();
@@ -45,32 +92,99 @@
         const confirmPassword = document.getElementById("confirmPassword").value.trim();
 
         // Check fields
-        if(!name || !email || !password) return alert("सभी जानकारी भरें");
-        
-        // Check password match
-        if(password !== confirmPassword) return alert("पासवर्ड मैच नहीं हो रहा है!");
+      if(!name || !email || !password){
+
+    btn.disabled = false;
+    btn.innerHTML = "📝 रजिस्टर करें";
+
+    return alert("सभी जानकारी भरें");
+}
+
+if(password !== confirmPassword){
+
+    btn.disabled = false;
+    btn.innerHTML = "📝 रजिस्टर करें";
+
+    return alert("पासवर्ड मैच नहीं हो रहा है!");
+}
+
+const token = document.querySelector(
+'.cf-turnstile input[name="cf-turnstile-response"]'
+)?.value;
+
+if(!token){
+
+    btn.disabled = false;
+    btn.innerHTML = "📝 रजिस्टर करें";
+
+    return alert("पहले CAPTCHA पूरा करें");
+}
+
+const verify = await fetch(
+"https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/verify-turnstile",
+{
+    method:"POST",
+    headers:{
+        "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+        token:token
+    })
+});
+
+const verifyResult = await verify.json();
+
+if(!verifyResult.success){
+
+    btn.disabled = false;
+    btn.innerHTML = "📝 रजिस्टर करें";
+
+    return alert("CAPTCHA Verification Failed");
+}
+
+
+
+
+
 
         try {
-            const { data, error } = await sb.auth.signUp({ email, password });
-            if(error) throw error;
+           const { data, error } = await sb.auth.signUp({ email, password });
+if(error) throw error;
 
-            const user = data.user;
-            if(user) {
-              await sb.from("profiles").insert([{
-    id: user.id,
-    name: name,
-    state: state,
-    mobile: mobile,
-    admin_pass: generateKey("ADM"),
-    report_pass: generateKey("REP")
-}]);
-            }
-            alert("रजिस्ट्रेशन सफल! ईमेल चेक करें।");
-            window.location.href = "setup.html";
-        } catch(err) {
-            alert("Error: " + err.message);
-        }
-    }
+const user = data.user;
+
+if(user){
+
+    const { error: profileError } = await sb
+    .from("profiles")
+    .insert([{
+        id: user.id,
+        name: name,
+        state: state,
+        mobile: mobile,
+        admin_pass: generateKey("ADM"),
+        report_pass: generateKey("REP")
+    }]);
+
+    if(profileError) throw profileError;
+}
+
+btn.innerHTML = "✅ Registration Successful";
+
+alert("रजिस्ट्रेशन सफल! ईमेल चेक करें।");
+
+setTimeout(() => {
+    window.location.href = "setup.html";
+}, 1000);
+}
+		catch(err) {
+
+    btn.disabled = false;
+    btn.innerHTML = "📝 रजिस्टर करें";
+
+    alert("Error: " + err.message);
+}
+}
 </script>
 </body>
 </html>

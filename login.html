@@ -171,6 +171,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function checkLogin(){
 
+async function checkLogin(){
+
+const btn = document.querySelector("button");
+
+btn.disabled = true;
+btn.innerHTML = "⏳ Please Wait...";
+btn.style.opacity = "0.7";
+btn.style.cursor = "not-allowed";
+
 const email =
 document.getElementById("email").value.trim();
 
@@ -179,6 +188,11 @@ document.getElementById("pass").value.trim();
 
 if(!email || !password){
 alert("ईमेल और पासवर्ड भरें");
+
+btn.disabled = false;
+btn.innerHTML = "🔐 लॉगिन करें";
+btn.style.opacity = "1";
+btn.style.cursor = "pointer";
 return;
 }
 
@@ -190,6 +204,11 @@ password
 
 if(error){
 alert(error.message);
+
+btn.disabled = false;
+btn.innerHTML = "🔐 लॉगिन करें";
+btn.style.opacity = "1";
+btn.style.cursor = "pointer";
 return;
 }
 
