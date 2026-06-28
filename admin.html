@@ -92,7 +92,26 @@ const sb = window.supabase.createClient(
 );
 
 async function loadData() {
-    const { data, error } = await sb.from("guests").select("*");
+
+const {
+    data: { user }
+} = await sb.auth.getUser();
+
+if (!user) {
+    window.location.href = "login.html";
+    return;
+}
+
+
+
+
+
+    const { data, error } = await sb
+    .from("guests")
+    .select("*")
+    .eq("user_id", user.id);
+	
+	
     if(error) { alert(error.message); return; }
 
     let tbody = document.getElementById('tableBody');
@@ -114,35 +133,59 @@ async function loadData() {
 
 async function deleteEntry(id) {
     if(confirm("रिकॉर्ड डिलीट करें?")) {
-        await sb.from("guests").delete().eq("id", id);
+        const {
+    data: { user }
+} = await sb.auth.getUser();
+
+await sb
+.from("guests")
+.delete()
+.eq("id", id)
+.eq("user_id", user.id);
         loadData();
     }
 }
 
 async function deleteAllData() {
-    if(confirm("सारा डेटा डिलीट हो जाएगा! पक्का?")) {
-        await sb.from("guests").delete().neq("id", 0); 
+
+    const {
+        data: { user }
+    } = await sb.auth.getUser();
+
+    if(confirm("आपका पूरा डेटा डिलीट हो जाएगा!")){
+
+        const { error } = await sb
+        .from("guests")
+        .delete()
+        .eq("user_id", user.id);
+
+        if(error){
+            alert(error.message);
+            return;
+        }
+
         loadData();
     }
+
 }
-
-
-
 
 async function loadCashHistory(){
 
     const tbody = document.getElementById("cashTableBody");
-
     tbody.innerHTML = "";
 
     let withdraw = 0;
     let deposit = 0;
 
-    const { error } = await sb
+    const {
+        data:{user}
+    } = await sb.auth.getUser();
+
+    const { data, error } = await sb
     .from("cash_history")
-        .from("cash_history")
-        .select("*")
-        .order("created_at",{ascending:false});
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at",{ascending:false});
 
     if(error){
         console.log(error);
@@ -164,8 +207,7 @@ async function loadCashHistory(){
 <td>₹${c.amount}</td>
 <td>${new Date(c.created_at).toLocaleString()}</td>
 <td>
-<button
-onclick="deleteCashEntry(${c.id})"
+<button onclick="deleteCashEntry(${c.id})"
 style="background:red;color:white;">
 🗑
 </button>
@@ -179,27 +221,42 @@ style="background:red;color:white;">
 
 }
 
+
+
+
+
+
 async function deleteCashEntry(id){
 
     if(!confirm("क्या इस Cash Entry को Delete करना चाहते हैं?")){
         return;
     }
-const { error } = await sb
+
+    const {
+        data:{user}
+    } = await sb.auth.getUser();
+
+    const { error } = await sb
     .from("cash_history")
-        .delete()
-        .eq("id", id);
+    .delete()
+    .eq("id",id)
+    .eq("user_id",user.id);
 
     if(error){
         alert(error.message);
         return;
     }
 
-    await loadCashHistory();
+    loadCashHistory();
 
 }
 
 
 async function resetCashHistory(){
+
+const {
+    data:{user}
+} = await sb.auth.getUser();
 
     const pass = prompt("Admin Password दर्ज करें");
 
@@ -216,10 +273,10 @@ async function resetCashHistory(){
         return;
     }
 
-    const { error } = await supabase
+    const { error } = await sb
         .from("cash_history")
         .delete()
-        .neq("id",0);
+        .eq("user_id", user.id);
 
     if(error){
         alert(error.message);

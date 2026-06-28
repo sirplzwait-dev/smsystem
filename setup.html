@@ -1,226 +1,835 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup - Sagun Management System</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body { 
-            margin: 0; 
-            min-height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            background: linear-gradient(135deg, #800000, #ffd700); 
-            font-family: 'Segoe UI', sans-serif; 
-        }
 
-        .container { 
-            width: 350px; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 20px; 
-            text-align: center; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-        h2 { color: #800000; margin-bottom: 20px; }
+<title>Sagun Management Setup</title>
 
-        input, select { 
-            width: 90%; 
-            padding: 12px; 
-            margin: 8px 0; 
-            border: 2px solid #800000; 
-            border-radius: 10px; 
-            box-sizing: border-box; 
-            font-size: 15px;
-        }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        label { display: block; text-align: left; margin-left: 18px; color: #5d0000; font-weight: bold; font-size: 14px; margin-top: 10px; }
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
-        button { 
-            width: 95%; 
-            padding: 12px; 
-            margin-top: 15px; 
-            border: none; 
-            border-radius: 10px; 
-            background: #800000; 
-            color: white; 
-            font-size: 16px; 
-            font-weight: bold; 
-            cursor: pointer; 
-        }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
-        button:hover { background: #5d0000; }
-        
-        .logout-btn { background: #333 !important; margin-top: 10px; }
-    </style>
+<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+
+background:linear-gradient(135deg,#800000,#ffd700);
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+padding:20px;
+
+}
+
+.container{
+
+width:100%;
+
+max-width:430px;
+
+background:#fff;
+
+padding:25px;
+
+border-radius:18px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.25);
+
+}
+
+h2{
+
+text-align:center;
+
+color:#800000;
+
+margin-bottom:20px;
+
+}
+
+label{
+
+display:block;
+
+margin-top:12px;
+
+font-weight:bold;
+
+color:#800000;
+
+}
+
+input,
+select{
+
+width:100%;
+
+padding:12px;
+
+margin-top:6px;
+
+border:2px solid #800000;
+
+border-radius:10px;
+
+outline:none;
+
+font-size:15px;
+
+}
+
+.preview{
+
+width:130px;
+
+height:130px;
+
+margin:12px auto;
+
+border:2px dashed #800000;
+
+border-radius:12px;
+
+overflow:hidden;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:#fafafa;
+
+}
+
+.preview img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+button{
+
+width:100%;
+
+padding:13px;
+
+margin-top:18px;
+
+border:none;
+
+border-radius:10px;
+
+background:#800000;
+
+color:#fff;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+button:hover{
+    background:#650000;
+}
+
+.photoActions{
+    display:flex;
+    gap:10px;
+    margin-top:8px;
+}
+.photoActions button{
+
+    margin:0;
+
+    padding:10px;
+
+    font-size:14px;
+
+    color:#ffffff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:6px;
+
+    white-space:nowrap;
+
+}
+
+.photoActions button:first-child{
+
+    min-width:120px;
+
+}
+
+
+.cropModal{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+display:none;
+
+justify-content:center;
+
+align-items:center;
+
+background:rgba(0,0,0,.8);
+
+z-index:9999;
+
+}
+
+.cropBox{
+
+width:95%;
+
+max-width:500px;
+
+background:#fff;
+
+padding:15px;
+
+border-radius:15px;
+
+}
+
+.cropBox img{
+
+max-width:100%;
+
+display:block;
+
+}
+
+.tools{
+
+display:flex;
+
+gap:8px;
+
+margin-top:15px;
+
+flex-wrap:wrap;
+
+}
+
+.tools button{
+
+flex:1;
+
+margin:0;
+
+}
+
+.progress{
+
+display:none;
+
+margin-top:15px;
+
+width:100%;
+
+height:8px;
+
+background:#ddd;
+
+border-radius:20px;
+
+overflow:hidden;
+
+}
+
+.progress div{
+
+height:100%;
+
+width:0%;
+
+background:#800000;
+
+}
+
+</style>
+
 </head>
+
 <body>
 
 <div class="container">
-    <h2>शादी का विवरण सेटअप</h2>
-    
-    <label>किसका प्रोग्राम है?</label>
-    <select id="weddingType" onchange="renderFields()">
-        <option value="">-- चुनें --</option>
-        <option value="boy">लड़का (तिलक)</option>
-        <option value="girl">लड़की (बरात)</option>
-    </select>
-    
-    <div id="fieldsContainer"></div>
-    
-    <input type="text" id="welcomeName" placeholder="स्वागत करने वाले का नाम">
-    <label>UPI QR Code:</label>
-<input type="file" id="qrPhoto" accept="image/*">
-    
-    <button onclick="submitSetup()">🚀 Apply Setup</button>
-    <button class="logout-btn" onclick="logout()">🚪 लॉग आउट</button>
+
+<h2>शादी विवरण सेटअप</h2>
+
+<label>कार्यक्रम</label>
+
+<select id="weddingType">
+
+<option value="">चुनें</option>
+
+<option value="boy">लड़का (तिलक)</option>
+
+<option value="girl">लड़की (बरात)</option>
+
+</select>
+
+<label>कार्यक्रम तिथि</label>
+
+<input type="date" id="eventDate">
+
+
+
+<label>दुल्हन का नाम</label>
+
+<input type="text" id="brideName">
+
+<div class="preview">
+    <img id="bridePreview"
+         src="https://placehold.co/130x130?text=Bride">
+</div>
+
+<div class="photoActions">
+<button type="button"
+onclick="
+document.getElementById('bridePhoto').value='';
+document.getElementById('bridePhoto').click();
+">
+📷 Change
+</button>
+
+    <button type="button"
+        onclick="removePhoto('bride')">
+        🗑 Remove
+    </button>
+</div>
+
+<input
+type="file"
+id="bridePhoto"
+accept="image/*">
+
+
+<label>दूल्हा का नाम</label>
+
+<input type="text" id="groomName">
+
+<div class="preview">
+    <img id="groomPreview"
+         src="https://placehold.co/130x130?text=Groom">
+</div>
+
+<div class="photoActions">
+  <button type="button"
+onclick="
+document.getElementById('groomPhoto').value='';
+document.getElementById('groomPhoto').click();
+">
+📷 Change
+</button>
+
+    <button type="button"
+        onclick="removePhoto('groom')">
+        🗑 Remove
+    </button>
+</div>
+
+<input
+type="file"
+id="groomPhoto"
+accept="image/*">
+
+
+<label>UPI QR Code</label>
+
+<div class="preview">
+    <img id="qrPreview"
+         src="https://placehold.co/130x130?text=QR">
+</div>
+
+<div class="photoActions">
+    <button type="button"
+        onclick="document.getElementById('qrPhoto').click()">
+        📷 Change
+    </button>
+
+    <button type="button"
+        onclick="removePhoto('qr')">
+        🗑 Remove
+    </button>
+</div>
+
+<input
+type="file"
+id="qrPhoto"
+accept="image/*">
+
+
+<label>स्वागतकर्ता का नाम</label>
+
+<input
+
+type="text"
+
+id="welcomeName">
+
+<button id="saveBtn" onclick="submitSetup()">
+🚀 Save Setup
+
+</button>
+
+</div>
+
+<div class="cropModal"
+
+id="cropModal">
+
+<div class="cropBox">
+
+<img id="cropImage">
+
+<div class="tools">
+
+<button id="zoomIn">＋</button>
+
+<button id="zoomOut">－</button>
+
+<button id="rotateLeft">⟲</button>
+
+<button id="rotateRight">⟳</button>
+
+<button id="cropSave">✔ Save</button>
+
+<button id="cropCancel">✖ Close</button>
+
+</div>
+
+<div class="progress">
+
+<div id="progressBar"></div>
+
+</div>
+
+</div>
+
 </div>
 
 <script>
-    const sb = window.supabase.createClient("https://rdlliurzgwwfjscgwssa.supabase.co", "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");
 
-    function renderFields() {
-        const type = document.getElementById('weddingType').value;
-        const container = document.getElementById('fieldsContainer');
-        if(!type) { container.innerHTML = ""; return; }
-        
-        container.innerHTML = `
-            <input type="date" id="eventDate">
-            <input type="text" id="name1" placeholder="लड़की का नाम">
-            <input type="text" id="name2" placeholder="लड़का का नाम">
-            <label>लड़की की फोटो:</label> <input type="file" id="photo1" accept="image/*">
-            <label>लड़के की फोटो:</label> <input type="file" id="photo2" accept="image/*">
-        `;
-    }
-
-    async function submitSetup() {
-	
-	const btn = document.querySelector('button');
-
-btn.disabled = true;
-btn.innerHTML = "⏳ Please Wait...";
+const sb = window.supabase.createClient(
+    "https://rdlliurzgwwfjscgwssa.supabase.co",
+    "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+);
 
 
-        const { data: { user } } = await sb.auth.getUser();
-        if(!user) return alert("Login करें!");
 
-        const photo1File = document.getElementById('photo1')?.files[0];
-        const photo2File = document.getElementById('photo2')?.files[0];
-const qrFile = document.getElementById('qrPhoto')?.files[0];
-let qr_url = "";
-if(qrFile){
 
-    const result = await sb.storage
-        .from('photos')
-        .upload(user.id + '/qr.jpg', qrFile, { upsert:true });
 
-    if(result.error){
-        alert(result.error.message);
-        return;
-    }
+// ===== IMAGE VARIABLES =====
 
-    qr_url = sb.storage
-        .from('photos')
-        .getPublicUrl(user.id + '/qr.jpg')
-        .data.publicUrl;
+let cropper = null;
+
+let currentInput = null;
+let currentPreview = null;
+
+let croppedBride = null;
+let croppedGroom = null;
+let croppedQR = null;
+
+const cropModal = document.getElementById("cropModal");
+const cropImage = document.getElementById("cropImage");
+
+
+// ===== FILE EVENTS =====
+
+document.getElementById("bridePhoto").addEventListener("change", function (e) {
+    openCrop(e.target.files[0], "bridePhoto", "bridePreview");
+});
+
+document.getElementById("groomPhoto").addEventListener("change", function (e) {
+    openCrop(e.target.files[0], "groomPhoto", "groomPreview");
+});
+
+document.getElementById("qrPhoto").addEventListener("change", function (e) {
+    openCrop(e.target.files[0], "qrPhoto", "qrPreview");
+});
+
+
+
+// ===== OPEN CROPPER =====
+
+function openCrop(file, inputId, previewId) {
+
+    if (!file) return;
+
+    currentInput = inputId;
+    currentPreview = previewId;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+
+        cropModal.style.display = "flex";
+
+        cropImage.src = e.target.result;
+
+        if (cropper) {
+            cropper.destroy();
+        }
+
+        cropper = new Cropper(cropImage, {
+            aspectRatio: 1,
+            viewMode: 1,
+            dragMode: "move",
+            autoCropArea: 1,
+            responsive: true,
+            background: false,
+            movable: true,
+            zoomable: true,
+            rotatable: true,
+            scalable: true
+        });
+
+    };
+
+    reader.readAsDataURL(file);
+
 }
 
 
-        let brideUrl = "bride.jpg", groomUrl = "groom.jpg";
+// ===== ZOOM =====
 
-       if(photo1File){
-
-    const result = await sb.storage
-        .from('photos')
-        .upload(user.id + '/bride.jpg', photo1File, { upsert:true });
-
-  
-
-    if(result.error){
-        alert(result.error.message);
-        return;
-    }
-
-    brideUrl =
-    sb.storage.from('photos')
-    .getPublicUrl(user.id + '/bride.jpg')
-    .data.publicUrl;
-	
-	
-
-
-}
-
-
-if(photo2File){
-
-    const result = await sb.storage
-        .from('photos')
-        .upload(user.id + '/groom.jpg', photo2File, { upsert:true });
-
-    
-
-    if(result.error){
-        alert(result.error.message);
-        return;
-    }
-
-    groomUrl =
-    sb.storage.from('photos')
-    .getPublicUrl(user.id + '/groom.jpg')
-    .data.publicUrl;
-	
-	
-}
-
-     const setupData = {
-    user_id: user.id,
-    wedding_type: document.getElementById('weddingType').value,
-    event_date: document.getElementById('eventDate').value,
-    bride_name: document.getElementById('name1').value,
-    groom_name: document.getElementById('name2').value,
-    welcome_name: document.getElementById('welcomeName').value,
-    bride_photo_url: brideUrl,
-    groom_photo_url: groomUrl,
-    qr_url: qr_url
+document.getElementById("zoomIn").onclick = function () {
+    if (cropper) cropper.zoom(0.1);
 };
 
-        const { error } = await sb
-    .from("setup")
-    .upsert([setupData], {
-        onConflict: "user_id"
+document.getElementById("zoomOut").onclick = function () {
+    if (cropper) cropper.zoom(-0.1);
+};
+
+// ===== ROTATE =====
+
+document.getElementById("rotateLeft").onclick = function () {
+    if (cropper) cropper.rotate(-90);
+};
+
+document.getElementById("rotateRight").onclick = function () {
+    if (cropper) cropper.rotate(90);
+};
+
+// ===== CLOSE CROPPER =====
+
+document.getElementById("cropCancel").onclick = function () {
+
+    cropModal.style.display = "none";
+
+    if (cropper) {
+        cropper.destroy();
+        cropper = null;
+    }
+
+};
+
+
+// ===== SAVE CROPPED IMAGE =====
+
+document.getElementById("cropSave").onclick = async function () {
+
+    if (!cropper) return;
+
+    const canvas = cropper.getCroppedCanvas({
+        width: 800,
+        height: 800,
+        imageSmoothingQuality: "high"
     });
-      
-	  if (error) {
-    alert("Error: " + error.message);
 
-    btn.disabled = false;
-    btn.innerHTML = "🚀 Apply Setup";
-}
-	  
-	  
-	  else {
+    const blob = await new Promise(resolve =>
+        canvas.toBlob(resolve, "image/jpeg", 0.9)
+    );
 
-    btn.innerHTML = "✅ Setup Successful";
+  // Compression Settings
 
-    setTimeout(() => {
+const options = {
 
-        alert("🎉 Setup Completed Successfully");
-        window.location.href = "index.html";
+    maxSizeMB: currentInput === "qrPhoto" ? 0.15 : 0.30,
 
-    }, 1000);
-}
+    maxWidthOrHeight: currentInput === "qrPhoto" ? 600 : 800,
+
+    initialQuality: currentInput === "qrPhoto" ? 0.95 : 0.90,
+
+    alwaysKeepResolution: false,
+
+    useWebWorker: true
+
+};
+
+const compressed = await imageCompression(blob, options);
+    document.getElementById(currentPreview).src =
+        URL.createObjectURL(compressed);
+		formChanged = true;
+
+    if (currentInput === "bridePhoto") {
+        croppedBride = compressed;
     }
 
-    async function logout() {
-        if(confirm("क्या आप लॉग आउट करना चाहते हैं?")) {
-            await sb.auth.signOut();
-            window.location.href = "login.html";
-        }
+    if (currentInput === "groomPhoto") {
+        croppedGroom = compressed;
     }
+
+    if (currentInput === "qrPhoto") {
+        croppedQR = compressed;
+    }
+
+cropper.destroy();
+cropper = null;
+
+cropModal.style.display = "none";
+
+// File Input Reset
+document.getElementById(currentInput).value = "";
+}
+
+
+
+
+// ==========================
+// SAVE SETUP
+// ==========================
+
+async function submitSetup(){
+
+const btn=document.getElementById("saveBtn");
+
+btn.disabled=true;
+btn.innerHTML="⏳ Saving...";
+
+try{
+
+const {data:{user},error:userError}=await sb.auth.getUser();
+
+if(userError || !user){
+
+alert("Please Login First");
+
+location.href="login.html";
+
+return;
+
+}
+
+let brideUrl="";
+let groomUrl="";
+let qrUrl="";
+
+
+// ---------- Bride Upload ----------
+
+if(croppedBride){
+
+btn.innerHTML="📷 Uploading Bride...";
+
+const {error}=await sb.storage
+.from("photos")
+.upload(user.id+"/bride.jpg",croppedBride,{
+upsert:true
+});
+
+if(error) throw error;
+
+brideUrl=sb.storage
+.from("photos")
+.getPublicUrl(user.id+"/bride.jpg")
+.data.publicUrl;
+
+}
+
+
+// ---------- Groom Upload ----------
+
+if(croppedGroom){
+
+btn.innerHTML="🤵 Uploading Groom...";
+
+const {error}=await sb.storage
+.from("photos")
+.upload(user.id+"/groom.jpg",croppedGroom,{
+upsert:true
+});
+
+if(error) throw error;
+
+groomUrl=sb.storage
+.from("photos")
+.getPublicUrl(user.id+"/groom.jpg")
+.data.publicUrl;
+
+}
+
+
+// ---------- QR Upload ----------
+
+if(croppedQR){
+
+btn.innerHTML="💳 Uploading QR...";
+
+const {error}=await sb.storage
+.from("photos")
+.upload(user.id+"/qr.jpg",croppedQR,{
+upsert:true
+});
+
+if(error) throw error;
+
+qrUrl=sb.storage
+.from("photos")
+.getPublicUrl(user.id+"/qr.jpg")
+.data.publicUrl;
+
+}
+
+
+// ---------- Save Database ----------
+
+btn.innerHTML="💾 Saving...";
+
+const {error}=await sb
+.from("setup")
+.upsert([{
+
+user_id:user.id,
+
+wedding_type:
+document.getElementById("weddingType").value,
+
+event_date:
+document.getElementById("eventDate").value,
+
+bride_name:
+document.getElementById("brideName").value,
+
+groom_name:
+document.getElementById("groomName").value,
+
+welcome_name:
+document.getElementById("welcomeName").value,
+
+bride_photo_url:brideUrl,
+
+groom_photo_url:groomUrl,
+
+qr_url:qrUrl
+
+}],{
+
+onConflict:"user_id"
+
+});
+
+if(error) throw error;
+
+
+btn.innerHTML="✅ Setup Completed";
+formChanged = false;
+
+setTimeout(()=>{
+
+window.location.href="index.html";
+
+},1000);
+
+}catch(err){
+
+alert(err.message);
+
+btn.disabled=false;
+
+btn.innerHTML="🚀 Save Setup";
+
+}
+
+}
+// =========================
+// REMOVE PHOTO
+// =========================
+
+function removePhoto(type){
+
+    formChanged = true;
+
+    if(type==="bride"){
+
+        croppedBride = null;
+
+        document.getElementById("bridePreview").src =
+        "https://placehold.co/130x130?text=Bride";
+
+        document.getElementById("bridePhoto").value = "";
+
+    }
+
+    if(type==="groom"){
+
+        croppedGroom = null;
+
+        document.getElementById("groomPreview").src =
+        "https://placehold.co/130x130?text=Groom";
+
+        document.getElementById("groomPhoto").value = "";
+
+    }
+
+    if(type==="qr"){
+
+        croppedQR = null;
+
+        document.getElementById("qrPreview").src =
+        "https://placehold.co/130x130?text=QR";
+
+        document.getElementById("qrPhoto").value = "";
+
+    }
+
+}
 </script>
+
 </body>
+
 </html>
+

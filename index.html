@@ -22,8 +22,20 @@ const sb = window.supabase.createClient(
 'https://rdlliurzgwwfjscgwssa.supabase.co',
 'sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc'
 );
-</script>
 
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const {
+        data: { session }
+    } = await sb.auth.getSession();
+
+    if (!session) {
+        window.location.replace("login.html");
+        return;
+    }
+
+});
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sagun Management System</title>
