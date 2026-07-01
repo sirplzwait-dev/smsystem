@@ -407,21 +407,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         .select("*")
         .eq("user_id", session.user.id)
         .limit(1);
-
-     if (setupData && setupData.length > 0) {
-
-    btn.disabled = false;
-    btn.innerHTML = "🔐 Login";
-
+if (setupData && setupData.length > 0) {
     window.location.href = "home.html";
-
 } else {
-
-    btn.disabled = false;
-    btn.innerHTML = "🔐 Login";
-
     window.location.href = "setup.html";
-
 }
 
     }
@@ -517,14 +506,6 @@ if (setupData && setupData.length > 0) {
 }
 
 
-if (setupData && setupData.length > 0) {
-    window.location.href = "home.html";
-}else{
-    window.location.href = "setup.html";
-}
-
-
-}
 
 
 document.getElementById("pass").addEventListener("keypress",function(e){
