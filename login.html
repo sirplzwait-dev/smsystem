@@ -396,6 +396,38 @@ const supabase = window.supabase.createClient(
 );
 
 
+// Recover session after email verification
+(async () => {
+
+    const hash = window.location.hash;
+
+    if(hash.includes("access_token")){
+
+        const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.href);
+
+        if(error){
+            console.log(error);
+            return;
+        }
+
+        history.replaceState({}, "", "login.html");
+
+        const { data: setupData } = await supabase
+            .from("setup")
+            .select("*")
+            .eq("user_id", data.session.user.id)
+            .limit(1);
+
+        if(setupData.length > 0){
+            window.location.href="home.html";
+        }else{
+            window.location.href="setup.html";
+        }
+
+    }
+
+})();
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     const { data:{ session } } = await supabase.auth.getSession();
@@ -505,7 +537,7 @@ if (setupData && setupData.length > 0) {
 
 }
 
-
+}
 
 
 document.getElementById("pass").addEventListener("keypress",function(e){
@@ -549,13 +581,6 @@ alert("Password Reset Link has been sent to your Email.");
 
 
 </script>
-
-
-
-
-
-
-
 </body>
 
 </html>
