@@ -1,842 +1,2197 @@
 <!DOCTYPE html>
 <html lang="hi">
-<head>
+
+<head
 
 
+<meta name="description" content="Smart Wedding Management System with Guest Entry, Shagun, Reports, Admin Panel and Cloud Backup">
+
+<meta name="keywords" content="Wedding Management, Sagun, Guest Management, Shagun Entry">
+
+<meta name="author" content="Sagun Management System">
 
 
-<link rel="manifest" href="manifest.json">
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js');
-  });
-}
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta charset="UTF-8">
 
-<script>
-const sb = window.supabase.createClient(
-'https://rdlliurzgwwfjscgwssa.supabase.co',
-'sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc'
-);
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-document.addEventListener("DOMContentLoaded", async () => {
+<title>Sagun Management System</title>
 
-    const {
-        data: { session }
-    } = await sb.auth.getSession();
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-    if (!session) {
-        window.location.replace("login.html");
-        return;
-    }
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-});
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sagun Management System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <style>
-	.popup{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.7);
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
 }
 
-.popup-content{
-    background:#fff;
-    padding:20px;
-    border-radius:10px;
-    text-align:center;
-    position:relative;
+body{
+
+background:#ffffff;
+
+color:#222;
+
 }
 
-.close-btn{
-    position:absolute;
-    top:10px;
-    right:10px;
-    cursor:pointer;
+
+
+header{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+background:#800000;
+
+box-shadow:0 5px 20px rgba(0,0,0,.2);
+
+z-index:999;
+
 }
-	
-	
-	
-	
-	
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body {
-    width:100%;
-    min-height:100%;
-    overflow-x:hidden;
-    overflow-y:auto;
-    font-family:'Georgia', serif;
+
+.container{
+
+width:90%;
+
+max-width:1300px;
+
+margin:auto;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:15px 0;
+
 }
-        
-        .card { 
-            width: 100vw; height: 100vh; 
-            position: relative; display: flex; flex-direction: column; align-items: center; 
-            background: linear-gradient(135deg, #ffffff 0%, #fff7cc 50%, #ffd700 100%);
-        }
 
-        .decor-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .side-flower { position: absolute; top: 0; width: 220px; }
-        .left-flower { left: 28%; } .right-flower { right: 28%; }
-        .hanging-image { position: absolute; top: 0; width: 320px; height: 100%; object-fit: contain; object-position: top; animation: blink 2s infinite alternate; }
-        @keyframes blink { 0% { opacity: 0.7; } 100% { opacity: 0.9; } }
-        .left-side { left: 0px; } .right-side { right: 0px; }
-        .corner-flower { position: absolute; bottom: 0; width: 200px; }
-        .left-corner { left: 0; } .right-corner { right: 0; transform: scaleX(-1); }
+.logo{
 
-        .main-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 5px; }
-        
-        .header-section { margin-top: 10px; text-align: center; }
-        .ganesh { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #800000; }
-        .title { font-size: 2rem; color: #800000; font-family: 'cursive', cursive; margin: 2px 0; }
-        .date-text { font-size: 1.2rem; color: #800000; margin-bottom: 10px; font-weight: bold; }
-        
-        .msg-container { height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .welcome-msg { font-size: 1.1rem; font-weight: bold; text-align: center; line-height: 1.2; color: #333; }
-        .signature { font-size: 1.1rem; color: #d84315; font-weight: bold; font-style: italic; margin-top: 5px; }
+display:flex;
 
-        .couple-section { display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 20px; }
-        .photo-frame { width: 220px; height: 220px; border: 4px solid #800000; border-radius: 50%; object-fit: cover; }
-        .name-label { font-size: 0.9rem; color: #5d4037; font-weight: bold; margin-bottom: 2px; }
-        .name { font-size: 1.3rem; color: #800000; font-family: 'Arial Black', sans-serif; text-transform: uppercase; }
-        .sang-elegant { font-size: 2.5rem; color: #d84315; font-family: 'cursive', cursive; font-weight: bold; }
-        
-       .form-section{
+align-items:center;
+
+gap:15px;
+
+}
+
+.logo img{
+
+width:60px;
+
+height:60px;
+
+border-radius:50%;
+
+background:white;
+
+padding:5px;
+
+}
+
+.logo h2{
+
+font-size:24px;
+
+color:#FFD700;
+
+font-weight:700;
+
+}
+
+.logo p{
+
+font-size:12px;
+
+color:white;
+
+margin-top:2px;
+
+}
+
+nav{
+
+display:flex;
+
+align-items:center;
+
+gap:28px;
+
+}
+
+nav a{
+
+text-decoration:none;
+
+color:white;
+
+font-weight:500;
+
+transition:.3s;
+
+}
+
+nav a:hover{
+
+color:#FFD700;
+
+}
+
+.login-btn{
+
+background:#FFD700;
+
+color:#800000 !important;
+
+padding:10px 22px;
+
+border-radius:30px;
+
+font-weight:bold;
+
+}
+
+
+/* ================= HERO ================= */
+
+.hero{
+    margin-top:85px;
+    min-height:90vh;
+    background:linear-gradient(135deg,#800000,#d18a00);
     display:flex;
-    gap:5px;
-    background:rgba(255,255,255,0.6);
-    padding:12px;
-    border:1px solid #800000;
-    border-radius:12px;
-    justify-content:center;
-    flex-wrap:wrap;
-    width:95%;
-    max-width:900px;
-    margin-top:20px;
-}
-
-
-.input-box {
-    padding: 5px;
-    border-radius: 6px;
-    border: 1px solid #800000;
-    width: 120px;
-    height: 35px;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.8);
-    color: #000;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-}
-
-.input-box:focus{
-    outline:none;
-    border:3px solid #ff0000;
-    background:#ffff66;
-    box-shadow:0 0 15px #ff0000;
-}
-
-
-.submit-btn{
-    background:#800000;
-    color:#ffffff;
-    width:120px;
-    height:35px;
-    font-weight:bold;
-    cursor:pointer;
-    border:1px solid #800000;
-    border-radius:6px;
-    font-size:0.9rem;
-}
-
-
-
-        
-        #thankYouMsg{
-    display:none;
-    margin-top:15px;
-    padding:12px 25px;
-    background:linear-gradient(45deg,#800000,#c62828);
+    justify-content:space-between;
+    align-items:center;
+    padding:70px 8%;
     color:#fff;
-    font-size:18px;
-    font-weight:bold;
-    border-radius:30px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.3);
-    text-align:center;
-    animation:fadeInUp 0.5s ease;
 }
 
-@keyframes fadeInUp{
-    from{
-        opacity:0;
-        transform:translateY(20px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}  
-
-
-.footer-area{
-    width:100%;
-    height:40px;
-    background:#800000;
-    color:white;
-    margin-top:auto;
-    display:flex;
-    align-items:center;
+.hero-left{
+    width:55%;
 }
 
-.footer-left{
-    width:280px;
-    padding-left:10px;
-    font-size:13px;
-    font-weight:bold;
-    white-space:nowrap;
-}
-
-.footer-center{
-    flex:1;
-    overflow:hidden;
-    font-size:13px;
-    font-weight:bold;
-}
-
-.footer-center marquee{
-    color:white;
-}
-
-.footer-right{
-    width:90px;
-    text-align:right;
-    padding-right:10px;
-}
-
-.admin-btn{
-    background:#ffd700;
+.badge{
+    display:inline-block;
+    background:#FFD700;
     color:#800000;
-    border:none;
-    padding:4px 12px;
-    border-radius:4px;
-    cursor:pointer;
+    padding:10px 20px;
+    border-radius:30px;
+    font-weight:bold;
+    margin-bottom:25px;
+}
+
+.hero-left h1{
+    font-size:58px;
+    margin-bottom:20px;
+    line-height:1.2;
+}
+
+.hero-left p{
+    font-size:20px;
+    line-height:1.8;
+}
+
+.hero-buttons{
+    margin-top:35px;
+}
+
+.start-btn,
+.demo-btn{
+    display:inline-block;
+    padding:15px 35px;
+    text-decoration:none;
+    border-radius:40px;
+    font-weight:bold;
+    margin-right:15px;
+}
+
+.start-btn{
+    background:#FFD700;
+    color:#800000;
+}
+
+.demo-btn{
+    border:2px solid #fff;
+    color:#fff;
+}
+
+.hero-right{
+    width:40%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+}
+
+.person-card{
+    background:#fff;
+    padding:10px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+
+.person-card img{
+    width:220px;
+    height:300px;
+    object-fit:cover;
+    border-radius:15px;
+}
+
+.person-card p{
+    text-align:center;
+    margin-top:10px;
+    color:#800000;
     font-weight:bold;
 }
 
+.heart{
+    font-size:50px;
+    animation:pulse 1.5s infinite;
+}
 
+@keyframes pulse{
+    50%{
+        transform:scale(1.3);
+    }
+}
 
-@media (max-width:768px){
+@media(max-width:900px){
 
-.card{
-    width:100%;
-    min-height:100vh;
-    height:auto;
-    position:relative;
-    display:flex;
+.hero{
     flex-direction:column;
-    align-items:center;
-    background:linear-gradient(135deg,#ffffff 0%,#fff7cc 50%,#ffd700 100%);
+    text-align:center;
 }
 
-
-
-.title{
-    font-size:1.5rem;
-}
-
-.date-text{
-    font-size:1rem;
-}
-
-.couple-section{
-    flex-direction:column;
-    gap:10px;
-    margin-top:10px;
-}
-
-.photo-frame{
-    width:140px;
-    height:140px;
-}
-
-.sang-elegant{
-    font-size:2rem;
-}
-
-.form-section{
-    width:95%;
-}
-
-.input-box,
-.submit-btn{
+.hero-left,
+.hero-right{
     width:100%;
 }
 
-.hanging-image{
-    width:80px;
+.hero-right{
+    flex-direction:column;
 }
 
-.side-flower{
-    width:90px;
+.hero-left h1{
+    font-size:38px;
 }
 
-.corner-flower{
-    width:90px;
-}
-
-.footer-left{
-    width:auto;
-    font-size:10px;
-}
-
-.footer-right{
-    width:auto;
+nav{
+    display:none;
 }
 
 }
 
 
-  </style>
-</head>
-<body>
-    <div class="card">
-        <div class="decor-container">
-            <img src="Decoration Flower.png" class="side-flower left-flower">
-            <img src="Decoration Flower.png" class="side-flower right-flower">
-            <img src="Decoration.png" class="hanging-image left-side">
-            <img src="Decoration.png" class="hanging-image right-side">
-            <img src="Flower.png" class="corner-flower left-corner">
-            <img src="Flower.png" class="corner-flower right-corner">
-        </div>
+/* ================= STATS ================= */
+
+.stats{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:25px;
+
+padding:80px 8%;
+
+background:#fffaf3;
+
+}
+
+.stat-card{
+
+background:white;
+
+padding:35px;
+
+border-radius:20px;
+
+text-align:center;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+.stat-card:hover{
+
+transform:translateY(-10px);
+
+}
+
+.stat-card h2{
+
+font-size:42px;
+
+color:#800000;
+
+margin-bottom:10px;
+
+}
+
+.stat-card p{
+
+font-size:18px;
+
+line-height:1.6;
+
+}
+
+@media(max-width:900px){
+
+.stats{
+
+grid-template-columns:1fr 1fr;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.stats{
+
+grid-template-columns:1fr;
+
+}
+
+}
 
 
-<div id="adminModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,.7);justify-content:center;align-items:center;z-index:99999;">
+/* ================= ABOUT ================= */
 
-<div style="background:white;padding:20px;border-radius:10px;text-align:center;width:300px;">
-    <h3>Admin Login</h3>
-    <input type="password" id="adminPass" placeholder="Password"
-           style="width:100%;padding:8px;margin:10px 0;">
-    <br>
-    <button onclick="checkAdmin()">Login</button>
-    <button onclick="closeAdmin()">Close</button>
-</div>
+.about{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:60px;
+
+padding:90px 8%;
+
+background:white;
+
+}
+
+.about-left{
+
+width:50%;
+
+}
+
+.about-left h4{
+
+color:#FFD700;
+
+background:#800000;
+
+display:inline-block;
+
+padding:8px 20px;
+
+border-radius:30px;
+
+margin-bottom:20px;
+
+}
+
+.about-left h2{
+
+font-size:45px;
+
+color:#800000;
+
+margin-bottom:20px;
+
+}
+
+.about-left p{
+
+font-size:18px;
+
+line-height:1.8;
+
+margin-bottom:25px;
+
+}
+
+.about-list{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:15px;
+
+font-size:18px;
+
+margin-bottom:35px;
+
+}
+
+.about-btn{
+
+display:inline-block;
+
+padding:15px 35px;
+
+background:#800000;
+
+color:white;
+
+text-decoration:none;
+
+border-radius:40px;
+
+font-weight:bold;
+
+}
+
+.about-btn:hover{
+
+background:#FFD700;
+
+color:#800000;
+
+}
+
+.about-right{
+
+width:45%;
+
+}
+
+.about-right img{
+
+width:100%;
+
+border-radius:20px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.25);
+
+}
+
+@media(max-width:900px){
+
+.about{
+
+flex-direction:column;
+
+}
+
+.about-left,
+
+.about-right{
+
+width:100%;
+
+}
+
+.about-list{
+
+grid-template-columns:1fr;
+
+}
+
+}
 
 
 
+/* ================= PREVIEW ================= */
 
-</div>
+.preview{
+
+padding:90px 8%;
+
+background:#fff8f2;
+
+text-align:center;
+
+}
+
+.section-tag{
+
+display:inline-block;
+
+background:#800000;
+
+color:#FFD700;
+
+padding:8px 20px;
+
+border-radius:30px;
+
+margin-bottom:20px;
+
+}
+
+.section-title{
+
+font-size:45px;
+
+color:#800000;
+
+margin-bottom:15px;
+
+}
+
+.section-text{
+
+font-size:18px;
+
+color:#666;
+
+margin-bottom:50px;
+
+}
+
+.preview-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+gap:30px;
+
+}
+
+.preview-card{
+
+background:white;
+
+padding:20px;
+
+border-radius:20px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.12);
+
+transition:.3s;
+
+}
+
+.preview-card:hover{
+
+transform:translateY(-10px);
+
+}
+
+.preview-card img{
+
+width:100%;
+
+border-radius:15px;
+
+margin-bottom:20px;
+
+}
+
+.preview-card h3{
+
+color:#800000;
+
+margin-bottom:10px;
+
+}
+
+.preview-card p{
+
+color:#666;
+
+}
 
 
+.preview-card ul{
+margin-top:15px;
+padding-left:20px;
+text-align:left;
+line-height:1.8;
+font-size:15px;
+color:#555;
+}
+
+.preview-card li{
+margin-bottom:8px;
+}
+
+.preview-card:hover{
+transform:translateY(-12px) scale(1.03);
+box-shadow:0 20px 40px rgba(0,0,0,.18);
+}
+
+/* ================= FEATURES ================= */
+
+.features{
+
+padding:90px 8%;
+
+background:#fff;
+
+text-align:center;
+
+}
+
+.feature-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+gap:25px;
+
+margin-top:50px;
+
+}
+
+.feature-card{
+
+background:#fff;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+transition:.4s;
+
+border:1px solid #eee;
+
+}
+
+.feature-card:hover{
+
+transform:translateY(-10px);
+
+background:#800000;
+
+color:white;
+
+}
+
+.feature-card h3{
+
+margin-bottom:15px;
+
+font-size:24px;
+
+}
+
+.feature-card p{
+
+line-height:1.8;
+
+font-size:16px;
+
+}
+
+/* ================= WHY ================= */
+
+.why{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:70px;
+
+padding:90px 8%;
+
+background:#fff8f2;
+
+}
+
+.why-left{
+
+width:55%;
+
+}
+
+.why-right{
+
+width:40%;
+
+}
+
+.why-right img{
+
+width:100%;
+
+border-radius:20px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.18);
+
+}
+
+.why-item{
+
+background:white;
+
+margin:15px 0;
+
+padding:18px;
+
+border-left:6px solid #800000;
+
+border-radius:12px;
+
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+font-size:17px;
+
+font-weight:500;
+
+}
+
+.why-item:hover{
+
+background:#800000;
+
+color:white;
+
+transition:.3s;
+
+}
+
+@media(max-width:900px){
+
+.why{
+
+flex-direction:column;
+
+}
+
+.why-left,
+
+.why-right{
+
+width:100%;
+
+}
+
+}
+
+/* ================= TESTIMONIALS ================= */
+
+.testimonials{
+
+padding:90px 8%;
+
+background:#ffffff;
+
+text-align:center;
+
+}
+
+.testimonial-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+gap:30px;
+
+margin-top:50px;
+
+}
+
+.testimonial-card{
+
+background:#fff8f2;
+
+padding:35px;
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+.testimonial-card:hover{
+
+transform:translateY(-10px);
+
+}
+
+.stars{
+
+font-size:26px;
+
+margin-bottom:20px;
+
+}
+
+.testimonial-card p{
+
+line-height:1.8;
+
+margin-bottom:20px;
+
+}
+
+.testimonial-card h3{
+
+color:#800000;
+
+margin-bottom:5px;
+
+}
+
+.testimonial-card span{
+
+color:#666;
+
+font-size:15px;
+
+}
+/* ================= FAQ ================= */
+
+.faq{
+
+padding:90px 8%;
+
+background:#fff8f2;
+
+text-align:center;
+
+}
+
+.faq-box{
+
+max-width:900px;
+
+margin:50px auto 0;
+
+}
+
+.faq-box details{
+
+background:white;
+
+margin-bottom:18px;
+
+padding:18px 25px;
+
+border-radius:15px;
+
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+text-align:left;
+
+}
+
+.faq-box summary{
+
+font-size:18px;
+
+font-weight:600;
+
+cursor:pointer;
+
+color:#800000;
+
+}
+
+.faq-box p{
+
+margin-top:15px;
+
+line-height:1.8;
+
+color:#555;
+
+}
 
 
+/* ================= CONTACT ================= */
+
+.contact{
+
+padding:90px 8%;
+
+background:white;
+
+text-align:center;
+
+}
+
+.contact-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+gap:25px;
+
+margin-top:50px;
+
+}
+
+.contact-card{
+
+background:#fff8f2;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+.contact-card:hover{
+
+transform:translateY(-10px);
+
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+
+background:#800000;
+
+color:white;
+
+padding:60px 8% 25px;
+
+margin-top:80px;
+
+}
+
+.footer-container{
+
+display:grid;
+
+grid-template-columns:2fr 1fr 1fr;
+
+gap:40px;
+
+}
+
+.footer-container h2,
+
+.footer-container h3{
+
+color:#FFD700;
+
+margin-bottom:15px;
+
+}
+
+.footer-container a{
+
+color:white;
+
+text-decoration:none;
+
+line-height:2;
+
+}
+
+.footer-container a:hover{
+
+color:#FFD700;
+
+}
+
+footer hr{
+
+margin:35px 0;
+
+border:1px solid rgba(255,255,255,.2);
+
+}
+
+.copyright{
+
+text-align:center;
+
+color:#ddd;
+
+}
+
+@media(max-width:900px){
+
+.footer-container{
+
+grid-template-columns:1fr;
+
+text-align:center;
+
+}
+
+}
 
 
+.menu-btn{
 
-        <div class="main-content">
-            <div class="header-section">
-                <div>॥ श्री गणेशाय नमः ॥</div>
-                <img src="Ganesh.png" class="ganesh">
-                <h1 class="title">शुभ तिलक</h1>
-                <div class="date-text" id="dateDisplay">दिनांक:14 नवम्बर 2026</div>
-                <div class="msg-container">
-                    <div id="msgDisplay" class="welcome-msg animate__animated"></div>
-                    <div class="signature">-श्री मोहन प्रसाद गुप्ता</div>
-                </div>
-            </div>
-            
-            <div class="couple-section">
-                <div>
-                    <img src="groom.jpg" class="photo-frame">
-                    <div class="name-label">चिरंजीवी</div>
-                    <div class="name" id="groomDisplay">अभिषेक कुमार</div>
-                </div>
-                <div class="sang-elegant">संग</div>
-                <div>
-                    <img src="bride.jpg" class="photo-frame">
-                    <div class="name-label">आयुष्मती</div>
-                    <div class="name" id="brideDisplay">अचल कुमारी</div>
-                </div>
-            </div>
-            
-<div class="form-section">
-   
-<input type="text" id="guestName" class="input-box" placeholder="नाम"
-oninput="this.value=this.value.toUpperCase()">
+display:none;
 
+font-size:32px;
 
+color:white;
 
+cursor:pointer;
 
+}
 
-    
-    <select id="guestState" class="input-box">
-        <option value="">राज्य चुनें</option>
-        <option value="Andhra Pradesh">Andhra Pradesh</option>
-        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-        <option value="Assam">Assam</option>
-        <!-- यहाँ 'selected' जोड़ा गया है -->
-        <option value="Bihar" selected>Bihar</option>
-        <option value="Chhattisgarh">Chhattisgarh</option>
-        <option value="Goa">Goa</option>
-        <option value="Gujarat">Gujarat</option>
-        <option value="Haryana">Haryana</option>
-        <option value="Himachal Pradesh">Himachal Pradesh</option>
-        <option value="Jharkhand">Jharkhand</option>
-        <option value="Karnataka">Karnataka</option>
-        <option value="Kerala">Kerala</option>
-        <option value="Madhya Pradesh">Madhya Pradesh</option>
-        <option value="Maharashtra">Maharashtra</option>
-        <option value="Manipur">Manipur</option>
-        <option value="Meghalaya">Meghalaya</option>
-        <option value="Mizoram">Mizoram</option>
-        <option value="Nagaland">Nagaland</option>
-        <option value="Odisha">Odisha</option>
-        <option value="Punjab">Punjab</option>
-        <option value="Rajasthan">Rajasthan</option>
-        <option value="Sikkim">Sikkim</option>
-        <option value="Tamil Nadu">Tamil Nadu</option>
-        <option value="Telangana">Telangana</option>
-        <option value="Tripura">Tripura</option>
-        <option value="Uttarakhand">Uttarakhand</option>
-        <option value="Uttar Pradesh">Uttar Pradesh</option>
-        <option value="West Bengal">West Bengal</option>
-		<option value="West Bengal">None of these</option>
-    </select>
+@media(max-width:900px){
 
-    <select id="guestDist" class="input-box">
-        <option value="">जिला चुनें (बिहार)</option>
-        <option value="Araria">Araria</option><option value="Arwal">Arwal</option>
-        <option value="Aurangabad">Aurangabad</option><option value="Banka">Banka</option>
-        <option value="Begusarai">Begusarai</option><option value="Bhagalpur">Bhagalpur</option>
-        <option value="Bhojpur">Bhojpur</option><option value="Buxar">Buxar</option>
-        <option value="Darbhanga">Darbhanga</option><option value="None of these">East Champaran</option>
-        <option value="Gaya">Gaya</option>
-        <!-- यहाँ 'selected' जोड़ा गया है -->
-        <option value="Gopalganj" selected>Gopalganj</option>
-        <option value="Jamui">Jamui</option><option value="Jehanabad">Jehanabad</option>
-        <option value="Kaimur">Kaimur</option><option value="Katihar">Katihar</option>
-        <option value="Khagaria">Khagaria</option><option value="Kishanganj">Kishanganj</option>
-        <option value="Lakhisarai">Lakhisarai</option><option value="Madhepura">Madhepura</option>
-        <option value="Madhubani">Madhubani</option><option value="Munger">Munger</option>
-        <option value="Muzaffarpur">Muzaffarpur</option><option value="Nalanda">Nalanda</option>
-        <option value="Nawada">Nawada</option><option value="Patna">Patna</option>
-        <option value="Purnia">Purnia</option><option value="Rohtas">Rohtas</option>
-        <option value="Saharsa">Saharsa</option><option value="Samastipur">Samastipur</option>
-        <option value="Saran">Saran</option><option value="Sheikhpura">Sheikhpura</option>
-        <option value="Sheohar">Sheohar</option><option value="Sitamarhi">Sitamarhi</option>
-        <option value="Siwan">Siwan</option><option value="Supaul">Supaul</option>
-        <option value="Vaishali">Vaishali</option><option value="West Champaran">West Champaran</option>
-		<option value="None of these">None of these</option>
-    </select>
+.menu-btn{
 
-<input type="text" id="guestVillage" class="input-box" placeholder="गाँव"
-oninput="this.value=this.value.toUpperCase()">
-<input type="number" id="guestAmount" class="input-box" placeholder="शगुन">
+display:block;
 
-<select id="paymentMode" class="input-box">
-    <option value="Cash" selected>Cash 💵</option>
-    <option value="UPI">UPI 📱</option>
-</select>
+}
 
-<button class="submit-btn" onclick="saveGuest()">दर्ज</button>
-</div>
+nav{
 
-            <div id="thankYouMsg" style="display:none;"></div>
-        </div>
+display:none;
 
-       <div class="footer-area">
-
-    <div class="footer-left">
-        Developed by Shashi
-    </div>
-
-    <div class="footer-center">
-        <marquee scrollamount="4">
-            🌱 बेटी बचाओ बेटी पढ़ाओ • 🚭 नशा मुक्त समाज बनाएं • 📚 शिक्षा सबसे बड़ा धन है • 🌳 एक पेड़ अवश्य लगाएं • 💧 जल है तो कल है • ❤️ रक्तदान महादान है • 🤝 आपसी भाईचारा बनाए रखें • स्वच्छ भारत स्वस्थ भारत
-        </marquee>
-    </div>
-
-   <div class="footer-right">
-    <button class="admin-btn" onclick="openAdmin()">Admin</button>
-</div>
-
-<div style="
 position:absolute;
-top:10px;
-right:10px;
+
+top:90px;
+
+left:0;
+
+width:100%;
+
+background:#800000;
+
+flex-direction:column;
+
+padding:20px;
+
+gap:20px;
+
+}
+
+nav.show{
+
+display:flex;
+
+}
+
+}
+
+
+.lightbox{
+
+display:none;
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.9);
+
+justify-content:center;
+
+align-items:center;
+
 z-index:99999;
-">
-    <button class="admin-btn" onclick="logout()">Logout</button>
+
+cursor:pointer;
+
+}
+
+.lightbox img{
+
+max-width:90%;
+
+max-height:90%;
+
+border-radius:15px;
+
+box-shadow:0 20px 50px rgba(255,255,255,.2);
+
+animation:zoom .3s;
+
+}
+
+@keyframes zoom{
+
+from{
+
+transform:scale(.7);
+
+opacity:0;
+
+}
+
+to{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
+
+.preview-card img{
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.preview-card img:hover{
+
+transform:scale(1.05);
+
+}
+
+
+
+/* ===== IMAGE LIGHTBOX ===== */
+
+.lightbox{
+
+display:none;
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.9);
+
+justify-content:center;
+
+align-items:center;
+
+z-index:99999;
+
+cursor:pointer;
+
+}
+
+.lightbox img{
+
+max-width:90%;
+
+max-height:90%;
+
+border-radius:15px;
+
+box-shadow:0 20px 50px rgba(255,255,255,.25);
+
+animation:zoom .3s ease;
+
+}
+
+@keyframes zoom{
+
+from{
+transform:scale(.7);
+opacity:0;
+}
+
+to{
+transform:scale(1);
+opacity:1;
+}
+
+}
+
+
+/* ================= DEVELOPER ================= */
+
+.developer{
+padding:90px 8%;
+background:#fff;
+}
+
+.developer-box{
+max-width:1200px;
+margin:auto;
+display:flex;
+align-items:center;
+gap:60px;
+background:#fff8f2;
+padding:50px;
+border-radius:25px;
+box-shadow:0 15px 40px rgba(0,0,0,.1);
+}
+
+.developer-img{
+flex:1;
+text-align:center;
+}
+
+.developer-img img{
+width:320px;
+height:420px;
+object-fit:cover;
+border-radius:20px;
+border:6px solid #800000;
+box-shadow:0 15px 35px rgba(0,0,0,.2);
+transition:.4s;
+}
+
+.developer-img img:hover{
+transform:scale(1.05);
+}
+
+.developer-content{
+flex:2;
+}
+
+.developer-content h4{
+display:inline-block;
+background:#800000;
+color:#FFD700;
+padding:8px 20px;
+border-radius:30px;
+margin-bottom:20px;
+}
+
+.developer-content h2{
+font-size:42px;
+color:#800000;
+margin-bottom:15px;
+}
+
+.developer-content h3{
+font-size:28px;
+margin-bottom:10px;
+}
+
+.developer-content p{
+font-size:18px;
+line-height:1.9;
+color:#555;
+margin-bottom:18px;
+}
+
+.quote{
+background:white;
+padding:20px;
+border-left:6px solid #FFD700;
+border-radius:15px;
+font-style:italic;
+font-weight:500;
+}
+
+@media(max-width:900px){
+
+.developer-box{
+flex-direction:column;
+text-align:center;
+}
+
+.developer-img img{
+width:250px;
+height:320px;
+}
+
+.developer-content h2{
+font-size:34px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+<!-- ================= HEADER ================= -->
+
+<header>
+
+<div class="container">
+
+<div class="logo">
+
+<img src="appicon.ico" alt="Logo">
+
+<div>
+
+<h2>Sagun Management System</h2>
+
+<p>Smart Wedding Management Platform</p>
+
 </div>
-</div>
-    </div>
 
-
-
-
-
-
-<div id="upiPopup" class="popup">
-    <div class="popup-content">
-        <button class="close-btn" id="closePopup">✖</button>
-        <h3>UPI Scanner</h3>
-        <img id="upiQrImage" src="" alt="UPI QR Code" width="300">
-    </div>
 </div>
 
+<div class="menu-btn" onclick="toggleMenu()">
+☰
+</div>
+
+<nav id="navMenu">
+
+<a href="#">Home</a>
+
+<a href="#preview">Preview</a>
+
+<a href="#features">Features</a>
+
+<a href="#about">About</a>
+
+<a href="#faq">FAQ</a>
+
+<a href="#contact">Contact</a>
+
+<a href="login.html" class="login-btn">Login</a>
+
+</nav>
+
+</div>
+
+</header>
+
+<section class="hero" data-aos="fade-up">
+
+<div class="hero-left">
+
+<div class="badge">
+✨ Smart Wedding Management Platform
+</div>
+
+<h1>
+Sagun Management System
+</h1>
+
+<p>
+Manage Wedding Guests, Shagun Entries, Cash, UPI Payments,
+Reports and Complete Wedding Records from one secure platform.
+
+<br><br>
+
+<b>सगुन मैनेजमेंट सिस्टम</b> शादी से जुड़े सभी कार्यों को डिजिटल, सुरक्षित और आसान बनाता है।
+</p>
+
+<div class="hero-buttons">
+
+<a href="login.html" class="start-btn">
+🚀 Get Started
+</a>
+
+<a href="#features" class="demo-btn">
+📱 Explore Features
+</a>
+
+</div>
+
+</div>
+
+<div class="hero-right">
+
+<div class="person-card">
+
+<img src="groom.jpg" alt="Groom">
+
+<p>🤵 Groom</p>
+
+</div>
+
+<div class="heart">❤️</div>
+
+<div class="person-card">
+
+<img src="bride.jpg" alt="Bride">
+
+<p>👰 Bride</p>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- ================= STATS ================= -->
+
+<section class="stats" data-aos="zoom-in">
+
+<div class="stat-card">
+<h2>1500+</h2>
+<p>Happy Families</p>
+</div>
+
+<div class="stat-card">
+<h2>50K+</h2>
+<p>Guest Entries</p>
+</div>
+
+<div class="stat-card">
+<h2>99.9%</h2>
+<p>Secure Backup</p>
+</div>
+
+<div class="stat-card">
+<h2>24×7</h2>
+<p>Support</p>
+</div>
+
+</section>
+
+<!-- ================= VIDEO DEMO ================= -->
+
+<section class="preview" data-aos="fade-right">
+
+<h4 class="section-tag">
+🎥 LIVE DEMO
+</h4>
+
+<h2 class="section-title">
+Watch Sagun Management System Demo
+</h2>
+
+<p class="section-text">
+See how the complete wedding management system works.
+</p>
+
+<div style="max-width:900px;margin:auto;border-radius:20px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,.2);">
+
+<video width="100%" controls poster="home.jpg">
+<source src="demo.mp4" type="video/mp4">
+Your browser does not support video.
+</video>
+
+</div>
+
+</section>
+
+
+<!-- ================= APPLICATION PREVIEW ================= -->
+
+<section id="preview" class="preview" data-aos="fade-up">
+
+<h4 class="section-tag">APPLICATION PREVIEW</h4>
+
+<h2 class="section-title">
+Sagun Management System Screens
+</h2>
+
+<p class="section-text">
+See all important pages of our application.
+</p>
+
+<div class="preview-grid">
+
+<!-- Login -->
+<div class="preview-card">
+<img src="login.jpg">
+<h3>🔐 Login</h3>
+<ul>
+<li>Secure Login</li>
+<li>Email Authentication</li>
+<li>Forgot Password</li>
+<li>सुरक्षित लॉगिन</li>
+</ul>
+</div>
+
+<!-- Registration -->
+<div class="preview-card">
+<img src="registration.jpg">
+<h3>📝 Registration</h3>
+<ul>
+<li>Create New Account</li>
+<li>Email Verification</li>
+<li>User Registration</li>
+<li>नया अकाउंट</li>
+</ul>
+</div>
+
+<!-- Setup -->
+<div class="preview-card">
+<img src="setup page.jpg">
+<h3>⚙️ Setup</h3>
+<ul>
+<li>Bride & Groom Details</li>
+<li>Wedding Information</li>
+<li>UPI Setup</li>
+<li>शादी की जानकारी</li>
+</ul>
+</div>
+
+<!-- Dashboard -->
+<div class="preview-card">
+<img src="home.jpg">
+<h3>🏠 Dashboard</h3>
+<ul>
+<li>Guest Entry</li>
+<li>Payment Records</li>
+<li>History</li>
+<li>मेहमान प्रबंधन</li>
+</ul>
+</div>
+
+<!-- Reports -->
+<div class="preview-card">
+<img src="report.jpg">
+<h3>📊 Reports</h3>
+<ul>
+<li>PDF Export</li>
+<li>Excel Export</li>
+<li>Backup</li>
+<li>रिपोर्ट डाउनलोड</li>
+</ul>
+</div>
+
+<!-- Admin -->
+<div class="preview-card">
+<img src="admin.jpg">
+<h3>👨‍💼 Admin</h3>
+<ul>
+<li>User Management</li>
+<li>Database</li>
+<li>Settings</li>
+<li>एडमिन कंट्रोल</li>
+</ul>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section id="features" class="features" data-aos="fade-up">
+
+<h4 class="section-tag">
+FEATURES
+</h4>
+
+<h2 class="section-title">
+Everything You Need in One Platform
+</h2>
+
+<p class="section-text">
+Powerful Features for Smart Wedding Management
+</p>
+
+<div class="feature-grid">
+
+<div class="feature-card">
+<h3>👥 Guest Management</h3>
+<p>Add, Edit & Search Guests easily.<br>मेहमानों का पूरा प्रबंधन।</p>
+</div>
+
+<div class="feature-card">
+<h3>💰 Shagun Entry</h3>
+<p>Cash, Gift & UPI Records.<br>शगुन की पूरी जानकारी।</p>
+</div>
+
+<div class="feature-card">
+<h3>📱 QR Payment</h3>
+<p>Receive payment using QR Code.<br>QR द्वारा भुगतान।</p>
+</div>
+
+<div class="feature-card">
+<h3>📊 Reports</h3>
+<p>Generate PDF & Excel Reports.<br>रिपोर्ट डाउनलोड करें।</p>
+</div>
+
+<div class="feature-card">
+<h3>☁️ Cloud Backup</h3>
+<p>Automatic Secure Backup.<br>डेटा हमेशा सुरक्षित।</p>
+</div>
+
+<div class="feature-card">
+<h3>🔒 Secure Login</h3>
+<p>Supabase Authentication.<br>सुरक्षित लॉगिन सिस्टम।</p>
+</div>
+
+<div class="feature-card">
+<h3>👨‍💼 Admin Panel</h3>
+<p>Manage Users & Settings.<br>एडमिन कंट्रोल।</p>
+</div>
+
+<div class="feature-card">
+<h3>📈 Dashboard</h3>
+<p>Beautiful Analytics Dashboard.<br>सभी जानकारी एक जगह।</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= WHY CHOOSE US ================= -->
+
+<section class="why" data-aos="fade-right">
+
+<div class="why-left">
+
+<h4 class="section-tag">
+WHY CHOOSE US
+</h4>
+
+<h2 class="section-title">
+Why Choose Sagun Management System?
+</h2>
+
+<p class="section-text">
+
+A Complete Digital Solution for Wedding Management.
+
+</p>
+
+<div class="why-item">
+✅ Easy to Use Interface
+</div>
+
+<div class="why-item">
+✅ Fast & Secure Cloud Storage
+</div>
+
+<div class="why-item">
+✅ Guest & Shagun Management
+</div>
+
+<div class="why-item">
+✅ QR / Cash Payment Support
+</div>
+
+<div class="why-item">
+✅ PDF & Excel Export
+</div>
+
+<div class="why-item">
+✅ Admin Panel & Reports
+</div>
+
+<div class="why-item">
+✅ Mobile & Desktop Friendly
+</div>
+
+<div class="why-item">
+✅ Hindi + English Support
+</div>
+
+</div>
+
+<div class="why-right">
+
+<img src="home.jpg" alt="Dashboard">
+
+</div>
+
+</section>
+
+
+
+<!-- ================= ABOUT ================= -->
+
+<section id="about" class="about" data-aos="fade-left">
+
+<div class="about-left">
+
+<h4>ABOUT US</h4>
+
+<h2>Sagun Management System</h2>
+
+<p>
+
+<b>Sagun Management System (SMS)</b> is a modern digital wedding management platform designed to simplify wedding event management.
+
+<br><br>
+
+यह प्लेटफॉर्म शादी से जुड़े सभी कार्यों को एक ही स्थान पर मैनेज करने की सुविधा देता है।
+
+</p>
+
+<div class="about-list">
+
+<div>✅ Guest Management</div>
+
+<div>✅ Shagun Entry</div>
+
+<div>✅ Cash & UPI Payment</div>
+
+<div>✅ PDF & Excel Report</div>
+
+<div>✅ Cloud Backup</div>
+
+<div>✅ Secure Login System</div>
+
+<div>✅ Offline Support</div>
+
+<div>✅ PWA Support</div>
+
+<div>✅ Multi Device Access</div>
+
+<div>✅ Automatic Backup</div>
+
+</div>
+
+<a href="login.html" class="about-btn">
+
+Login Now
+
+</a>
+
+</div>
+
+
+
+<div class="about-right">
+
+<img src="home.jpg" alt="Home">
+
+</div>
+
+</section>
+
+
+<!-- ================= TESTIMONIALS ================= -->
+
+<section class="testimonials" data-aos="zoom-in">
+
+<h4 class="section-tag">
+TESTIMONIALS
+</h4>
+
+<h2 class="section-title">
+What Our Users Say
+</h2>
+
+<p class="section-text">
+Trusted by Families for Easy Wedding Management
+</p>
+
+<div class="testimonial-grid">
+
+<div class="testimonial-card">
+
+<div class="stars">⭐⭐⭐⭐⭐</div>
+
+<p>
+
+"Sagun Management System made our wedding guest management very easy. Everything was organized."
+
+</p>
+
+<h3>Rahul Kumar</h3>
+
+<span>Wedding Organizer</span>
+
+</div>
+
+<div class="testimonial-card">
+
+<div class="stars">⭐⭐⭐⭐⭐</div>
+
+<p>
+
+"PDF Reports and Guest Entry features saved a lot of time."
+
+</p>
+
+<h3>Priya Singh</h3>
+
+<span>User</span>
+
+</div>
+
+<div class="testimonial-card">
+
+<div class="stars">⭐⭐⭐⭐⭐</div>
+
+<p>
+
+"Very simple interface and secure cloud backup. Highly recommended."
+
+</p>
+
+<h3>Amit Verma</h3>
+
+<span>Event Manager</span>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= FAQ ================= -->
+
+<section id="faq" class="faq" data-aos="fade-up">
+
+<h4 class="section-tag">
+FAQ
+</h4>
+
+<h2 class="section-title">
+Frequently Asked Questions
+</h2>
+
+<p class="section-text">
+Common Questions About Sagun Management System
+</p>
+
+<div class="faq-box">
+
+<details>
+<summary>❓ Is Sagun Management System Free?</summary>
+<p>
+Yes, currently the platform is available free of cost.
+<br>
+हाँ, वर्तमान में यह प्लेटफॉर्म निःशुल्क उपलब्ध है।
+</p>
+</details>
+
+<details>
+<summary>❓ Can I use it on Mobile?</summary>
+<p>
+Yes, it works on Mobile, Tablet and Desktop.
+<br>
+हाँ, यह मोबाइल, टैबलेट और कंप्यूटर पर चलता है।
+</p>
+</details>
+
+<details>
+<summary>❓ Is my data secure?</summary>
+<p>
+Yes, your data is securely stored with cloud backup.
+<br>
+हाँ, आपका डेटा सुरक्षित रूप से क्लाउड में संग्रहीत रहता है।
+</p>
+</details>
+
+<details>
+<summary>❓ Can I export PDF & Excel?</summary>
+<p>
+Yes, PDF and Excel reports are available.
+<br>
+हाँ, PDF और Excel दोनों रिपोर्ट डाउनलोड कर सकते हैं।
+</p>
+</details>
+
+<details>
+<summary>❓ Does it support UPI Payments?</summary>
+<p>
+Yes, QR Code and UPI payment records are supported.
+<br>
+हाँ, QR Code और UPI भुगतान का पूरा रिकॉर्ड रखा जा सकता है।
+</p>
+</details>
+
+<details>
+
+<summary>
+❓ Can I manage multiple weddings?
+</summary>
+
+<p>
+Multi Wedding Support is coming in a future update.
+</p>
+
+</details>
+</section>
+
+<!-- ================= ROADMAP ================= -->
+
+<section class="features" data-aos="fade-up">
+<h4 class="section-tag">
+ROADMAP
+</h4>
+
+<h2 class="section-title">
+Upcoming Features
+</h2>
+
+<p class="section-text">
+We are continuously improving Sagun Management System with new features.
+</p>
+
+<div class="feature-grid">
+
+<div class="feature-card">
+<h3>✅ Version 1.0</h3>
+
+<p>
+✔ Guest Management<br>
+✔ Shagun Entry<br>
+✔ Cash & UPI Entry<br>
+✔ Reports<br>
+✔ Admin Panel
+</p>
+
+</div>
+
+<div class="feature-card">
+<h3>🚀 Version 2.0</h3>
+
+<p>
+🔄 QR Invitation<br>
+🔄 WhatsApp Invitation<br>
+🔄 Wedding Expenses<br>
+🔄 Multi Wedding Support
+</p>
+
+</div>
+
+<div class="feature-card">
+<h3>🌟 Version 3.0</h3>
+
+<p>
+⭐ AI Assistant<br>
+⭐ Voice Entry<br>
+⭐ Family Dashboard<br>
+⭐ Smart Analytics
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+
+<section id="contact" class="contact" data-aos="fade-up">
+
+<h4 class="section-tag">
+CONTACT US
+</h4>
+
+<h2 class="section-title">
+Get in Touch
+</h2>
+
+<p class="section-text">
+Have questions or need help? Contact us anytime.
+</p>
+
+<div class="contact-grid">
+
+<div class="contact-card">
+<h3>📧 Email</h3>
+<p>support@sagunmanagement.com</p>
+</div>
+
+<div class="contact-card">
+<h3>📱 Mobile</h3>
+<p>+91 XXXXX XXXXX</p>
+</div>
+
+<div class="contact-card">
+<h3>📍 Address</h3>
+<p>Gopalganj, Bihar, India</p>
+</div>
+
+</div>
+
+<div style="margin-top:40px;">
+
+<a href="login.html" class="about-btn">
+
+Login Now
+
+</a>
+
+</div>
+
+</section>
 
 
 
 
+
+<!-- ================= DEVELOPER ================= -->
+
+<section class="developer" data-aos="fade-up">
+
+<div class="developer-box">
+
+<div class="developer-img">
+
+<img src="developer.jpg" alt="Shashi Kushwaha">
+
+</div>
+
+<div class="developer-content">
+
+<h4>👨‍💻 Meet the Developer</h4>
+
+<h2>Shashi Kushwaha</h2>
+
+<h3>Government Primary Teacher</h3>
+
+<p>
+
+<b>Founder & Lead Developer</b><br>
+
+Sagun Management System
+
+</p>
+
+<p>
+
+I am passionate about creating simple, secure, and user-friendly digital solutions that solve real-life problems and make everyday work easier.
+
+</p>
+
+<div class="quote">
+
+<strong>Why I Built Sagun Management System?</strong><br><br>
+
+Sagun Management System was created to make wedding management <b>simple, secure and completely digital.</b><br><br>
+
+इस प्लेटफ़ॉर्म का उद्देश्य शादी से जुड़े सभी कार्य जैसे <b>Guest Management, Shagun Entry, Gift Records, Reports और Wedding History</b> को एक ही जगह सुरक्षित और आसान तरीके से मैनेज करना है।
+
+</div>
+
+<br>
+
+<p>
+
+📍 Bihar, India
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<div class="footer-container">
+
+<div>
+
+<h2>Sagun Management System</h2>
+
+<p>
+
+Smart Digital Wedding Management Platform
+
+</p>
+
+</div>
+
+<div>
+
+<h3>Quick Links</h3>
+
+<a href="#">Home</a><br>
+
+<a href="#features">Features</a><br>
+
+<a href="#preview">Preview</a><br>
+
+<a href="#about">About</a>
+
+</div>
+
+<div>
+
+<h3>Features</h3>
+
+<p>Guest Management</p>
+
+<p>Shagun Entry</p>
+
+<p>Reports</p>
+
+<p>Admin Panel</p>
+
+</div>
+
+</div>
+
+<hr>
+
+<p class="copyright">
+© 2026 Sagun Management System. All Rights Reserved.
+</p>
+
+<hr>
+
+<p style="text-align:center;color:#ccc;">
+Version 1.0.0 | Made with ❤️ in India
+</p>
+
+</footer>
+<div id="lightbox" class="lightbox">
+    <img id="lightboxImg">
+</div>
 
 <script>
-const popup = document.getElementById("upiPopup");
 
-document.getElementById("paymentMode").addEventListener("change", function(){
+function toggleMenu(){
+    document.getElementById("navMenu").classList.toggle("show");
+}
 
-    if(this.value === "UPI"){
-        popup.style.display = "flex";
-    }else{
-        popup.style.display = "none";
-    }
+const images = document.querySelectorAll(".preview-card img");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+
+images.forEach(function(img){
+
+    img.addEventListener("click",function(){
+
+        lightbox.style.display = "flex";
+        lightboxImg.src = this.src;
+
+    });
 
 });
 
-document.getElementById("closePopup").onclick = function(){
-    popup.style.display = "none";
-};
+lightbox.addEventListener("click",function(){
 
-document.addEventListener("keydown", function(e){
-    if(e.key === "Escape"){
-        popup.style.display = "none";
-    }
+    lightbox.style.display = "none";
+
 });
-
-
-
-
 
 </script>
 
 
-
-
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
 <script>
-    // यह है आपका पूरा और नया स्क्रिप्ट, इसे ही रखें
-
-
-
-
- window.onload = async function() {
-
-    await loadSetup();
-    updateMsg();
-
-    if(navigator.onLine){
-        syncData();
-    }
-
-};
-
-window.addEventListener("online", () => {
-    syncData();
+AOS.init({
+    duration:1000,
+    once:true
 });
+</script>
 
-
-
-
-
-
-    // मैसेज रोटेशन फंक्शन
-    const messages = ["हमारे विशेष अवसर पर पधारने हेतु आपका हार्दिक स्वागत है।", "आपकी गरिमामयी उपस्थिति हमारे लिए सौभाग्य का विषय है।", "आपके स्नेह और आशीर्वाद के लिए हम हृदय से आभारी हैं।"]; 
-    let i = 0;
-    function updateMsg() {
-        const msgDisplay = document.getElementById('msgDisplay');
-        msgDisplay.classList.remove('animate__fadeIn');
-        msgDisplay.classList.add('animate__fadeOut');
-        setTimeout(() => {
-            msgDisplay.innerText = messages[i];
-            i = (i + 1) % messages.length;
-            msgDisplay.classList.remove('animate__fadeOut');
-            msgDisplay.classList.add('animate__fadeIn');
-        }, 500);
-    }
-    setInterval(updateMsg, 5000);
-
-
-
-async function saveGuest() {
-
-
-
-let userId = "offline-user";
-console.log("USER ID =", userId);
-
-try {
-    const { data:{ user } } = await sb.auth.getUser();
-    if(user){
-        userId = user.id;
-    }
-} catch(e){
-    console.log("Offline Mode");
-}
-
-    const name = document.getElementById('guestName').value.toUpperCase();
-    const amount = document.getElementById('guestAmount').value;
-    const state = document.getElementById('guestState').value;
-    const dist = document.getElementById('guestDist').value;
-    const village = document.getElementById('guestVillage').value.toUpperCase();
-    const mode = document.getElementById('paymentMode').value;
-	
-
-
-
-
-
-  
-    if(name === ""){
-        alert("कृपया नाम दर्ज करें!");
-        return;
-    }
-
-    if(amount === "" || amount <= 0){
-        alert("कृपया शगुन राशि दर्ज करें!");
-        return;
-    }
-	
-	
-	
-	
-	
-	let guests =
-JSON.parse(
-localStorage.getItem("offlineGuests") || "[]"
-);
-
-guests.push({
-   user_id:userId,
-   name:name,
-   amount:Number(amount),
-   state:state,
-   district:dist,
-   village:village,
-   payment_mode:mode
-});
-
-
-localStorage.setItem(
-    "offlineGuests",
-    JSON.stringify(guests)
-);
-
-
-if(navigator.onLine){
-    await syncData();
-}
-
-    const thankYouDiv = document.getElementById('thankYouMsg');
-
-    thankYouDiv.style.display = "block";
-    thankYouDiv.innerHTML =
-    `${name} जी, आपका ${mode} से ₹${amount} शगुन सफलतापूर्वक जमा हुआ।`;
-
-    setTimeout(() => {
-        thankYouDiv.style.display = "none";
-    }, 5000);
-	
-	
-
-
-
-
-    document.getElementById('guestName').value = "";
-    document.getElementById('guestAmount').value = "";
-    document.getElementById('guestVillage').value = "";
-
-    document.getElementById('guestName').focus();
-}
-
-
-    
-
-    // Thank You Message
-    
-async function loadSetup(){
-
-
-    let user = null;
-
-try{
-   const result = await sb.auth.getUser();
-   user = result.data.user;
-}catch(e){
-   console.log("Offline");
-   return;
-}
-
-if(!user){
-   return;
-}
-    
-
-    const { data,error } = await sb
-        .from("setup")
-        .select("*")
-        .eq("user_id",user.id)
-        .single();
-
-    if(error || !data){
-        console.log(error);
-        return;
-    }
-	
-
-
-
-
-    document.getElementById("dateDisplay").innerHTML =
-        "दिनांक : " + data.event_date;
-
-    document.querySelector(".signature").innerHTML =
-        "-" + data.welcome_name;
-
-    document.getElementById("groomDisplay").innerHTML =
-        data.groom_name;
-
-    document.getElementById("brideDisplay").innerHTML =
-        data.bride_name;
-        if(data.qr_url){
-    document.getElementById("upiQrImage").src = data.qr_url;
-}
-
-    const photos =
-        document.querySelectorAll(".photo-frame");
-
-    photos[0].src = data.groom_photo_url;
-    photos[1].src = data.bride_photo_url;
-	
-
-
-
-	
-	
-	
-	
-	
-
-
-
-    if(data.wedding_type === "girl"){
-
-        document.querySelector(".title").innerHTML =
-            "शुभ बरात";
-
-        document.querySelectorAll(".name-label")[0].innerHTML =
-            "आयुष्मती";
-
-        document.querySelectorAll(".name-label")[1].innerHTML =
-            "चिरंजीवी";
-
-        photos[0].src = data.bride_photo_url;
-        photos[1].src = data.groom_photo_url;
-
-        document.getElementById("groomDisplay").innerHTML =
-            data.bride_name;
-
-        document.getElementById("brideDisplay").innerHTML =
-            data.groom_name;
-
-    }else{
-
-        document.querySelector(".title").innerHTML =
-            "शुभ तिलक";
-
-    }
-
-}
-
-    
-    function openAdmin() { document.getElementById("adminModal").style.display = "flex"; }
-    function closeAdmin() { document.getElementById("adminModal").style.display = "none"; }
-    
-	async function logout(){
-
-    await sb.auth.signOut();
-
-    window.location.replace("login.html");
-
-}
-	function checkAdmin() {
-        let p = document.getElementById("adminPass").value;
-        if (p === "admin123") window.location.href = "admin.html";
-        else if (p === "admin") window.location.href = "report.html";
-        else alert("गलत पासवर्ड!");
-    }
-async function syncData(){
-
-if(!navigator.onLine){
-   return;
-}
-
-let guests = JSON.parse(
-   localStorage.getItem("offlineGuests") || "[]"
-);
-
-for(let g of guests){
-
- const result = await sb.auth.getUser();
-
-if(result.data && result.data.user){
-   g.user_id = result.data.user.id;
-}
-if(!g.user_id || g.user_id === "offline-user"){
-   continue;
-}
-  
-
-   const guestData = {
-      user_id: g.user_id,
-      name: g.name,
-      amount: g.amount,
-      state: g.state,
-      district: g.district,
-      village: g.village,
-      payment_mode: g.payment_mode
-   };
- console.log("INSERT DATA =", guestData);
-
-const { error } = await sb
-   .from("guests")
-   .insert([guestData]);
-
-if(error){
-   console.log("FULL ERROR =", error);
-   alert(JSON.stringify(error));
-   return;
-}
-}
-
-localStorage.removeItem("offlineGuests");
-console.log("All Synced");
-
-}
-
-
-</script>    
 </body>
 </html>
