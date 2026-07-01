@@ -781,12 +781,50 @@ if(!user){
     window.location.replace("login.html");
 
 }
-	function checkAdmin() {
-        let p = document.getElementById("adminPass").value;
-        if (p === "admin123") window.location.href = "admin.html";
-        else if (p === "admin") window.location.href = "report.html";
-        else alert("गलत पासवर्ड!");
+	async function checkAdmin(){
+
+    const p = document.getElementById("adminPass").value.trim();
+
+    if(!p){
+        alert("Password Enter kare");
+        return;
     }
+
+    const { data:{ user } } = await sb.auth.getUser();
+
+    if(!user){
+        alert("Login Required");
+        return;
+    }
+
+    const { data, error } = await sb
+        .from("profiles")
+        .select("admin_pass,report_pass")
+        .eq("id", user.id)
+        .single();
+
+    if(error || !data){
+        alert("Profile Not Found");
+        return;
+    }
+
+    if(p === data.admin_pass){
+
+        window.location.href = "admin.html";
+        return;
+
+    }
+
+    if(p === data.report_pass){
+
+        window.location.href = "report.html";
+        return;
+
+    }
+
+    alert("Wrong Password");
+
+}
 async function syncData(){
 
 if(!navigator.onLine){

@@ -382,9 +382,6 @@ Powered by Sagun Management System
 <script>
 
 
-// ===============================
-// Check Existing Session
-// ===============================
 
 
 
@@ -401,26 +398,35 @@ const supabase = window.supabase.createClient(
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-const { data:{ session } } =
-await supabase.auth.getSession();
+    const { data:{ session } } = await supabase.auth.getSession();
 
-if(session){
+    if(session){
 
-const { data: setupData } =
-await supabase
-.from("setup")
-.select("*")
-.eq("user_id",session.user.id)
-.limit(1);
+        const { data: setupData } = await supabase
+        .from("setup")
+        .select("*")
+        .eq("user_id", session.user.id)
+        .limit(1);
 
-if(setupData && setupData.length>0){
+     if (setupData && setupData.length > 0) {
 
-window.location.href="home.html";
+    btn.disabled = false;
+    btn.innerHTML = "🔐 Login";
 
+    window.location.href = "home.html";
+
+} else {
+
+    btn.disabled = false;
+    btn.innerHTML = "🔐 Login";
+
+    window.location.href = "setup.html";
 
 }
 
+    }
 
+});
 // ===============================
 // Show / Hide Password
 // ===============================
@@ -479,6 +485,14 @@ btn.innerHTML = "🔐 Login";
 return;
 
 }
+if (!data?.user?.email_confirmed_at) {
+    alert("Please verify your email first.");
+    await supabase.auth.signOut();
+
+    btn.disabled = false;
+    btn.innerHTML = "🔐 Login";
+    return;
+}
 
 const {data:setupData}=await supabase
 
@@ -490,15 +504,15 @@ const {data:setupData}=await supabase
 
 .limit(1);
 
-if(setupData && setupData.length>0){
-
-window.location.href="home.html";
-
+if (setupData && setupData.length > 0) {
+    window.location.href = "home.html";
+}else{
+    window.location.href = "setup.html";
+}
 
 
 }
 
-}
 
 document.getElementById("pass").addEventListener("keypress",function(e){
 
@@ -523,7 +537,7 @@ if(!email) return;
 
 const {error}=await supabase.auth.resetPasswordForEmail(email,{
 
-redirectTo:"https://smsystem-pages.sirplzwait.workers.dev/reset-password.html"
+redirectTo:"https://sgunms.in/reset-password.html"
 
 });
 
