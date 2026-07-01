@@ -504,6 +504,19 @@ const {data:setupData}=await supabase
 
 .limit(1);
 
+
+
+if (setupData && setupData.length > 0) {
+
+    window.location.href = "home.html";
+
+} else {
+
+    window.location.href = "setup.html";
+
+}
+
+
 if (setupData && setupData.length > 0) {
     window.location.href = "home.html";
 }else{

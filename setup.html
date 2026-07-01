@@ -470,6 +470,17 @@ id="cropModal">
 
 <script>
 
+
+
+const { data:{ session } } = await supabase.auth.getSession();
+
+if (!session) {
+    window.location.href = "login.html";
+}
+
+
+
+
 const sb = window.supabase.createClient(
     "https://rdlliurzgwwfjscgwssa.supabase.co",
     "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
@@ -820,7 +831,7 @@ formChanged = false;
 
 setTimeout(()=>{
 
-window.location.href="index.html";
+window.location.href="home.html";
 
 },1000);
 

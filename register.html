@@ -463,18 +463,18 @@ async function registerUser() {
         return alert("CAPTCHA verification failed.");
     }
 
-    const { error } = await sb.auth.signUp({
-        email,
-        password,
-        options: {
-            emailRedirectTo: "https://sgunms.in/setup.html",
-            data: {
-                name,
-                state,
-                mobile
-            }
+   const { error } = await sb.auth.signUp({
+    email,
+    password,
+    options: {
+        emailRedirectTo: "https://sgunms.in/login.html",
+        data: {
+            name,
+            state,
+            mobile
         }
-    });
+    }
+});
 
     hideLoading();
 
