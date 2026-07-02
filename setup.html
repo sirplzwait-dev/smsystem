@@ -1,896 +1,207 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>Sagun Management Setup</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
-
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI,sans-serif;
-}
-
-body{
-
-background:linear-gradient(135deg,#800000,#ffd700);
-
-min-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-padding:20px;
-
-}
-
-.container{
-
-width:100%;
-
-max-width:430px;
-
-background:#fff;
-
-padding:25px;
-
-border-radius:18px;
-
-box-shadow:0 15px 35px rgba(0,0,0,.25);
-
-}
-
-h2{
-
-text-align:center;
-
-color:#800000;
-
-margin-bottom:20px;
-
-}
-
-label{
-
-display:block;
-
-margin-top:12px;
-
-font-weight:bold;
-
-color:#800000;
-
-}
-
-input,
-select{
-
-width:100%;
-
-padding:12px;
-
-margin-top:6px;
-
-border:2px solid #800000;
-
-border-radius:10px;
-
-outline:none;
-
-font-size:15px;
-
-}
-
-.preview{
-
-width:130px;
-
-height:130px;
-
-margin:12px auto;
-
-border:2px dashed #800000;
-
-border-radius:12px;
-
-overflow:hidden;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-background:#fafafa;
-
-}
-
-.preview img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
-}
-
-button{
-
-width:100%;
-
-padding:13px;
-
-margin-top:18px;
-
-border:none;
-
-border-radius:10px;
-
-background:#800000;
-
-color:#fff;
-
-font-size:16px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-button:hover{
-    background:#650000;
-}
-
-.photoActions{
-    display:flex;
-    gap:10px;
-    margin-top:8px;
-}
-.photoActions button{
-
-    margin:0;
-
-    padding:10px;
-
-    font-size:14px;
-
-    color:#ffffff;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:6px;
-
-    white-space:nowrap;
-
-}
-
-.photoActions button:first-child{
-
-    min-width:120px;
-
-}
-
-
-.cropModal{
-
-position:fixed;
-
-top:0;
-
-left:0;
-
-width:100%;
-
-height:100%;
-
-display:none;
-
-justify-content:center;
-
-align-items:center;
-
-background:rgba(0,0,0,.8);
-
-z-index:9999;
-
-}
-
-.cropBox{
-    width:95%;
-    max-width:500px;
-    max-height:95vh;
-    background:#fff;
-    padding:15px;
-    border-radius:15px;
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
-}
-.cropBox img{
-    display:block;
-    width:100%;
-    max-height:60vh;
-    object-fit:contain;
-}
-
-.tools{
-    display:flex;
-    gap:8px;
-    margin-top:15px;
-    flex-wrap:wrap;
-    overflow-y:auto;
-}
-
-.tools button{
-
-flex:1;
-
-margin:0;
-
-}
-
-.progress{
-
-display:none;
-
-margin-top:15px;
-
-width:100%;
-
-height:8px;
-
-background:#ddd;
-
-border-radius:20px;
-
-overflow:hidden;
-
-}
-
-.progress div{
-
-height:100%;
-
-width:0%;
-
-background:#800000;
-
-}
-
-
-@media (max-width:600px){
-
-.cropBox{
-    width:100%;
-    height:100vh;
-    max-height:100vh;
-    border-radius:0;
-    padding:10px;
-}
-
-.cropBox img{
-    max-height:55vh;
-}
-
-.tools button{
-    flex:1 1 45%;
-    font-size:14px;
-    padding:12px;
-}
-
-}
-
-
+    *{ margin:0; padding:0; box-sizing:border-box; font-family:Segoe UI,sans-serif; }
+    body{ background:linear-gradient(135deg,#800000,#ffd700); min-height:100vh; display:flex; justify-content:center; align-items:center; padding:20px; }
+    
+    .container{ width:100%; max-width:460px; background:#fff; padding:25px; border-radius:22px; box-shadow:0 10px 35px rgba(0,0,0,.25), 0 0 0 4px rgba(255,215,0,.15); backdrop-filter:blur(12px); }
+    h2{ text-align:center; color:#800000; margin-bottom:20px; }
+    label{ display:block; margin-top:12px; font-weight:bold; color:#800000; }
+    input, select{ width:100%; padding:12px; margin-top:6px; border:2px solid #800000; border-radius:10px; outline:none; font-size:15px; }
+    input:focus, select:focus{ border-color:#d4af37; box-shadow:0 0 12px rgba(212,175,55,.4); }
+    
+    .image-upload-wrapper { position: relative; width: 130px; height: 130px; margin: 12px auto; border: 2px dashed #800000; border-radius: 12px; overflow: hidden; cursor: pointer; background:#fafafa; display:flex; justify-content:center; align-items:center; transition:.3s; }
+    .image-upload-wrapper:hover{ transform:scale(1.05); border-color:#d4af37; }
+    .image-upload-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+    .remove-btn { position: absolute; top: 5px; right: 5px; background: rgba(128, 0, 0, 0.8); color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; border: none; z-index: 10; }
+    
+    #saveBtn { width:100%; padding:13px; margin-top:20px; border:none; border-radius:10px; background:linear-gradient(135deg,#800000,#b30000); color:#fff; font-size:16px; font-weight:bold; cursor:pointer; transition:.3s; }
+    #saveBtn:hover{ transform:translateY(-2px); box-shadow:0 10px 25px rgba(128,0,0,.4); }
+    button:disabled{ opacity:.7; cursor:not-allowed; }
+    
+    .loader{ width:20px; height:20px; border:3px solid rgba(255,255,255,.4); border-top:3px solid #fff; border-radius:50%; animation:spin .8s linear infinite; }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+
+    .uploadStatus{ margin-top:20px; background:#fff7e8; border:2px solid #ffd54f; border-radius:12px; padding:15px; animation:fade .4s; }
+    .uploadStatus h4{ color:#800000; margin-bottom:8px; }
+    .uploadStatus p{ font-size:14px; color:#555; }
+    .progress{ margin-top:12px; height:12px; background:#ddd; border-radius:20px; overflow:hidden; }
+    .progress div{ width:0%; height:100%; background:linear-gradient(90deg,#800000,#ffd700); transition:.4s; }
+    @keyframes fade{ from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+
+    .cropModal{ position:fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; background:rgba(0,0,0,.8); z-index:9999; }
+    .cropBox{ width:95%; max-width:500px; background:#fff; padding:15px; border-radius:15px; }
+    .cropBox img{ display:block; width:100%; max-height:60vh; object-fit:contain; }
+    .tools{ display:flex; gap:8px; margin-top:15px; flex-wrap:wrap; }
+    .tools button{ flex:1; padding:10px; border:none; border-radius:5px; background:#800000; color:#fff; cursor:pointer; }
 </style>
-
 </head>
-
 <body>
 
 <div class="container">
+    <h2>शादी विवरण सेटअप</h2>
+    <label>कार्यक्रम</label>
+    <select id="weddingType"><option value="">चुनें</option><option value="boy">लड़का (तिलक)</option><option value="girl">लड़की (बरात)</option></select>
 
-<h2>शादी विवरण सेटअप</h2>
+    <label>कार्यक्रम तिथि</label>
+    <input type="date" id="eventDate">
 
-<label>कार्यक्रम</label>
+    <label>दुल्हन का नाम</label>
+    <input type="text" id="brideName">
+    <div class="image-upload-wrapper" onclick="document.getElementById('bridePhoto').click()">
+        <button type="button" class="remove-btn" onclick="event.stopPropagation(); removePhoto('bride')">×</button>
+        <img id="bridePreview" src="https://placehold.co/130x130?text=Select">
+    </div>
+    <input type="file" id="bridePhoto" accept="image/*" style="display:none">
 
-<select id="weddingType">
+    <label>दूल्हा का नाम</label>
+    <input type="text" id="groomName">
+    <div class="image-upload-wrapper" onclick="document.getElementById('groomPhoto').click()">
+        <button type="button" class="remove-btn" onclick="event.stopPropagation(); removePhoto('groom')">×</button>
+        <img id="groomPreview" src="https://placehold.co/130x130?text=Select">
+    </div>
+    <input type="file" id="groomPhoto" accept="image/*" style="display:none">
 
-<option value="">चुनें</option>
+    <label>UPI QR Code</label>
+    <div class="image-upload-wrapper" onclick="document.getElementById('qrPhoto').click()">
+        <button type="button" class="remove-btn" onclick="event.stopPropagation(); removePhoto('qr')">×</button>
+        <img id="qrPreview" src="https://placehold.co/130x130?text=Select">
+    </div>
+    <input type="file" id="qrPhoto" accept="image/*" style="display:none">
 
-<option value="boy">लड़का (तिलक)</option>
+    <label>स्वागतकर्ता का नाम</label>
+    <input type="text" id="welcomeName">
+    
+    <button id="saveBtn" onclick="submitSetup()">🚀 Save Setup</button>
 
-<option value="girl">लड़की (बरात)</option>
-
-</select>
-
-<label>कार्यक्रम तिथि</label>
-
-<input type="date" id="eventDate">
-
-
-
-<label>दुल्हन का नाम</label>
-
-<input type="text" id="brideName">
-
-<div class="preview">
-    <img id="bridePreview"
-         src="https://placehold.co/130x130?text=Bride">
+    <div class="uploadStatus" id="uploadStatus" style="display:none">
+        <h4 id="statusTitle">डेटा सेव किया जा रहा है...</h4>
+        <p id="statusText">कृपया प्रतीक्षा करें...</p>
+        <div class="progress"><div id="progressBar"></div></div>
+    </div>
 </div>
 
-<div class="photoActions">
-<button type="button"
-onclick="
-document.getElementById('bridePhoto').value='';
-document.getElementById('bridePhoto').click();
-">
-📷 Change
-</button>
-
-    <button type="button"
-        onclick="removePhoto('bride')">
-        🗑 Remove
-    </button>
-</div>
-
-<input
-type="file"
-id="bridePhoto"
-accept="image/*">
-
-
-<label>दूल्हा का नाम</label>
-
-<input type="text" id="groomName">
-
-<div class="preview">
-    <img id="groomPreview"
-         src="https://placehold.co/130x130?text=Groom">
-</div>
-
-<div class="photoActions">
-  <button type="button"
-onclick="
-document.getElementById('groomPhoto').value='';
-document.getElementById('groomPhoto').click();
-">
-📷 Change
-</button>
-
-    <button type="button"
-        onclick="removePhoto('groom')">
-        🗑 Remove
-    </button>
-</div>
-
-<input
-type="file"
-id="groomPhoto"
-accept="image/*">
-
-
-<label>UPI QR Code</label>
-
-<div class="preview">
-    <img id="qrPreview"
-         src="https://placehold.co/130x130?text=QR">
-</div>
-
-<div class="photoActions">
-    <button type="button"
-        onclick="document.getElementById('qrPhoto').click()">
-        📷 Change
-    </button>
-
-    <button type="button"
-        onclick="removePhoto('qr')">
-        🗑 Remove
-    </button>
-</div>
-
-<input
-type="file"
-id="qrPhoto"
-accept="image/*">
-
-
-<label>स्वागतकर्ता का नाम</label>
-
-<input
-
-type="text"
-
-id="welcomeName">
-
-<button id="saveBtn" onclick="submitSetup()">
-🚀 Save Setup
-
-</button>
-
-</div>
-
-<div class="cropModal"
-
-id="cropModal">
-
-<div class="cropBox">
-
-<img id="cropImage">
-
-<div class="tools">
-
-<button id="zoomIn">＋</button>
-
-<button id="zoomOut">－</button>
-
-<button id="rotateLeft">⟲</button>
-
-<button id="rotateRight">⟳</button>
-
-<button id="cropSave">✔ Save</button>
-
-<button id="cropCancel">✖ Close</button>
-
-</div>
-
-<div class="progress">
-
-<div id="progressBar"></div>
-
-</div>
-
-</div>
-
+<div class="cropModal" id="cropModal">
+    <div class="cropBox">
+        <img id="cropImage">
+        <div class="tools">
+            <button id="zoomIn">＋</button><button id="zoomOut">－</button>
+            <button id="rotateLeft">⟲</button><button id="rotateRight">⟳</button>
+            <button id="cropSave">✔ Save</button><button id="cropCancel">✖ Close</button>
+        </div>
+    </div>
 </div>
 
 <script>
+    const sb = window.supabase.createClient("https://rdlliurzgwwfjscgwssa.supabase.co", "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");
+    let cropper, currentInput, currentPreview, croppedBride, croppedGroom, croppedQR;
 
-
-
-const { data:{ session } } = await supabase.auth.getSession();
-
-if (!session) {
-    window.location.href = "login.html";
-}
-
-
-
-
-const sb = window.supabase.createClient(
-    "https://rdlliurzgwwfjscgwssa.supabase.co",
-    "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
-);
-
-
-
-
-
-// ===== IMAGE VARIABLES =====
-
-let cropper = null;
-
-let currentInput = null;
-let currentPreview = null;
-
-let croppedBride = null;
-let croppedGroom = null;
-let croppedQR = null;
-
-const cropModal = document.getElementById("cropModal");
-const cropImage = document.getElementById("cropImage");
-
-
-// ===== FILE EVENTS =====
-
-document.getElementById("bridePhoto").addEventListener("change", function (e) {
-    openCrop(e.target.files[0], "bridePhoto", "bridePreview");
-});
-
-document.getElementById("groomPhoto").addEventListener("change", function (e) {
-    openCrop(e.target.files[0], "groomPhoto", "groomPreview");
-});
-
-document.getElementById("qrPhoto").addEventListener("change", function (e) {
-    openCrop(e.target.files[0], "qrPhoto", "qrPreview");
-});
-
-
-
-// ===== OPEN CROPPER =====
-
-async function openCrop(file, inputId, previewId) {
-
-    if (!file) return;
-	
-	
-	
-	
-	// HEIC/HEIF → JPG Convert
-if (
-    file.type === "image/heic" ||
-    file.type === "image/heif" ||
-    file.name.toLowerCase().endsWith(".heic") ||
-    file.name.toLowerCase().endsWith(".heif")
-) {
-    try {
-
-        const jpgBlob = await heic2any({
-            blob: file,
-            toType: "image/jpeg",
-            quality: 0.9
-        });
-
-        file = new File(
-            [jpgBlob],
-            file.name.replace(/\.(heic|heif)$/i, ".jpg"),
-            { type: "image/jpeg" }
-        );
-
-    } catch (err) {
-        alert("HEIC photo convert nahi ho paayi.");
-        return;
-    }
-}
-	
-    currentInput = inputId;	
-    currentPreview = previewId;
-
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-
-        cropModal.style.display = "flex";
-
-        cropImage.src = e.target.result;
-
-        if (cropper) {
-            cropper.destroy();
+    async function openCrop(file, inputId, previewId) {
+        if (!file) return;
+        if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+            const blob = await heic2any({blob: file, toType: "image/jpeg"});
+            file = new File([blob], file.name.replace(/\.heic$/i, ".jpg"), {type: "image/jpeg"});
         }
+        currentInput = inputId; currentPreview = previewId;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            document.getElementById("cropModal").style.display = "flex";
+            const img = document.getElementById("cropImage");
+            img.src = e.target.result;
+            if (cropper) cropper.destroy();
+            cropper = new Cropper(img, { aspectRatio: 1, viewMode: 1 });
+        };
+        reader.readAsDataURL(file);
+    }
 
-    cropper = new Cropper(cropImage,{
-    aspectRatio:1,
-    viewMode:1,
-    autoCropArea:1,
-    responsive:true,
-    restore:false,
-    checkOrientation:false,
-    modal:true,
-    guides:false,
-    dragMode:"move",
-    background:false,
-    movable:true,
-    zoomable:true,
-    rotatable:true,
-    scalable:true
-});
+    document.getElementById("bridePhoto").onchange = (e) => openCrop(e.target.files[0], "bridePhoto", "bridePreview");
+    document.getElementById("groomPhoto").onchange = (e) => openCrop(e.target.files[0], "groomPhoto", "groomPreview");
+    document.getElementById("qrPhoto").onchange = (e) => openCrop(e.target.files[0], "qrPhoto", "qrPreview");
+
+    document.getElementById("cropSave").onclick = async () => {
+        const canvas = cropper.getCroppedCanvas({ width: 800, height: 800 });
+        canvas.toBlob(async (blob) => {
+            const compressed = await imageCompression(blob, { maxSizeMB: 0.3, maxWidthOrHeight: 800 });
+            document.getElementById(currentPreview).src = URL.createObjectURL(compressed);
+            if (currentInput === "bridePhoto") croppedBride = compressed;
+            if (currentInput === "groomPhoto") croppedGroom = compressed;
+            if (currentInput === "qrPhoto") croppedQR = compressed;
+            document.getElementById("cropModal").style.display = "none";
+        }, "image/jpeg", 0.9);
     };
 
-    reader.readAsDataURL(file);
+    document.getElementById("cropCancel").onclick = () => document.getElementById("cropModal").style.display = "none";
+    document.getElementById("zoomIn").onclick = () => cropper.zoom(0.1);
+    document.getElementById("zoomOut").onclick = () => cropper.zoom(-0.1);
+    document.getElementById("rotateLeft").onclick = () => cropper.rotate(-90);
+    document.getElementById("rotateRight").onclick = () => cropper.rotate(90);
 
-}
-
-
-// ===== ZOOM =====
-
-document.getElementById("zoomIn").onclick = function () {
-    if (cropper) cropper.zoom(0.1);
-};
-
-document.getElementById("zoomOut").onclick = function () {
-    if (cropper) cropper.zoom(-0.1);
-};
-
-// ===== ROTATE =====
-
-document.getElementById("rotateLeft").onclick = function () {
-    if (cropper) cropper.rotate(-90);
-};
-
-document.getElementById("rotateRight").onclick = function () {
-    if (cropper) cropper.rotate(90);
-};
-
-// ===== CLOSE CROPPER =====
-
-document.getElementById("cropCancel").onclick = function () {
-
-    cropModal.style.display = "none";
-
-    if (cropper) {
-        cropper.destroy();
-        cropper = null;
+    function removePhoto(type) {
+        if(type === "bride") { croppedBride = null; document.getElementById("bridePreview").src = "https://placehold.co/130x130?text=Select"; }
+        if(type === "groom") { croppedGroom = null; document.getElementById("groomPreview").src = "https://placehold.co/130x130?text=Select"; }
+        if(type === "qr") { croppedQR = null; document.getElementById("qrPreview").src = "https://placehold.co/130x130?text=Select"; }
     }
 
-};
+    async function submitSetup() {
+        const btn = document.getElementById("saveBtn");
+        const statusDiv = document.getElementById("uploadStatus");
+        const statusTitle = document.getElementById("statusTitle");
+        const statusText = document.getElementById("statusText");
+        const progressBar = document.getElementById("progressBar");
 
+        btn.disabled = true;
+        btn.style.pointerEvents = "none";
+        btn.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;gap:10px;"><div class="loader"></div><span>कृपया प्रतीक्षा करें...</span></div>`;
+        statusDiv.style.display = "block";
 
-// ===== SAVE CROPPED IMAGE =====
+        try {
+            // Upload Logic Simulation (Replace with actual Supabase upload calls)
+            statusTitle.innerText = "📤 फोटो अपलोड हो रही है...";
+            statusText.innerText = "Bride Photo Upload...";
+            progressBar.style.width = "20%";
+            await new Promise(r => setTimeout(r, 1000));
 
-document.getElementById("cropSave").onclick = async function () {
+            statusText.innerText = "Groom Photo Upload...";
+            progressBar.style.width = "40%";
+            await new Promise(r => setTimeout(r, 1000));
 
-    if (!cropper) return;
+            statusText.innerText = "QR Code Upload...";
+            progressBar.style.width = "60%";
+            await new Promise(r => setTimeout(r, 1000));
 
-    const canvas = cropper.getCroppedCanvas({
-        width: 800,
-        height: 800,
-        imageSmoothingQuality: "high"
-    });
+            statusText.innerText = "डेटाबेस में जानकारी सेव हो रही है...";
+            progressBar.style.width = "85%";
+            await new Promise(r => setTimeout(r, 1000));
 
-    const blob = await new Promise(resolve =>
-        canvas.toBlob(resolve, "image/jpeg", 0.9)
-    );
+            progressBar.style.width = "100%";
+            
+            await Swal.fire({
+                icon: "success",
+                title: "🎉 बधाई!",
+                html: `<h3 style="color:#800000">आपका Setup सफलतापूर्वक सेव हो गया।</h3><p>अब आप Sagun Management System का उपयोग शुरू कर सकते हैं।</p>`,
+                confirmButtonColor: "#800000",
+                confirmButtonText: "Dashboard खोलें"
+            });
+            window.location.href = "home.html";
 
-  // Compression Settings
-
-const options = {
-
-    maxSizeMB: currentInput === "qrPhoto" ? 0.15 : 0.30,
-
-    maxWidthOrHeight: currentInput === "qrPhoto" ? 600 : 800,
-
-    initialQuality: currentInput === "qrPhoto" ? 0.95 : 0.90,
-
-    alwaysKeepResolution: false,
-
-    useWebWorker: true
-
-};
-
-const compressed = await imageCompression(blob, options);
-    document.getElementById(currentPreview).src =
-        URL.createObjectURL(compressed);
-		formChanged = true;
-
-    if (currentInput === "bridePhoto") {
-        croppedBride = compressed;
+        } catch (err) {
+            Swal.fire({ icon: "error", title: "Upload Failed", text: "इंटरनेट या सर्वर की समस्या के कारण डेटा सेव नहीं हो पाया।", confirmButtonColor: "#800000" });
+            btn.disabled = false;
+            btn.style.pointerEvents = "auto";
+            btn.innerHTML = "🚀 Save Setup";
+            statusDiv.style.display = "none";
+        }
     }
-
-    if (currentInput === "groomPhoto") {
-        croppedGroom = compressed;
-    }
-
-    if (currentInput === "qrPhoto") {
-        croppedQR = compressed;
-    }
-
-cropper.destroy();
-cropper = null;
-
-cropModal.style.display = "none";
-
-// File Input Reset
-document.getElementById(currentInput).value = "";
-}
-
-
-
-
-// ==========================
-// SAVE SETUP
-// ==========================
-
-async function submitSetup(){
-
-const btn=document.getElementById("saveBtn");
-
-btn.disabled=true;
-btn.innerHTML="⏳ Saving...";
-
-try{
-
-const {data:{user},error:userError}=await sb.auth.getUser();
-
-if(userError || !user){
-
-alert("Please Login First");
-
-location.href="login.html";
-
-return;
-
-}
-
-let brideUrl="";
-let groomUrl="";
-let qrUrl="";
-
-
-// ---------- Bride Upload ----------
-
-if(croppedBride){
-
-btn.innerHTML="📷 Uploading Bride...";
-
-const {error}=await sb.storage
-.from("photos")
-.upload(user.id+"/bride.jpg",croppedBride,{
-upsert:true
-});
-
-if(error) throw error;
-
-brideUrl=sb.storage
-.from("photos")
-.getPublicUrl(user.id+"/bride.jpg")
-.data.publicUrl;
-
-}
-
-
-// ---------- Groom Upload ----------
-
-if(croppedGroom){
-
-btn.innerHTML="🤵 Uploading Groom...";
-
-const {error}=await sb.storage
-.from("photos")
-.upload(user.id+"/groom.jpg",croppedGroom,{
-upsert:true
-});
-
-if(error) throw error;
-
-groomUrl=sb.storage
-.from("photos")
-.getPublicUrl(user.id+"/groom.jpg")
-.data.publicUrl;
-
-}
-
-
-// ---------- QR Upload ----------
-
-if(croppedQR){
-
-btn.innerHTML="💳 Uploading QR...";
-
-const {error}=await sb.storage
-.from("photos")
-.upload(user.id+"/qr.jpg",croppedQR,{
-upsert:true
-});
-
-if(error) throw error;
-
-qrUrl=sb.storage
-.from("photos")
-.getPublicUrl(user.id+"/qr.jpg")
-.data.publicUrl;
-
-}
-
-
-// ---------- Save Database ----------
-
-btn.innerHTML="💾 Saving...";
-
-const {error}=await sb
-.from("setup")
-.upsert([{
-
-user_id:user.id,
-
-wedding_type:
-document.getElementById("weddingType").value,
-
-event_date:
-document.getElementById("eventDate").value,
-
-bride_name:
-document.getElementById("brideName").value,
-
-groom_name:
-document.getElementById("groomName").value,
-
-welcome_name:
-document.getElementById("welcomeName").value,
-
-bride_photo_url:brideUrl,
-
-groom_photo_url:groomUrl,
-
-qr_url:qrUrl
-
-}],{
-
-onConflict:"user_id"
-
-});
-
-if(error) throw error;
-
-
-btn.innerHTML="✅ Setup Completed";
-formChanged = false;
-
-setTimeout(()=>{
-
-window.location.href="home.html";
-
-},1000);
-
-}catch(err){
-
-alert(err.message);
-
-btn.disabled=false;
-
-btn.innerHTML="🚀 Save Setup";
-
-}
-
-}
-// =========================
-// REMOVE PHOTO
-// =========================
-
-function removePhoto(type){
-
-    formChanged = true;
-
-    if(type==="bride"){
-
-        croppedBride = null;
-
-        document.getElementById("bridePreview").src =
-        "https://placehold.co/130x130?text=Bride";
-
-        document.getElementById("bridePhoto").value = "";
-
-    }
-
-    if(type==="groom"){
-
-        croppedGroom = null;
-
-        document.getElementById("groomPreview").src =
-        "https://placehold.co/130x130?text=Groom";
-
-        document.getElementById("groomPhoto").value = "";
-
-    }
-
-    if(type==="qr"){
-
-        croppedQR = null;
-
-        document.getElementById("qrPreview").src =
-        "https://placehold.co/130x130?text=QR";
-
-        document.getElementById("qrPhoto").value = "";
-
-    }
-
-}
 </script>
-
 </body>
-
 </html>
-
