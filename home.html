@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | Sagum Management System</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#f4f6f9;
+}
+
+/*==============================
+HEADER
+==============================*/
+.header{
+    width:100%;
+    height:65px;
+    background:linear-gradient(135deg, #500000, #800000);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 25px;
+    color:#fff;
+    box-shadow:0 4px 20px rgba(0,0,0,0.25);
+    z-index: 1000;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:700;
+    color:#FFD700;
+    letter-spacing: 0.5px;
+}
+
+.headerRight{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.userName{
+    font-size:14px;
+    font-weight:600;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+.logoutBtn{
+    background:#FFD700;
+    color:#800000;
+    border:none;
+    border-radius:20px;
+    padding:8px 18px;
+    font-weight:700;
+    font-size: 13px;
+    cursor:pointer;
+    transition:.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.logoutBtn:hover{
+    background:#fff;
+    transform: translateY(-2px);
+}
+
+/*==============================
+MAIN LAYOUT
+==============================*/
+.main{
+    display:flex;
+    width:100%;
+    height:calc(100vh - 65px);
+}
+
+.sidebar{
+    width:240px;
+    background:#1a1a1a;
+    display:flex;
+    flex-direction:column;
+    padding-top:20px;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.sidebar a{
+    color:#ccc;
+    text-decoration:none;
+    padding:14px 22px;
+    font-size:14px;
+    font-weight:500;
+    border-left:4px solid transparent;
+    transition:.3s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar a:hover{
+    background:#800000;
+    color:#fff;
+    border-left:4px solid #FFD700;
+}
+
+.sidebar a.active{
+    background:#800000;
+    color:#fff;
+    border-left:4px solid #FFD700;
+    font-weight: 600;
+}
+
+.content{
+    flex:1;
+    background:#f4f6f9;
+    padding:20px 25px;
+    overflow-y:auto;
+}
+
+/*==============================
+SUMMARY CARDS
+==============================*/
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:#fff;
+    border-radius:16px;
+    padding:18px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.05);
+    border: 1px solid #eaeaea;
+    border-left: 5px solid #800000;
+    transition: all 0.3s ease;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(128,0,0,0.1);
+}
+
+.card h3{
+    font-size:13px;
+    color:#666;
+    margin-bottom:6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card h1{
+    font-size:22px;
+    color:#800000;
+    font-weight: 700;
+}
+
+/*==============================
+QUICK MENU BUTTONS
+==============================*/
+.menu{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.menu button{
+    height:85px;
+    background:linear-gradient(135deg, #800000, #a00000);
+    color:#fff;
+    border:none;
+    border-radius:16px;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    font-size:26px;
+    font-weight:bold;
+    transition:.3s;
+    box-shadow:0 6px 15px rgba(128,0,0,0.2);
+    border: 1px solid rgba(255,215,0,0.2);
+}
+
+.menu button span{
+    margin-top:6px;
+    font-size:12px;
+    font-weight: 500;
+}
+
+.menu button:hover{
+    background:#FFD700;
+    color:#800000;
+    transform:translateY(-4px);
+    box-shadow:0 10px 20px rgba(255,215,0,0.3);
+}
+
+/*==============================
+RECENT TRANSACTIONS
+==============================*/
+.recent{
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.05);
+    border: 1px solid #eaeaea;
+    height: calc(100vh - 430px);
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+}
+
+.recentHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.recentHeader h2{
+    color:#800000;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.recentHeader button{
+    background:#800000;
+    color:#fff;
+    border:none;
+    padding:6px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.recentHeader button:hover{
+    background: #600000;
+}
+
+.table-responsive {
+    flex: 1;
+    overflow-y: auto;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#800000;
+    color:#FFD700;
+    padding:10px 12px;
+    font-size: 13px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+td{
+    padding:10px 12px;
+    border-bottom:1px solid #f1f1f1;
+    text-align:center;
+    font-size: 13px;
+    color: #444;
+}
+
+tr:hover{
+    background:#fff8f2;
+}
+
+/* Responsive adjustments */
+@media(max-width: 1024px){
+    .menu{ grid-template-columns:repeat(3,1fr); }
+    .cards{ grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="logo">
+        🎉 SAGUN MANAGEMENT SYSTEM
+    </div>
+    <div class="headerRight">
+        <span class="userName">
+            👤 Admin
+        </span>
+        <button class="logoutBtn">
+            🚪 Logout
+        </button>
+    </div>
+</div>
+
+<div class="main">
+    <div class="sidebar">
+        <a href="home.html" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="entry.html"><i class="fa-solid fa-user-plus"></i> Shagun Entry</a>
+        <a href="cash-counter.html"><i class="fa-solid fa-calculator"></i> Cash Counter</a>
+        <a href="cashbook.html"><i class="fa-solid fa-book-open"></i> Cash In / Cash Out</a>
+        <a href="report.html"><i class="fa-solid fa-chart-pie"></i> Report</a>
+        <a href="admin.html"><i class="fa-solid fa-crown"></i> Super Admin</a>
+    </div>
+
+    <div class="content">
+        <div class="cards">
+            <div class="card">
+                <h3>Total Guests</h3>
+                <h1 id="totalGuests">0</h1>
+            </div>
+            <div class="card">
+                <h3>Total Shagun</h3>
+                <h1 id="totalShagun">₹0</h1>
+            </div>
+            <div class="card">
+                <h3>Cash Balance</h3>
+                <h1 id="cashBalance">₹0</h1>
+            </div>
+            <div class="card">
+                <h3>UPI Collection</h3>
+                <h1 id="upiCollection">₹0</h1>
+            </div>
+            <div class="card">
+                <h3>Cash In</h3>
+                <h1 id="cashIn">₹0</h1>
+            </div>
+            <div class="card">
+                <h3>Cash Out</h3>
+                <h1 id="cashOut">₹0</h1>
+            </div>
+        </div>
+
+        <div class="menu">
+            <button onclick="location.href='entry.html'">
+                ➕
+                <span>Shagun Entry</span>
+            </button>
+            <button onclick="location.href='cash-counter.html'">
+                💵
+                <span>Cash Counter</span>
+            </button>
+            <button onclick="location.href='cashbook.html'">
+                💰
+                <span>Cash Book</span>
+            </button>
+            <button onclick="location.href='report.html'">
+                📊
+                <span>Report</span>
+            </button>
+            <button onclick="location.href='admin.html'">
+                👑
+                <span>Super Admin</span>
+            </button>
+        </div>
+
+        <div class="recent">
+            <div class="recentHeader">
+                <h2>📜 Recent Transactions</h2>
+                <button onclick="location.href='report.html'">View All</button>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Mode</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentBody">
+                        <tr><td colspan="3" style="color: #888; padding: 15px;">डेटा लोड हो रहा है...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb = window.supabase.createClient(
+    "https://rdlliurzgwwfjscgwssa.supabase.co",
+    "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+);
+
+window.onload=()=>{
+    loadDashboard();
+};
+
+async function loadDashboard(){
+    const {data:{user}} = await sb.auth.getUser();
+    const userId = user ? user.id : "default_user"; // बिना लॉगिन के काम चलाने के लिए fallback
+    loadGuests(userId);
+    loadCashBook(userId);
+    loadRecent(userId);
+}
+
+async function loadGuests(userId){
+    const {data=[]}=await sb
+    .from("guests")
+    .select("*");
+
+    let totalGuests=data.length;
+    let totalShagun=0;
+    let upi=0;
+
+    data.forEach(x=>{
+        totalShagun+=Number(x.amount);
+        if(x.payment_mode=="UPI"){
+            upi+=Number(x.amount);
+        }
+    });
+
+    document.getElementById("totalGuests").innerHTML=totalGuests;
+    document.getElementById("totalShagun").innerHTML="₹"+totalShagun.toLocaleString("en-IN");
+    document.getElementById("upiCollection").innerHTML="₹"+upi.toLocaleString("en-IN");
+}
+
+async function loadCashBook(userId){
+    const {data:guests=[]} = await sb
+    .from("guests")
+    .select("amount,payment_mode");
+
+    let cashShagun = 0;
+    guests.forEach(g=>{
+        if(g.payment_mode !== "UPI"){
+            cashShagun += Number(g.amount);
+        }
+    });
+
+    const {data=[]} = await sb
+    .from("cash_history")
+    .select("*")
+    .eq("status","active");
+
+    let cashIn = 0;
+    let cashOut = 0;
+    data.forEach(x=>{
+        if(x.type==="cash_in"){
+            cashIn += Number(x.amount);
+        }
+        if(x.type==="cash_out"){
+            cashOut += Number(x.amount);
+        }
+    });
+
+    const currentCash = cashShagun - cashOut + cashIn;
+
+    document.getElementById("cashIn").innerHTML = "₹" + cashIn.toLocaleString("en-IN");
+    document.getElementById("cashOut").innerHTML = "₹" + cashOut.toLocaleString("en-IN");
+    document.getElementById("cashBalance").innerHTML = "₹" + currentCash.toLocaleString("en-IN");
+}
+
+async function loadRecent(userId){
+    const tbody = document.getElementById("recentBody");
+    tbody.innerHTML = "";
+
+    const {data=[],error} = await sb
+        .from("guests")
+        .select("name,payment_mode,amount")
+        .order("created_at",{ascending:false})
+        .limit(10);
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    if(data.length === 0){
+        tbody.innerHTML = `<tr><td colspan="3" style="color: #888; padding: 15px;">कोई हालिया लेनदेन नहीं मिला।</td></tr>`;
+        return;
+    }
+
+    data.forEach(g=>{
+        tbody.innerHTML += `
+        <tr>
+            <td><b>${g.name}</b></td>
+            <td><span style="background: ${g.payment_mode==='UPI'?'#e3f2fd':'#e8f5e9'}; color: ${g.payment_mode==='UPI'?'#0d6efd':'#198754'}; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">${g.payment_mode}</span></td>
+            <td><b style="color:#198754;">₹${Number(g.amount).toLocaleString("en-IN")}</b></td>
+        </tr>
+        `;
+    });
+}
+
+document.querySelector(".logoutBtn").onclick = async () => {
+    await sb.auth.signOut();
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.replace("login.html");
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Dashboard | Sagum Management System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{ margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+        body { background: #f0f2f5; padding: 20px; color: #333; }
+        
+        .top-bar { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: linear-gradient(135deg, #500000, #800000); 
+            padding: 18px 25px; color: #ffd700; border-radius: 16px; 
+            box-shadow: 0 8px 20px rgba(128,0,0,0.2);
+            flex-wrap: wrap; gap: 15px;
+        }
+        
+        .btn-group { display: flex; gap: 12px; }
+        .home-btn, .settings-btn { 
+            background: #ffd700; color: #800000; border: none; padding: 10px 20px; 
+            font-size: 14px; font-weight: 700; border-radius: 30px; cursor: pointer; 
+            transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .settings-btn { background: #fff; color: #800000; }
+        .home-btn:hover, .settings-btn:hover { background: #333; color: #ffd700; transform: translateY(-2px); }
+
+        .stats-container { display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
+        .stat-card { 
+            flex: 1; min-width: 240px; background: white; padding: 22px; border-radius: 16px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 20px;
+            border-left: 6px solid #800000;
+        }
+        .stat-icon { font-size: 36px; background: #fff8f8; padding: 12px; border-radius: 12px; }
+        .stat-info h3 { font-size: 14px; color: #777; font-weight: 500; }
+        .stat-info h1 { font-size: 26px; color: #800000; font-weight: 700; margin-top: 4px; }
+
+        .card { background: white; padding: 25px; border-radius: 18px; margin-top: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 12px; border: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; background: white; text-align: left; }
+        th { background: #800000; color: white; padding: 14px 16px; font-size: 14px; font-weight: 600; }
+        td { padding: 14px 16px; border-bottom: 1px solid #f1f1f1; font-size: 14px; color: #444; }
+        tr:hover { background: #fafafa; }
+
+        .delete-btn { background: #fee2e2; color: #dc2626; border: none; padding: 6px 12px; cursor: pointer; border-radius: 6px; font-weight: 600; transition: 0.2s; }
+        .delete-btn:hover { background: #dc2626; color: white; }
+        
+        .deleteAll-btn { background: #dc2626; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 8px; font-weight: 600; transition: 0.2s; box-shadow: 0 4px 10px rgba(220,38,38,0.2); }
+        .deleteAll-btn:hover { background: #b91c1c; }
+
+        @media(max-width: 600px) {
+            .top-bar { justify-content: center; text-align: center; }
+            .btn-group { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="btn-group">
+        <button class="home-btn" onclick="window.location.href='home.html'">🔙 मुख्य पेज</button>
+        <button class="settings-btn" onclick="window.location.href='settings.html'">⚙️ सेटिंग्स</button>
+    </div>
+    <span style="font-size: 20px; font-weight: 700; letter-spacing: 0.5px;">👑 Super Admin Dashboard</span>
+</div>
+
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+            <h3>कुल गेस्ट (Guests)</h3>
+            <h1 id="totalGuests">0</h1>
+        </div>
+    </div>
+    <div class="stat-card" style="border-left-color: #27ae60;">
+        <div class="stat-icon">💰</div>
+        <div class="stat-info">
+            <h3>कुल प्राप्त शगुन</h3>
+            <h1 id="rawAmount">₹0</h1>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <h3 style="color: #800000; font-size: 18px;">📋 गेस्ट एवं शगुन सूची</h3>
+        <button class="deleteAll-btn" onclick="deleteAllData()">🗑️ सारा डेटा डिलीट करें</button>
+    </div>
+    
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>नाम</th>
+                    <th>राज्य</th>
+                    <th>जिला</th>
+                    <th>गाँव</th>
+                    <th>शगुन राशि</th>
+                    <th style="text-align: center;">एक्शन</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr><td colspan="6" style="text-align: center; color: #888; padding: 20px;">डेटा लोड हो रहा है...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const sb = window.supabase.createClient(
+    "https://rdlliurzgwwfjscgwssa.supabase.co",
+    "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+);
+
+async function loadData() {
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) { window.location.href = "login.html"; return; }
+
+    const { data, error } = await sb.from("guests").select("*").eq("user_id", user.id).order('created_at', { ascending: false });
+    if(error) { console.error("Error:", error); return; }
+
+    let tbody = document.getElementById('tableBody');
+    tbody.innerHTML = "";
+    let total = 0;
+
+    if(data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #888; padding: 20px;">कोई रिकॉर्ड नहीं मिला।</td></tr>`;
+        document.getElementById('totalGuests').innerText = 0;
+        document.getElementById('rawAmount').innerText = '0';
+        return;
+    }
+
+    data.forEach(g => {
+        total += Number(g.amount);
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td><b>${g.name || ''}</b></td>
+            <td>${g.state || ''}</td>
+            <td>${g.district || ''}</td>
+            <td>${g.village || ''}</td>
+            <td style="color: #27ae60; font-weight: 600;">₹${Number(g.amount).toLocaleString('en-IN')}</td>
+            <td style="text-align: center;"><button class="delete-btn" onclick="deleteEntry('${g.id}')">🗑️ Delete</button></td>
+        `;
+        tbody.appendChild(row);
+    });
+    
+    document.getElementById('totalGuests').innerText = data.length;
+    document.getElementById('rawAmount').innerText = '₹' + total.toLocaleString('en-IN');
+}
+
+async function deleteEntry(id) {
+    Swal.fire({
+        title: 'क्या आप वाकई डिलीट करना चाहते हैं?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'हाँ, डिलीट करें',
+        cancelButtonText: 'रद्द करें'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const { error } = await sb.from("guests").delete().eq("id", id);
+            if(error) { Swal.fire("त्रुटि", error.message, "error"); }
+            else { 
+                Swal.fire({ title: 'डिलीट हो गया!', icon: 'success', timer: 1200, showConfirmButton: false });
+                loadData(); 
+            }
+        }
+    });
+}
+
+async function deleteAllData() {
+    const { data: { user } } = await sb.auth.getUser();
+    Swal.fire({
+        title: 'चेतावनी!',
+        text: 'आपका पूरा गेस्ट डेटा हमेशा के लिए डिलीट हो जाएगा!',
+        icon: 'error',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'हाँ, सब डिलीट करें',
+        cancelButtonText: 'रद्द करें'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const { error } = await sb.from("guests").delete().eq("user_id", user.id);
+            if(error) { Swal.fire("त्रुटि", error.message, "error"); }
+            else { 
+                Swal.fire({ title: 'सफल!', text: 'सारा डेटा साफ़ कर दिया गया है।', icon: 'success', timer: 1500, showConfirmButton: false });
+                loadData(); 
+            }
+        }
+    });
+}
+
+window.onload = () => { loadData(); };
+</script>
+</body>
+</html>

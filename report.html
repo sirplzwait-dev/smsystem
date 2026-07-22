@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagun Report | Sagum Management System</title>
+
+<!-- External Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        padding: 0;
+        background: #fdf8f5;
+        margin: 0;
+        padding-bottom: 60px;
+    }
+
+    /* Attractive & Royal Page Header */
+    .page-header {
+        background: linear-gradient(135deg, #400000, #800000, #500000);
+        color: #ffd700;
+        padding: 22px 20px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        box-shadow: 0 6px 20px rgba(128,0,0,0.25);
+        margin-bottom: 20px;
+        border-bottom: 3px solid #ffd700;
+        text-transform: uppercase;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .main-wrapper {
+        padding: 0 15px;
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .action-buttons button {
+        cursor: pointer;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        color: white;
+        flex: 1;
+        min-width: 100px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .action-buttons button:hover {
+        transform: translateY(-2px);
+        opacity: 0.95;
+    }
+
+    /* Summary Grid */
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    @media (min-width: 768px) {
+        .summary-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .summary-card {
+        background: #ffffff;
+        padding: 15px;
+        border-radius: 14px;
+        box-shadow: 0 6px 20px rgba(128,0,0,0.08);
+        border: 1px solid #f2e2d0;
+        border-left: 5px solid #800000;
+        text-align: left;
+        transition: 0.3s;
+    }
+
+    .summary-card.cash-card { border-left-color: #198754; }
+    .summary-card.upi-card { border-left-color: #0d6efd; }
+    .summary-card.total-card { border-left-color: #ffd700; background: linear-gradient(135deg, #500000, #800000); color: #fff; }
+
+    .summary-card h3 {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 5px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .summary-card.total-card h3 { color: #ffeb3b; }
+
+    .summary-card h1 {
+        font-size: 18px;
+        color: #800000;
+        font-weight: 700;
+    }
+
+    .summary-card.cash-card h1 { color: #198754; }
+    .summary-card.upi-card h1 { color: #0d6efd; }
+    .summary-card.total-card h1 { color: #ffd700; font-size: 20px; }
+
+    /* Chart Toggle Section */
+    .chart-toggle-section {
+        background: white;
+        padding: 15px;
+        border-radius: 14px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        margin-bottom: 15px;
+        border: 1px solid #f2e2d0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .chart-controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .chart-controls select {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1.5px solid #d4af37;
+        font-size: 13px;
+        outline: none;
+        background: #fffcfc;
+        font-weight: 600;
+        color: #800000;
+    }
+
+    .chart-toggle-btn {
+        background: #800000;
+        color: #ffd700;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.2s;
+    }
+
+    .chart-toggle-btn:hover {
+        background: #500000;
+    }
+
+    .chart-wrapper {
+        display: none; 
+        position: relative;
+        height: 260px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Numeric Breakdown Table inside Chart Box */
+    .numeric-breakdown {
+        display: none;
+        margin-top: 12px;
+        max-height: 150px;
+        overflow-y: auto;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        font-size: 13px;
+    }
+
+    .numeric-breakdown table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .numeric-breakdown th {
+        background: #500000;
+        color: #ffd700;
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .numeric-breakdown td {
+        padding: 6px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    /* Card & Search */
+    .card {
+        background: white;
+        padding: 18px;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        border: 1px solid #f2e2d0;
+    }
+
+    #villageFilter {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 10px;
+        border: 1.5px solid #d4af37;
+        font-size: 14px;
+        outline: none;
+        margin-bottom: 15px;
+        background: #fffcfc;
+    }
+
+    #villageFilter:focus {
+        border-color: #800000;
+        box-shadow: 0 0 8px rgba(128,0,0,0.15);
+    }
+
+    .table-container {
+        max-height: 380px;
+        overflow-y: auto;
+        border-radius: 10px;
+        border: 1px solid #eee;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    thead th {
+        position: sticky;
+        top: 0;
+        background: #800000;
+        color: #ffd700;
+        padding: 12px 10px;
+        font-size: 14px;
+        z-index: 10;
+        text-align: center;
+    }
+
+    td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #f1f1f1;
+        text-align: center;
+        color: #444;
+    }
+
+    tbody tr:hover {
+        background: #fff8f2;
+    }
+
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 42px;
+        background: #500000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px;
+        color: #fff;
+        font-size: 12px;
+        z-index: 999;
+    }
+
+    .home-footer-btn {
+        background: #FFD700;
+        color: #800000;
+        padding: 5px 14px;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 12px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+    ✨ 📊 शगुन एवं गेस्ट रिपोर्ट (Sagun & Guest Report) ✨
+</div>
+
+<div class="main-wrapper">
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button onclick="exportExcel()" style="background:#27ae60;">📊 Excel Export</button>
+        <button onclick="exportPDF()" style="background:#c0392b;">📄 PDF Export</button>
+        <button onclick="backupData()" style="background:#2980b9;">💾 Backup</button>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+        <div class="summary-card">
+            <h3>👥 कुल गेस्ट</h3>
+            <h1 id="totalGuests">0</h1>
+        </div>
+        <div class="summary-card cash-card">
+            <h3>💵 Cash Shagun</h3>
+            <h1 id="cashShagun">₹0</h1>
+        </div>
+        <div class="summary-card upi-card">
+            <h3>📱 UPI Shagun</h3>
+            <h1 id="upiShagun">₹0</h1>
+        </div>
+        <div class="summary-card total-card">
+            <h3>💰 कुल योग</h3>
+            <h1 id="totalShagun">₹0</h1>
+        </div>
+    </div>
+
+    <!-- Chart Toggle Section -->
+    <div class="chart-toggle-section">
+        <div class="chart-controls">
+            <button class="chart-toggle-btn" id="toggleChartBtn" onclick="toggleChartBox()">📈 ग्राफ एवं विवरण देखें (Open Chart)</button>
+            <select id="chartTypeSelect" onchange="renderSelectedChart()" style="display:none;">
+                <option value="mode">भुगतान माध्यम (Cash vs UPI)</option>
+                <option value="district">जिला वार (District Wise)</option>
+                <option value="village">गाँव वार (Village Wise)</option>
+            </select>
+        </div>
+        <div class="chart-wrapper" id="chartBox">
+            <canvas id="shagunChart"></canvas>
+        </div>
+        <!-- Numeric Breakdown Table -->
+        <div class="numeric-breakdown" id="numericBreakdownBox">
+            <table>
+                <thead>
+                    <tr id="breakdownHead"><th>श्रेणी (Category)</th><th>राशि (Amount)</th></tr>
+                </thead>
+                <tbody id="breakdownBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <input type="text" id="villageFilter" placeholder="🔍 नाम, जिला या गाँव से खोजें...">
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>नाम</th>
+                            <th>राज्य</th>
+                            <th>जिला</th>
+                            <th>गाँव</th>
+                            <th>Mode</th>
+                            <th>शगुन राशि</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr><td colspan="6" style="text-align: center; color: #888; padding: 20px;">डेटा लोड हो रहा है...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Footer Bar -->
+<div class="footer">
+    <div>🌐 <b>www.sgunms.in</b></div>
+    <button class="home-footer-btn" onclick="location.href='home.html'">🏠 Home</button>
+</div>
+
+<script>
+const sb = window.supabase.createClient(
+"https://rdlliurzgwwfjscgwssa.supabase.co",
+"sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+);
+
+let reportData = [];
+let shagunChartInstance = null;
+let isChartVisible = false;
+
+function getOfflineGuests(){
+    return JSON.parse(localStorage.getItem("offlineGuests") || "[]");
+}
+
+async function getOnlineGuests(){
+    try{
+        const { data:{user} } = await sb.auth.getUser();
+        if(!user) return [];
+
+        const {data, error} = await sb
+        .from("guests")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", {ascending: false});
+
+        if(error){ console.log(error); return []; }
+        return data || [];
+    }catch(e){
+        console.log(e);
+        return [];
+    }
+}
+
+async function loadReport(){
+    const tbody = document.getElementById("tableBody");
+    tbody.innerHTML = "";
+
+    const online = await getOnlineGuests();
+    const offline = getOfflineGuests();
+    const map = new Map();
+
+    online.forEach(g=>{
+        let key = (g.name || "") + (g.amount || "") + (g.village || "");
+        map.set(key, g);
+    });
+
+    offline.forEach(g=>{
+        let key = (g.name || "") + (g.amount || "") + (g.village || "");
+        if(!map.has(key)){ map.set(key, g); }
+    });
+
+    reportData = [...map.values()];
+    reportData.sort((a,b)=>{
+        return new Date(b.created_at) - new Date(a.created_at);
+    });
+
+    let search = document.getElementById("villageFilter").value.toUpperCase();
+
+    let total = 0;
+    let cash = 0;
+    let upi = 0;
+    let count = 0;
+
+    if(reportData.length === 0){
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #888; padding: 20px;">कोई रिकॉर्ड नहीं मिला।</td></tr>`;
+    }
+
+    reportData.forEach(g=>{
+        let txt = `${g.name||""} ${g.state||""} ${g.district||""} ${g.village||""}`.toUpperCase();
+
+        if(search && !txt.includes(search)){ return; }
+
+        let amt = Number(g.amount) || 0;
+        count++;
+        total += amt;
+
+        if(g.payment_mode === "UPI"){
+            upi += amt;
+        } else {
+            cash += amt;
+        }
+
+        tbody.innerHTML += `
+        <tr>
+            <td><b style="color: #800000;">${g.name || ""}</b></td>
+            <td>${g.state || ""}</td>
+            <td>${g.district || ""}</td>
+            <td>${g.village || ""}</td>
+            <td><span style="background: ${g.payment_mode==='UPI'?'#e3f2fd':'#e8f5e9'}; color: ${g.payment_mode==='UPI'?'#0d6efd':'#198754'}; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">${g.payment_mode || "Cash"}</span></td>
+            <td><b style="color:#198754;">₹${amt.toLocaleString("en-IN")}</b></td>
+        </tr>
+        `;
+    });
+
+    document.getElementById("totalGuests").innerText = count;
+    document.getElementById("cashShagun").innerText = "₹" + cash.toLocaleString("en-IN");
+    document.getElementById("upiShagun").innerText = "₹" + upi.toLocaleString("en-IN");
+    document.getElementById("totalShagun").innerText = "₹" + total.toLocaleString("en-IN");
+
+    if(isChartVisible){
+        renderSelectedChart();
+    }
+}
+
+function toggleChartBox() {
+    const box = document.getElementById("chartBox");
+    const breakdownBox = document.getElementById("numericBreakdownBox");
+    const select = document.getElementById("chartTypeSelect");
+    const btn = document.getElementById("toggleChartBtn");
+
+    if(isChartVisible) {
+        box.style.display = "none";
+        breakdownBox.style.display = "none";
+        select.style.display = "none";
+        btn.innerText = "📈 ग्राफ एवं विवरण देखें (Open Chart)";
+        isChartVisible = false;
+    } else {
+        box.style.display = "block";
+        breakdownBox.style.display = "block";
+        select.style.display = "inline-block";
+        btn.innerText = "📉 ग्राफ बंद करें (Hide Chart)";
+        isChartVisible = true;
+        renderSelectedChart();
+    }
+}
+
+function renderSelectedChart() {
+    const type = document.getElementById("chartTypeSelect").value;
+    const ctx = document.getElementById('shagunChart').getContext('2d');
+    const breakdownBody = document.getElementById('breakdownBody');
+    const breakdownHead = document.getElementById('breakdownHead');
+    
+    if (shagunChartInstance) {
+        shagunChartInstance.destroy();
+    }
+
+    let labels = [];
+    let dataValues = [];
+    let chartTitle = '';
+    let backgroundColors = [];
+    let breakdownHtml = '';
+    let categoryHeader = '';
+
+    if(type === 'mode') {
+        let cash = 0, upi = 0;
+        reportData.forEach(g => {
+            let amt = Number(g.amount) || 0;
+            if(g.payment_mode === 'UPI') upi += amt;
+            else cash += amt;
+        });
+        labels = ['Cash (कैश)', 'UPI (यूपीआई)'];
+        dataValues = [cash, upi];
+        chartTitle = 'भुगतान माध्यम अनुसार शगुन (Cash vs UPI)';
+        backgroundColors = ['#198754', '#0d6efd'];
+        
+        categoryHeader = 'भुगतान माध्यम (Mode)';
+        breakdownHtml = `
+            <tr><td>Cash (कैश)</td><td><b>₹${cash.toLocaleString("en-IN")}</b></td></tr>
+            <tr><td>UPI (यूपीआई)</td><td><b>₹${upi.toLocaleString("en-IN")}</b></td></tr>
+        `;
+    } 
+    else if(type === 'district') {
+        let distMap = {};
+        reportData.forEach(g => {
+            let dist = g.district ? g.district.trim() : "अन्य";
+            distMap[dist] = (distMap[dist] || 0) + (Number(g.amount) || 0);
+        });
+        labels = Object.keys(distMap);
+        dataValues = Object.values(distMap);
+        chartTitle = 'जिला वार शगुन वितरण (District Wise)';
+        backgroundColors = ['#800000', '#d4af37', '#2980b9', '#27ae60', '#e67e22', '#9b59b6'];
+
+        categoryHeader = 'जिला (District)';
+        for(let key in distMap) {
+            breakdownHtml += `<tr><td>${key}</td><td><b>₹${distMap[key].toLocaleString("en-IN")}</b></td></tr>`;
+        }
+    } 
+    else if(type === 'village') {
+        let villMap = {};
+        reportData.forEach(g => {
+            let vill = g.village ? g.village.trim() : "अन्य";
+            villMap[vill] = (villMap[vill] || 0) + (Number(g.amount) || 0);
+        });
+        labels = Object.keys(villMap);
+        dataValues = Object.values(villMap);
+        chartTitle = 'गाँव वार शगुन वितरण (Village Wise)';
+        backgroundColors = ['#d35400', '#16a085', '#2c3e50', '#c0392b', '#2980b9', '#f39c12'];
+
+        categoryHeader = 'गाँव (Village)';
+        for(let key in villMap) {
+            breakdownHtml += `<tr><td>${key}</td><td><b>₹${villMap[key].toLocaleString("en-IN")}</b></td></tr>`;
+        }
+    }
+
+    breakdownHead.innerHTML = `<th>${categoryHeader}</th><th>शगुन राशि (Amount)</th>`;
+    breakdownBody.innerHTML = breakdownHtml;
+
+    shagunChartInstance = new Chart(ctx, {
+        type: type === 'mode' ? 'doughnut' : 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'शगुन राशि (₹)',
+                data: dataValues,
+                backgroundColor: backgroundColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: type === 'mode' ? 'bottom' : 'none',
+                    labels: { font: { family: 'Poppins', size: 11 } }
+                },
+                title: {
+                    display: true,
+                    text: chartTitle,
+                    font: { family: 'Poppins', size: 13, weight: '700' },
+                    color: '#800000'
+                }
+            }
+        }
+    });
+}
+
+async function backupData(){
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], {type: "application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "Sagun_Backup.json";
+    a.click();
+}
+
+function exportExcel(){
+    const rows = reportData.map(g => ({
+        Name: g.name || "",
+        State: g.state || "",
+        District: g.district || "",
+        Village: g.village || "",
+        Mode: g.payment_mode || "Cash",
+        Amount: g.amount || 0
+    }));
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(rows);
+    XLSX.utils.book_append_sheet(wb, ws, "Report");
+    XLSX.writeFile(wb, "Shagun_Report.xlsx");
+}
+
+function exportPDF(){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF("p", "mm", "a4");
+
+    let total = 0;
+    let cash = 0;
+    let upi = 0;
+
+    reportData.forEach(g => {
+        let amt = Number(g.amount) || 0;
+        total += amt;
+        if(g.payment_mode === "UPI") upi += amt;
+        else cash += amt;
+    });
+
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("SHAGUN REPORT", 105, 15, {align: "center"});
+
+    doc.setFontSize(9);
+    doc.text(`Total Guests: ${reportData.length} | Cash: Rs.${cash.toLocaleString("en-IN")} | UPI: Rs.${upi.toLocaleString("en-IN")} | Total: Rs.${total.toLocaleString("en-IN")}`, 105, 22, {align: "center"});
+
+    const rows = reportData.map((g, i) => [
+        i + 1,
+        g.name || "",
+        g.state || "",
+        g.district || "",
+        g.village || "",
+        g.payment_mode || "Cash",
+        g.amount || 0
+    ]);
+
+    doc.autoTable({
+        startY: 28,
+        head: [["SL", "NAME", "STATE", "DISTRICT", "VILLAGE", "MODE", "AMOUNT"]],
+        body: rows,
+        theme: "grid",
+        headStyles: { fillColor: [128, 0, 0], textColor: [255, 255, 255], halign: "center" },
+        styles: { fontSize: 8, cellPadding: 2, valign: "middle" },
+        columnStyles: {
+            0: { cellWidth: 10, halign: "center" },
+            1: { cellWidth: 45 },
+            2: { cellWidth: 25 },
+            3: { cellWidth: 30 },
+            4: { cellWidth: 30 },
+            5: { cellWidth: 18, halign: "center" },
+            6: { cellWidth: 22, halign: "right" }
+        }
+    });
+
+    doc.save("Shagun_Report.pdf");
+}
+
+window.onload = function(){
+    loadReport();
+    document.getElementById("villageFilter").addEventListener("keyup", loadReport);
+};
+</script>
+
+</body>
+</html>

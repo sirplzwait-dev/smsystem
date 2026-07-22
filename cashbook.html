@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Book | Sagun Management System</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+body{
+    background:#f5f6fa;
+    padding-bottom:50px;
+}
+.header{
+    height:55px;
+    background:#800000;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+    font-weight:bold;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+.container{
+    padding:12px;
+    max-width:1000px;
+    margin:auto;
+}
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:12px;
+}
+.card{
+    background:#fff;
+    padding:12px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.04);
+    border-top:3px solid #800000;
+}
+.card h3{
+    color:#666;
+    font-size:13px;
+    margin-bottom:4px;
+}
+.card h1{
+    color:#800000;
+    font-size:20px;
+}
+.forms{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:12px;
+}
+.box{
+    background:#fff;
+    padding:12px;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,.04);
+}
+.box h2{
+    font-size:16px;
+    margin-bottom:10px;
+    color:#800000;
+}
+input{
+    width:100%;
+    padding:8px 10px;
+    margin-bottom:8px;
+    border:1px solid #ddd;
+    border-radius:6px;
+    font-size:13px;
+    outline:none;
+}
+input:focus{
+    border-color:#800000;
+}
+button{
+    width:100%;
+    padding:8px;
+    border:none;
+    border-radius:6px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+}
+button:hover{
+    opacity:0.9;
+}
+.cashInBtn{
+    background:#198754;
+    color:#fff;
+}
+.cashOutBtn{
+    background:#dc3545;
+    color:#fff;
+}
+.history{
+    background:#fff;
+    padding:12px;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,.04);
+}
+.history h2{
+    font-size:16px;
+    color:#800000;
+    margin-bottom:10px;
+}
+#historyList{
+    max-height:250px;
+    overflow-y:auto;
+    padding-right:4px;
+}
+.historyItem{
+    background:#fafafa;
+    border:1px solid #eee;
+    border-left:3px solid #800000;
+    border-radius:6px;
+    padding:8px 10px;
+    margin-bottom:8px;
+    font-size:12px;
+}
+.footer{
+    position:fixed;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:38px;
+    background:#800000;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 12px;
+    color:#fff;
+    font-size:11px;
+    z-index:999;
+}
+.homeBtn{
+    background:#FFD700;
+    color:#800000;
+    padding:3px 10px;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:11px;
+}
+@media(max-width:768px){
+    .cards{ grid-template-columns:1fr; gap:8px; }
+    .forms{ grid-template-columns:1fr; gap:8px; }
+    .container{ padding:8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+💵 Cash Book
+</div>
+
+<div class="container">
+    <div class="cards">
+        <div class="card">
+            <h3>Total Cash In</h3>
+            <h1 id="cashInTotal">₹0</h1>
+        </div>
+        <div class="card">
+            <h3>Total Cash Out</h3>
+            <h1 id="cashOutTotal">₹0</h1>
+        </div>
+        <div class="card">
+            <h3>Current Cash</h3>
+            <h1 id="cashBalance">₹0</h1>
+        </div>
+    </div>
+
+    <div class="forms">
+        <div class="box">
+            <h2>➕ Cash In</h2>
+            <input id="inPerson" placeholder="Person Name">
+            <input id="inPurpose" placeholder="Purpose">
+            <input id="inAmount" type="number" placeholder="Amount">
+            <button class="cashInBtn" id="saveCashIn">Save Cash In</button>
+        </div>
+        <div class="box">
+            <h2>➖ Cash Out</h2>
+            <input id="outPerson" placeholder="Person Name">
+            <input id="outPurpose" placeholder="Purpose">
+            <input id="outAmount" type="number" placeholder="Amount">
+            <button class="cashOutBtn" id="saveCashOut">Save Cash Out</button>
+        </div>
+    </div>
+
+    <div class="history">
+        <h2>📜 Cash History</h2>
+        <div id="historyList">No Record Found</div>
+    </div>
+</div>
+
+<div class="footer">
+    <div>🌐 <b>www.sgunms.in</b></div>
+    <button class="homeBtn" onclick="location.href='home.html'">🏠 Home</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb = window.supabase.createClient(
+'https://rdlliurzgwwfjscgwssa.supabase.co',
+'sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc'
+);
+
+window.onload = () => {
+    loadSummary();
+    loadHistory();
+};
+
+async function loadSummary(){
+    const {data:cashIn=[]} = await sb.from("cash_history").select("amount").eq("type","cash_in").eq("status","active");
+    let totalIn = 0;
+    cashIn.forEach(x => { totalIn += Number(x.amount); });
+
+    const {data:cashOut=[]} = await sb.from("cash_history").select("amount").eq("type","cash_out").eq("status","active");
+    let totalOut = 0;
+    cashOut.forEach(x => { totalOut += Number(x.amount); });
+
+    document.getElementById("cashInTotal").innerHTML = "₹" + totalIn.toLocaleString("en-IN");
+    document.getElementById("cashOutTotal").innerHTML = "₹" + totalOut.toLocaleString("en-IN");
+    document.getElementById("cashBalance").innerHTML = "₹" + (totalIn - totalOut).toLocaleString("en-IN");
+}
+
+document.getElementById("saveCashIn").onclick = async () => {
+    const person = document.getElementById("inPerson").value.trim();
+    const purpose = document.getElementById("inPurpose").value.trim();
+    const amount = Number(document.getElementById("inAmount").value);
+
+    if(person == "" || amount <= 0){
+        alert("Please enter Person Name and Amount.");
+        return;
+    }
+
+    const {error} = await sb.from("cash_history").insert([{
+        person,
+        purpose,
+        amount,
+        type: "cash_in",
+        status: "active"
+    }]);
+
+    if(error){ alert(error.message); return; }
+
+    document.getElementById("inPerson").value = "";
+    document.getElementById("inPurpose").value = "";
+    document.getElementById("inAmount").value = "";
+    loadSummary();
+    loadHistory();
+};
+
+document.getElementById("saveCashOut").onclick = async () => {
+    const person = document.getElementById("outPerson").value.trim();
+    const purpose = document.getElementById("outPurpose").value.trim();
+    const amount = Number(document.getElementById("outAmount").value);
+
+    if(person == "" || amount <= 0){
+        alert("Please enter Person Name and Amount.");
+        return;
+    }
+
+    const {error} = await sb.from("cash_history").insert([{
+        person,
+        purpose,
+        amount,
+        type: "cash_out",
+        status: "active"
+    }]);
+
+    if(error){ alert(error.message); return; }
+
+    document.getElementById("outPerson").value = "";
+    document.getElementById("outPurpose").value = "";
+    document.getElementById("outAmount").value = "";
+    loadSummary();
+    loadHistory();
+};
+
+async function loadHistory(){
+    const {data=[]} = await sb.from("cash_history").select("*").eq("status","active").order("created_at",{ascending:false}).limit(100);
+    const box = document.getElementById("historyList");
+    box.innerHTML = "";
+
+    if(data.length == 0){
+        box.innerHTML = "No Record Found";
+        return;
+    }
+
+    data.forEach(x => {
+        box.innerHTML += `
+        <div class="historyItem">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span><b>${x.type=="cash_in"?"🟢 Cash In":"🔴 Cash Out"}</b></span>
+                <b style="font-size:13px;">₹${Number(x.amount).toLocaleString("en-IN")}</b>
+            </div>
+            <div><b>Person :</b> ${x.person}</div>
+            ${x.purpose ? `<div><b>Purpose :</b> ${x.purpose}</div>` : ""}
+            <div style="font-size:10px;color:#666;margin-top:3px;">${new Date(x.created_at).toLocaleString()}</div>
+        </div>
+        `;
+    });
+}
+</script>
+
+</body>
+</html>

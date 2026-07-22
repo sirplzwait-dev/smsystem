@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagun Management System | Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{
+  width:100vw;
+  height:100vh;
+  margin:0;
+  padding:15px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  background:linear-gradient(-45deg,#5b0000,#800000,#b8860b,#ffd700);
+  background-size:400% 400%;
+  animation:bgMove 12s ease infinite;
+}
+@keyframes bgMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+
+body::before,body::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  animation:float 8s infinite;
+  z-index:1;
+}
+body::before{width:220px;height:220px;top:-60px;left:-60px;}
+body::after{width:280px;height:280px;bottom:-80px;right:-80px;animation-direction:reverse;}
+@keyframes float{50%{transform:translateY(-20px);}}
+
+.login-box{
+  width:100%;
+  max-width:420px;
+  padding:30px 25px;
+  border-radius:24px;
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 25px 50px rgba(0,0,0,.35);
+  text-align:center;
+  animation:fade .8s ease;
+  z-index:10;
+  margin:auto;
+}
+@keyframes fade{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+
+.logo{
+  width:85px;
+  height:85px;
+  border-radius:50%;
+  border:3px solid #FFD700;
+  background:#fff;
+  padding:5px;
+  margin-bottom:12px;
+  object-fit:cover;
+}
+
+h2{color:#fff;font-size:28px;margin-bottom:6px;}
+.subtitle{color:#fff;font-size:14px;margin-bottom:22px;line-height:1.5;}
+
+.input-box{margin-bottom:15px;}
+.input-box input{
+  width:100%;
+  padding:14px 16px;
+  border:none;
+  border-radius:12px;
+  outline:none;
+  font-size:14px;
+  background:rgba(255, 255, 255, 0.9);
+  color:#333;
+}
+
+.password-box{position:relative;}
+.password-box input{padding-right:50px;}
+
+#togglePass{
+  position:absolute;
+  right:15px;
+  top:50%;
+  transform:translateY(-50%);
+  cursor:pointer;
+  font-size:20px;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#FFD700;
+  color:#800000;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+  box-shadow:0 4px 15px rgba(0,0,0,0.15);
+}
+button:hover{transform:translateY(-2px); background:#fff;}
+
+.links{
+  margin-top:16px;
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+}
+.links a{color:#fff;text-decoration:none;font-weight:600;}
+.links a:hover{text-decoration:underline;}
+
+.version{margin-top:20px;color:#fff;font-size:12px;opacity:0.9;}
+
+.spinner{
+  width:16px;
+  height:16px;
+  border:3px solid rgba(255,255,255,.4);
+  border-top:3px solid #800000;
+  border-radius:50%;
+  display:inline-block;
+  animation:spin .8s linear infinite;
+  vertical-align:middle;
+  margin-right:8px;
+}
+@keyframes spin{100%{transform:rotate(360deg);}}
+
+@media(max-width: 480px){
+  .login-box{
+    padding:25px 20px;
+    border-radius:20px;
+  }
+  h2{ font-size:24px; }
+  .subtitle{ font-size:13px; margin-bottom:18px; }
+  .input-box input{ padding:12px 14px; font-size:14px; }
+  button{ padding:12px; font-size:15px; }
+}
+</style>
+</head>
+<body>
+
+<div class="login-box">
+  <img src="appicon.ico" class="logo" alt="Logo">
+  <h2>👋 Welcome Back</h2>
+  <p class="subtitle">Sign in to continue to<br><b>Sagun Management System</b></p>
+  
+  <div class="input-box">
+    <input type="email" id="email" placeholder="📧 Enter your Email">
+  </div>
+  
+  <div class="input-box password-box">
+    <input type="password" id="pass" placeholder="🔒 Enter Password">
+    <span id="togglePass">👁️</span>
+  </div>
+  
+  <button id="loginBtn">🔐 Login</button>
+  
+  <div class="links">
+    <a href="register.html">📝 Register</a>
+    <a href="#" onclick="forgotPassword(); return false;">Forgot Password?</a>
+  </div>
+  
+  <div class="version">Version 1.0.0<br><br>Powered by Sagun Management System</div>
+</div>
+
+<script>
+const client = window.supabase.createClient(
+  "https://rdlliurzgwwfjscgwssa.supabase.co",
+  "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+);
+
+document.getElementById("togglePass").onclick = function () {
+  const pass = document.getElementById("pass");
+  if (pass.type === "password") { pass.type = "text"; this.innerHTML = "🙈"; }
+  else { pass.type = "password"; this.innerHTML = "👁️"; }
+};
+
+document.getElementById("loginBtn").addEventListener("click", checkLogin);
+async function checkLogin(){
+  const btn=document.getElementById("loginBtn");
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("pass").value.trim();
+  if(!email || !password){ alert("Please Enter Email & Password"); return; }
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Logging in...';
+  const {data,error}=await client.auth.signInWithPassword({email,password});
+  if(error){ alert(error.message); btn.disabled=false; btn.innerHTML="🔐 Login"; return; }
+  const {data:setupData}=await client.from("setup").select("*").eq("user_id",data.user.id).limit(1);
+  if(setupData && setupData.length>0){ window.location.href="home.html"; }
+  else{ window.location.href="setup.html"; }
+}
+document.getElementById("pass").addEventListener("keypress",function(e){ if(e.key==="Enter"){ checkLogin(); }});
+
+async function forgotPassword(){
+  const email=prompt("Enter your Registered Email"); if(!email) return;
+  const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:"https://sgunms.in/reset-password.html"});
+  if(error){ alert(error.message); } else { alert("Password Reset Link has been sent to your Email."); }
+}
+</script>
+</body>
+</html>
