@@ -87,15 +87,16 @@ header{
 nav{
     display:flex;
     align-items:center;
-    gap:24px;
+    gap:20px;
 }
 
 nav a{
     text-decoration:none;
     color:white;
     font-weight:500;
-    font-size:15px;
+    font-size:14px;
     transition:.3s;
+    cursor: pointer;
 }
 
 nav a:hover{
@@ -105,7 +106,7 @@ nav a:hover{
 .login-btn{
     background:#FFD700;
     color:#800000 !important;
-    padding:8px 20px;
+    padding:8px 18px;
     border-radius:30px;
     font-weight:bold;
     box-shadow:0 4px 15px rgba(255,215,0,0.3);
@@ -851,15 +852,22 @@ nav a:hover{
 
 .legal-content h2 {
     color: #800000;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     font-size: 24px;
+}
+
+.legal-hindi-title {
+    font-size: 18px;
+    color: #b8860b;
+    margin-bottom: 15px;
+    font-weight: 600;
 }
 
 .legal-content h3 {
     color: #500000;
     margin-top: 20px;
-    margin-bottom: 8px;
-    font-size: 17px;
+    margin-bottom: 6px;
+    font-size: 16px;
     font-weight: 600;
 }
 
@@ -867,12 +875,23 @@ nav a:hover{
     font-size: 14px;
     color: #555;
     line-height: 1.7;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .legal-content ul {
     padding-left: 20px;
     margin-bottom: 10px;
+}
+
+.hindi-text {
+    display: block;
+    font-size: 13px;
+    color: #444;
+    background: #fff8f2;
+    padding: 8px 12px;
+    border-left: 3px solid #800000;
+    margin-top: 4px;
+    border-radius: 4px;
 }
 
 .close-legal {
@@ -1055,7 +1074,7 @@ footer hr{
     <div class="logo">
         <img src="appicon.ico" alt="Logo">
         <div>
-            <h2>Sagum Management</h2>
+            <h2>Sagum Management System</h2>
             <p>Smart Wedding Platform</p>
         </div>
     </div>
@@ -1066,6 +1085,7 @@ footer hr{
         <a href="#features" onclick="toggleMenu()">Features</a>
         <a href="#about" onclick="toggleMenu()">About</a>
         <a href="#faq" onclick="toggleMenu()">FAQ</a>
+        <a onclick="showHowToUse()" style="color: #FFD700; font-weight: 600;"><i class="fas fa-question-circle"></i> How to Use</a>
         <a href="#contact" onclick="toggleMenu()">Contact</a>
         <a onclick="showComingSoon()" class="login-btn">Login</a>
     </nav>
@@ -1084,7 +1104,7 @@ footer hr{
     </p>
     <div class="hero-buttons">
         <a onclick="showComingSoon()" class="start-btn">🚀 Get Started</a>
-        <a href="#features" class="demo-btn">📱 Explore Features</a>
+        <a onclick="showHowToUse()" class="demo-btn">📖 How to Use</a>
     </div>
 </div>
 <div class="hero-right">
@@ -1148,7 +1168,7 @@ footer hr{
         </ul>
     </div>
     <div class="preview-card">
-        <img src="home.jpg" alt="Dashboard">
+        <img src="home.jpg" alt="home">
         <h3>🏠 Dashboard</h3>
         <ul>
             <li>Guest Entry & History</li>
@@ -1252,8 +1272,8 @@ footer hr{
     <div class="feature-box">
         <div class="feature-icon">📈</div>
         <div class="feature-info">
-            <h3>Dashboard</h3>
-            <p>Beautiful Analytics Dashboard.</p>
+     <h3>Dashboard</h3>
+       <p>Beautiful Analytics Dashboard.</p>
             <span class="hindi-sub">सभी जानकारी एक जगह।</span>
         </div>
     </div>
@@ -1481,7 +1501,7 @@ footer hr{
         <div class="feature-icon">🌟</div>
         <div class="feature-info">
             <h3>Version 3.0</h3>
-            <p>⭐ AI Assistant, Voice Entry, Family Dashboard, Smart Analytics</p>
+            <p>⭐ ⭐ AI Assistant, Voice Entry, Family Accounts, Smart Analytics</p>
         </div>
     </div>
 </div>
@@ -1570,38 +1590,33 @@ footer hr{
 <p style="text-align:center;color:#ccc;font-size:14px;">Version 1.0.0 | Made with ❤️ in India</p>
 </footer>
 
-<!-- ================= DETAILED LEGAL MODALS ================= -->
+<!-- ================= BILINGUAL LEGAL MODALS ================= -->
 <div id="privacyModal" class="legal-modal">
     <div class="legal-content">
         <span class="close-legal" onclick="closeModal('privacyModal')">&times;</span>
         <h2>Privacy Policy</h2>
+        <p class="legal-hindi-title">गोपनीयता नीति</p>
         <p><strong>Last updated:</strong> July 22, 2026</p>
         
-        <h3>1. Introduction</h3>
-        <p>Welcome to <strong>Sagum Management System</strong> ("we," "our," or "us"). We respect your privacy and are committed to protecting your personal and event data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our web application.</p>
-        
-        <h3>2. Information We Collect</h3>
-        <p>We may collect information about you in a variety of ways, including:</p>
-        <ul>
-            <li><strong>Personal Information:</strong> Name, email address, mobile number, and authentication credentials provided during registration or login.</li>
-            <li><strong>Event Data:</strong> Bride & groom details, event dates, wedding venue information, guest lists, and financial records such as shagun entries, cash counter details, and gift summaries.</li>
-            <li><strong>Usage Data:</strong> Browser type, device information, IP address, and pages visited on our platform to help us improve user experience.</li>
-        </ul>
+        <h3>1. Introduction / परिचय</h3>
+        <p>Welcome to <strong>Sagum Management System</strong> ("we," "our," or "us"). We respect your privacy and are committed to protecting your personal and event data.</p>
+        <span class="hindi-text">सगुन मैनेजमेंट सिस्टम में आपका स्वागत है। हम आपकी गोपनीयता का सम्मान करते हैं और आपके व्यक्तिगत तथा इवेंट डेटा की सुरक्षा के लिए प्रतिबद्ध हैं।</span>
 
-        <h3>3. How We Use Your Information</h3>
-        <p>Having accurate information permits us to provide you with a smooth, efficient, and customized experience. Specifically, we use information collected to:</p>
-        <ul>
-            <li>Create and manage your wedding event accounts.</li>
-            <li>Process guest entries, calculate shagun totals, and generate PDF/Excel reports.</li>
-            <li>Secure your data through cloud backup and Supabase authentication.</li>
-            <li>Respond to customer service inquiries and support requests.</li>
-        </ul>
+        <h3>2. Information We Collect / एकत्र की जाने वाली जानकारी</h3>
+        <p>We may collect personal information (name, email, phone number), event data (bride/groom details, guest lists, shagun records), and usage data.</p>
+        <span class="hindi-text">हम व्यक्तिगत जानकारी (नाम, ईमेल, फोन नंबर), इवेंट डेटा (दूल्हा-दुल्हन का विवरण, मेहमानों की सूची, शगुन रिकॉर्ड) और उपयोग डेटा एकत्र कर सकते हैं।</span>
 
-        <h3>4. Data Security</h3>
-        <p>We implement robust administrative, technical, and physical security measures designed to protect your personal and wedding records from unauthorized access, disclosure, alteration, or destruction.</p>
+        <h3>3. How We Use Your Information / जानकारी का उपयोग</h3>
+        <p>To manage wedding accounts, process guest and shagun entries, generate reports, and secure cloud backups.</p>
+        <span class="hindi-text">शादी के खातों को प्रबंधित करने, मेहमान और शगुन प्रविष्टियों को प्रोसेस करने, रिपोर्ट तैयार करने और क्लाउड बैकअप सुरक्षित करने के लिए।</span>
 
-        <h3>5. Contact Us</h3>
-        <p>If you have questions or comments about this Privacy Policy, please contact us at: <strong>Sirplzwait@gmail.com</strong> or call <strong>+91 9931516195</strong>.</p>
+        <h3>4. Data Security / डेटा सुरक्षा</h3>
+        <p>We implement robust security measures and encryption standards to protect your sensitive records from unauthorized access.</p>
+        <span class="hindi-text">हम आपके संवेदनशील रिकॉर्ड्स को अनधिकृत पहुंच से बचाने के लिए मजबूत सुरक्षा उपाय और एन्क्रिप्शन मानकों का उपयोग करते हैं।</span>
+
+        <h3>5. Contact Us / संपर्क करें</h3>
+        <p>For any queries, contact us at: <strong>Sirplzwait@gmail.com</strong> or call <strong>+91 9931516195</strong>.</p>
+        <span class="hindi-text">किसी भी प्रश्न के लिए संपर्क करें: Sirplzwait@gmail.com या कॉल करें: +91 9931516195।</span>
     </div>
 </div>
 
@@ -1609,25 +1624,28 @@ footer hr{
     <div class="legal-content">
         <span class="close-legal" onclick="closeModal('termsModal')">&times;</span>
         <h2>Terms & Conditions</h2>
+        <p class="legal-hindi-title">नियम और शर्तें</p>
         <p><strong>Last updated:</strong> July 22, 2026</p>
         
-        <h3>1. Acceptance of Terms</h3>
-        <p>By accessing or using the <strong>Sagum Management System</strong> website and platform, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, you may not access our services.</p>
+        <h3>1. Acceptance of Terms / नियमों की स्वीकृति</h3>
+        <p>By accessing or using Sagum Management System, you agree to be bound by these Terms and Conditions.</p>
+        <span class="hindi-text">सगुन मैनेजमेंट सिस्टम का उपयोग करके, आप इन नियमों और शर्तों से बंधने के लिए सहमत हैं।</span>
 
-        <h3>2. Use of the Platform</h3>
-        <p>Sagum Management System provides digital tools to manage wedding guest lists, shagun records, gifts, and reports. You agree to use the platform only for lawful personal or event management purposes and in a way that does not infringe the rights of others.</p>
+        <h3>2. Use of the Platform / प्लेटफ़ॉर्म का उपयोग</h3>
+        <p>The platform provides digital tools to manage wedding guest lists, shagun records, gifts, and reports for lawful personal use.</p>
+        <span class="hindi-text">यह प्लेटफ़ॉर्म वैध व्यक्तिगत उपयोग के लिए शादी के मेहमानों की सूची, शगुन रिकॉर्ड, उपहार और रिपोर्ट प्रबंधित करने के डिजिटल टूल प्रदान करता है।</span>
 
-        <h3>3. User Accounts & Security</h3>
-        <p>When you register for an account, you are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use.</p>
+        <h3>3. User Accounts & Security / उपयोगकर्ता खाते और सुरक्षा</h3>
+        <p>You are responsible for maintaining the confidentiality of your account credentials and all activities under your account.</p>
+        <span class="hindi-text">आप अपने खाते के विवरण की गोपनीयता बनाए रखने और अपने खाते के तहत होने वाली सभी गतिविधियों के लिए जिम्मेदार हैं।</span>
 
-        <h3>4. Intellectual Property Rights</h3>
-        <p>All source code, databases, platform design, text, graphics, logos, and UI elements on Sagum Management System are the proprietary property of the developer (Shashi Kushwaha) and are protected by applicable intellectual property laws.</p>
+        <h3>4. Intellectual Property / बौद्धिक संपदा</h3>
+        <p>All source code, platform design, text, graphics, and logos are the proprietary property of the developer (Shashi Kushwaha).</p>
+        <span class="hindi-text">सभी सोर्स कोड, प्लेटफ़ॉर्म डिज़ाइन, टेक्स्ट, ग्राफिक्स और लोगो डेवलपर (शशि कुशवाहा) की proprietary संपत्ति हैं।</span>
 
-        <h3>5. Limitation of Liability</h3>
-        <p>Sagum Management System is provided on an "as-is" and "as-available" basis. While we strive to maintain secure cloud backups and system reliability, we shall not be held liable for any indirect, incidental, or consequential data loss arising from the use of this platform.</p>
-
-        <h3>6. Changes to Terms</h3>
-        <p>We reserve the right to modify these terms at any time. Continued use of the platform after changes constitutes your binding acceptance of the updated terms.</p>
+        <h3>5. Limitation of Liability / दायित्व की सीमा</h3>
+        <p>The system is provided on an "as-is" basis. Howsoever, we shall not be held liable for any indirect or consequential data loss.</p>
+        <span class="hindi-text">सिस्टम "जैसी है" के आधार पर प्रदान किया गया है। हम किसी भी डेटा हानि के लिए उत्तरदायी नहीं होंगे।</span>
     </div>
 </div>
 
@@ -1655,6 +1673,65 @@ function showComingSoon() {
         text: 'Login & Account features will be available soon in the next update.',
         confirmButtonColor: '#800000',
         confirmButtonText: 'OK'
+    });
+}
+
+function showHowToUse() {
+    Swal.fire({
+        title: '📖 How to Use – Sagun Management System',
+        html: `
+            <div style="text-align: left; max-height: 420px; overflow-y: auto; font-size: 13px; line-height: 1.5; padding: 5px;">
+                <p style="text-align:center; color:#800000; font-weight:600; margin-bottom:12px;">📍 10 Easy Steps to Manage Your Wedding</p>
+                
+                <div style="background:#fff8f2; border:1px solid #f2e2d0; border-left:4px solid #800000; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <b>Step 1 of 10: 📝 Create Account</b><br>Register Page खोलें। Name, State, Mobile, Email और Password भरें। Register बटन पर क्लिक करें।
+                </div>
+                <div style="background:#fff8f2; border:1px solid #f2e2d0; border-left:4px solid #800000; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <b>Step 2 of 10: 🔐 Login</b><br>Registered Email और Password डालकर Login पर क्लिक करें।
+                </div>
+                <div style="background:#fff8f2; border:1px solid #f2e2d0; border-left:4px solid #800000; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <b>Step 3 of 10: ⚙️ Setup</b><br>Tilak / Barat चुनें, Groom Name, Bride Name, Event Date, Welcome By भरें और Photo Upload करके Save करें।
+                </div>
+                <div style="background:#fff8f2; border:1px solid #f2e2d0; border-left:4px solid #800000; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <b>Step 4 of 10: 🏠 Dashboard</b><br>यहाँ से Guest Entry, Report, Cash Counter, Cash Book और Admin Panel खुलते हैं।
+                </div>
+                <div style="background:#fff8f2; border:1px solid #f2e2d0; border-left:4px solid #800000; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <b>Step 5 of 10: 👥 Guest Entry</b><br>Guest आने पर Name, State, District, Village, Amount और Payment Mode (Cash / UPI) भरकर Save करें।
+                </div>
+                <div style="background:#fff8f2; border:1px solid #f2e2d0; border-left:4px solid #800000; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <b>Step 6 of 10: 📊 Report</b><br>Total Guests, Cash/UPI Collection, Total Amount देखें और Excel/PDF Export करें या Guest सर्च करें।
+                </div>
+                <div style="background:#fff8f2; border:1px solid #f2e2d0; border-left:4px solid #800000; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <b>Step 7 of 10: 💵 Cash Counter</b><br>दिन के अंत में नोटों की संख्या भरें। सिस्टम अपने आप Total और Difference दिखाएगा।
+                </div>
+                <div style="background:#fff8f2; border:1px solid #f2e2d0; border-left:4px solid #800000; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <b>Step 8 of 10: 📒 Cash Book</b><br>Cash In, Cash Out, Purpose, History और Current Balance ट्रैक करें।
+                </div>
+                <div style="background:#fff8f2; border:1px solid #f2e2d0; border-left:4px solid #800000; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <b>Step 9 of 10: 👑 Admin Panel</b><br>सभी Guest देखें, Record Delete करें, Total Data देखें या आवश्यकतानुसार Full Data Delete करें।
+                </div>
+                <div style="background:#fff8f2; border:1px solid #f2e2d0; border-left:4px solid #800000; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <b>Step 10 of 10: 🚪 Logout</b><br>काम पूरा होने पर सुरक्षित रूप से Logout करें।
+                </div>
+
+                <div style="background:#eef9f0; border:1px solid #d0f0d8; padding:10px; border-radius:8px; margin-top:12px; font-size:12px; color:#2d6a4f;">
+                    <b>💡 Pro Tips:</b><br>
+                    ✅ इंटरनेट रहने पर डेटा Cloud में Save होगा।<br>
+                    ✅ मजबूत Password रखें।<br>
+                    ✅ समय-समय पर Report का PDF/Excel Backup लें।
+                </div>
+            </div>
+        `,
+        width: '680px',
+        showCancelButton: true,
+        confirmButtonColor: '#800000',
+        cancelButtonColor: '#b8860b',
+        confirmButtonText: '🚀 Start Now',
+        cancelButtonText: '✅ Got It'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            showComingSoon();
+        }
     });
 }
 
