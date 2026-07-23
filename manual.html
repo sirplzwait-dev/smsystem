@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Manual & Guide | Sagum Management System</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+:root {
+    --bg-color: #fff8f2;
+    --text-color: #333333;
+    --card-bg: #ffffff;
+    --card-border: #f2e2d0;
+    --primary-color: #800000;
+    --secondary-color: #FFD700;
+    --sidebar-bg: #ffffff;
+    --header-bg: linear-gradient(135deg, #500000, #800000);
+}
+
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --card-border: #333333;
+    --primary-color: #ff6b6b;
+    --secondary-color: #FFD700;
+    --sidebar-bg: #1a1a1a;
+    --header-bg: linear-gradient(135deg, #2a0000, #400000);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+    scroll-behavior: smooth;
+}
+
+body{
+    background: var(--bg-color);
+    color: var(--text-color);
+    padding-top: 75px;
+    padding-bottom: 60px;
+    line-height: 1.7;
+    transition: background 0.3s, color 0.3s;
+}
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    background: var(--header-bg);
+    box-shadow:0 4px 30px rgba(0,0,0,0.3);
+    z-index:999;
+}
+
+.container{
+    width:92%;
+    max-width:1300px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor: pointer;
+}
+
+.logo img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:white;
+    padding:2px;
+    border:2px solid var(--secondary-color);
+}
+
+.logo h2{
+    font-size:15px;
+    color: var(--secondary-color);
+    font-weight:700;
+}
+
+.logo p{
+    font-size:9px;
+    color:#f5f5f5;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.3s;
+}
+.icon-btn:hover {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.back-btn {
+    background: var(--secondary-color);
+    color: #800000;
+    padding: 6px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 4px 15px rgba(255,215,0,0.3);
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.back-btn:hover {
+    background: #fff;
+}
+
+/* Layout with Sidebar */
+.main-layout {
+    display: flex;
+    max-width: 1350px;
+    margin: 20px auto;
+    gap: 20px;
+    padding: 0 12px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background: var(--sidebar-bg);
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 10px 30px rgba(128,0,0,0.08);
+    border: 1px solid var(--card-border);
+    position: sticky;
+    top: 90px;
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+}
+
+.sidebar h3 {
+    font-size: 14px;
+    color: #800000;
+    margin-bottom: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 6px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 6px;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.sidebar ul li a:hover, .sidebar ul li a.active {
+    background: rgba(128,0,0,0.08);
+    color: #800000;
+    border-left-color: #800000;
+    font-weight: 600;
+}
+
+[data-theme="dark"] .sidebar ul li a:hover, 
+[data-theme="dark"] .sidebar ul li a.active {
+    background: rgba(255,215,0,0.1);
+    color: #FFD700;
+    border-left-color: #FFD700;
+}
+
+/* Content Area */
+.content-area {
+    flex: 1;
+    max-width: 1000px;
+}
+
+.manual-wrapper {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid var(--card-border);
+}
+
+.manual-title {
+    color: #800000;
+    font-size: 24px;
+    margin-bottom: 6px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.meta-info {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    font-size: 11px;
+    color: #777;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border-radius: 10px;
+    border: 1.5px solid var(--card-border);
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 13px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.search-box input:focus {
+    border-color: #800000;
+    box-shadow: 0 0 8px rgba(128,0,0,0.15);
+}
+
+.search-box i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 14px;
+}
+
+/* No Results Message */
+.no-results {
+    text-align: center;
+    padding: 25px;
+    display: none;
+    color: #777;
+}
+.no-results i {
+    font-size: 28px;
+    color: #800000;
+    margin-bottom: 8px;
+}
+
+/* Accordion Design */
+.accordion-group {
+    margin-bottom: 12px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card-bg);
+}
+
+.accordion-header {
+    background: var(--bg-color);
+    padding: 14px 18px;
+    color: #800000;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: 0.3s;
+}
+
+.accordion-header:hover {
+    background: rgba(128,0,0,0.05);
+}
+
+.accordion-header i.fa-chevron-down {
+    transition: transform 0.3s;
+    font-size: 12px;
+}
+
+.accordion-group.active .accordion-header i.fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    padding: 0 15px;
+}
+
+.accordion-group.active .accordion-content {
+    max-height: 4000px;
+    padding: 15px;
+}
+
+.step-box {
+    background: var(--bg-color);
+    border: 1px solid var(--card-border);
+    border-left: 4px solid #800000;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.step-box h3 {
+    color: #800000;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.step-box p, .step-box ul {
+    font-size: 12px;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.step-box ul {
+    padding-left: 18px;
+    margin-top: 4px;
+}
+
+.copy-link-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(128,0,0,0.1);
+    color: #800000;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.copy-link-btn:hover {
+    background: #800000;
+    color: #FFD700;
+}
+
+/* Step-by-Step Flow Design */
+.flow-steps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 12px 0;
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+}
+.flow-step-item {
+    background: #fff8f2;
+    border: 1px solid #f2e2d0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+    color: #800000;
+}
+.flow-arrow {
+    color: #800000;
+    font-size: 12px;
+}
+
+/* Alert Boxes */
+.alert-box {
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+.alert-tip { background: #eef9f0; border-left: 3px solid #198754; color: #155724; }
+
+/* Screenshot Preview Box */
+.screenshot-box {
+    margin-top: 12px;
+    border: 1.5px dashed var(--card-border);
+    border-radius: 8px;
+    padding: 6px;
+    text-align: center;
+    background: rgba(0,0,0,0.02);
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.screenshot-box img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    max-height: 180px;
+    object-fit: contain;
+    cursor: zoom-in;
+    transition: transform 0.3s;
+}
+.skeleton-loader {
+    font-size: 12px;
+    color: #888;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.screenshot-caption {
+    font-size: 11px;
+    color: #666;
+    margin-top: 4px;
+    font-style: italic;
+    font-weight: 600;
+}
+
+/* Action Buttons Container */
+.action-buttons-box {
+    margin-top: 25px;
+    padding: 20px;
+    background: var(--bg-color);
+    border-radius: 14px;
+    border: 1px solid var(--card-border);
+    text-align: center;
+}
+.action-buttons-box h3 {
+    color: #800000;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+.manual-action-btns {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.get-started-btn, .login-portal-btn {
+    padding: 10px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+.get-started-btn {
+    background: #800000;
+    color: #FFD700;
+    border: 2px solid #800000;
+}
+.login-portal-btn {
+    background: #FFD700;
+    color: #800000;
+    border: 2px solid #FFD700;
+}
+
+/* WhatsApp Button */
+.whatsapp-btn-large {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #25d366;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+    margin-top: 8px;
+    transition: 0.3s;
+}
+
+/* Lightbox Modal */
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    cursor: pointer;
+}
+.lightbox img {
+    max-width: 92%;
+    max-height: 90%;
+    border-radius: 10px;
+}
+
+/* Footer Bar */
+.footer-area {
+    width: 100%;
+    height: 40px;
+    background: #800000;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+}
+.footer-left {
+    padding: 0 10px;
+    white-space: nowrap;
+    font-size: 11px;
+    font-weight: bold;
+}
+.footer-center {
+    flex: 1;
+    overflow: hidden;
+}
+.footer-center marquee {
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* Mobile Responsive Adjustments - Sidebar stays as a collapsible side card on mobile */
+@media(max-width: 900px){
+    .main-layout { flex-direction: column; padding: 0 8px; margin-top: 10px; }
+    .sidebar {
+        width: 100%;
+        position: relative;
+        top: 0;
+        height: auto;
+        margin-bottom: 15px;
+        max-height: 220px;
+        overflow-y: auto;
+    }
+    .manual-wrapper { padding: 15px; border-radius: 16px; }
+    .manual-title { font-size: 18px; }
+    body { padding-bottom: 50px; }
+}
+</style>
+</head>
+<body data-theme="light">
+
+<!-- Header -->
+<header>
+<div class="container">
+    <div class="logo" onclick="location.href='index.html'">
+        <img src="appicon.ico" alt="Logo">
+        <div>
+            <h2>Sagum Management System</h2>
+            <p>Smart Wedding Platform</p>
+        </div>
+    </div>
+    
+    <div class="header-right">
+        <a href="index.html" class="back-btn"><i class="fas fa-home"></i> Home</a>
+        <button class="icon-btn" onclick="toggleTheme()" id="themeToggleBtn"><i class="fas fa-moon"></i> <span>Dark</span></button>
+    </div>
+</div>
+</header>
+
+<div class="main-layout">
+    <!-- Quick Navigation Sidebar (Side/Collapsible drawer on mobile) -->
+    <aside class="sidebar">
+        <h3><i class="fas fa-compass"></i> Quick Navigation</h3>
+        <ul>
+            <li><a href="#sec-intro" onclick="openSection('sec-intro')"><i class="fas fa-info-circle"></i> Introduction</a></li>
+            <li><a href="#sec-setup" onclick="openSection('sec-setup')"><i class="fas fa-cogs"></i> Account & Setup</a></li>
+            <li><a href="#sec-dashboard" onclick="openSection('sec-dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#sec-shagun" onclick="openSection('sec-shagun')"><i class="fas fa-hand-holding-usd"></i> Shagun Entry</a></li>
+            <li><a href="#sec-reports" onclick="openSection('sec-reports')"><i class="fas fa-chart-bar"></i> Reports & Export</a></li>
+            <li><a href="#sec-counter" onclick="openSection('sec-counter')"><i class="fas fa-calculator"></i> Cash Counter</a></li>
+            <li><a href="#sec-cashbook" onclick="openSection('sec-cashbook')"><i class="fas fa-book"></i> Cash Book</a></li>
+            <li><a href="#sec-admin" onclick="openSection('sec-admin')"><i class="fas fa-crown"></i> Super Admin</a></li>
+            <li><a href="#sec-security" onclick="openSection('sec-security')"><i class="fas fa-question-circle"></i> FAQ & Security</a></li>
+            <li><a href="#sec-contact" onclick="openSection('sec-contact')"><i class="fas fa-headset"></i> Contact Us</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="content-area">
+        <div class="manual-wrapper">
+            <h1 class="manual-title">📖 Sagum Management System - User Manual</h1>
+            <p class="subtitle">विवाह एवं पारिवारिक आयोजनों के प्रबंधन हेतु संपूर्ण डिजिटल गाइड</p>
+            
+            <div class="meta-info">
+                <span>📖 Reading Time: <b>8 Mins</b></span>
+                <span>📌 Version: <b>1.0</b></span>
+                <span>📅 Updated: <b>2026</b></span>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="manualSearch" placeholder="🔍 Search Manual (उदा. Cash Book, QR Code)..." onkeyup="searchManual()">
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results">
+                <i class="fas fa-search"></i>
+                <p><b>😕 No matching section found.</b><br>Try another keyword.</p>
+            </div>
+
+            <!-- ACCORDION SECTIONS -->
+
+            <!-- 1. Introduction -->
+            <div class="accordion-group active" id="sec-intro">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>1️⃣ परिचय एवं उद्देश्य (Introduction)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-intro')"><i class="fas fa-link"></i> Link</button>
+                        <h3><i class="fas fa-info-circle" style="color: #800000;"></i> यह क्या करता है?</h3>
+                        <p><b>Sagum Management System (SGUNMS)</b> शादियों या अन्य पारिवारिक कार्यक्रमों में मेहमानों के नाम, शगुन (Cash/UPI) और खर्चों का डिजिटल हिसाब रखने का सबसे आसान साधन है। इससे कागजी रजिस्टर खोने या हिसाब में गड़बड़ी का डर पूरी तरह खत्म हो जाता है।</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Account & Setup -->
+            <div class="accordion-group" id="sec-setup">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>2️⃣ Account Setup (रजिस्ट्रेशन और सेटअप)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-setup')"><i class="fas fa-link"></i> Link</button>
+                        <h3>📝 नया अकाउंट और लॉगिन</h3>
+                        <p>सबसे पहले <b>Register</b> पेज पर जाकर अपनी जानकारी भरें। ईमेल वेरीफाई करने के बाद <b>Login</b> पेज से प्रवेश करें।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="login.jpg" alt="Login Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Login Screen Preview</div>
+                        </div>
+                    </div>
+                    <div class="step-box searchable-item">
+                        <h3>⚙️ इवेंट सेटअप (Event Setup)</h3>
+                        <p>लॉगिन के बाद सेटअप पेज खुलेगा। यहाँ दूल्हा-दुल्हन का नाम, कार्यक्रम की तारीख और अपना <b>UPI QR Code</b> सेट करें।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="setup.jpg" alt="Setup Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Setup Screen Preview</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Dashboard -->
+            <div class="accordion-group" id="sec-dashboard">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>3️⃣ Dashboard (डैशबोर्ड)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-dashboard')"><i class="fas fa-link"></i> Link</button>
+                        <h3>🏠 यह क्या करता है?</h3>
+                        <p>इस पेज पर आपको कुल मेहमानों, प्राप्त शगुन, कैश बैलेंस और यूपीआई कलेक्शन की पूरी जानकारी एक ही नजर में मिल जाती है।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="home.jpg" alt="Dashboard Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Dashboard Preview</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Shagun Entry -->
+            <div class="accordion-group" id="sec-shagun">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>4️⃣ Shagun Entry (शगुन एंट्री)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-shagun')"><i class="fas fa-link"></i> Link</button>
+                        <h3>💰 यह क्या करता है?</h3>
+                        <p>शादी में आने वाले प्रत्येक मेहमान का नाम और शगुन दर्ज करने के लिए इसका उपयोग किया जाता है।</p>
+                        
+                        <div class="flow-steps">
+                            <div class="flow-step-item">Step 1: Guest Name लिखें</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step-item">Step 2: Village चुनें</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step-item">Step 3: Amount लिखें</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step-item">Step 4: Cash या UPI चुनें</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step-item">Step 5: Save पर क्लिक करें</div>
+                        </div>
+
+                        <div class="alert-box alert-tip">
+                            <i class="fas fa-check-circle"></i>
+                            <div><b>🟢 Tip:</b> अगर इंटरनेट बंद हो जाए, तब भी आपकी एंट्री सुरक्षित रहेगी। इंटरनेट वापस आते ही डेटा अपने आप ऑनलाइन सेव हो जाएगा।</div>
+                        </div>
+
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="entry.jpg" alt="Shagun Entry Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Shagun Entry Screen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Reports -->
+            <div class="accordion-group" id="sec-reports">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>5️⃣ Reports & Export (रिपोर्ट्स)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-reports')"><i class="fas fa-link"></i> Link</button>
+                        <h3>📊 यह क्या करता है?</h3>
+                        <p>सभी मेहमानों की सूचियों को देखने, खोजने तथा Excel या PDF फॉर्मेट में डाउनलोड करने के लिए रिपोर्ट पेज का उपयोग होता है।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="report.jpg" alt="Report Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Report & Export Screen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Cash Counter -->
+            <div class="accordion-group" id="sec-counter">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>6️⃣ Cash Counter (कैश काउंटर)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-counter')"><i class="fas fa-link"></i> Link</button>
+                        <h3>💵 यह क्या करता है?</h3>
+                        <p>दिन के अंत में फिजिकल नोटों (₹500 से ₹1) की गिनती करके सिस्टम के कुल अमाउंट से मिलान करने के लिए।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="cash counter.jpg" alt="Cash Counter Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Cash Counter Screen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Cash Book -->
+            <div class="accordion-group" id="sec-cashbook">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>7️⃣ Cash Book (कैश इन / कैश आउट)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-cashbook')"><i class="fas fa-link"></i> Link</button>
+                        <h3>📒 यह क्या करता है?</h3>
+                        <p>शादी के दौरान होने वाले दैनिक खर्चों (Cash Out) और अतिरिक्त प्राप्तियों (Cash In) को ट्रैक करने के लिए।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="cash book.jpg" alt="Cash Book Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Cash Book Screen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Super Admin -->
+            <div class="accordion-group" id="sec-admin">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>8️⃣ Super Admin (सुपर एडमिन)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-admin')"><i class="fas fa-link"></i> Link</button>
+                        <h3>👑 यह क्या करता है?</h3>
+                        <p>डेटाबेस रिकॉर्ड प्रबंधित करने और फुल डेटा कंट्रोल के लिए। 🟡 <b>Note:</b> एडमिन का पासवर्ड आपको आपकी रजिस्टर्ड ईमेल पर भेजी जाएगी।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="admin.jpg" alt="Admin Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Super Admin Dashboard</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. Security & FAQ -->
+            <div class="accordion-group" id="sec-security">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>9️⃣ FAQ & Security (सामान्य प्रश्न)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="faq-item searchable-item" style="margin-bottom:10px; border:1px solid var(--card-border); border-radius:8px; padding:12px; background:var(--bg-color);">
+                        <h4 style="color:#800000; font-size:13px; margin-bottom:4px;">❓ क्या मेरा डेटा सुरक्षित है?</h4>
+                        <p style="font-size:12px;">हाँ। आपका डेटा केवल आपके अकाउंट से जुड़ा रहता है। कोई दूसरा उपयोगकर्ता आपका डेटा नहीं देख सकता।</p>
+                    </div>
+                    <div class="faq-item searchable-item" style="margin-bottom:10px; border:1px solid var(--card-border); border-radius:8px; padding:12px; background:var(--bg-color);">
+                        <h4 style="color:#800000; font-size:13px; margin-bottom:4px;">❓ QR Code क्यों नहीं दिख रहा?</h4>
+                        <p style="font-size:12px;">सुनिश्चित करें कि सेटअप पेज पर QR इमेज सही से अपलोड की गई है।</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. Contact Us -->
+            <div class="accordion-group" id="sec-contact">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>🔟 Need Help & Contact</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <h3>💬 सहायता और संपर्क</h3>
+                        <p>Need Help? Contact us anytime.</p>
+                        <p style="margin-top: 4px; font-size: 12px; font-weight: bold; color: #800000;">Support Hours: 09:00 AM – 08:00 PM</p>
+                        <a href="https://wa.me/919931516195?text=Hello%20Ji,%20I%20need%20help%20with%20SGUNMS." target="_blank" class="whatsapp-btn-large">
+                            <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                        </a>
+                        <ul style="margin-top: 10px;">
+                            <li><b>Email:</b> <a href="mailto:Sirplzwait@gmail.com" style="color: #800000;">Sirplzwait@gmail.com</a></li>
+                            <li><b>Website:</b> <a href="https://www.sgunms.in" target="_blank" style="color: #800000;">www.sgunms.in</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Get Started & Login Action Box -->
+            <div class="action-buttons-box">
+                <h3>Ready to manage your event digitally?</h3>
+                <div class="manual-action-btns">
+                    <a onclick="showComingSoon()" class="get-started-btn">🚀 Get Started</a>
+                    <a onclick="showComingSoon()" class="login-portal-btn">🔐 Login</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Footer Bar (Home Page Style) -->
+<div class="footer-area">
+    <div class="footer-left">
+        🌐 <strong>www.sgunms.in</strong>
+    </div>
+    <div class="footer-center">
+        <marquee scrollamount="4">
+            🌱 बेटी बचाओ • 📚 शिक्षा सबसे बड़ा धन है • 🌳 एक पेड़ अवश्य लगाएं • 💧 जल है तो कल है • ❤️ रक्तदान महादान
+        </marquee>
+    </div>
+</div>
+
+<!-- Lightbox Modal for Zooming Images -->
+<div id="lightbox" class="lightbox" onclick="this.style.display='none'">
+    <img id="lightboxImg" alt="Zoomed Preview">
+</div>
+
+<script>
+function showComingSoon() {
+    Swal.fire({
+        icon: 'info',
+        title: 'Coming Soon! 🚀',
+        text: 'Login & Account features will be available soon in the next update.',
+        confirmButtonColor: '#800000',
+        confirmButtonText: 'OK'
+    });
+}
+
+function toggleAccordion(header) {
+    const group = header.parentElement;
+    const isActive = group.classList.contains('active');
+    if (!isActive) {
+        group.classList.add('active');
+    } else {
+        group.classList.remove('active');
+    }
+}
+
+function openSection(id) {
+    document.querySelectorAll('.accordion-group').forEach(g => g.classList.remove('active'));
+    const target = document.getElementById(id);
+    if(target) {
+        target.classList.add('active');
+        target.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function toggleTheme() {
+    const body = document.body;
+    const btn = document.getElementById('themeToggleBtn');
+    if(body.getAttribute('data-theme') === 'light') {
+        body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('manualTheme', 'dark');
+        btn.innerHTML = '<i class="fas fa-sun"></i> <span>Light</span>';
+    } else {
+        body.setAttribute('data-theme', 'light');
+        localStorage.setItem('manualTheme', 'light');
+        btn.innerHTML = '<i class="fas fa-moon"></i> <span>Dark</span>';
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('manualTheme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+    const btn = document.getElementById('themeToggleBtn');
+    if(savedTheme === 'dark') {
+        btn.innerHTML = '<i class="fas fa-sun"></i> <span>Light</span>';
+    } else {
+        btn.innerHTML = '<i class="fas fa-moon"></i> <span>Dark</span>';
+    }
+});
+
+function copyLink(sectionId) {
+    const url = window.location.href.split('#')[0] + '#' + sectionId;
+    navigator.clipboard.writeText(url).then(() => {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Link Copied!',
+            showConfirmButton: false,
+            timer: 1200
+        });
+    });
+}
+
+function searchManual() {
+    let input = document.getElementById('manualSearch').value.toLowerCase().trim();
+    let items = document.querySelectorAll('.searchable-item');
+    let groups = document.querySelectorAll('.accordion-group');
+    let noResults = document.getElementById('noResults');
+
+    if(input === "") {
+        groups.forEach(g => g.classList.remove('active'));
+        items.forEach(item => item.style.display = "");
+        noResults.style.display = "none";
+        return;
+    }
+
+    let foundCount = 0;
+    items.forEach(item => {
+        let text = item.innerText.toLowerCase();
+        let group = item.closest('.accordion-group');
+        if(text.includes(input)) {
+            item.style.display = "";
+            group.classList.add('active');
+            foundCount++;
+        } else {
+            item.style.display = "none";
+        }
+    });
+
+    if(foundCount === 0) {
+        noResults.style.display = "block";
+        groups.forEach(g => g.classList.remove('active'));
+    } else {
+        noResults.style.display = "none";
+    }
+}
+
+function zoomImage(imgElement) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    lightboxImg.src = imgElement.src;
+    lightbox.style.display = 'flex';
+}
+
+// Active Sidebar Link on Scroll
+window.addEventListener('scroll', () => {
+    let scrollPos = window.scrollY;
+    document.querySelectorAll('.accordion-group').forEach(group => {
+        let top = group.offsetTop - 120;
+        let height = group.offsetHeight;
+        let id = group.getAttribute('id');
+        let link = document.querySelector(`.sidebar ul li a[href="#${id}"]`);
+        
+        if(scrollPos >= top && scrollPos < top + height) {
+            document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
+            if(link) link.classList.add('active');
+        }
+    });
+});
+</script>
+</body>
+</html>
