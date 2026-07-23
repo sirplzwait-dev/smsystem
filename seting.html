@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Sagun Setup - Update Details</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
+    <!-- Flatpickr Library for Custom Modern Calendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+        *{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+        body{ 
+            background: linear-gradient(135deg, #600000, #800000, #b38f00, #ffd700); 
+            background-size: 300% 300%;
+            animation: gradientBG 10s ease infinite;
+            min-height: 100vh; 
+            width: 100vw; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 15px; 
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container{ 
+            width: 100%; 
+            max-width: 600px; 
+            background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(10px);
+            padding: 20px 25px; 
+            border-radius: 22px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3), 0 0 0 2px rgba(255, 215, 0, 0.4); 
+        }
+
+        h2 { 
+            text-align: center; 
+            color: #800000; 
+            font-size: 20px; 
+            font-weight: 700;
+            margin-bottom: 12px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px dashed #ffd700;
+            padding-bottom: 6px;
+        }
+
+        label { 
+            display: block; 
+            margin-top: 8px; 
+            font-weight: 600; 
+            color: #444; 
+            font-size: 13px; 
+        }
+
+        input[type="text"], select { 
+            width: 100%; 
+            padding: 9px 12px; 
+            margin-top: 3px; 
+            border: 1.5px solid #d4af37; 
+            border-radius: 8px; 
+            outline: none; 
+            font-size: 14px; 
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: #800000;
+            box-shadow: 0 0 8px rgba(128, 0, 0, 0.2);
+        }
+        
+        .custom-calendar {
+            width: 100%;
+            padding: 9px 12px;
+            margin-top: 3px;
+            border: 1.5px solid #d4af37;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            background: #fffcfc;
+            color: #800000;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .grid-row { display: flex; gap: 12px; }
+        .grid-col { flex: 1; }
+
+        .image-upload-wrapper { 
+            position: relative; 
+            width: 85px; 
+            height: 85px; 
+            margin: 8px auto; 
+            border: 2px dashed #800000; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: #fff8f8; 
+            transition: all 0.3s ease;
+        }
+
+        .image-upload-wrapper:hover {
+            transform: scale(1.05);
+            border-color: #d4af37;
+            background: #fff0f0;
+        }
+
+        .image-upload-wrapper img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+        
+        .section-box { 
+            background: linear-gradient(135deg, #fffcfc, #fff5f5); 
+            border: 1px solid #f2d6d6; 
+            padding: 10px 14px; 
+            border-radius: 12px; 
+            margin-top: 10px; 
+        }
+
+        .section-box h3 { 
+            color: #800000; 
+            font-size: 13px; 
+            font-weight: 700;
+            margin-bottom: 4px; 
+            border-bottom: 1.5px solid #ffd700; 
+            padding-bottom: 2px; 
+        }
+        
+        .flex-inputs { display: flex; gap: 10px; align-items: center; }
+
+        .cropModal{ position:fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; background:rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index:9999; }
+        .cropBox{ width:95%; max-width:420px; background:#fff; padding:18px; border-radius:18px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        .cropBox img{ display:block; width:100%; max-height:50vh; object-fit:contain; border-radius: 8px; }
+        .tools{ display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
+        .tools button{ flex:1; padding:9px; border:none; background:#800000; color:#fff; cursor:pointer; border-radius:6px; font-weight: bold; font-size: 12px; }
+        
+        .btn-container { display: flex; gap: 10px; margin-top: 15px; }
+        .action-btn { 
+            flex: 1;
+            padding: 12px; 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 14px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+        #saveBtn { background: linear-gradient(135deg, #800000, #a00000); color: #fff; }
+        #saveBtn:hover { background: linear-gradient(135deg, #600000, #800000); }
+        #backBtn { background: #ffd700; color: #800000; }
+        #backBtn:hover { background: #e5c100; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>⚙️ सेटअप सेटिंग्स (बदलाव करें)</h2>
+
+    <div>
+        <label>समारोह का प्रकार चुनें</label>
+        <select id="eventType" onchange="updateEventForm()">
+            <option value="boy">लड़की की शादी (बरात स्वागत)</option>
+            <option value="groom_tilak">लड़के का तिलक समारोह</option>
+        </select>
+    </div>
+
+    <div id="formContainer" class="grid-row">
+        <div class="section-box grid-col" id="firstSection">
+            <h3 id="firstTitle">🤵 वर (दूल्हा)</h3>
+            <label id="firstNameLabel">दूल्हा का नाम</label>
+            <input type="text" id="firstName" placeholder="नाम लिखें">
+
+            <div class="image-upload-wrapper" onclick="document.getElementById('firstPhoto').click()">
+                <img id="firstPreview" src="https://placehold.co/85x85?text=Photo">
+            </div>
+            <input type="file" id="firstPhoto" accept="image/*" style="display:none">
+        </div>
+
+        <div class="section-box grid-col" id="secondSection">
+            <h3 id="secondTitle">👰 वधू (दुल्हन)</h3>
+            <label id="secondNameLabel">दुल्हन का नाम</label>
+            <input type="text" id="secondName" placeholder="नाम लिखें">
+
+            <div class="image-upload-wrapper" onclick="document.getElementById('secondPhoto').click()">
+                <img id="secondPreview" src="https://placehold.co/85x85?text=Photo">
+            </div>
+            <input type="file" id="secondPhoto" accept="image/*" style="display:none">
+        </div>
+    </div>
+
+    <div class="section-box">
+        <h3>✨ अन्य मुख्य जानकारी & QR Code</h3>
+        <div class="flex-inputs">
+            <div style="flex: 2;">
+                <label>स्वागत करने वाले का नाम (निवेदक)</label>
+                <input type="text" id="welcomeBy" placeholder="निवेदक का नाम">
+            </div>
+            <div style="flex: 1; text-align: center;">
+                <label>पेमेंट QR</label>
+                <div class="image-upload-wrapper" style="width: 55px; height: 55px; margin: 2px auto;" onclick="document.getElementById('qrPhoto').click()">
+                    <img id="qrPreview" src="https://placehold.co/55x55?text=QR">
+                </div>
+                <input type="file" id="qrPhoto" accept="image/*" style="display:none">
+            </div>
+        </div>
+
+        <div>
+            <label>📅 कार्यक्रम की तिथि चुनें</label>
+            <input type="text" id="eventDate" class="custom-calendar" placeholder="तारीख चुनें">
+        </div>
+    </div>
+    
+    <div class="btn-container">
+        <button id="backBtn" onclick="window.location.href='home.html'">🔙 वापस जाएं</button>
+        <button id="saveBtn" onclick="submitSetup()">💾 अपडेट सेव करें</button>
+    </div>
+</div>
+
+<div class="cropModal" id="cropModal">
+    <div class="cropBox">
+        <img id="cropImage">
+        <div class="tools">
+            <button onclick="cropper.zoom(0.1)">＋ Zoom</button>
+            <button onclick="cropper.zoom(-0.1)">－ Zoom</button>
+            <button onclick="cropper.rotate(-45)">⟲ Left</button>
+            <button onclick="cropper.rotate(45)">⟳ Right</button>
+            <button id="cropSave" style="background:#27ae60;">✔ Save</button>
+            <button onclick="document.getElementById('cropModal').style.display='none'" style="background:#c0392b;">✖ Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const fp = flatpickr("#eventDate", {
+        dateFormat: "d-m-Y",
+        altInput: true,
+        altFormat: "F j, Y",
+        allowInput: true
+    });
+
+    const sb = window.supabase.createClient("https://rdlliurzgwwfjscgwssa.supabase.co", "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");
+    let cropper, currentPreview, croppedFirst = null, croppedSecond = null, croppedQR = null;
+
+    window.onload = async () => {
+        await loadExistingData();
+    };
+
+    async function loadExistingData() {
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) { location.href = "login.html"; return; }
+
+        const { data, error } = await sb.from("setup").select("*").eq("user_id", user.id).maybeSingle();
+        if (error || !data) return;
+
+        document.getElementById("eventType").value = data.wedding_type || "boy";
+        updateEventForm();
+
+        if (data.wedding_type === "boy") {
+            document.getElementById("firstName").value = data.bride_name || "";
+            document.getElementById("secondName").value = data.groom_name || "";
+            if(data.bride_photo_url) document.getElementById("firstPreview").src = data.bride_photo_url;
+            if(data.groom_photo_url) document.getElementById("secondPreview").src = data.groom_photo_url;
+        } else {
+            document.getElementById("firstName").value = data.groom_name || "";
+            document.getElementById("secondName").value = data.bride_name || "";
+            if(data.groom_photo_url) document.getElementById("firstPreview").src = data.groom_photo_url;
+            if(data.bride_photo_url) document.getElementById("secondPreview").src = data.bride_photo_url;
+        }
+
+        document.getElementById("welcomeBy").value = data.welcome_name || "";
+        if (data.event_date) fp.setDate(data.event_date, true);
+        if (data.qr_url) document.getElementById("qrPreview").src = data.qr_url;
+    }
+
+    function updateEventForm() {
+        const type = document.getElementById("eventType").value;
+        const container = document.getElementById("formContainer");
+        const firstSec = document.getElementById("firstSection");
+        const secondSec = document.getElementById("secondSection");
+
+        const firstTitle = document.getElementById("firstTitle");
+        const firstNameLabel = document.getElementById("firstNameLabel");
+        const secondTitle = document.getElementById("secondTitle");
+        const secondNameLabel = document.getElementById("secondNameLabel");
+
+        if (type === "boy") {
+            container.insertBefore(firstSec, secondSec);
+            firstTitle.innerText = "👰 वधू पक्ष (दुल्हन)";
+            firstNameLabel.innerText = "दुल्हन का नाम";
+            secondTitle.innerText = "🤵 बरात पक्ष (दूल्हा)";
+            secondNameLabel.innerText = "दूल्हा का नाम";
+        } else {
+            container.insertBefore(secondSec, firstSec);
+            firstTitle.innerText = "🤵 वर पक्ष (लड़का)";
+            firstNameLabel.innerText = "दूल्हा का नाम";
+            secondTitle.innerText = "👰 वधू पक्ष (लड़की)";
+            secondNameLabel.innerText = "लड़की पक्ष का नाम";
+        }
+    }
+
+    async function openCrop(file, previewId) {
+        if (!file) return;
+        if (file.type === "image/heic") {
+            const blob = await heic2any({blob: file, toType: "image/jpeg"});
+            file = new File([blob], file.name, {type: "image/jpeg"});
+        }
+        currentPreview = previewId;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            document.getElementById("cropModal").style.display = "flex";
+            const img = document.getElementById("cropImage");
+            img.src = e.target.result;
+            if (cropper) cropper.destroy();
+            cropper = new Cropper(img, { aspectRatio: 1, viewMode: 1 });
+        };
+        reader.readAsDataURL(file);
+    }
+
+    document.getElementById("firstPhoto").onchange = (e) => openCrop(e.target.files[0], "firstPreview");
+    document.getElementById("secondPhoto").onchange = (e) => openCrop(e.target.files[0], "secondPreview");
+    document.getElementById("qrPhoto").onchange = (e) => openCrop(e.target.files[0], "qrPreview");
+
+    document.getElementById("cropSave").onclick = async () => {
+        const canvas = cropper.getCroppedCanvas({ width: 300, height: 300 });
+        canvas.toBlob(async (blob) => {
+            const compressed = await imageCompression(blob, { maxSizeMB: 0.08, maxWidthOrHeight: 300, fileType: 'image/jpeg' });
+            const jpgFile = new File([compressed], "image.jpg", { type: "image/jpeg" });
+            
+            document.getElementById(currentPreview).src = URL.createObjectURL(jpgFile);
+            
+            if (currentPreview === "firstPreview") croppedFirst = jpgFile;
+            else if (currentPreview === "secondPreview") croppedSecond = jpgFile;
+            else if (currentPreview === "qrPreview") croppedQR = jpgFile;
+
+            document.getElementById("cropModal").style.display = "none";
+        }, "image/jpeg", 0.8);
+    };
+
+    async function submitSetup() {
+        const eventType = document.getElementById("eventType").value;
+        const name1 = document.getElementById("firstName").value.trim();
+        const name2 = document.getElementById("secondName").value.trim();
+        const welcomeBy = document.getElementById("welcomeBy").value.trim();
+        const eventDate = document.getElementById("eventDate").value.trim();
+
+        if(!name1 || !name2 || !welcomeBy) {
+            return Swal.fire("त्रुटि", "कृपया सभी आवश्यक नाम भरें!", "error");
+        }
+
+        Swal.fire({
+            title: 'डेटा अपडेट हो रहा है...',
+            html: 'कृपया प्रतीक्षा करें...',
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading(); }
+        });
+
+        try {
+            const { data: { user } } = await sb.auth.getUser();
+            if (!user) { location.href = "login.html"; return; }
+
+            const { data: existing } = await sb.from("setup").select("*").eq("user_id", user.id).maybeSingle();
+
+            let groomPhotoUrl = existing ? existing.groom_photo_url : null;
+            let bridePhotoUrl = existing ? existing.bride_photo_url : null;
+            let qrUrl = existing ? existing.qr_url : null;
+
+            if (croppedFirst) {
+                const path = `${user.id}/first_${Date.now()}.jpg`;
+                await sb.storage.from("photos").upload(path, croppedFirst, { upsert: true, contentType: 'image/jpeg' });
+                const urlRes = sb.storage.from("photos").getPublicUrl(path);
+                if (eventType === "boy") bridePhotoUrl = urlRes.data.publicUrl;
+                else groomPhotoUrl = urlRes.data.publicUrl;
+            }
+
+            if (croppedSecond) {
+                const path = `${user.id}/second_${Date.now()}.jpg`;
+                await sb.storage.from("photos").upload(path, croppedSecond, { upsert: true, contentType: 'image/jpeg' });
+                const urlRes = sb.storage.from("photos").getPublicUrl(path);
+                if (eventType === "boy") groomPhotoUrl = urlRes.data.publicUrl;
+                else bridePhotoUrl = urlRes.data.publicUrl;
+            }
+
+            if (croppedQR) {
+                const path = `${user.id}/qr_${Date.now()}.jpg`;
+                await sb.storage.from("photos").upload(path, croppedQR, { upsert: true, contentType: 'image/jpeg' });
+                qrUrl = sb.storage.from("photos").getPublicUrl(path).data.publicUrl;
+            }
+
+            let groomName = (eventType === "boy") ? name2 : name1;
+            let brideName = (eventType === "boy") ? name1 : name2;
+
+            const payload = {
+                user_id: user.id,
+                wedding_type: eventType,
+                event_date: eventDate,
+                bride_name: brideName,
+                groom_name: groomName,
+                welcome_name: welcomeBy,
+                groom_photo_url: groomPhotoUrl,
+                bride_photo_url: bridePhotoUrl,
+                qr_url: qrUrl
+            };
+
+            let error;
+            if (existing) {
+                const res = await sb.from("setup").update(payload).eq("user_id", user.id);
+                error = res.error;
+            } else {
+                const res = await sb.from("setup").insert([payload]);
+                error = res.error;
+            }
+
+            if (error) throw error;
+
+            Swal.fire({
+                title: 'सफल!',
+                text: 'सेटअप सफलतापूर्वक अपडेट कर दिया गया है।',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+            setTimeout(() => {
+                window.location.replace("home.html");
+            }, 1500);
+
+        } catch (err) {
+            Swal.fire("त्रुटि", err.message, "error");
+        }
+    }
+</script>
+</body>
+</html>
