@@ -111,9 +111,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         
         .card { 
-            width: 100vw; height: 100vh; 
-            position: relative; display: flex; flex-direction: column; align-items: center; 
+            width: 100vw; 
+            min-height: 100vh; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
             background: linear-gradient(135deg, #ffffff 0%, #fff7cc 50%, #ffd700 100%);
+            padding-bottom: 50px;
         }
 
         .decor-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
@@ -125,27 +130,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         .corner-flower { position: absolute; bottom: 0; width: 200px; }
         .left-corner { left: 0; } .right-corner { right: 0; transform: scaleX(-1); }
 
-        .main-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 5px; }
+        .main-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 10px; }
         
         .header-section { margin-top: 10px; text-align: center; }
-        .ganesh { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #800000; }
-        .title { font-size: 2rem; color: #800000; font-family: 'cursive', cursive; margin: 2px 0; }
-        .date-text { font-size: 1.2rem; color: #800000; margin-bottom: 10px; font-weight: bold; }
+        .ganesh { width: 65px; height: 65px; border-radius: 50%; border: 2px solid #800000; }
+        .title { font-size: 1.8rem; color: #800000; font-family: 'cursive', cursive; margin: 2px 0; }
+        .date-text { font-size: 1.1rem; color: #800000; margin-bottom: 5px; font-weight: bold; }
         
-        .msg-container { height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .welcome-msg { font-size: 1.1rem; font-weight: bold; text-align: center; line-height: 1.2; color: #333; }
-        .signature { font-size: 1.1rem; color: #d84315; font-weight: bold; font-style: italic; margin-top: 5px; }
+        .msg-container { height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .welcome-msg { font-size: 1rem; font-weight: bold; text-align: center; line-height: 1.2; color: #333; }
+        .signature { font-size: 1rem; color: #d84315; font-weight: bold; font-style: italic; margin-top: 3px; }
 
-        .couple-section { display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 20px; }
-        .photo-frame { width: 220px; height: 220px; border: 4px solid #800000; border-radius: 50%; object-fit: cover; }
-        .name-label { font-size: 0.9rem; color: #5d4037; font-weight: bold; margin-bottom: 2px; }
-        .name { font-size: 1.3rem; color: #800000; font-family: 'Arial Black', sans-serif; text-transform: uppercase; }
-        .sang-elegant { font-size: 2.5rem; color: #d84315; font-family: 'cursive', cursive; font-weight: bold; }
+        .couple-section { display: flex; justify-content: center; align-items: center; gap: 25px; margin-top: 15px; text-align: center; }
+        .couple-box { display: flex; flex-direction: column; align-items: center; }
+        .photo-frame { width: 180px; height: 180px; border: 4px solid #800000; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .name-label { font-size: 0.85rem; color: #5d4037; font-weight: bold; margin-top: 6px; }
+        .name { font-size: 1.1rem; color: #800000; font-family: 'Arial Black', sans-serif; text-transform: uppercase; margin-top: 2px; }
+        .sang-elegant { font-size: 2.2rem; color: #d84315; font-family: 'cursive', cursive; font-weight: bold; }
         
        .form-section{
             display:flex;
-            gap:5px;
-            background:rgba(255,255,255,0.6);
+            gap:8px;
+            background:rgba(255,255,255,0.7);
             padding:12px;
             border:1px solid #800000;
             border-radius:12px;
@@ -153,17 +159,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             flex-wrap:wrap;
             width:95%;
             max-width:900px;
-            margin-top:20px;
+            margin-top:15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .input-box {
             padding: 5px;
             border-radius: 6px;
             border: 1px solid #800000;
-            width: 120px;
-            height: 35px;
+            width: 140px;
+            height: 38px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             color: #000;
             font-size: 0.9rem;
             text-transform: uppercase;
@@ -173,14 +180,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             outline:none;
             border:3px solid #ff0000;
             background:#ffff66;
-            box-shadow:0 0 15px #ff0000;
+            box-shadow:0 0 12px #ff0000;
         }
 
         .submit-btn{
             background:#800000;
             color:#ffffff;
             width:120px;
-            height:35px;
+            height:38px;
             font-weight:bold;
             cursor:pointer;
             border:1px solid #800000;
@@ -194,7 +201,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             padding:12px 25px;
             background:linear-gradient(45deg,#800000,#c62828);
             color:#fff;
-            font-size:18px;
+            font-size:16px;
             font-weight:bold;
             border-radius:30px;
             box-shadow:0 4px 15px rgba(0,0,0,0.3);
@@ -209,18 +216,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         .footer-area{
             width:100%;
-            height:40px;
+            height:45px;
             background:#800000;
             color:#fff;
-            margin-top:auto;
+            position: fixed;
+            bottom: 0;
+            left: 0;
             display:flex;
             align-items:center;
+            z-index: 1000;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
         }
 
         .footer-left{
             padding:0 10px;
             white-space:nowrap;
-            font-size:13px;
+            font-size:12px;
             font-weight:bold;
         }
 
@@ -231,7 +242,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         .footer-center marquee{
             color:#fff;
-            font-size:13px;
+            font-size:12px;
             font-weight:bold;
         }
 
@@ -244,8 +255,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             color:#800000;
             border:none;
             border-radius:4px;
-            padding:4px 10px;
-            font-size:12px;
+            padding:5px 10px;
+            font-size:11px;
             font-weight:bold;
             cursor:pointer;
         }
@@ -264,19 +275,56 @@ document.addEventListener("DOMContentLoaded", async () => {
                 flex-direction:column;
                 align-items:center;
                 background:linear-gradient(135deg,#ffffff 0%,#fff7cc 50%,#ffd700 100%);
+                padding-bottom: 60px;
             }
-            .title{ font-size:1.5rem; }
-            .date-text{ font-size:1rem; }
-            .couple-section{ flex-direction:column; gap:10px; margin-top:10px; }
-            .photo-frame{ width:140px; height:140px; }
-            .sang-elegant{ font-size:2rem; }
-            .form-section{ width:95%; }
-            .input-box, .submit-btn{ width:100%; }
-            .hanging-image{ width:80px; }
-            .side-flower{ width:90px; }
-            .corner-flower{ width:90px; }
-            .footer-left{ width:auto; font-size:10px; }
-            .footer-right{ width:auto; }
+            .title{ font-size:1.4rem; }
+            .date-text{ font-size:0.95rem; }
+            
+            /* मोबाइल के लिए वर-वधू लेआउट को एकदम सही व्यवस्थित करना */
+            .couple-section{ 
+                flex-direction: column; 
+                gap: 8px; 
+                margin-top: 10px; 
+            }
+            .photo-frame{ 
+                width: 115px; 
+                height: 115px; 
+                border-width: 3px;
+            }
+            .sang-elegant{ 
+                font-size: 1.5rem; 
+                margin: -2px 0;
+            }
+            .name-label { font-size: 0.75rem; }
+            .name { font-size: 0.95rem; }
+
+            .form-section{ 
+                width: 96%; 
+                padding: 10px;
+                gap: 6px;
+                margin-top: 12px;
+            }
+            
+            #guestState, #guestDist {
+                display: none !important;
+            }
+
+            .input-box, .submit-btn{ 
+                width: 48%; 
+                height: 36px;
+                font-size: 0.85rem;
+            }
+            
+            #guestName {
+                width: 100%;
+            }
+
+            .hanging-image{ width:70px; }
+            .side-flower{ width:75px; }
+            .corner-flower{ width:75px; }
+            
+            .footer-left{ font-size:9px; padding:0 5px; }
+            .footer-right{ padding-right:5px; }
         }
     </style>
 </head>
@@ -312,13 +360,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
             
             <div class="couple-section" id="coupleContainer">
-                <div>
+                <div class="couple-box">
                     <img src="groom.jpg" class="photo-frame" id="firstPhoto">
                     <div class="name-label" id="firstLabel">चिरंजीवी</div>
                     <div class="name" id="firstName">अभिषेक कुमार</div>
                 </div>
                 <div class="sang-elegant">संग</div>
-                <div>
+                <div class="couple-box">
                     <img src="bride.jpg" class="photo-frame" id="secondPhoto">
                     <div class="name-label" id="secondLabel">आयुष्मती</div>
                     <div class="name" id="secondName">अचल कुमारी</div>
@@ -489,8 +537,8 @@ async function saveGuest() {
 
     const name = document.getElementById('guestName').value.toUpperCase();
     const amount = document.getElementById('guestAmount').value;
-    const state = document.getElementById('guestState').value;
-    const dist = document.getElementById('guestDist').value;
+    const state = document.getElementById('guestState').value || "Bihar";
+    const dist = document.getElementById('guestDist').value || "Gopalganj";
     const village = document.getElementById('guestVillage').value.toUpperCase();
     const mode = document.getElementById('paymentMode').value;
 	
@@ -547,7 +595,6 @@ async function loadSetup(){
             const res = await sb.from("setup").select("*").eq("user_id", user.id).single();
             if (res.data) {
                 data = res.data;
-                // इंटरनेट पर मिलने पर डेटा को लोकल स्टोरेज में सेव कर लें ताकि ऑफलाइन में काम आए
                 localStorage.setItem("offlineSetupData", JSON.stringify(data));
             }
         }
@@ -555,7 +602,6 @@ async function loadSetup(){
         console.log("Network error or offline, loading from local storage.");
     }
 
-    // अगर ऑनलाइन डेटा नहीं मिला (ऑफलाइन हैं), तो लोकल स्टोरेज से लोड करें
     if (!data) {
         const localData = localStorage.getItem("offlineSetupData");
         if (localData) {
@@ -576,7 +622,7 @@ async function loadSetup(){
     const firstPhoto = document.getElementById("firstPhoto");
     const firstLabel = document.getElementById("firstLabel");
     const firstName = document.getElementById("firstName");
-    
+	
     const secondPhoto = document.getElementById("secondPhoto");
     const secondLabel = document.getElementById("secondLabel");
     const secondName = document.getElementById("secondName");
@@ -607,7 +653,6 @@ async function loadSetup(){
         document.getElementById("upiQrImage").src = data.qr_url;
     }
 
-    // डेटा लोड होते ही लोडिंग स्क्रीन को हटा दें
     const loader = document.getElementById("pageLoader");
     if(loader) {
         loader.style.opacity = "0";

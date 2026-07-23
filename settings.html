@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sagun Setup - Update Details</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -15,12 +15,15 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
         *{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
         body{ 
             background: linear-gradient(135deg, #600000, #800000, #b38f00, #ffd700); 
             background-size: 300% 300%;
             animation: gradientBG 10s ease infinite;
-            min-height: 100vh; 
-            width: 100vw; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
@@ -35,22 +38,23 @@
 
         .container{ 
             width: 100%; 
-            max-width: 600px; 
-            background: rgba(255, 255, 255, 0.96); 
+            max-width: 550px; 
+            background: rgba(255, 255, 255, 0.98); 
             backdrop-filter: blur(10px);
-            padding: 20px 25px; 
-            border-radius: 22px; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3), 0 0 0 2px rgba(255, 215, 0, 0.4); 
+            padding: 20px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 0 2px rgba(255, 215, 0, 0.4); 
+            margin: auto;
         }
 
         h2 { 
             text-align: center; 
             color: #800000; 
-            font-size: 20px; 
+            font-size: 18px; 
             font-weight: 700;
             margin-bottom: 12px; 
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             border-bottom: 2px dashed #ffd700;
             padding-bottom: 6px;
         }
@@ -60,17 +64,17 @@
             margin-top: 8px; 
             font-weight: 600; 
             color: #444; 
-            font-size: 13px; 
+            font-size: 12px; 
         }
 
         input[type="text"], select { 
             width: 100%; 
-            padding: 9px 12px; 
+            padding: 8px 10px; 
             margin-top: 3px; 
             border: 1.5px solid #d4af37; 
             border-radius: 8px; 
             outline: none; 
-            font-size: 14px; 
+            font-size: 13px; 
             background: #fff;
             transition: all 0.3s ease;
         }
@@ -82,12 +86,12 @@
         
         .custom-calendar {
             width: 100%;
-            padding: 9px 12px;
+            padding: 8px 10px;
             margin-top: 3px;
             border: 1.5px solid #d4af37;
             border-radius: 8px;
             outline: none;
-            font-size: 14px;
+            font-size: 13px;
             background: #fffcfc;
             color: #800000;
             font-weight: 700;
@@ -95,16 +99,16 @@
             text-align: center;
         }
 
-        .grid-row { display: flex; gap: 12px; }
+        .grid-row { display: flex; gap: 10px; }
         .grid-col { flex: 1; }
 
         .image-upload-wrapper { 
             position: relative; 
-            width: 85px; 
-            height: 85px; 
-            margin: 8px auto; 
+            width: 75px; 
+            height: 75px; 
+            margin: 6px auto; 
             border: 2px dashed #800000; 
-            border-radius: 12px; 
+            border-radius: 10px; 
             cursor: pointer; 
             display: flex; 
             justify-content: center; 
@@ -119,49 +123,56 @@
             background: #fff0f0;
         }
 
-        .image-upload-wrapper img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+        .image-upload-wrapper img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
         
         .section-box { 
             background: linear-gradient(135deg, #fffcfc, #fff5f5); 
             border: 1px solid #f2d6d6; 
-            padding: 10px 14px; 
+            padding: 10px 12px; 
             border-radius: 12px; 
             margin-top: 10px; 
         }
 
         .section-box h3 { 
             color: #800000; 
-            font-size: 13px; 
+            font-size: 12px; 
             font-weight: 700;
             margin-bottom: 4px; 
             border-bottom: 1.5px solid #ffd700; 
             padding-bottom: 2px; 
+            text-align: center;
         }
         
         .flex-inputs { display: flex; gap: 10px; align-items: center; }
 
         .cropModal{ position:fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; background:rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index:9999; }
-        .cropBox{ width:95%; max-width:420px; background:#fff; padding:18px; border-radius:18px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
-        .cropBox img{ display:block; width:100%; max-height:50vh; object-fit:contain; border-radius: 8px; }
-        .tools{ display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
-        .tools button{ flex:1; padding:9px; border:none; background:#800000; color:#fff; cursor:pointer; border-radius:6px; font-weight: bold; font-size: 12px; }
+        .cropBox{ width:92%; max-width:400px; background:#fff; padding:15px; border-radius:16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        .cropBox img{ display:block; width:100%; max-height:45vh; object-fit:contain; border-radius: 8px; }
+        .tools{ display:flex; gap:5px; margin-top:10px; flex-wrap:wrap; }
+        .tools button{ flex:1; padding:8px; border:none; background:#800000; color:#fff; cursor:pointer; border-radius:6px; font-weight: bold; font-size: 11px; }
         
         .btn-container { display: flex; gap: 10px; margin-top: 15px; }
         .action-btn { 
             flex: 1;
-            padding: 12px; 
+            padding: 10px; 
             border: none; 
             border-radius: 10px; 
             font-weight: bold; 
             cursor: pointer; 
-            font-size: 14px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-size: 13px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             transition: 0.3s;
         }
         #saveBtn { background: linear-gradient(135deg, #800000, #a00000); color: #fff; }
-        #saveBtn:hover { background: linear-gradient(135deg, #600000, #800000); }
+        #saveBtn:hover { background: linear-gradient(135deg, #600000, #800000); transform: translateY(-2px); }
         #backBtn { background: #ffd700; color: #800000; }
-        #backBtn:hover { background: #e5c100; }
+        #backBtn:hover { background: #e5c100; transform: translateY(-2px); }
+
+        @media (max-width: 480px) {
+            .container { padding: 15px; }
+            .grid-row { flex-direction: column; gap: 8px; }
+            h2 { font-size: 16px; }
+        }
     </style>
 </head>
 <body>
@@ -184,7 +195,7 @@
             <input type="text" id="firstName" placeholder="नाम लिखें">
 
             <div class="image-upload-wrapper" onclick="document.getElementById('firstPhoto').click()">
-                <img id="firstPreview" src="https://placehold.co/85x85?text=Photo">
+                <img id="firstPreview" src="https://placehold.co/75x75?text=Photo">
             </div>
             <input type="file" id="firstPhoto" accept="image/*" style="display:none">
         </div>
@@ -195,7 +206,7 @@
             <input type="text" id="secondName" placeholder="नाम लिखें">
 
             <div class="image-upload-wrapper" onclick="document.getElementById('secondPhoto').click()">
-                <img id="secondPreview" src="https://placehold.co/85x85?text=Photo">
+                <img id="secondPreview" src="https://placehold.co/75x75?text=Photo">
             </div>
             <input type="file" id="secondPhoto" accept="image/*" style="display:none">
         </div>
@@ -210,8 +221,8 @@
             </div>
             <div style="flex: 1; text-align: center;">
                 <label>पेमेंट QR</label>
-                <div class="image-upload-wrapper" style="width: 55px; height: 55px; margin: 2px auto;" onclick="document.getElementById('qrPhoto').click()">
-                    <img id="qrPreview" src="https://placehold.co/55x55?text=QR">
+                <div class="image-upload-wrapper" style="width: 48px; height: 48px; margin: 2px auto;" onclick="document.getElementById('qrPhoto').click()">
+                    <img id="qrPreview" src="https://placehold.co/48x48?text=QR">
                 </div>
                 <input type="file" id="qrPhoto" accept="image/*" style="display:none">
             </div>
@@ -224,8 +235,8 @@
     </div>
     
     <div class="btn-container">
-        <button id="backBtn" onclick="window.location.href='home.html'">🔙 वापस जाएं</button>
-        <button id="saveBtn" onclick="submitSetup()">💾 अपडेट सेव करें</button>
+        <button id="backBtn" class="action-btn" onclick="window.location.href='home.html'">🔙 वापस जाएं</button>
+        <button id="saveBtn" class="action-btn" onclick="submitSetup()">💾 अपडेट सेव करें</button>
     </div>
 </div>
 
