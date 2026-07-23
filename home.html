@@ -475,29 +475,41 @@ window.onload = async () => {
 async function loadUserProfile() {
     try {
         const { data: { user } } = await sb.auth.getUser();
-        if (!user) return;
+        if (!user) {
+            window.location.replace("login.html");
+            return;
+        }
 
-        const { data, error } = await sb.from("profiles").select("name").eq("id", user.id).maybeSingle();
+        // ईमेल से यूजरनेम निकाल कर डिफ़ॉल्ट तैयार करें (जैसे user@gmail.com से 'user')
+        let displayName = user.email ? user.email.split('@')[0] : "User";
+
+        // अब profiles टेबल से नाम चेक करें (id से)
+        const { data } = await sb.from("profiles").select("name").eq("id", user.id).maybeSingle();
         
         if (data && data.name) {
-            document.querySelector(".userName").innerHTML = `👤 ${data.name}`;
+            displayName = data.name;
         } else {
+            // अगर id से नहीं मिला तो user_id से चेक करें
             const { data: data2 } = await sb.from("profiles").select("name").eq("user_id", user.id).maybeSingle();
             if (data2 && data2.name) {
-                document.querySelector(".userName").innerHTML = `👤 ${data2.name}`;
-            } else {
-                document.querySelector(".userName").innerHTML = `👤 Admin`;
+                displayName = data2.name;
             }
         }
+
+        document.querySelector(".userName").innerHTML = `👤 ${displayName}`;
     } catch (e) {
         console.log("Error loading profile name:", e);
-        document.querySelector(".userName").innerHTML = `👤 Admin`;
+        document.querySelector(".userName").innerHTML = `👤 User`;
     }
 }
 
 async function loadDashboard(){
     const {data:{user}} = await sb.auth.getUser();
-    const userId = user ? user.id : "default_user"; 
+    if (!user) {
+        window.location.replace("login.html");
+        return;
+    }
+    const userId = user.id; 
     loadGuests(userId);
     loadCashBook(userId);
     loadRecent(userId);
@@ -506,7 +518,8 @@ async function loadDashboard(){
 async function loadGuests(userId){
     const {data=[]}=await sb
     .from("guests")
-    .select("*");
+    .select("*")
+    .eq("user_id", userId); // केवल लॉगिन यूजर का डेटा दिखेगा
 
     let totalGuests=data.length;
     let totalShagun=0;
@@ -527,7 +540,8 @@ async function loadGuests(userId){
 async function loadCashBook(userId){
     const {data:guests=[]} = await sb
     .from("guests")
-    .select("amount,payment_mode");
+    .select("amount,payment_mode")
+    .eq("user_id", userId); // केवल लॉगिन यूजर का डेटा
 
     let cashShagun = 0;
     guests.forEach(g=>{
@@ -539,6 +553,7 @@ async function loadCashBook(userId){
     const {data=[]} = await sb
     .from("cash_history")
     .select("*")
+    .eq("user_id", userId) // केवल लॉगिन यूजर का डेटा
     .eq("status","active");
 
     let cashIn = 0;
@@ -566,6 +581,7 @@ async function loadRecent(userId){
     const {data=[],error} = await sb
         .from("guests")
         .select("name,payment_mode,amount")
+        .eq("user_id", userId) // केवल लॉगिन यूजर का डेटा
         .order("created_at",{ascending:false})
         .limit(10);
 

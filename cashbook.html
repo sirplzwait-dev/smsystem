@@ -15,11 +15,10 @@
 }
 body{
     background:#f5f6fa;
-    padding-top: 55px; /* हेडर फिक्स होने के कारण ऊपर जगह दी गई है */
+    padding-top: 55px;
     padding-bottom:50px;
 }
 
-/* ऊपर वाली सुंदर हेडर पट्टी (Fixed / Freeze) */
 .top-header-bar {
     width: 100%;
     height: 55px;
@@ -202,7 +201,6 @@ button.cashInBtn:hover, button.cashOutBtn:hover{
 </head>
 <body>
 
-<!-- Top Navigation Bar (Fixed / Freeze) -->
 <div class="top-header-bar">
     <div class="top-logo">💰 Cash Book</div>
     <div class="header-btns">
@@ -261,17 +259,35 @@ const sb = window.supabase.createClient(
 'sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc'
 );
 
-window.onload = () => {
+let currentUserId = null;
+
+window.onload = async () => {
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) {
+        window.location.replace("login.html");
+        return;
+    }
+    currentUserId = user.id;
     loadSummary();
     loadHistory();
 };
 
 async function loadSummary(){
-    const {data:cashIn=[]} = await sb.from("cash_history").select("amount").eq("type","cash_in").eq("status","active");
+    if (!currentUserId) return;
+
+    const {data:cashIn=[]} = await sb.from("cash_history")
+        .select("amount")
+        .eq("user_id", currentUserId)
+        .eq("type","cash_in")
+        .eq("status","active");
     let totalIn = 0;
     cashIn.forEach(x => { totalIn += Number(x.amount); });
 
-    const {data:cashOut=[]} = await sb.from("cash_history").select("amount").eq("type","cash_out").eq("status","active");
+    const {data:cashOut=[]} = await sb.from("cash_history")
+        .select("amount")
+        .eq("user_id", currentUserId)
+        .eq("type","cash_out")
+        .eq("status","active");
     let totalOut = 0;
     cashOut.forEach(x => { totalOut += Number(x.amount); });
 
@@ -281,6 +297,7 @@ async function loadSummary(){
 }
 
 document.getElementById("saveCashIn").onclick = async () => {
+    if (!currentUserId) return;
     const person = document.getElementById("inPerson").value.trim();
     const purpose = document.getElementById("inPurpose").value.trim();
     const amount = Number(document.getElementById("inAmount").value);
@@ -291,6 +308,7 @@ document.getElementById("saveCashIn").onclick = async () => {
     }
 
     const {error} = await sb.from("cash_history").insert([{
+        user_id: currentUserId,
         person,
         purpose,
         amount,
@@ -308,6 +326,7 @@ document.getElementById("saveCashIn").onclick = async () => {
 };
 
 document.getElementById("saveCashOut").onclick = async () => {
+    if (!currentUserId) return;
     const person = document.getElementById("outPerson").value.trim();
     const purpose = document.getElementById("outPurpose").value.trim();
     const amount = Number(document.getElementById("outAmount").value);
@@ -318,6 +337,7 @@ document.getElementById("saveCashOut").onclick = async () => {
     }
 
     const {error} = await sb.from("cash_history").insert([{
+        user_id: currentUserId,
         person,
         purpose,
         amount,
@@ -335,7 +355,15 @@ document.getElementById("saveCashOut").onclick = async () => {
 };
 
 async function loadHistory(){
-    const {data=[]} = await sb.from("cash_history").select("*").eq("status","active").order("created_at",{ascending:false}).limit(100);
+    if (!currentUserId) return;
+
+    const {data=[]} = await sb.from("cash_history")
+        .select("*")
+        .eq("user_id", currentUserId)
+        .eq("status","active")
+        .order("created_at",{ascending:false})
+        .limit(100);
+        
     const box = document.getElementById("historyList");
     box.innerHTML = "";
 
