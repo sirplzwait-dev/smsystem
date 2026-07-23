@@ -265,17 +265,17 @@
         if (type === "boy") {
             mainTitle.innerText = "लड़की की शादी (बरात स्वागत सेटअप)";
             container.insertBefore(firstSec, secondSec);
-            firstTitle.innerText = "🤵 बरात पक्ष (दूल्हा)";
-            firstNameLabel.innerText = "दूल्हा का नाम";
-            secondTitle.innerText = "👰 वधू पक्ष (दुल्हन)";
-            secondNameLabel.innerText = "दुल्हन का नाम";
+            firstTitle.innerText = "👰 वधू पक्ष (दुल्हन)";
+            firstNameLabel.innerText = "दुल्हन का नाम";
+            secondTitle.innerText = "🤵 बरात पक्ष (दूल्हा)";
+            secondNameLabel.innerText = "दूल्हा का नाम";
         } else {
             mainTitle.innerText = "लड़के का तिलक समारोह सेटअप";
             container.insertBefore(secondSec, firstSec);
-            firstTitle.innerText = "👰 वधू पक्ष (लड़की)";
-            firstNameLabel.innerText = "लड़की पक्ष का नाम";
-            secondTitle.innerText = "🤵 वर पक्ष (लड़का)";
-            secondNameLabel.innerText = "दूल्हा का नाम";
+            firstTitle.innerText = "🤵 वर पक्ष (लड़का)";
+            firstNameLabel.innerText = "दूल्हा का नाम";
+            secondTitle.innerText = "👰 वधू पक्ष (लड़की)";
+            secondNameLabel.innerText = "लड़की पक्ष का नाम";
         }
     }
 
@@ -304,7 +304,6 @@
     document.getElementById("cropSave").onclick = async () => {
         const canvas = cropper.getCroppedCanvas({ width: 300, height: 300 });
         canvas.toBlob(async (blob) => {
-            // हाई कंप्रेशन ताकि फोटो और QR कोड कम स्पेस लें (लगभग 50KB से भी कम)
             const compressed = await imageCompression(blob, { maxSizeMB: 0.08, maxWidthOrHeight: 300, fileType: 'image/jpeg' });
             const jpgFile = new File([compressed], "image.jpg", { type: "image/jpeg" });
             
@@ -329,7 +328,6 @@
             return Swal.fire("त्रुटि", "कृपया सभी आवश्यक नाम भरें!", "error");
         }
 
-        // सुंदर लाइव लोडिंग प्रोसेस शुरू
         Swal.fire({
             title: 'डेटा सुरक्षित हो रहा है...',
             html: 'कृपया प्रतीक्षा करें, तस्वीरें अपलोड हो रही हैं...',
@@ -352,14 +350,13 @@
             let bridePhotoUrl = existing ? existing.bride_photo_url : null;
             let qrUrl = existing ? existing.qr_url : null;
 
-            // 'photos' स्टोरेज बकेट में अपलोड प्रोसेस
             if (croppedFirst) {
                 Swal.update({ html: 'पहली फोटो अपलोड हो रही है...' });
                 const path = `${user.id}/first_${Date.now()}.jpg`;
                 await sb.storage.from("photos").upload(path, croppedFirst, { upsert: true, contentType: 'image/jpeg' });
                 const urlRes = sb.storage.from("photos").getPublicUrl(path);
-                if (eventType === "boy") groomPhotoUrl = urlRes.data.publicUrl;
-                else bridePhotoUrl = urlRes.data.publicUrl;
+                if (eventType === "boy") bridePhotoUrl = urlRes.data.publicUrl;
+                else groomPhotoUrl = urlRes.data.publicUrl;
             }
 
             if (croppedSecond) {
@@ -367,8 +364,8 @@
                 const path = `${user.id}/second_${Date.now()}.jpg`;
                 await sb.storage.from("photos").upload(path, croppedSecond, { upsert: true, contentType: 'image/jpeg' });
                 const urlRes = sb.storage.from("photos").getPublicUrl(path);
-                if (eventType === "boy") bridePhotoUrl = urlRes.data.publicUrl;
-                else groomPhotoUrl = urlRes.data.publicUrl;
+                if (eventType === "boy") groomPhotoUrl = urlRes.data.publicUrl;
+                else bridePhotoUrl = urlRes.data.publicUrl;
             }
 
             if (croppedQR) {
@@ -378,8 +375,8 @@
                 qrUrl = sb.storage.from("photos").getPublicUrl(path).data.publicUrl;
             }
 
-            let groomName = (eventType === "boy") ? name1 : name2;
-            let brideName = (eventType === "boy") ? name2 : name1;
+            let groomName = (eventType === "boy") ? name2 : name1;
+            let brideName = (eventType === "boy") ? name1 : name2;
 
             const payload = {
                 user_id: user.id,

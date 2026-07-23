@@ -303,7 +303,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <div class="header-section">
                 <div>॥ श्री गणेशाय नमः ॥</div>
                 <img src="Ganesh.png" class="ganesh">
-                <h1 class="title">शुभ तिलक</h1>
+                <h1 class="title" id="mainTitleText">शुभ तिलक</h1>
                 <div class="date-text" id="dateDisplay">दिनांक:14 नवम्बर 2026</div>
                 <div class="msg-container">
                     <div id="msgDisplay" class="welcome-msg animate__animated"></div>
@@ -311,17 +311,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             </div>
             
-            <div class="couple-section">
+            <div class="couple-section" id="coupleContainer">
                 <div>
-                    <img src="groom.jpg" class="photo-frame">
-                    <div class="name-label">चिरंजीवी</div>
-                    <div class="name" id="groomDisplay">अभिषेक कुमार</div>
+                    <img src="groom.jpg" class="photo-frame" id="firstPhoto">
+                    <div class="name-label" id="firstLabel">चिरंजीवी</div>
+                    <div class="name" id="firstName">अभिषेक कुमार</div>
                 </div>
                 <div class="sang-elegant">संग</div>
                 <div>
-                    <img src="bride.jpg" class="photo-frame">
-                    <div class="name-label">आयुष्मती</div>
-                    <div class="name" id="brideDisplay">अचल कुमारी</div>
+                    <img src="bride.jpg" class="photo-frame" id="secondPhoto">
+                    <div class="name-label" id="secondLabel">आयुष्मती</div>
+                    <div class="name" id="secondName">अचल कुमारी</div>
                 </div>
             </div>
             
@@ -568,23 +568,37 @@ async function loadSetup(){
     document.getElementById("dateDisplay").innerHTML = "दिनांक : " + (data.event_date || "");
     document.querySelector(".signature").innerHTML = "-" + (data.welcome_name || "");
 
-    const photos = document.querySelectorAll(".photo-frame");
-    const groomNameDisplay = document.getElementById("groomDisplay");
-    const brideNameDisplay = document.getElementById("brideDisplay");
-    const titleDisplay = document.querySelector(".title");
+    const titleDisplay = document.getElementById("mainTitleText");
+    const firstPhoto = document.getElementById("firstPhoto");
+    const firstLabel = document.getElementById("firstLabel");
+    const firstName = document.getElementById("firstName");
+    
+    const secondPhoto = document.getElementById("secondPhoto");
+    const secondLabel = document.getElementById("secondLabel");
+    const secondName = document.getElementById("secondName");
 
-    if(data.wedding_type === "boy" || data.wedding_type === "bride_wedding" || data.wedding_type === "girl"){
+    // यदि बारात स्वागत है (wedding_type === "boy") तो लड़की पहले, लड़का बाद में और शीर्षक "शुभ बरात"
+    if(data.wedding_type === "boy"){
         titleDisplay.innerHTML = "शुभ बरात";
-        if(photos[0]) photos[0].src = data.groom_photo_url || "groom.jpg";
-        if(photos[1]) photos[1].src = data.bride_photo_url || "bride.jpg";
-        groomNameDisplay.innerHTML = data.groom_name || "";
-        brideNameDisplay.innerHTML = data.bride_name || "";
+        
+        firstPhoto.src = data.bride_photo_url || "bride.jpg";
+        firstLabel.innerHTML = "आयुष्मती";
+        firstName.innerHTML = data.bride_name || "";
+
+        secondPhoto.src = data.groom_photo_url || "groom.jpg";
+        secondLabel.innerHTML = "चिरंजीवी";
+        secondName.innerHTML = data.groom_name || "";
     } else {
+        // यदि तिलक है तो लड़का (दूल्हा) पहले, लड़की बाद में और शीर्षक "शुभ तिलक"
         titleDisplay.innerHTML = "शुभ तिलक";
-        if(photos[0]) photos[0].src = data.groom_photo_url || "groom.jpg";
-        if(photos[1]) photos[1].src = data.bride_photo_url || "bride.jpg";
-        groomNameDisplay.innerHTML = data.groom_name || "";
-        brideNameDisplay.innerHTML = data.bride_name || "";
+
+        firstPhoto.src = data.groom_photo_url || "groom.jpg";
+        firstLabel.innerHTML = "चिरंजीवी";
+        firstName.innerHTML = data.groom_name || "";
+
+        secondPhoto.src = data.bride_photo_url || "bride.jpg";
+        secondLabel.innerHTML = "आयुष्मती";
+        secondName.innerHTML = data.bride_name || "";
     }
 
     if(data.qr_url){
