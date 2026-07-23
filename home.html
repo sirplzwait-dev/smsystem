@@ -304,7 +304,7 @@ tr:hover{
     </div>
     <div class="headerRight">
         <span class="userName">
-            👤 Admin
+            👤 Loading...
         </span>
         <button class="logoutBtn">
             🚪 Logout
@@ -403,13 +403,38 @@ const sb = window.supabase.createClient(
     "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
 );
 
-window.onload=()=>{
+window.onload = async () => {
+    await loadUserProfile();
     loadDashboard();
 };
 
+async function loadUserProfile() {
+    try {
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) return;
+
+        // profiles टेबल से नाम प्राप्त करें
+        const { data, error } = await sb.from("profiles").select("name").eq("id", user.id).maybeSingle();
+        
+        if (data && data.name) {
+            document.querySelector(".userName").innerHTML = `👤 ${data.name}`;
+        } else {
+            const { data: data2 } = await sb.from("profiles").select("name").eq("user_id", user.id).maybeSingle();
+            if (data2 && data2.name) {
+                document.querySelector(".userName").innerHTML = `👤 ${data2.name}`;
+            } else {
+                document.querySelector(".userName").innerHTML = `👤 Admin`;
+            }
+        }
+    } catch (e) {
+        console.log("Error loading profile name:", e);
+        document.querySelector(".userName").innerHTML = `👤 Admin`;
+    }
+}
+
 async function loadDashboard(){
     const {data:{user}} = await sb.auth.getUser();
-    const userId = user ? user.id : "default_user"; // बिना लॉगिन के काम चलाने के लिए fallback
+    const userId = user ? user.id : "default_user"; 
     loadGuests(userId);
     loadCashBook(userId);
     loadRecent(userId);
