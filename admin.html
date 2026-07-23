@@ -116,6 +116,65 @@ const sb = window.supabase.createClient(
     "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
 );
 
+window.onload = async () => {
+    await verifyAdminPassword();
+};
+
+async function verifyAdminPassword() {
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) { window.location.href = "login.html"; return; }
+
+    // Supabase से इस यूजर का admin_pass प्राप्त करें[cite: 12]
+    const { data, error } = await sb.from("profiles").select("admin_pass").eq("id", user.id).maybeSingle();
+    
+    if (error || !data || !data.admin_pass) {
+        Swal.fire("त्रुटि", "एडमिन पासवर्ड नहीं मिला!", "error");
+        return;
+    }
+
+    const correctPass = data.admin_pass;
+
+    // पासवर्ड इनपुट पॉपअप
+    const { value: enteredPass } = await Swal.fire({
+        title: '🔐 Admin Password Required',
+        input: 'password',
+        inputPlaceholder: 'Enter Admin Password',
+        inputAttributes: {
+            autocapitalize: 'off',
+            autocorrect: 'off'
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        confirmButtonText: 'Verify',
+        confirmButtonColor: '#800000',
+        showCancelButton: true,
+        cancelButtonText: 'Home',
+        cancelButtonColor: '#6c757d'
+    });
+
+    if (enteredPass === correctPass) {
+        Swal.fire({
+            title: 'सफल!',
+            text: 'पासवर्ड सही है।',
+            icon: 'success',
+            timer: 1000,
+            showConfirmButton: false
+        });
+        loadData(); // पासवर्ड सही होने पर डैशबोर्ड डेटा लोड होगा
+    } else if (enteredPass === undefined) {
+        window.location.href = 'home.html';
+    } else {
+        Swal.fire({
+            title: 'गलत पासवर्ड!',
+            text: 'कृपया सही पासवर्ड दर्ज करें।',
+            icon: 'error',
+            confirmButtonColor: '#800000'
+        }).then(() => {
+            verifyAdminPassword(); // गलत होने पर दोबारा पूछेगा
+        });
+    }
+}
+
 async function loadData() {
     const { data: { user } } = await sb.auth.getUser();
     if (!user) { window.location.href = "login.html"; return; }
@@ -195,8 +254,6 @@ async function deleteAllData() {
         }
     });
 }
-
-window.onload = () => { loadData(); };
 </script>
 </body>
 </html>
