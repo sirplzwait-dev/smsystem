@@ -124,14 +124,25 @@ async function verifyAdminPassword() {
     const { data: { user } } = await sb.auth.getUser();
     if (!user) { window.location.href = "login.html"; return; }
 
-    const { data, error } = await sb.from("profiles").select("admin_pass").eq("id", user.id).maybeSingle();
+    // पहले 'id' कॉलम से चेक करें, अगर न मिले तो 'user_id' से चेक करें
+    let profileData = null;
+    let res = await sb.from("profiles").select("admin_pass").eq("id", user.id).maybeSingle();
     
-    if (error || !data || !data.admin_pass) {
-        Swal.fire("त्रुटि", "एडमिन पासवर्ड नहीं मिला!", "error");
+    if (res.data && res.data.admin_pass) {
+        profileData = res.data;
+    } else {
+        let res2 = await sb.from("profiles").select("admin_pass").eq("user_id", user.id).maybeSingle();
+        if (res2.data && res2.data.admin_pass) {
+            profileData = res2.data;
+        }
+    }
+
+    if (!profileData || !profileData.admin_pass) {
+        Swal.fire("त्रुटि", "इस यूजर के लिए एडमिन पासवर्ड नहीं मिला!", "error");
         return;
     }
 
-    const correctPass = data.admin_pass;
+    const correctPass = profileData.admin_pass;
 
     const { value: enteredPass } = await Swal.fire({
         title: '🔐 Admin Password Required',
