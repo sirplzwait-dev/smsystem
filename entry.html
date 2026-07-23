@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sagun Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Fullscreen Loading Overlay */
         #pageLoader {
@@ -73,34 +74,34 @@ document.addEventListener("DOMContentLoaded", async () => {
             opacity: 0.9;
         }
 
-	.popup{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.7);
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-}
+        .popup{
+            display:none;
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.7);
+            justify-content:center;
+            align-items:center;
+            z-index:9999;
+        }
 
-.popup-content{
-    background:#fff;
-    padding:20px;
-    border-radius:10px;
-    text-align:center;
-    position:relative;
-}
+        .popup-content{
+            background:#fff;
+            padding:20px;
+            border-radius:10px;
+            text-align:center;
+            position:relative;
+        }
 
-.close-btn{
-    position:absolute;
-    top:10px;
-    right:10px;
-    cursor:pointer;
-}
-	
+        .close-btn{
+            position:absolute;
+            top:10px;
+            right:10px;
+            cursor:pointer;
+        }
+    
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {
             width:100%;
@@ -148,71 +149,136 @@ document.addEventListener("DOMContentLoaded", async () => {
         .name { font-size: 1.1rem; color: #800000; font-family: 'Arial Black', sans-serif; text-transform: uppercase; margin-top: 2px; }
         .sang-elegant { font-size: 2.2rem; color: #d84315; font-family: 'cursive', cursive; font-weight: bold; }
         
-       .form-section{
-            display:flex;
-            gap:8px;
-            background:rgba(255,255,255,0.7);
-            padding:12px;
-            border:1px solid #800000;
-            border-radius:12px;
-            justify-content:center;
-            flex-wrap:wrap;
-            width:95%;
-            max-width:900px;
-            margin-top:15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        /* डेस्कटॉप के लिए फॉर्म सेक्शन: सभी फील्ड्स एक ही लाइन में रहेंगे */
+        .form-section{
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border: 1.5px solid #800000;
+            border-radius: 12px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .input-box {
-            padding: 5px;
+            padding: 6px 8px;
             border-radius: 6px;
-            border: 1px solid #800000;
-            width: 140px;
-            height: 38px;
+            border: 1.5px solid #800000;
+            flex: 1;
+            min-width: 0;
+            height: 42px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.98);
             color: #000;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 500;
             text-transform: uppercase;
         }
 
         .input-box:focus{
-            outline:none;
-            border:3px solid #ff0000;
-            background:#ffff66;
-            box-shadow:0 0 12px #ff0000;
+            outline: none;
+            border: 2px solid #ff0000;
+            background: #ffff66;
+            box-shadow: 0 0 10px #ff0000;
         }
 
         .submit-btn{
-            background:#800000;
-            color:#ffffff;
-            width:120px;
-            height:38px;
-            font-weight:bold;
-            cursor:pointer;
-            border:1px solid #800000;
-            border-radius:6px;
-            font-size:0.9rem;
+            background: #800000;
+            color: #ffffff;
+            flex: 0 0 95px;
+            height: 42px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #800000;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #600000;
         }
         
         #thankYouMsg{
-            display:none;
-            margin-top:15px;
-            padding:12px 25px;
-            background:linear-gradient(45deg,#800000,#c62828);
-            color:#fff;
-            font-size:16px;
-            font-weight:bold;
-            border-radius:30px;
-            box-shadow:0 4px 15px rgba(0,0,0,0.3);
-            text-align:center;
-            animation:fadeInUp 0.5s ease;
+            display: none;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg,#800000,#c62828);
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: fadeInUp 0.5s ease;
         }
 
         @keyframes fadeInUp{
             from{ opacity:0; transform:translateY(20px); }
             to{ opacity:1; transform:translateY(0); }
         }  
+
+        /* ऊपर वाली पट्टी (Header Bar) */
+        .top-header-bar {
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(135deg, #600000, #800000);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .top-logo {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .actionBtn {
+            background: #FFD700;
+            color: #800000;
+            border: none;
+            border-radius: 5px;
+            padding: 4px 10px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .actionBtn:hover {
+            background: #fff;
+        }
+
+        .logoutBtn {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .logoutBtn:hover {
+            background: #bb2d3b;
+            color: #fff;
+        }
 
         .footer-area{
             width:100%;
@@ -246,25 +312,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             font-weight:bold;
         }
 
-        .footer-right{
-            padding-right:10px;
-        }
-
-        .footer-btn{
-            background:#FFD700;
-            color:#800000;
-            border:none;
-            border-radius:4px;
-            padding:5px 10px;
-            font-size:11px;
-            font-weight:bold;
-            cursor:pointer;
-        }
-
-        .footer-btn:hover{
-            background:#fff;
-        }
-
+        /* मोबाइल के लिए मीडिया क्वेरी: केवल मोबाइल स्क्रीन पर State और Dist छिपे रहेंगे */
         @media (max-width:768px){
             .card{
                 width:100%;
@@ -280,7 +328,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             .title{ font-size:1.4rem; }
             .date-text{ font-size:0.95rem; }
             
-            /* मोबाइल के लिए वर-वधू लेआउट को एकदम सही व्यवस्थित करना */
             .couple-section{ 
                 flex-direction: column; 
                 gap: 8px; 
@@ -298,25 +345,34 @@ document.addEventListener("DOMContentLoaded", async () => {
             .name-label { font-size: 0.75rem; }
             .name { font-size: 0.95rem; }
 
-            .form-section{ 
-                width: 96%; 
-                padding: 10px;
-                gap: 6px;
-                margin-top: 12px;
-            }
-            
+            /* मोबाइल में state और dist को छिपाया गया है */
             #guestState, #guestDist {
                 display: none !important;
             }
 
-            .input-box, .submit-btn{ 
-                width: 48%; 
-                height: 36px;
-                font-size: 0.85rem;
+            .form-section{ 
+                width: 96%; 
+                padding: 8px;
+                gap: 6px;
+                margin-top: 12px;
+                flex-wrap: wrap; 
             }
-            
+
+            .input-box {
+                font-size: 0.9rem;
+                padding: 6px;
+                height: 42px;
+                flex: 1 1 45%; 
+            }
+
             #guestName {
-                width: 100%;
+                flex: 1 1 100%; 
+            }
+
+            .submit-btn {
+                flex: 1 1 100%;
+                height: 42px;
+                font-size: 0.95rem;
             }
 
             .hanging-image{ width:70px; }
@@ -324,7 +380,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             .corner-flower{ width:75px; }
             
             .footer-left{ font-size:9px; padding:0 5px; }
-            .footer-right{ padding-right:5px; }
         }
     </style>
 </head>
@@ -335,6 +390,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="loader-spinner"></div>
         <div class="loader-text">✨ समारोह विवरण लोड हो रहा है... ✨</div>
         <div class="loader-subtext">कृपया थोड़ा इंतज़ार करें, दूल्हा-दुल्हन की जानकारी आ रही है।</div>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <div class="top-header-bar">
+        <div class="top-logo">SAGUN SYSTEM</div>
+        <div class="header-btns">
+            <button class="actionBtn" onclick="location.href='home.html'">
+                🏠 Home
+            </button>
+            <button class="actionBtn logoutBtn" id="logoutBtn">
+                🚪 Logout
+            </button>
+        </div>
     </div>
 
     <div class="card">
@@ -373,11 +441,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             </div>
             
+            <!-- इनपुट फील्ड्स -->
             <div class="form-section">
-                <input type="text" id="guestName" class="input-box" placeholder="नाम" oninput="this.value=this.value.toUpperCase()">
+                <input type="text" id="guestName" class="input-box" placeholder="नाम (Name)" oninput="this.value=this.value.toUpperCase()">
                 
                 <select id="guestState" class="input-box">
-                    <option value="">राज्य चुनें</option>
+                    <option value="">राज्य</option>
                     <option value="Andhra Pradesh">Andhra Pradesh</option>
                     <option value="Arunachal Pradesh">Arunachal Pradesh</option>
                     <option value="Assam">Assam</option>
@@ -406,11 +475,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <option value="Uttarakhand">Uttarakhand</option>
                     <option value="Uttar Pradesh">Uttar Pradesh</option>
                     <option value="West Bengal">West Bengal</option>
-                    <option value="None of these">None of these</option>
+                    <option value="None of these">None</option>
                 </select>
 
                 <select id="guestDist" class="input-box">
-                    <option value="">जिला चुनें (बिहार)</option>
+                    <option value="">जिला</option>
                     <option value="Araria">Araria</option><option value="Arwal">Arwal</option>
                     <option value="Aurangabad">Aurangabad</option><option value="Banka">Banka</option>
                     <option value="Begusarai">Begusarai</option><option value="Bhagalpur">Bhagalpur</option>
@@ -431,18 +500,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <option value="Sheohar">Sheohar</option><option value="Sitamarhi">Sitamarhi</option>
                     <option value="Siwan">Siwan</option><option value="Supaul">Supaul</option>
                     <option value="Vaishali">Vaishali</option><option value="West Champaran">West Champaran</option>
-                    <option value="None of these">None of these</option>
+                    <option value="None of these">None</option>
                 </select>
 
                 <input type="text" id="guestVillage" class="input-box" placeholder="गाँव" oninput="this.value=this.value.toUpperCase()">
-                <input type="number" id="guestAmount" class="input-box" placeholder="शगुन">
+                <input type="number" id="guestAmount" class="input-box" placeholder="शगुन (₹)">
 
                 <select id="paymentMode" class="input-box">
-                    <option value="Cash" selected>Cash 💵</option>
-                    <option value="UPI">UPI 📱</option>
+                    <option value="Cash" selected>Cash</option>
+                    <option value="UPI">UPI</option>
                 </select>
 
-                <button class="submit-btn" onclick="saveGuest()">दर्ज</button>
+                <button class="submit-btn" onclick="saveGuest()">दर्ज करें</button>
             </div>
 
             <div id="thankYouMsg"></div>
@@ -456,11 +525,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <marquee scrollamount="4">
                     🌱 बेटी बचाओ • 📚 शिक्षा सबसे बड़ा धन है • 🌳 एक पेड़ अवश्य लगाएं • 💧 जल है तो कल है • ❤️ रक्तदान महादान • 🤝 आपसी भाईचारा बनाए रखें
                 </marquee>
-            </div>
-            <div class="footer-right">
-                <button class="footer-btn" onclick="window.location.href='home.html'">
-                    🏠 Home
-                </button>
             </div>
         </div>
     </div>
@@ -541,7 +605,7 @@ async function saveGuest() {
     const dist = document.getElementById('guestDist').value || "Gopalganj";
     const village = document.getElementById('guestVillage').value.toUpperCase();
     const mode = document.getElementById('paymentMode').value;
-	
+    
     if(name === ""){
         alert("कृपया नाम दर्ज करें!");
         return;
@@ -551,7 +615,7 @@ async function saveGuest() {
         alert("कृपया शगुन राशि दर्ज करें!");
         return;
     }
-		
+        
     let guests = JSON.parse(localStorage.getItem("offlineGuests") || "[]");
 
     guests.push({
@@ -622,7 +686,7 @@ async function loadSetup(){
     const firstPhoto = document.getElementById("firstPhoto");
     const firstLabel = document.getElementById("firstLabel");
     const firstName = document.getElementById("firstName");
-	
+    
     const secondPhoto = document.getElementById("secondPhoto");
     const secondLabel = document.getElementById("secondLabel");
     const secondName = document.getElementById("secondName");
@@ -661,7 +725,7 @@ async function loadSetup(){
         }, 500);
     }
 }
-	
+    
 async function syncData(){
     if(!navigator.onLine){
        return;
@@ -699,6 +763,13 @@ async function syncData(){
 
     localStorage.removeItem("offlineGuests");
 }
+
+document.getElementById("logoutBtn").onclick = async () => {
+    await sb.auth.signOut();
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.replace("login.html");
+};
 </script>    
 </body>
 </html>
