@@ -124,7 +124,6 @@ async function verifyAdminPassword() {
     const { data: { user } } = await sb.auth.getUser();
     if (!user) { window.location.href = "login.html"; return; }
 
-    // Supabase से इस यूजर का admin_pass प्राप्त करें[cite: 12]
     const { data, error } = await sb.from("profiles").select("admin_pass").eq("id", user.id).maybeSingle();
     
     if (error || !data || !data.admin_pass) {
@@ -134,7 +133,6 @@ async function verifyAdminPassword() {
 
     const correctPass = data.admin_pass;
 
-    // पासवर्ड इनपुट पॉपअप
     const { value: enteredPass } = await Swal.fire({
         title: '🔐 Admin Password Required',
         input: 'password',
@@ -143,6 +141,7 @@ async function verifyAdminPassword() {
             autocapitalize: 'off',
             autocorrect: 'off'
         },
+        footer: '<span style="color: #666; font-size: 13px;">💡 यह पासवर्ड आपको आपकी रजिस्टर्ड ईमेल पर भेजी गई है।</span>',
         allowOutsideClick: false,
         allowEscapeKey: false,
         confirmButtonText: 'Verify',
@@ -160,7 +159,7 @@ async function verifyAdminPassword() {
             timer: 1000,
             showConfirmButton: false
         });
-        loadData(); // पासवर्ड सही होने पर डैशबोर्ड डेटा लोड होगा
+        loadData(); 
     } else if (enteredPass === undefined) {
         window.location.href = 'home.html';
     } else {
@@ -170,7 +169,7 @@ async function verifyAdminPassword() {
             icon: 'error',
             confirmButtonColor: '#800000'
         }).then(() => {
-            verifyAdminPassword(); // गलत होने पर दोबारा पूछेगा
+            verifyAdminPassword(); 
         });
     }
 }
