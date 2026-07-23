@@ -446,7 +446,7 @@ async function getOnlineGuests(){
         const {data, error} = await sb
         .from("guests")
         .select("*")
-        .eq("user_id", user.id)
+        .eq("user_id", user.id) // 👈 यह लाइन जोड़नी है ताकि केवल लॉगिन यूजर का ही डेटा दिखे
         .order("created_at", {ascending: false});
 
         if(error){ console.log(error); return []; }
