@@ -135,73 +135,14 @@ const sb = window.supabase.createClient(
 let currentUserId = null;
 
 window.onload = async () => {
-    await verifyAdminPassword();
-};
-
-async function verifyAdminPassword() {
     const { data: { user } } = await sb.auth.getUser();
-    if (!user) { window.location.href = "login.html"; return; }
+    if (!user) { 
+        window.location.href = "login.html"; 
+        return; 
+    }
     currentUserId = user.id;
-
-    let profileData = null;
-    let res = await sb.from("profiles").select("admin_pass").eq("id", user.id).maybeSingle();
-    
-    if (res.data && res.data.admin_pass) {
-        profileData = res.data;
-    } else {
-        let res2 = await sb.from("profiles").select("admin_pass").eq("user_id", user.id).maybeSingle();
-        if (res2.data && res2.data.admin_pass) {
-            profileData = res2.data;
-        }
-    }
-
-    if (!profileData || !profileData.admin_pass) {
-        Swal.fire("त्रुटि", "इस यूजर के लिए एडमिन पासवर्ड नहीं मिला!", "error");
-        return;
-    }
-
-    const correctPass = profileData.admin_pass;
-
-    const { value: enteredPass } = await Swal.fire({
-        title: '🔐 Admin Password Required',
-        input: 'password',
-        inputPlaceholder: 'Enter Admin Password',
-        inputAttributes: {
-            autocapitalize: 'off',
-            autocorrect: 'off'
-        },
-        footer: '<span style="color: #666; font-size: 13px;">💡 यह पासवर्ड आपको आपकी रजिस्टर्ड ईमेल पर भेजी गई है।</span>',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        confirmButtonText: 'Verify',
-        confirmButtonColor: '#800000',
-        showCancelButton: true,
-        cancelButtonText: 'Home',
-        cancelButtonColor: '#6c757d'
-    });
-
-    if (enteredPass === correctPass) {
-        Swal.fire({
-            title: 'सफल!',
-            text: 'पासवर्ड सही है।',
-            icon: 'success',
-            timer: 1000,
-            showConfirmButton: false
-        });
-        loadData(); 
-    } else if (enteredPass === undefined) {
-        window.location.href = 'home.html';
-    } else {
-        Swal.fire({
-            title: 'गलत पासवर्ड!',
-            text: 'कृपया सही पासवर्ड दर्ज करें।',
-            icon: 'error',
-            confirmButtonColor: '#800000'
-        }).then(() => {
-            verifyAdminPassword(); 
-        });
-    }
-}
+    loadData();
+};
 
 async function loadData() {
     if (!currentUserId) return;
