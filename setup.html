@@ -302,9 +302,10 @@
     document.getElementById("qrPhoto").onchange = (e) => openCrop(e.target.files[0], "qrPreview");
 
     document.getElementById("cropSave").onclick = async () => {
-        const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+        const canvas = cropper.getCroppedCanvas({ width: 300, height: 300 });
         canvas.toBlob(async (blob) => {
-            const compressed = await imageCompression(blob, { maxSizeMB: 0.2, maxWidthOrHeight: 400, fileType: 'image/jpeg' });
+            // हाई कंप्रेशन ताकि फोटो और QR कोड कम स्पेस लें (लगभग 50KB से भी कम)
+            const compressed = await imageCompression(blob, { maxSizeMB: 0.08, maxWidthOrHeight: 300, fileType: 'image/jpeg' });
             const jpgFile = new File([compressed], "image.jpg", { type: "image/jpeg" });
             
             document.getElementById(currentPreview).src = URL.createObjectURL(jpgFile);
@@ -314,7 +315,7 @@
             else if (currentPreview === "qrPreview") croppedQR = jpgFile;
 
             document.getElementById("cropModal").style.display = "none";
-        }, "image/jpeg", 0.9);
+        }, "image/jpeg", 0.8);
     };
 
     async function submitSetup() {
@@ -328,11 +329,14 @@
             return Swal.fire("त्रुटि", "कृपया सभी आवश्यक नाम भरें!", "error");
         }
 
+        // सुंदर लाइव लोडिंग प्रोसेस शुरू
         Swal.fire({
-            title: 'डेटा सेव हो रहा है...',
-            text: 'कृपया प्रतीक्षा करें',
+            title: 'डेटा सुरक्षित हो रहा है...',
+            html: 'कृपया प्रतीक्षा करें, तस्वीरें अपलोड हो रही हैं...',
             allowOutsideClick: false,
-            didOpen: () => Swal.showLoading()
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
 
         try {
@@ -348,26 +352,30 @@
             let bridePhotoUrl = existing ? existing.bride_photo_url : null;
             let qrUrl = existing ? existing.qr_url : null;
 
+            // 'photos' स्टोरेज बकेट में अपलोड प्रोसेस
             if (croppedFirst) {
+                Swal.update({ html: 'पहली फोटो अपलोड हो रही है...' });
                 const path = `${user.id}/first_${Date.now()}.jpg`;
-                await sb.storage.from("profiles").upload(path, croppedFirst, { upsert: true, contentType: 'image/jpeg' });
-                const urlRes = sb.storage.from("profiles").getPublicUrl(path);
+                await sb.storage.from("photos").upload(path, croppedFirst, { upsert: true, contentType: 'image/jpeg' });
+                const urlRes = sb.storage.from("photos").getPublicUrl(path);
                 if (eventType === "boy") groomPhotoUrl = urlRes.data.publicUrl;
                 else bridePhotoUrl = urlRes.data.publicUrl;
             }
 
             if (croppedSecond) {
+                Swal.update({ html: 'दूसरी फोटो अपलोड हो रही है...' });
                 const path = `${user.id}/second_${Date.now()}.jpg`;
-                await sb.storage.from("profiles").upload(path, croppedSecond, { upsert: true, contentType: 'image/jpeg' });
-                const urlRes = sb.storage.from("profiles").getPublicUrl(path);
+                await sb.storage.from("photos").upload(path, croppedSecond, { upsert: true, contentType: 'image/jpeg' });
+                const urlRes = sb.storage.from("photos").getPublicUrl(path);
                 if (eventType === "boy") bridePhotoUrl = urlRes.data.publicUrl;
                 else groomPhotoUrl = urlRes.data.publicUrl;
             }
 
             if (croppedQR) {
+                Swal.update({ html: 'पेमेंट QR कोड अपलोड हो रहा है...' });
                 const path = `${user.id}/qr_${Date.now()}.jpg`;
-                await sb.storage.from("profiles").upload(path, croppedQR, { upsert: true, contentType: 'image/jpeg' });
-                qrUrl = sb.storage.from("profiles").getPublicUrl(path).data.publicUrl;
+                await sb.storage.from("photos").upload(path, croppedQR, { upsert: true, contentType: 'image/jpeg' });
+                qrUrl = sb.storage.from("photos").getPublicUrl(path).data.publicUrl;
             }
 
             let groomName = (eventType === "boy") ? name1 : name2;
@@ -385,6 +393,8 @@
                 qr_url: qrUrl
             };
 
+            Swal.update({ html: 'डेटाबेस में विवरण सहेजा जा रहा है...' });
+
             let error;
             if (existing) {
                 const res = await sb.from("setup").update(payload).eq("user_id", user.id);
@@ -398,7 +408,7 @@
 
             Swal.fire({
                 title: 'सफल!',
-                text: 'डेटा सफलतापूर्वक सुरक्षित हो गया है।',
+                text: 'सभी विवरण सफलतापूर्वक सुरक्षित हो गए हैं।',
                 icon: 'success',
                 timer: 1500,
                 showConfirmButton: false
