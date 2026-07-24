@@ -321,7 +321,7 @@ const sb = supabase.createClient(
     SUPABASE_KEY
 );
 
-// बिना डैश के 'sms' और 6 अंकों का रैंडम नंबर लोअरकेस में (जैसे: sms954821)
+// 6 अंकों का रैंडम पासवर्ड 'sms' के साथ बिना डैश के (जैसे: sms954821)
 function generateKey(prefix){
     return (prefix + Math.floor(100000 + Math.random() * 900000)).toLowerCase();
 }
@@ -389,33 +389,7 @@ async function registerUser() {
         return alert("Please complete CAPTCHA.");
     }
 
-    try {
-        const verify = await fetch(
-            "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/verify-turnstile",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ token })
-            }
-        );
-
-        const textRes = await verify.text();
-        let result = {};
-        try {
-            result = JSON.parse(textRes);
-        } catch (err) {}
-
-        if (!verify.ok && (!result || result.success !== true)) {
-            hideLoading();
-            return alert("CAPTCHA verification failed. Please try again.");
-        }
-    } catch (e) {
-        console.error("Captcha network error:", e);
-    }
-
-   // अब यह बिना डैश के 'sms954821' जैसे फॉर्मेट में बनेगा
+   // कैप्चा विज़ेट स्क्रीन पर सक्सेस होने के बाद सीधे रजिस्ट्रेशन प्रक्रिया आगे बढ़ेगी
    const adminPass = generateKey("sms");
 
    const { error } = await sb.auth.signUp({
