@@ -321,7 +321,6 @@ const sb = supabase.createClient(
     SUPABASE_KEY
 );
 
-// बिना डैश के 'sms' और 6 अंकों का रैंडम पासवर्ड लोअरकेस में (जैसे: sms954821)
 function generateKey(prefix){
     return (prefix + Math.floor(100000 + Math.random() * 900000)).toLowerCase();
 }
@@ -366,7 +365,7 @@ async function registerUser() {
     const name = document.getElementById("name").value.trim();
     const state = document.getElementById("state").value.trim();
     const mobile = document.getElementById("mobile").value.trim();
-    const email = document.getElementById("email").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
 
@@ -392,17 +391,10 @@ async function registerUser() {
     try {
         const adminPass = generateKey("sms");
 
+        // यहाँ अतिरिक्त डेटा हटा दिया गया है ताकि 500 एरर न आए
         const { data, error } = await sb.auth.signUp({
             email: email,
-            password: password,
-            options: {
-                data: {
-                    name: name,
-                    state: state,
-                    mobile: mobile,
-                    admin_pass: adminPass
-                }
-            }
+            password: password
         });
 
         hideLoading();
