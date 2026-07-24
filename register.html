@@ -321,7 +321,6 @@ const sb = supabase.createClient(
     SUPABASE_KEY
 );
 
-// बिना डैश के 'sms' और 6 अंकों का रैंडम नंबर लोअरकेस में (जैसे: sms954821)
 function generateKey(prefix){
     return (prefix + Math.floor(100000 + Math.random() * 900000)).toLowerCase();
 }
@@ -392,15 +391,15 @@ async function registerUser() {
     try {
         const adminPass = generateKey("sms");
 
-        const { error } = await sb.auth.signUp({
-            email,
-            password,
+        const { data, error } = await sb.auth.signUp({
+            email: email,
+            password: password,
             options: {
                 emailRedirectTo: "https://sgunms.in/login.html",
                 data: {
-                    name,
-                    state,
-                    mobile,
+                    name: name,
+                    state: state,
+                    mobile: mobile,
                     admin_pass: adminPass
                 }
             }
@@ -409,7 +408,10 @@ async function registerUser() {
         hideLoading();
 
         if (error) {
-            return alert(error.message);
+            // यदि एरर ऑब्जेक्ट है तो उसका सही मैसेज दिखाएं, वरना पूरा JSON दिखाएं
+            const errMsg = error.message ? error.message : JSON.stringify(error);
+            alert("Registration Error: " + errMsg);
+            return;
         }
 
         alert(
@@ -420,7 +422,7 @@ async function registerUser() {
 
     } catch (err) {
         hideLoading();
-        alert("An unexpected error occurred: " + (err.message || JSON.stringify(err)));
+        alert("Unexpected Error: " + (err.message ? err.message : JSON.stringify(err)));
     }
 }
 </script>
