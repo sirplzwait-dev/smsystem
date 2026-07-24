@@ -325,6 +325,13 @@ function generateAdminPass(){
     return "ADM-" + Math.floor(100000 + Math.random() * 900000);
 }
 
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 function showLoading(){
     const btn = document.getElementById("registerBtn");
     btn.disabled = true;
@@ -362,7 +369,7 @@ document.getElementById("eye2").onclick=function(){
 async function registerUser() {
     showLoading();
 
-    const name = document.getElementById("name", "").value.trim();
+    const name = document.getElementById("name").value.trim();
     const state = document.getElementById("state").value.trim();
     const mobile = document.getElementById("mobile").value.trim();
     const email = document.getElementById("email").value.trim().toLowerCase();
@@ -390,30 +397,10 @@ async function registerUser() {
 
     try {
         const adminPass = generateAdminPass();
+        const userId = generateUUID();
 
-        // 1. पहले auth.signUp करेंगे ताकि Supabase यूजर ऑथेंटिकेशन टेबल में एंट्री हो जाए
-        const { data: authData, error: authError } = await sb.auth.signUp({
-            email: email,
-            password: password
-        });
-
-        if (authError) {
-            hideLoading();
-            alert("Auth Error: " + (authError.message || JSON.stringify(authError)));
-            return;
-        }
-
-        // 2. ऑथेंटिकेशन से मिला असली user.id निकालेंगे
-        const userId = authData.user ? authData.user.id : null;
-
-        if (!userId) {
-            hideLoading();
-            alert("Registration Failed: User ID not generated.");
-            return;
-        }
-
-        // 3. अब उसी सही id के साथ profiles टेबल में सुरक्षित रूप से डेटा इंसर्ट करेंगे
-        const { error: profileError } = await sb
+        // बिना auth.signUp के सीधे profiles टेबल में सुरक्षित रूप से डेटा सेव किया जा रहा है
+        const { error } = await sb
             .from('profiles')
             .insert([
                 {
@@ -428,8 +415,8 @@ async function registerUser() {
 
         hideLoading();
 
-        if (profileError) {
-            alert("Profile Save Error: " + (profileError.message || JSON.stringify(profileError)));
+        if (error) {
+            alert("Registration Error: " + (error.message || JSON.stringify(error)));
             return;
         }
 
