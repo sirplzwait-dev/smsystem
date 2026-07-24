@@ -186,7 +186,7 @@ font-size:15px;
 }
 
 .login-link a{
-color:#FFD700;
+color:#FFD700; जैसा
 font-weight:bold;
 text-decoration:none;
 }
@@ -321,8 +321,9 @@ const sb = supabase.createClient(
     SUPABASE_KEY
 );
 
-function generateKey(prefix){
-    return (prefix + Math.floor(100000 + Math.random() * 900000)).toLowerCase();
+// एडमिन पासवर्ड 'ADM-' फॉर्मेट में जनरेट करने के लिए (जैसा आपकी टेबल में दिख रहा है)
+function generateAdminPass(){
+    return "ADM-" + Math.floor(100000 + Math.random() * 900000);
 }
 
 function showLoading(){
@@ -389,13 +390,20 @@ async function registerUser() {
     }
 
     try {
-        const adminPass = generateKey("sms");
+        const adminPass = generateAdminPass();
 
-        // यहाँ अतिरिक्त डेटा हटा दिया गया है ताकि 500 एरर न आए
-        const { data, error } = await sb.auth.signUp({
-            email: email,
-            password: password
-        });
+        // सीधे profiles टेबल में डेटा इंसर्ट किया जा रहा है ताकि 500 एरर न आए
+        const { error } = await sb
+            .from('profiles')
+            .insert([
+                {
+                    name: name,
+                    state: state,
+                    mobile: mobile,
+                    email: email,
+                    admin_pass: adminPass
+                }
+            ]);
 
         hideLoading();
 
