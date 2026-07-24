@@ -92,23 +92,6 @@ transform:translateY(0);
 }
 }
 
-.logo{
-width:70px;
-height:70px;
-border-radius:50%;
-border:4px solid #FFD700;
-background:#fff;
-padding:5px;
-margin-bottom:10px;
-animation:pulse 2.5s infinite;
-}
-
-@keyframes pulse{
-50%{
-transform:scale(1.08);
-}
-}
-
 .register-box h2{
     font-size:32px;
     margin:0 0 8px;
@@ -243,8 +226,6 @@ text-decoration:underline;
     font-size:16px;
 }
 
-
-
 .cf-turnstile{
     display:flex;
     justify-content:center;
@@ -252,20 +233,12 @@ text-decoration:underline;
     transform:scale(0.75);
     transform-origin:center;
 }
-
-
-
-
 </style>
 		
 </head>
 <body>
 
-
-
 <div class="register-box">
-
-
 
 <h2>📝 Create Account</h2>
 
@@ -348,75 +321,45 @@ const sb = supabase.createClient(
     SUPABASE_KEY
 );
 
-
-
 function generateKey(prefix){
-
-return prefix + "-" +
-Math.floor(100000 + Math.random() * 900000);
-
+    return prefix + "-" + Math.floor(100000 + Math.random() * 900000);
 }
 
 function showLoading(){
-
-const btn =
-document.getElementById("registerBtn");
-
-btn.disabled = true;
-
-btn.innerHTML = `
-<span class="loader"></span>
-Please Wait...
-`;
-
+    const btn = document.getElementById("registerBtn");
+    btn.disabled = true;
+    btn.innerHTML = `
+    <span class="loader"></span>
+    Please Wait...
+    `;
 }
 
 function hideLoading(){
-
-const btn =
-document.getElementById("registerBtn");
-
-btn.disabled = false;
-
-btn.innerHTML =
-"📝 Register";
-
+    const btn = document.getElementById("registerBtn");
+    btn.disabled = false;
+    btn.innerHTML = "📝 Register";
 }
 
 function togglePassword(id,eye){
-
-const input =
-document.getElementById(id);
-
-if(input.type==="password"){
-
-input.type="text";
-eye.innerHTML="🙈";
-
-}else{
-
-input.type="password";
-eye.innerHTML="👁️";
-
-}
-
+    const input = document.getElementById(id);
+    if(input.type==="password"){
+        input.type="text";
+        eye.innerHTML="🙈";
+    }else{
+        input.type="password";
+        eye.innerHTML="👁️";
+    }
 }
 
 document.getElementById("eye1").onclick=function(){
-
-togglePassword("password",this);
-
+    togglePassword("password",this);
 };
 
 document.getElementById("eye2").onclick=function(){
-
-togglePassword("confirmPassword",this);
-
+    togglePassword("confirmPassword",this);
 };
 
-
 async function registerUser() {
-
     showLoading();
 
     const name = document.getElementById("name").value.trim();
@@ -463,18 +406,22 @@ async function registerUser() {
         return alert("CAPTCHA verification failed.");
     }
 
+   // केवल admin_pass जनरेट किया जाएगा, report_pass हटा दिया गया है
+   const adminPass = generateKey("ADM");
+
    const { error } = await sb.auth.signUp({
-    email,
-    password,
-    options: {
-        emailRedirectTo: "https://sgunms.in/login.html",
-        data: {
-            name,
-            state,
-            mobile
+        email,
+        password,
+        options: {
+            emailRedirectTo: "https://sgunms.in/login.html",
+            data: {
+                name,
+                state,
+                mobile,
+                admin_pass: adminPass
+            }
         }
-    }
-});
+   });
 
     hideLoading();
 
@@ -483,17 +430,12 @@ async function registerUser() {
     }
 
     alert(
-        "Registration Successful!\n\nPlease verify your email before login."
+        "Registration Successful!\n\nYour Admin Password is: " + adminPass + "\n\nPlease verify your email before login."
     );
 
     window.location.href = "login.html";
 }
-
 </script>
-
-
-
-
 
 </body>
 </html>
