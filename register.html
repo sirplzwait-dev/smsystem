@@ -325,12 +325,7 @@ function generateAdminPass(){
     return "ADM-" + Math.floor(100000 + Math.random() * 900000);
 }
 
-function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
+
 
 function showLoading(){
     const btn = document.getElementById("registerBtn");
@@ -397,22 +392,44 @@ async function registerUser() {
 
     try {
         const adminPass = generateAdminPass();
-        const userId = generateUUID();
+const adminPass = generateAdminPass();
 
-        // बिना auth.signUp के सीधे profiles टेबल में सुरक्षित रूप से डेटा सेव किया जा रहा है
-        const { error } = await sb
-            .from('profiles')
-            .insert([
-                {
-                    id: userId,
-                    name: name,
-                    state: state,
-                    mobile: mobile,
-                    email: email,
-                    admin_pass: adminPass
-                }
-            ]);
+const { data, error } = await sb.auth.signUp({
+    email: email,
+    password: password
+});
 
+if (error) {
+    hideLoading();
+    alert(error.message);
+    return;
+}
+
+const user = data.user;
+
+const { error: profileError } = await sb
+.from("profiles")
+.insert({
+    id: user.id,
+    name: name,
+    state: state,
+    mobile: mobile,
+    email: email,
+    admin_pass: adminPass
+});
+
+hideLoading();
+
+if (profileError) {
+    alert(profileError.message);
+    return;
+}
+
+alert(
+"Registration Successful!\n\nAdmin Password : " + adminPass
+);
+
+window.location.href="login.html";
         hideLoading();
 
         if (error) {
