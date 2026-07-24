@@ -321,6 +321,7 @@ const sb = supabase.createClient(
     SUPABASE_KEY
 );
 
+// बिना डैश के 'sms' और 6 अंकों का रैंडम पासवर्ड लोअरकेस में (जैसे: sms954821)
 function generateKey(prefix){
     return (prefix + Math.floor(100000 + Math.random() * 900000)).toLowerCase();
 }
@@ -391,7 +392,6 @@ async function registerUser() {
     try {
         const adminPass = generateKey("sms");
 
-        // सीधे signUpकॉल कर रहे हैं, अतिरिक्त डेटा को हटाकर या सुरक्षित रूप से भेजकर
         const { data, error } = await sb.auth.signUp({
             email: email,
             password: password,
@@ -408,20 +408,19 @@ async function registerUser() {
         hideLoading();
 
         if (error) {
-            alert("Signup Failed: " + (error.message || JSON.stringify(error)));
+            alert("Registration Error: " + (error.message || JSON.stringify(error)));
             return;
         }
 
-        // यदि यूज़र सफलतापूर्वक बन गया है या ईमेल वेरिफिकेशन पेंडिंग है
         alert(
-            "Registration Successful!\n\nYour Admin Password is: " + adminPass + "\n\nPlease check your email/login."
+            "Registration Successful!\n\nYour Admin Password is: " + adminPass
         );
 
         window.location.href = "login.html";
 
     } catch (err) {
         hideLoading();
-        alert("System Error: " + (err.message || JSON.stringify(err)));
+        alert("Unexpected Error: " + (err.message || JSON.stringify(err)));
     }
 }
 </script>
