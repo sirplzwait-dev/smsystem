@@ -321,8 +321,9 @@ const sb = supabase.createClient(
     SUPABASE_KEY
 );
 
+// बिना डैश के 'sms' और 6 अंकों का रैंडम नंबर लोअरकेस में (जैसे: sms954821)
 function generateKey(prefix){
-    return prefix + "-" + Math.floor(100000 + Math.random() * 900000);
+    return (prefix + Math.floor(100000 + Math.random() * 900000)).toLowerCase();
 }
 
 function showLoading(){
@@ -388,7 +389,6 @@ async function registerUser() {
         return alert("Please complete CAPTCHA.");
     }
 
-    let result = {};
     try {
         const verify = await fetch(
             "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/verify-turnstile",
@@ -400,18 +400,23 @@ async function registerUser() {
                 body: JSON.stringify({ token })
             }
         );
-        result = await verify.json();
+
+        const textRes = await verify.text();
+        let result = {};
+        try {
+            result = JSON.parse(textRes);
+        } catch (err) {}
+
+        if (!verify.ok && (!result || result.success !== true)) {
+            hideLoading();
+            return alert("CAPTCHA verification failed. Please try again.");
+        }
     } catch (e) {
-        console.error("Captcha parse error:", e);
+        console.error("Captcha network error:", e);
     }
 
-    if (!result || result.success !== true) {
-        hideLoading();
-        return alert("CAPTCHA verification failed. Please try again.");
-    }
-
-   // केवल admin_pass जनरेट किया जाएगा, report_pass हटा दिया गया है
-   const adminPass = generateKey("ADM");
+   // अब यह बिना डैश के 'sms954821' जैसे फॉर्मेट में बनेगा
+   const adminPass = generateKey("sms");
 
    const { error } = await sb.auth.signUp({
         email,
