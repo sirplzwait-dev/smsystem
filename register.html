@@ -186,7 +186,7 @@ font-size:15px;
 }
 
 .login-link a{
-color:#FFD700; जैसा
+color:#FFD700;
 font-weight:bold;
 text-decoration:none;
 }
@@ -321,9 +321,17 @@ const sb = supabase.createClient(
     SUPABASE_KEY
 );
 
-// एडमिन पासवर्ड 'ADM-' फॉर्मेट में जनरेट करने के लिए (जैसा आपकी टेबल में दिख रहा है)
+// एडमिन पासवर्ड 'ADM-' फॉर्मेट में जनरेट करने के लिए
 function generateAdminPass(){
     return "ADM-" + Math.floor(100000 + Math.random() * 900000);
+}
+
+// यूनिक id (UUID) जनरेट करने का फंक्शन
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 }
 
 function showLoading(){
@@ -391,12 +399,14 @@ async function registerUser() {
 
     try {
         const adminPass = generateAdminPass();
+        const userId = generateUUID();
 
-        // सीधे profiles टेबल में डेटा इंसर्ट किया जा रहा है ताकि 500 एरर न आए
+        // profiles टेबल में id के साथ डेटा सुरक्षित रूप से इंसर्ट किया जा रहा है
         const { error } = await sb
             .from('profiles')
             .insert([
                 {
+                    id: userId,
                     name: name,
                     state: state,
                     mobile: mobile,
