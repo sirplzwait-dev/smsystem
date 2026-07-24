@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Verify Email | Sagun Management System</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#600000,#800000,#ffd700);
+}
+
+.box{
+width:380px;
+background:#fff;
+padding:30px;
+border-radius:18px;
+text-align:center;
+}
+
+h2{
+color:#800000;
+margin-bottom:10px;
+}
+
+p{
+margin-bottom:20px;
+font-size:14px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:16px;
+text-align:center;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+background:#FFD700;
+color:#800000;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+
+#resend{
+background:#800000;
+color:#fff;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Email Verification</h2>
+
+<p>
+
+OTP has been sent to your Email
+
+</p>
+
+<input
+type="text"
+id="otp"
+maxlength="6"
+placeholder="Enter 6 Digit OTP">
+
+<button onclick="verifyOtp()">
+
+Verify OTP
+
+</button>
+
+<button id="resend" onclick="resendOtp()">
+
+Resend OTP
+
+</button>
+
+</div>
+
+<script>
+
+const sb=supabase.createClient(
+
+"https://YOUR_PROJECT.supabase.co",
+
+"YOUR_PUBLISHABLE_KEY"
+
+);
+
+const params=new URLSearchParams(location.search);
+
+const email=params.get("email");
+
+async function verifyOtp(){
+
+const token=document.getElementById("otp").value;
+
+const {error}=await sb.auth.verifyOtp({
+
+email:email,
+
+token:token,
+
+type:"email"
+
+});
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+alert("Email Verified Successfully");
+
+location.href="login.html";
+
+}
+
+async function resendOtp(){
+
+const {error}=await sb.auth.resend({
+
+type:"signup",
+
+email:email
+
+});
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+alert("OTP Sent Again");
+
+}
+
+</script>
+
+</body>
+
+</html>
