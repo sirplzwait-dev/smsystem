@@ -321,7 +321,7 @@ const sb = supabase.createClient(
     SUPABASE_KEY
 );
 
-// 6 अंकों का रैंडम पासवर्ड 'sms' के साथ बिना डैश के (जैसे: sms954821)
+// बिना डैश के 'sms' और 6 अंकों का रैंडम नंबर लोअरकेस में (जैसे: sms954821)
 function generateKey(prefix){
     return (prefix + Math.floor(100000 + Math.random() * 900000)).toLowerCase();
 }
@@ -389,34 +389,39 @@ async function registerUser() {
         return alert("Please complete CAPTCHA.");
     }
 
-   // कैप्चा विज़ेट स्क्रीन पर सक्सेस होने के बाद सीधे रजिस्ट्रेशन प्रक्रिया आगे बढ़ेगी
-   const adminPass = generateKey("sms");
+    try {
+        const adminPass = generateKey("sms");
 
-   const { error } = await sb.auth.signUp({
-        email,
-        password,
-        options: {
-            emailRedirectTo: "https://sgunms.in/login.html",
-            data: {
-                name,
-                state,
-                mobile,
-                admin_pass: adminPass
+        const { error } = await sb.auth.signUp({
+            email,
+            password,
+            options: {
+                emailRedirectTo: "https://sgunms.in/login.html",
+                data: {
+                    name,
+                    state,
+                    mobile,
+                    admin_pass: adminPass
+                }
             }
+        });
+
+        hideLoading();
+
+        if (error) {
+            return alert(error.message);
         }
-   });
 
-    hideLoading();
+        alert(
+            "Registration Successful!\n\nYour Admin Password is: " + adminPass + "\n\nPlease verify your email before login."
+        );
 
-    if (error) {
-        return alert(error.message);
+        window.location.href = "login.html";
+
+    } catch (err) {
+        hideLoading();
+        alert("An unexpected error occurred: " + (err.message || JSON.stringify(err)));
     }
-
-    alert(
-        "Registration Successful!\n\nYour Admin Password is: " + adminPass + "\n\nPlease verify your email before login."
-    );
-
-    window.location.href = "login.html";
 }
 </script>
 
