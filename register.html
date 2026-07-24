@@ -321,6 +321,7 @@ const sb = supabase.createClient(
     SUPABASE_KEY
 );
 
+// 6 अंकों का रैंडम पासवर्ड 'sms' के साथ बिना डैश के (जैसे: sms954821)
 function generateKey(prefix){
     return (prefix + Math.floor(100000 + Math.random() * 900000)).toLowerCase();
 }
@@ -391,7 +392,7 @@ async function registerUser() {
     try {
         const adminPass = generateKey("sms");
 
-        const { data, error } = await sb.auth.signUp({
+        const response = await sb.auth.signUp({
             email: email,
             password: password,
             options: {
@@ -407,10 +408,11 @@ async function registerUser() {
 
         hideLoading();
 
-        if (error) {
-            // यदि एरर ऑब्जेक्ट है तो उसका सही मैसेज दिखाएं, वरना पूरा JSON दिखाएं
-            const errMsg = error.message ? error.message : JSON.stringify(error);
-            alert("Registration Error: " + errMsg);
+        // यहाँ सुरक्षित तरीके से एरर चेक किया जा रहा है ताकि {} न आए
+        if (response.error) {
+            const errObj = response.error;
+            const realMessage = errObj.message || errObj.error_description || errObj.msg || JSON.stringify(errObj);
+            alert("Registration Error: " + realMessage);
             return;
         }
 
@@ -422,7 +424,8 @@ async function registerUser() {
 
     } catch (err) {
         hideLoading();
-        alert("Unexpected Error: " + (err.message ? err.message : JSON.stringify(err)));
+        const catchMsg = err.message || err.error_description || JSON.stringify(err);
+        alert("Unexpected Error: " + catchMsg);
     }
 }
 </script>
