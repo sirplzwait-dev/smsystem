@@ -320,21 +320,15 @@ const sb = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-
-function generateAdminPass(){
-    return "ADM-" + Math.floor(100000 + Math.random() * 900000);
-}
-
-
-
 function showLoading(){
     const btn = document.getElementById("registerBtn");
     btn.disabled = true;
     btn.innerHTML = `
-    <span class="loader"></span>
-    Please Wait...
+        <span class="loader"></span>
+        Please Wait...
     `;
 }
+
 
 function hideLoading(){
     const btn = document.getElementById("registerBtn");
@@ -381,66 +375,56 @@ async function registerUser() {
         return alert("Passwords do not match.");
     }
 
-    const token = document.querySelector(
-        'input[name="cf-turnstile-response"]'
-    )?.value;
+   // const token = document.querySelector(
+     //   'input[name="cf-turnstile-response"]'
+    //)?.value;
 
-    if (!token) {
-        hideLoading();
-        return alert("Please complete CAPTCHA.");
-    }
+    //if (!token) {
+    //  hideLoading();
+      //  return alert("Please complete CAPTCHA.");
+    //}
+        
 
     try {
-        const adminPass = generateAdminPass();
+       
 
 
 const { data, error } = await sb.auth.signUp({
     email: email,
-    password: password
+    password: password,
+    options: {
+        data: {
+            name: name,
+            state: state,
+            mobile: mobile
+        }
+    }
 });
 
 if (error) {
     hideLoading();
-    alert(error.message);
+
+    console.error(error);
+
+    alert(
+        "Message: " + error.message +
+        "\nStatus: " + error.status +
+        "\nCode: " + error.code
+    );
+
     return;
 }
 
-const user = data.user;
-console.log("Signup Data:", data);
-console.log("User ID:", data.user?.id);
 
-const { error: profileError } = await sb
-.from("profiles")
-.insert([
-    {
-        id: user.id,
-        name: name,
-        state: state,
-        mobile: mobile,
-        email: email,
-        admin_pass: adminPass
-    }
 
-if (profileError) {
-    console.error(profileError);
-    hideLoading();
-    alert(profileError.message);
-    return;
-}
+
 
 
 hideLoading();
 
-if (profileError) {
-    alert(profileError.message);
-    return;
-}
+alert("Registration Successful!");
 
-alert(
-"Registration Successful!\n\nAdmin Password : " + adminPass
-);
-
-window.location.href="login.html";
+window.location.href = "login.html";
       
     } catch (err) {
         hideLoading();
