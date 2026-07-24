@@ -392,7 +392,7 @@ async function registerUser() {
 
     try {
         const adminPass = generateAdminPass();
-const adminPass = generateAdminPass();
+
 
 const { data, error } = await sb.auth.signUp({
     email: email,
@@ -406,17 +406,29 @@ if (error) {
 }
 
 const user = data.user;
+console.log("Signup Data:", data);
+console.log("User ID:", data.user?.id);
 
 const { error: profileError } = await sb
 .from("profiles")
-.insert({
-    id: user.id,
-    name: name,
-    state: state,
-    mobile: mobile,
-    email: email,
-    admin_pass: adminPass
-});
+.insert([
+    {
+        id: user.id,
+        name: name,
+        state: state,
+        mobile: mobile,
+        email: email,
+        admin_pass: adminPass
+    }
+]);
+
+if (profileError) {
+    console.error(profileError);
+    hideLoading();
+    alert(profileError.message);
+    return;
+}
+]);
 
 hideLoading();
 
@@ -430,19 +442,7 @@ alert(
 );
 
 window.location.href="login.html";
-        hideLoading();
-
-        if (error) {
-            alert("Registration Error: " + (error.message || JSON.stringify(error)));
-            return;
-        }
-
-        alert(
-            "Registration Successful!\n\nYour Admin Password is: " + adminPass
-        );
-
-        window.location.href = "login.html";
-
+      
     } catch (err) {
         hideLoading();
         alert("Unexpected Error: " + (err.message || JSON.stringify(err)));
