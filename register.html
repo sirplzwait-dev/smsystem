@@ -388,22 +388,26 @@ async function registerUser() {
         return alert("Please complete CAPTCHA.");
     }
 
-    const verify = await fetch(
-        "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/verify-turnstile",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ token })
-        }
-    );
+    let result = {};
+    try {
+        const verify = await fetch(
+            "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/verify-turnstile",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ token })
+            }
+        );
+        result = await verify.json();
+    } catch (e) {
+        console.error("Captcha parse error:", e);
+    }
 
-    const result = await verify.json();
-
-    if (!result.success) {
+    if (!result || result.success !== true) {
         hideLoading();
-        return alert("CAPTCHA verification failed.");
+        return alert("CAPTCHA verification failed. Please try again.");
     }
 
    // केवल admin_pass जनरेट किया जाएगा, report_pass हटा दिया गया है
