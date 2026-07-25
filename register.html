@@ -1,414 +1,314 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Sagun Management System</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:'Poppins',sans-serif;
-        }
 
-        body{
-            min-height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            overflow-y:auto;
-            overflow-x:hidden;
-            background:linear-gradient(-45deg,#5b0000,#800000,#b8860b,#ffd700);
-            background-size:400% 400%;
-            animation:bgMove 12s ease infinite;
-            position:relative;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        @keyframes bgMove{
-            0%{background-position:0% 50%;}
-            50%{background-position:100% 50%;}
-            100%{background-position:0% 50%;}
-        }
+<title>Register - Sagun Management System</title>
 
-        body::before,
-        body::after{
-            content:"";
-            position:absolute;
-            border-radius:50%;
-            background:rgba(255,255,255,.08);
-            animation:float 8s ease-in-out infinite;
-        }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-        body::before{
-            width:240px;
-            height:240px;
-            top:-70px;
-            left:-70px;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        body::after{
-            width:320px;
-            height:320px;
-            bottom:-100px;
-            right:-100px;
-            animation-delay:3s;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        @keyframes float{
-            50%{
-                transform:translateY(-25px);
-            }
-        }
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 
-        .register-box{
-            max-width:420px;
-            margin:20px;
-            width:100%;
-            padding:18px 25px 20px;
-            border-radius:22px;
-            background:rgba(255,255,255,.15);
-            backdrop-filter:blur(18px);
-            border:1px solid rgba(255,255,255,.25);
-            box-shadow:0 25px 50px rgba(0,0,0,.35);
-            text-align:center;
-            color:#fff;
-            animation:fade .8s ease;
-        }
-        @keyframes fade{
-            from{
-                opacity:0;
-                transform:translateY(40px);
-            }
-            to{
-                opacity:1;
-                transform:translateY(0);
-            }
-        }
+body{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, #5b0000, #800000, #b8860b, #ffd700);
+    background-size: 400% 400%;
+    animation: bgMove 12s ease infinite;
+    overflow: auto;
+}
 
-        .register-box h2{
-            font-size:32px;
-            margin:0 0 8px;
-        }
+@keyframes bgMove{
+    0%{background-position: 0% 50%;}
+    50%{background-position: 100% 50%;}
+    100%{background-position: 0% 50%;}
+}
 
-        .subtitle{
-            margin-bottom:10px;
-            line-height:1.4;
-        }
+.box{
+    width: 420px;
+    max-width: 95%;
+    padding: 25px;
+    background: rgba(255, 255, 255, .15);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
+    color: #fff;
+}
 
-        .input-group{
-            position:relative;
-            margin:8px 0;
-        }
+h2{
+    text-align: center;
+    margin-bottom: 8px;
+}
 
-        .eye{
-            position:absolute;
-            right:15px;
-            top:50%;
-            transform:translateY(-50%);
-            cursor:pointer;
-            font-size:20px;
-            user-select:none;
-        }
+.subtitle{
+    text-align: center;
+    margin-bottom: 18px;
+    line-height: 1.5;
+}
 
-        button{
-            width:100%;
-            padding:12px;
-            border:none;
-            border-radius:12px;
-            background:#FFD700;
-            color:#800000;
-            font-size:17px;
-            font-weight:bold;
-            cursor:pointer;
-            transition:.3s;
-        }
-        button:disabled{
-            cursor:not-allowed;
-            opacity:.8;
-        }
+.input{
+    position: relative;
+    margin-bottom: 12px;
+}
 
-        button:hover{
-            transform:translateY(-2px);
-        }
+.input input{
+    width: 100%;
+    height: 48px;
+    padding-left: 45px;
+    padding-right: 45px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    font-size: 15px;
+}
 
-        .loader{
-            display:inline-block;
-            width:18px;
-            height:18px;
-            border:3px solid rgba(255,255,255,.4);
-            border-top:3px solid #800000;
-            border-radius:50%;
-            animation:spin .8s linear infinite;
-            margin-right:8px;
-            vertical-align:middle;
-        }
+.icon{
+    position: absolute;
+    left: 15px;
+    top: 13px;
+    font-size: 18px;
+}
 
-        @keyframes spin{
-            100%{
-                transform:rotate(360deg);
-            }
-        }
+.eye{
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    cursor: pointer;
+    font-size: 20px;
+}
 
-        .login-link{
-            margin-top:18px;
-            font-size:15px;
-        }
+button{
+    width: 100%;
+    height: 48px;
+    border: none;
+    border-radius: 10px;
+    background: #FFD700;
+    color: #800000;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+}
 
-        .login-link a{
-            color:#FFD700;
-            font-weight:bold;
-            text-decoration:none;
-        }
+button:hover{
+    transform: translateY(-2px);
+}
 
-        .login-link a:hover{
-            text-decoration:underline;
-        }
+.loader{
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255, 255, 255, .4);
+    border-top: 3px solid #800000;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    margin-right: 10px;
+    vertical-align: middle;
+}
 
-        .input-box{
-            position:relative;
-            margin:10px 0;
-        }
+@keyframes spin{
+    100%{transform: rotate(360deg);}
+}
 
-        .input-box input, .input-group input{
-            width:100%;
-            height:46px;
-            padding:0 14px 0 42px;
-            border-radius:12px;
-            border:1.5px solid rgba(255,215,0,.35);
-            background:#fff;
-            color:#333;
-            font-size:15px;
-            font-weight:500;
-            box-shadow:0 3px 8px rgba(0,0,0,.08);
-            outline: none;
-        }
+.login{
+    margin-top: 18px;
+    text-align: center;
+}
 
-        .input-group input{
-            padding-right: 50px;
-        }
+.login a{
+    color: #FFD700;
+    font-weight: bold;
+    text-decoration: none;
+}
 
-        .input-box input:focus, .input-group input:focus{
-            border-color:#FFD700;
-            box-shadow:0 0 10px rgba(255,215,0,.45);
-        }
+.cf-turnstile{
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+</style>
 
-        .icon{
-            position:absolute;
-            left:14px;
-            top:50%;
-            transform:translateY(-50%);
-            font-size:16px;
-            z-index: 2;
-        }
-
-        .cf-turnstile{
-            display:flex;
-            justify-content:center;
-            margin:8px 0;
-            transform:scale(0.75);
-            transform-origin:center;
-        }
-    </style>
 </head>
+
 <body>
 
-<div class="register-box">
+<div class="box">
 
     <h2>📝 Create Account</h2>
 
     <p class="subtitle">
-        Register to continue to
-        <br>
+        Register to continue<br>
         <b>Sagun Management System</b>
     </p>
 
-    <div class="input-box">
+    <div class="input">
         <span class="icon">👤</span>
-        <input type="text" id="name" placeholder="Full Name">
+        <input id="name" type="text" placeholder="Full Name">
     </div>
 
-    <div class="input-box">
+    <div class="input">
         <span class="icon">📍</span>
-        <input type="text" id="state" placeholder="State">
+        <input id="state" type="text" placeholder="State">
     </div>
 
-    <div class="input-box">
+    <div class="input">
         <span class="icon">📱</span>
-        <input type="text" id="mobile" placeholder="Mobile Number">
+        <input id="mobile" type="text" placeholder="Mobile Number">
     </div>
 
-    <div class="input-box">
+    <div class="input">
         <span class="icon">📧</span>
-        <input type="email" id="email" placeholder="Email">
+        <input id="email" type="email" placeholder="Email Address">
     </div>
 
-    <div class="input-group">
+    <div class="input">
         <span class="icon">🔒</span>
-        <input type="password" id="password" placeholder="Password">
+        <input id="password" type="password" placeholder="Password">
         <span class="eye" id="eye1">👁️</span>
     </div>
 
-    <div class="input-group">
+    <div class="input">
         <span class="icon">🔒</span>
-        <input type="password" id="confirmPassword" placeholder="Confirm Password">
+        <input id="confirmPassword" type="password" placeholder="Confirm Password">
         <span class="eye" id="eye2">👁️</span>
     </div>
 
-    <div class="cf-turnstile"
-         data-sitekey="0x4AAAAAADsJ5QnV0fxq-nS0"
-         data-theme="light"
-         data-language="en">
-    </div>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAADsJ5QnV0fxq-nS0"></div>
 
-    <button type="button" id="registerBtn" onclick="registerUser()">
+    <button id="registerBtn" onclick="registerUser()">
         📝 Register
     </button>
 
-    <div class="login-link">
-        Already have an account?
-        <br>
+    <div class="login">
+        Already have an account?<br>
         <a href="login.html">Login</a>
     </div>
+
 </div>
 
 <script>
-    const SUPABASE_URL = "https://rdlliurzgwwfjscgwssa.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc";
+const SUPABASE_URL = "https://rdlliurzgwwfjscgwssa.supabase.co";
+const SUPABASE_KEY = "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc";
 
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    function showLoading(){
-        const btn = document.getElementById("registerBtn");
-        btn.disabled = true;
-        btn.innerHTML = `<span class="loader"></span> Please Wait...`;
-    }
-
-    function hideLoading(){
-        const btn = document.getElementById("registerBtn");
-        btn.disabled = false;
-        btn.innerHTML = "📝 Register";
-    }
-
-    function togglePassword(id, eye){
-        const input = document.getElementById(id);
-        if(input.type === "password"){
-            input.type = "text";
-            eye.innerHTML = "🙈";
-        } else {
-            input.type = "password";
-            eye.innerHTML = "👁️";
-        }
-    }
-
-    document.getElementById("eye1").onclick = function(){
-        togglePassword("password", this);
-    };
-
-    document.getElementById("eye2").onclick = function(){
-        togglePassword("confirmPassword", this);
-    };
-
-    async function registerUser() {
-        showLoading();
-
-        const name = document.getElementById("name").value.trim();
-        const state = document.getElementById("state").value.trim();
-        const mobile = document.getElementById("mobile").value.trim();
-        const email = document.getElementById("email").value.trim().toLowerCase();
-        const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirmPassword").value;
-
-        if (!name || !email || !password || !confirmPassword) {
-            hideLoading();
-            return alert("Please fill all required fields.");
-        }
-
-        if (password !== confirmPassword) {
-            hideLoading();
-            return alert("Passwords do not match.");
-        }
-
-        try {
-            const { data, error } = await sb.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    data: {
-                        name: name,
-                        state: state,
-                        mobile: mobile
-                    }
-                }
-            });
-
-            if (error) {
-                hideLoading();
-                console.error("Supabase Error Object:", error);
-                
-                // अब यहाँ सही एरर मैसेज प्रिंट होगा
-                alert(
-                    "Error: " + error.message +
-                    "\nStatus: " + (error.status || "N/A") +
-                    "\nCode: " + (error.code || "N/A")
-                );
-                return;
-            }
-
-            hideLoading();
-            alert("Registration Successful!");
-            window.location.href = "login.html";
-
-        } catch (err) {
-            hideLoading();
-            alert("Unexpected Error: " + (err.message || JSON.stringify(err)));
-        }
-    }
-	
-	
-	
-	
-	const adminPass =
-"ADM-" +
-Math.floor(100000 + Math.random() * 900000);
-
-const { data, error } =
-await sb.auth.signUp({
-    email,
-    password,
-    options:{
-        emailRedirectTo:"https://sgunms.in/verify.html",
-        data:{
-            name,
-            state,
-            mobile,
-            admin_pass:adminPass
-        }
-    }
-});
-
-if(error){
-    alert(error.message);
-    return;
+function showLoading() {
+    const btn = document.getElementById("registerBtn");
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loader"></span> Please Wait...';
 }
 
-await sb.from("profiles").insert({
-    id:data.user.id,
-    name,
-    state,
-    mobile,
-    email,
-    admin_pass:adminPass
-});
+function hideLoading() {
+    const btn = document.getElementById("registerBtn");
+    btn.disabled = false;
+    btn.innerHTML = "📝 Register";
+}
 
-window.location.href=
-"verify.html?email="+encodeURIComponent(email);
+document.getElementById("eye1").onclick = () => {
+    const p = document.getElementById("password");
+    p.type = p.type === "password" ? "text" : "password";
+};
 
+document.getElementById("eye2").onclick = () => {
+    const p = document.getElementById("confirmPassword");
+    p.type = p.type === "password" ? "text" : "password";
+};
+
+async function registerUser() {
+    showLoading();
+
+    const name = document.getElementById("name").value.trim();
+    const state = document.getElementById("state").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (!name || !email || !password || !confirmPassword) {
+        hideLoading();
+        alert("Please fill all fields.");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        hideLoading();
+        alert("Passwords do not match.");
+        return;
+    }
+
+    const adminPass = "ADM-" + Math.floor(100000 + Math.random() * 900000);
+
+    try {
+        const { data, error } = await sb.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    name,
+                    state,
+                    mobile,
+                    admin_pass: adminPass
+                }
+            }
+        });
+
+        if (error) {
+            hideLoading();
+            alert(error.message);
+            return;
+        }
+
+        if (data.user) {
+            await sb.from("profiles").insert({
+                id: data.user.id,
+                name,
+                state,
+                mobile,
+                email,
+                admin_pass: adminPass
+            });
+        }
+
+        await fetch(
+            "https://rdlliurzgwwfjscgwssa.functions.supabase.co/send-welcome",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    admin_pass: adminPass
+                })
+            }
+        );
+
+        hideLoading();
+
+        window.location.href = "verify.html?email=" + encodeURIComponent(email);
+
+    } catch (err) {
+        hideLoading();
+        alert(err.message);
+    }
+}
 </script>
 
 </body>
