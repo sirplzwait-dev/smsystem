@@ -4,8 +4,7 @@ const sb = supabase.createClient(
     "https://rdlliurzgwwfjscgwssa.supabase.co",
     "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
 );
-);
-);
+
 
 const btn = document.getElementById("registerBtn");
 
