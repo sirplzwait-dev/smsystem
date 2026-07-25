@@ -267,16 +267,7 @@ async function registerUser() {
             return;
         }
 
-        if (data.user) {
-            await sb.from("profiles").insert({
-                id: data.user.id,
-                name,
-                state,
-                mobile,
-                email,
-                admin_pass: adminPass
-            });
-        }
+      
 
         await fetch(
             "https://rdlliurzgwwfjscgwssa.functions.supabase.co/send-welcome",
