@@ -255,18 +255,11 @@ async function registerUser() {
     const adminPass = "ADM-" + Math.floor(100000 + Math.random() * 900000);
 
     try {
-        const { data, error } = await sb.auth.signUp({
-            email,
-            password,
-            options: {
-                data: {
-                    name,
-                    state,
-                    mobile,
-                    admin_pass: adminPass
-                }
-            }
-        });
+       const { data, error } = await sb.auth.signUp({
+    email,
+    password
+});
+
 
         if (error) {
             hideLoading();
