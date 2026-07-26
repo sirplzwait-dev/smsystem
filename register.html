@@ -274,21 +274,27 @@ console.log("METADATA =", data.user?.user_metadata);
 
       
 
-        await fetch(
-            "https://rdlliurzgwwfjscgwssa.functions.supabase.co/send-welcome",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    admin_pass: adminPass
-                })
-            }
-        );
+     const response = await fetch(
+  "https://rdlliurzgwwfjscgwssa.functions.supabase.co/functions/v1/send-welcome",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      admin_pass: adminPass
+    })
+  }
+);
 
+const result = await response.json();
+console.log("Welcome Response:", response.status, result);
+
+if (!response.ok) {
+  throw new Error(result.message || "Welcome email failed.");
+}
 
         hideLoading();
 
