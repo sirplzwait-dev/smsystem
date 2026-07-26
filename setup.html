@@ -292,6 +292,8 @@
             const img = document.getElementById("cropImage");
             img.src = e.target.result;
             if (cropper) cropper.destroy();
+            // QR Code ke liye chhota canvas/view aur photos ke liye standard 200x200 rakha gaya hai
+            const size = (previewId === 'qrPreview') ? 150 : 200;
             cropper = new Cropper(img, { aspectRatio: 1, viewMode: 1 });
         };
         reader.readAsDataURL(file);
@@ -302,9 +304,13 @@
     document.getElementById("qrPhoto").onchange = (e) => openCrop(e.target.files[0], "qrPreview");
 
     document.getElementById("cropSave").onclick = async () => {
-        const canvas = cropper.getCroppedCanvas({ width: 300, height: 300 });
+        // Optimization 1 & 3: Images ke liye 200x200 aur QR ke liye 150x150 canvas size[cite: 2]
+        const canvasSize = (currentPreview === 'qrPreview') ? 150 : 200;
+        const canvas = cropper.getCroppedCanvas({ width: canvasSize, height: canvasSize });
+        
         canvas.toBlob(async (blob) => {
-            const compressed = await imageCompression(blob, { maxSizeMB: 0.08, maxWidthOrHeight: 300, fileType: 'image/jpeg' });
+            // Optimization 2: Compression ko aur behtar kiya gaya hai (maxSizeMB: 0.03, quality: 0.65)[cite: 2]
+            const compressed = await imageCompression(blob, { maxSizeMB: 0.03, maxWidthOrHeight: canvasSize, fileType: 'image/jpeg' });
             const jpgFile = new File([compressed], "image.jpg", { type: "image/jpeg" });
             
             document.getElementById(currentPreview).src = URL.createObjectURL(jpgFile);
@@ -314,7 +320,7 @@
             else if (currentPreview === "qrPreview") croppedQR = jpgFile;
 
             document.getElementById("cropModal").style.display = "none";
-        }, "image/jpeg", 0.8);
+        }, "image/jpeg", 0.65);
     };
 
     async function submitSetup() {
@@ -330,7 +336,7 @@
 
         Swal.fire({
             title: 'डेटा सुरक्षित हो रहा है...',
-            html: 'कृपया प्रतीक्षा करें, तस्वीरें अपलोड हो रही हैं...',
+            html: 'कृपया प्रतीक्षा करें, तस्वीरें एक साथ अपलोड हो रही हैं...',
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading();
@@ -350,30 +356,45 @@
             let bridePhotoUrl = existing ? existing.bride_photo_url : null;
             let qrUrl = existing ? existing.qr_url : null;
 
+            // Optimization 4: Promise.all() ke zariye saari images ko parallel (ek sath) upload kiya ja raha hai[cite: 2]
+            const uploadPromises = [];
+
             if (croppedFirst) {
-                Swal.update({ html: 'पहली फोटो अपलोड हो रही है...' });
                 const path = `${user.id}/first_${Date.now()}.jpg`;
-                await sb.storage.from("photos").upload(path, croppedFirst, { upsert: true, contentType: 'image/jpeg' });
-                const urlRes = sb.storage.from("photos").getPublicUrl(path);
-                if (eventType === "boy") bridePhotoUrl = urlRes.data.publicUrl;
-                else groomPhotoUrl = urlRes.data.publicUrl;
+                uploadPromises.push(
+                    sb.storage.from("photos").upload(path, croppedFirst, { upsert: true, contentType: 'image/jpeg' })
+                    .then(() => {
+                        const urlRes = sb.storage.from("photos").getPublicUrl(path);
+                        if (eventType === "boy") bridePhotoUrl = urlRes.data.publicUrl;
+                        else groomPhotoUrl = urlRes.data.publicUrl;
+                    })
+                );
             }
 
             if (croppedSecond) {
-                Swal.update({ html: 'दूसरी फोटो अपलोड हो रही है...' });
                 const path = `${user.id}/second_${Date.now()}.jpg`;
-                await sb.storage.from("photos").upload(path, croppedSecond, { upsert: true, contentType: 'image/jpeg' });
-                const urlRes = sb.storage.from("photos").getPublicUrl(path);
-                if (eventType === "boy") groomPhotoUrl = urlRes.data.publicUrl;
-                else bridePhotoUrl = urlRes.data.publicUrl;
+                uploadPromises.push(
+                    sb.storage.from("photos").upload(path, croppedSecond, { upsert: true, contentType: 'image/jpeg' })
+                    .then(() => {
+                        const urlRes = sb.storage.from("photos").getPublicUrl(path);
+                        if (eventType === "boy") groomPhotoUrl = urlRes.data.publicUrl;
+                        else bridePhotoUrl = urlRes.data.publicUrl;
+                    })
+                );
             }
 
             if (croppedQR) {
-                Swal.update({ html: 'पेमेंट QR कोड अपलोड हो रहा है...' });
                 const path = `${user.id}/qr_${Date.now()}.jpg`;
-                await sb.storage.from("photos").upload(path, croppedQR, { upsert: true, contentType: 'image/jpeg' });
-                qrUrl = sb.storage.from("photos").getPublicUrl(path).data.publicUrl;
+                uploadPromises.push(
+                    sb.storage.from("photos").upload(path, croppedQR, { upsert: true, contentType: 'image/jpeg' })
+                    .then(() => {
+                        qrUrl = sb.storage.from("photos").getPublicUrl(path).data.publicUrl;
+                    })
+                );
             }
+
+            // Sabhi uploads ek sath complete honge[cite: 2]
+            await Promise.all(uploadPromises);
 
             let groomName = (eventType === "boy") ? name2 : name1;
             let brideName = (eventType === "boy") ? name1 : name2;
