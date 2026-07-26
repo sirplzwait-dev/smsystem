@@ -30,12 +30,7 @@
         .settings-btn { background: #fff; color: #800000; }
         .home-btn:hover, .settings-btn:hover { background: #333; color: #ffd700; transform: translateY(-2px); }
 
-        .top-title {
-            font-size: 18px; 
-            font-weight: 700; 
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-        }
+        .top-title { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; }
 
         .stats-container { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
         .stat-card { 
@@ -60,18 +55,6 @@
         
         .deleteAll-btn { background: #dc2626; color: white; padding: 8px 16px; border: none; cursor: pointer; border-radius: 8px; font-weight: 600; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 10px rgba(220,38,38,0.2); white-space: nowrap; }
         .deleteAll-btn:hover { background: #b91c1c; }
-
-        @media(max-width: 768px) {
-            body { padding: 10px; }
-            .top-bar { flex-direction: column; align-items: stretch; text-align: center; padding: 12px; }
-            .btn-group { justify-content: center; width: 100%; }
-            .top-title { font-size: 16px; width: 100%; text-align: center; }
-            .stats-container { gap: 10px; }
-            .stat-card { min-width: 100%; padding: 15px; }
-            .card { padding: 12px; }
-            .card > div { flex-direction: column; align-items: stretch !important; gap: 10px; text-align: center; }
-            .deleteAll-btn { width: 100%; }
-        }
     </style>
 </head>
 <body>
@@ -142,62 +125,76 @@ window.onload = async () => {
     }
     currentUserId = user.id;
 
-    // --- पासवर्ड बॉक्स जिसमें Show/Hide (👁️) फीचर भी है ---
-    const { value: password } = await Swal.fire({
-        title: '🔒 एडमिन पासवर्ड दर्ज करें',
-        html: `
-            <div style="position: relative; width: 100%; margin-top: 10px;">
-                <input type="password" id="swal-input-password" class="swal2-input" placeholder="अपना अकाउंट पासवर्ड लिखें" style="margin: 0; width: 100%; padding-right: 45px; box-sizing: border-box;">
-                <span id="toggle-swal-password" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 18px; user-select: none;">👁️</span>
-            </div>
-        `,
-        focusConfirm: false,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        confirmButtonText: 'लॉगिन करें',
-        confirmButtonColor: '#800000',
-        didOpen: () => {
-            const pwdInput = document.getElementById('swal-input-password');
-            const toggleBtn = document.getElementById('toggle-swal-password');
-            
-            toggleBtn.onclick = () => {
-                if (pwdInput.type === 'password') {
-                    pwdInput.type = 'text';
-                    toggleBtn.textContent = '🙈';
-                } else {
-                    pwdInput.type = 'password';
-                    toggleBtn.textContent = '👁️';
-                }
-            };
-        },
-        preConfirm: () => {
-            const pwd = document.getElementById('swal-input-password').value;
-            if (!pwd) {
-                Swal.showValidationMessage('पासवर्ड डालना अनिवार्य है!');
-            }
-            return pwd;
-        }
-    });
+    let isAuthenticated = false;
 
-    if (password) {
-        const { error } = await sb.auth.signInWithPassword({
-            email: user.email,
-            password: password
+    while (!isAuthenticated) {
+        const { value: password, dismiss } = await Swal.fire({
+            title: '🔒 एडमिन पासवर्ड दर्ज करें',
+            html: `
+                <div style="position: relative; width: 100%; margin-top: 10px;">
+                    <input type="password" id="swal-input-password" class="swal2-input" placeholder="अपना एडमिन पासवर्ड लिखें" style="margin: 0; width: 100%; padding-right: 45px; box-sizing: border-box;">
+                    <span id="toggle-swal-password" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 18px; user-select: none;">👁️</span>
+                </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'लॉगिन करें',
+            cancelButtonText: '❌ रद्द करें (मुख्य पेज पर जाएं)',
+            buttonsStyling: true,
+            customClass: {
+                confirmButton: 'swal2-confirm',
+                cancelButton: 'swal2-cancel'
+            },
+            confirmButtonColor: '#800000',
+            cancelButtonColor: '#6c757d',
+            didOpen: () => {
+                const pwdInput = document.getElementById('swal-input-password');
+                const toggleBtn = document.getElementById('toggle-swal-password');
+                
+                toggleBtn.onclick = () => {
+                    if (pwdInput.type === 'password') {
+                        pwdInput.type = 'text';
+                        toggleBtn.textContent = '🙈';
+                    } else {
+                        pwdInput.type = 'password';
+                        toggleBtn.textContent = '👁️';
+                    }
+                };
+            },
+            preConfirm: () => {
+                const pwd = document.getElementById('swal-input-password').value;
+                if (!pwd) {
+                    Swal.showValidationMessage('पासवर्ड डालना अनिवार्य है!');
+                }
+                return pwd;
+            }
         });
 
-        if (error) {
-            Swal.fire({
-                title: 'गलत पासवर्ड!',
-                text: 'आपने गलत पासवर्ड दर्ज किया है।',
-                icon: 'error',
-                confirmButtonColor: '#800000'
-            }).then(() => {
-                window.location.href = 'home.html';
-            });
+        // Agar user ne 'Cancel' button dabaya ya popup close kiya
+        if (dismiss === Swal.DismissReason.cancel || dismiss === Swal.DismissReason.backdrop || dismiss === Swal.DismissReason.close) {
+            window.location.href = 'home.html';
             return;
         }
+
+        if (password) {
+            const { data: profileData, error: profileError } = await sb
+                .from("profiles")
+                .select("admin_pass")
+                .eq("id", currentUserId)
+                .single();
+
+            if (profileError || !profileData || profileData.admin_pass !== password) {
+                await Swal.fire({
+                    title: 'गलत पासवर्ड!',
+                    text: 'आपने गलत एडमिन पासवर्ड दर्ज किया है। कृपया पुनः प्रयास करें।',
+                    icon: 'error',
+                    confirmButtonColor: '#800000'
+                });
+            } else {
+                isAuthenticated = true;
+            }
+        }
     }
-    // ----------------------------------------------------
 
     loadData();
 };
@@ -263,7 +260,7 @@ async function deleteAllData() {
 
     Swal.fire({
         title: 'चेतावनी!',
-        text: 'आपका पूरा गेस्ट डेटा हमेशा के लिए डिलीट हो जाएगा!',
+        text: 'आपका पूरा डेटा डिलीट हो जाएगा!',
         icon: 'error',
         showCancelButton: true,
         confirmButtonColor: '#dc2626',
