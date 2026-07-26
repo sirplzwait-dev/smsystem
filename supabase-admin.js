@@ -115,6 +115,7 @@ const {data:todayReg}=await client
 .from("profiles")
 .select("id")
 .gte("created_at",todayISO);
+console.log("Today Registration", todayReg);
 
 document.getElementById("todayRegistration").innerHTML=
 todayReg.length;
@@ -127,6 +128,7 @@ const {data:todayGuest}=await client
 .from("guests")
 .select("id")
 .gte("created_at",todayISO);
+console.log("Today Guest", todayGuest);
 
 document.getElementById("todayEntry").innerHTML=
 todayGuest.length;
@@ -266,6 +268,36 @@ const { data: latestGuests, error: latestGuestError } = await client
 .limit(20);
 
 if(latestGuestError) throw latestGuestError;
+let cash = 0;
+let upi = 0;
+
+const states = new Set();
+const districts = new Set();
+
+latestGuests.forEach(g => {
+
+    if ((g.payment_mode || "").toLowerCase() === "cash") {
+        cash++;
+    }
+
+    if ((g.payment_mode || "").toLowerCase() === "upi") {
+        upi++;
+    }
+
+    if (g.state) {
+        states.add(g.state);
+    }
+
+    if (g.district) {
+        districts.add(g.district);
+    }
+
+});
+
+document.getElementById("cashCount").textContent = cash;
+document.getElementById("upiCount").textContent = upi;
+document.getElementById("stateCount").textContent = states.size;
+document.getElementById("districtCount").textContent = districts.size;
 
 const guestTable=document.getElementById("guestTable");
 
@@ -314,6 +346,10 @@ return d.toDateString()===today.toDateString();
 .reduce((sum,g)=>sum+Number(g.amount||0),0);
 
 const todayAmountBox=document.getElementById("todayAmount");
+document.getElementById("summaryRegistration").textContent = todayReg.length;
+document.getElementById("summaryGuest").textContent = todayGuest.length;
+document.getElementById("summaryAmount").textContent =
+    "₹" + todayAmount.toLocaleString("en-IN");
 
 if(todayAmountBox){
 
