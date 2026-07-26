@@ -1,0 +1,838 @@
+/* ===========================================
+   Secure Hub Premium Dashboard
+   Part 1
+=========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#222;
+    overflow-x:hidden;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.container{
+    display:flex;
+    min-height:100vh;
+    width:100%;
+}
+
+/* ===========================
+Sidebar
+=========================== */
+
+.sidebar{
+    width:260px;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    background:linear-gradient(180deg,#5d0015,#7a001d,#b8860b);
+    padding:25px;
+    color:#fff;
+    overflow-y:auto;
+    box-shadow:6px 0 20px rgba(0,0,0,.18);
+    z-index:999;
+}
+
+.brand{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.brand h1{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.brand p{
+    margin-top:8px;
+    opacity:.8;
+    font-size:14px;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    padding:16px;
+    margin-bottom:12px;
+    border-radius:15px;
+    cursor:pointer;
+    transition:.35s;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.sidebar ul li:hover{
+    background:rgba(255,255,255,.15);
+    transform:translateX(6px);
+}
+
+.sidebar ul li.active{
+    background:#fff;
+    color:#5d0015;
+    font-weight:600;
+}
+
+/* ===========================
+Main
+=========================== */
+
+.main{
+    margin-left:260px;
+    width:calc(100% - 260px);
+    padding:25px;
+}
+
+/* ===========================
+Header
+=========================== */
+
+.header{
+    background:#fff;
+    padding:22px 28px;
+    border-radius:22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    margin-bottom:30px;
+}
+
+.header h2{
+    font-size:30px;
+    color:#5d0015;
+}
+
+.header p{
+    margin-top:4px;
+    color:#777;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+/* Search */
+#searchBox{
+    width:260px;
+    padding:12px 18px;
+    border:none;
+    outline:none;
+    border-radius:40px;
+    background:#f3f3f3;
+    font-size:15px;
+    transition:.3s;
+}
+
+#searchBox:focus{
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(184,134,11,.25);
+}
+
+/* Buttons */
+#refreshBtn,
+#darkBtn{
+    width:46px;
+    height:46px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:18px;
+    background:#5d0015;
+    color:#fff;
+    transition:.35s;
+}
+
+#refreshBtn:hover,
+#darkBtn:hover{
+    background:#b8860b;
+    transform:rotate(20deg);
+}
+
+/* Notification */
+.notification{
+    position:relative;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.badge{
+    position:absolute;
+    top:-8px;
+    right:-10px;
+    width:20px;
+    height:20px;
+    background:red;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#fff;
+}
+
+/* Profile */
+.admin-profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.profile-photo{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid #b8860b;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+.admin-info b{
+    display:block;
+    font-size:15px;
+    color:#222;
+}
+
+.admin-info small{
+    color:#888;
+    font-size:12px;
+}
+
+.admin-info p{
+    margin-top:3px;
+    font-size:12px;
+    color:#666;
+}
+
+/* ===========================================
+   Dashboard Cards
+=========================================== */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:22px;
+    margin-bottom:30px;
+}
+
+.card{
+    background:#fff;
+    border-radius:22px;
+    padding:25px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+    transition:.35s;
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:5px;
+    background:linear-gradient(90deg,#5d0015,#b8860b);
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+.card span{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:60px;
+    height:60px;
+    border-radius:15px;
+    font-size:30px;
+    background:#fff7e8;
+    margin-bottom:18px;
+}
+
+.card h4{
+    font-size:15px;
+    font-weight:500;
+    color:#777;
+    margin-bottom:8px;
+}
+
+.card h2{
+    font-size:34px;
+    font-weight:700;
+    color:#5d0015;
+    margin-bottom:10px;
+}
+
+.card p{
+    font-size:13px;
+    color:#999;
+}
+
+/* ===========================================
+Dashboard Layout
+=========================================== */
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:25px;
+    margin-bottom:30px;
+}
+
+.left-panel,
+.right-panel{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+
+/* ===========================================
+Box
+=========================================== */
+
+.box{
+    background:#fff;
+    border-radius:22px;
+    padding:22px;
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.box:hover{
+    transform:translateY(-5px);
+    box-shadow:0 18px 35px rgba(0,0,0,.15);
+}
+
+.box-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.box-header h3{
+    font-size:20px;
+    font-weight:600;
+    color:#5d0015;
+}
+
+.box-header button{
+    padding:8px 16px;
+    border:none;
+    border-radius:30px;
+    background:#5d0015;
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.box-header button:hover{
+    background:#b8860b;
+}
+
+/* ===========================================
+Charts
+=========================================== */
+
+.chart-container{
+    width:100%;
+    height:330px;
+}
+
+.small-chart{
+    height:250px;
+}
+
+.chart-container canvas{
+    width:100%!important;
+    height:100%!important;
+}
+
+/* ===========================================
+Analytics
+=========================================== */
+
+.analytics{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.analytics-card{
+    background:linear-gradient(135deg,#5d0015,#b8860b);
+    padding:20px;
+    border-radius:18px;
+    text-align:center;
+    color:#fff;
+    transition:.35s;
+}
+
+.analytics-card:hover{
+    transform:scale(1.05);
+}
+
+.analytics-card h4{
+    font-size:14px;
+    font-weight:400;
+    margin-bottom:8px;
+}
+
+.analytics-card h2{
+    font-size:28px;
+}
+
+/* ===========================================
+Today's Summary
+=========================================== */
+
+.summary{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.summary div{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+    background:#f7f7f7;
+    border-radius:15px;
+    transition:.3s;
+}
+
+.summary div:hover{
+    background:#fff5dd;
+}
+
+.summary span{
+    font-size:14px;
+    color:#666;
+}
+
+.summary b{
+    font-size:20px;
+    color:#5d0015;
+    font-weight:700;
+}
+
+/* ===========================================
+   Tables
+=========================================== */
+
+.table-box{
+    background:#fff;
+    padding:25px;
+    border-radius:22px;
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+    margin-bottom:30px;
+    overflow-x:auto;
+}
+
+.table-box h3{
+    font-size:22px;
+    color:#5d0015;
+    margin-bottom:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:900px;
+}
+
+table thead{
+    background:linear-gradient(90deg,#5d0015,#b8860b);
+    color:#fff;
+}
+
+table th{
+    padding:16px;
+    font-size:15px;
+    font-weight:600;
+    text-align:left;
+}
+
+table td{
+    padding:15px;
+    border-bottom:1px solid #ececec;
+    font-size:14px;
+    color:#555;
+}
+
+table tbody tr{
+    transition:.30s;
+}
+
+table tbody tr:hover{
+    background:#fff8ea;
+}
+
+table tbody tr:last-child td{
+    border-bottom:none;
+}
+
+/* ===========================================
+Status Badge
+=========================================== */
+
+.status{
+    padding:6px 14px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:600;
+    display:inline-block;
+}
+
+.status.success{
+    background:#dff8e6;
+    color:#1b8a3a;
+}
+
+.status.pending{
+    background:#fff4d9;
+    color:#a56a00;
+}
+
+.status.failed{
+    background:#ffe0e0;
+    color:#b10000;
+}
+
+/* ===========================================
+Payment Badge
+=========================================== */
+
+.payment{
+    padding:6px 12px;
+    border-radius:25px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.payment.cash{
+    background:#d7f7e3;
+    color:#148545;
+}
+
+.payment.upi{
+    background:#dde8ff;
+    color:#0055c8;
+}
+
+/* ===========================================
+Footer
+=========================================== */
+
+.footer{
+    margin-top:35px;
+    padding:18px;
+    background:#fff;
+    border-radius:18px;
+    text-align:center;
+    font-size:14px;
+    color:#777;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+/* ===========================================
+Scrollbar
+=========================================== */
+
+::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#b8860b;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-track{
+    background:#f1f1f1;
+}
+
+/* ===========================================
+Animation
+=========================================== */
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.card,
+.box,
+.table-box{
+    animation:fadeIn .6s ease;
+}
+
+/* ===========================================
+Dark Mode
+=========================================== */
+
+body.dark{
+    background:#111827;
+    color:#fff;
+}
+
+body.dark .header,
+body.dark .card,
+body.dark .box,
+body.dark .table-box,
+body.dark .footer{
+    background:#1f2937;
+    color:#fff;
+}
+
+body.dark table td{
+    color:#ddd;
+    border-color:#374151;
+}
+
+body.dark table thead{
+    background:#5d0015;
+}
+
+body.dark #searchBox{
+    background:#374151;
+    color:#fff;
+}
+
+body.dark .summary div{
+    background:#2d3748;
+}
+
+body.dark .summary b{
+    color:#ffd54f;
+}
+
+body.dark .card h2,
+body.dark .box h3{
+    color:#ffd54f;
+}
+
+/* ===========================================
+   Responsive Design
+=========================================== */
+
+@media(max-width:1200px){
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+    .analytics{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:992px){
+    .sidebar{
+        width:220px;
+    }
+    .main{
+        margin-left:220px;
+        width:calc(100% - 220px);
+    }
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+    .header{
+        flex-wrap:wrap;
+        gap:15px;
+    }
+    .header-right{
+        width:100%;
+        justify-content:flex-end;
+        flex-wrap:wrap;
+    }
+    #searchBox{
+        width:220px;
+    }
+}
+
+@media(max-width:768px){
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+        padding:20px;
+    }
+    .sidebar ul{
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+        justify-content:center;
+    }
+    .sidebar ul li{
+        margin:0;
+        padding:12px 15px;
+    }
+    .main{
+        margin-left:0;
+        width:100%;
+        padding:15px;
+    }
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+    .header-right{
+        width:100%;
+        justify-content:space-between;
+    }
+    .cards{
+        grid-template-columns:1fr;
+    }
+    .analytics{
+        grid-template-columns:1fr;
+    }
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+    .summary div{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+    }
+    table{
+        min-width:700px;
+    }
+}
+
+@media(max-width:576px){
+    body{
+        font-size:14px;
+    }
+    .brand h1{
+        font-size:24px;
+    }
+    .header h2{
+        font-size:22px;
+    }
+    .card{
+        padding:20px;
+    }
+    .card h2{
+        font-size:28px;
+    }
+    .box{
+        padding:18px;
+    }
+    .table-box{
+        padding:18px;
+    }
+    #searchBox{
+        width:100%;
+    }
+    .admin-profile{
+        width:100%;
+        justify-content:space-between;
+    }
+    .avatar{
+        width:45px;
+        height:45px;
+        font-size:18px;
+    }
+    .footer{
+        font-size:12px;
+    }
+}
+
+/* ===========================================
+Utility Classes & Components
+=========================================== */
+
+.text-center{ text-align:center; }
+.text-right{ text-align:right; }
+.mt-10{ margin-top:10px; }
+.mt-20{ margin-top:20px; }
+.mt-30{ margin-top:30px; }
+.mb-10{ margin-bottom:10px; }
+.mb-20{ margin-bottom:20px; }
+.mb-30{ margin-bottom:30px; }
+.hidden{ display:none; }
+.flex{ display:flex; }
+
+.btn{
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-primary{ background:#5d0015; color:#fff; }
+.btn-primary:hover{ background:#7a001d; }
+.btn-warning{ background:#b8860b; color:#fff; }
+.btn-warning:hover{ background:#d39d09; }
+.btn-success{ background:#198754; color:#fff; }
+.btn-success:hover{ background:#157347; }
+.btn-danger{ background:#dc3545; color:#fff; }
+.btn-danger:hover{ background:#bb2d3b; }
+
+/* Table Section Component */
+.table-section{
+    margin-top:30px;
+}
+
+.table-section .box{
+    background:#fff;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+.table-section table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.table-section th{
+    background:#5d0015;
+    color:#fff;
+    padding:14px;
+    text-align:left;
+}
+
+.table-section td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+.table-section tr:hover{
+    background:#f8f8f8;
+}
