@@ -423,7 +423,24 @@
             }
 
             if (error) throw error;
+// Welcome Email भेजें
+const {
+    data: { session }
+} = await sb.auth.getSession();
 
+await fetch(
+  "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/send-welcome",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${session.access_token}`
+    },
+    body: JSON.stringify({
+      email: user.email
+    })
+  }
+);
             Swal.fire({
                 title: 'सफल!',
                 text: 'सभी विवरण सफलतापूर्वक सुरक्षित हो गए हैं।',
