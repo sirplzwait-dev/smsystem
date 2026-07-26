@@ -252,7 +252,7 @@ async function registerUser() {
         return;
     }
 
-    const adminPass = "ADM-" + Math.floor(100000 + Math.random() * 900000);
+    
 
     try {
   const { data, error } = await sb.auth.signUp({
@@ -281,11 +281,11 @@ console.log("METADATA =", data.user?.user_metadata);
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      name,
-      email,
-      admin_pass: adminPass
-    })
+  body: JSON.stringify({
+  name,
+  email,
+  user_id: data.user.id
+})
   }
 );
 
