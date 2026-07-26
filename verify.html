@@ -98,11 +98,9 @@ Verify OTP
 
 </button>
 
-<button id="resend" onclick="resendOtp()">
 
-Resend OTP
 
-</button>
+
 
 </div>
 
@@ -115,59 +113,46 @@ const sb = supabase.createClient(
 
 
 
-);
+
 
 const params=new URLSearchParams(location.search);
 
 const email=params.get("email");
 
-async function verifyOtp(){
 
-const token=document.getElementById("otp").value;
+async function verifyOtp() {
 
-const {error}=await sb.auth.verifyOtp({
+    const otp = document.getElementById("otp").value.trim();
 
-email:email,
+    if (!otp) {
+        alert("Please enter OTP");
+        return;
+    }
 
-token:token,
+    const response = await fetch(
+        "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/verify-otp",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                otp: otp
+            })
+        }
+    );
 
-type:"email"
+    const result = await response.json();
 
-});
+    if (!response.ok) {
+        alert(result.message || result.error);
+        return;
+    }
 
-if(error){
+    alert("OTP Verified Successfully");
 
-alert(error.message);
-
-return;
-
-}
-
-alert("Email Verified Successfully");
-
-location.href="login.html";
-
-}
-
-async function resendOtp(){
-
-const {error}=await sb.auth.resend({
-
-type:"signup",
-
-email:email
-
-});
-
-if(error){
-
-alert(error.message);
-
-return;
-
-}
-
-alert("OTP Sent Again");
+    location.href="login.html";
 
 }
 
