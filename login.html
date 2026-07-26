@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sagun Management System | Login</title>
+<title>Sagum Management System | Login</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -175,50 +175,90 @@ const client = window.supabase.createClient(
   "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
 );
 
+// Toggle Password Visibility
 document.getElementById("togglePass").onclick = function () {
   const pass = document.getElementById("pass");
   if (pass.type === "password") { pass.type = "text"; this.innerHTML = "🙈"; }
   else { pass.type = "password"; this.innerHTML = "👁️"; }
 };
 
+// Enter key support for login
+document.getElementById("pass").addEventListener("keypress", function(e){ 
+  if(e.key === "Enter"){ checkLogin(); } 
+});
+
 document.getElementById("loginBtn").addEventListener("click", checkLogin);
+
 async function checkLogin(){
-  const btn=document.getElementById("loginBtn");
-  const email=document.getElementById("email").value.trim();
-  const password=document.getElementById("pass").value.trim();
-  if(!email || !password){ alert("Please Enter Email & Password"); return; }
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Logging in...';
-  const {data,error}=await client.auth.signInWithPassword({email,password});
-  if(error){ alert(error.message); btn.disabled=false; btn.innerHTML="🔐 Login"; return; }
+  const btn = document.getElementById("loginBtn");
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("pass").value.trim();
   
-  // Check OTP Verification
-const { data: profile, error: profileError } = await client
-  .from("profiles")
-  .select("otp_verified")
-  .eq("id", data.user.id)
-  .single();
-
-if (profileError) {
-  alert(profileError.message);
-  btn.disabled = false;
-  btn.innerHTML = "🔐 Login";
-  return;
-}
-
-if (!profile.otp_verified) {
-  alert("Please verify your OTP first.");
-
-  window.location.href =
-    "verify.html?email=" + encodeURIComponent(email);
-
-  return;
-}
+  if(!email || !password){ 
+    alert("Please Enter Email & Password"); 
+    return; 
+  }
   
-  const {data:setupData}=await client.from("setup").select("*").eq("user_id",data.user.id).limit(1);
-  if(setupData && setupData.length>0){ window.location.href="home.html"; }
-  else{ window.location.href="setup.html"; }
+  btn.disabled = true; 
+  btn.innerHTML = '<span class="spinner"></span>Logging in...';
+ 
+  // 1. Authenticate with Supabase
+  const { data, error } = await client.auth.signInWithPassword({ email, password });
+
+  if(error){
+    alert(error.message);
+    btn.disabled = false;
+    btn.innerHTML = "🔐 Login";
+    return;
+  }
+
+  // 2. Restrict Admin Login Check
+  if (data.user.email !== "shashi841505@gmail.com" && window.location.pathname.includes("admin")) {
+    alert("Access Denied! Only Admin can login.");
+    await client.auth.signOut();
+    btn.disabled = false;
+    btn.innerHTML = "🔐 Login";
+    return;
+  }
+
+  // 3. Check OTP Verification from Profiles table
+  const { data: profile, error: profileError } = await client
+    .from("profiles")
+    .select("otp_verified")
+    .eq("id", data.user.id)
+    .single();
+
+  if (profileError) {
+    alert(profileError.message);
+    btn.disabled = false;
+    btn.innerHTML = "🔐 Login";
+    return;
+  }
+
+  if (!profile.otp_verified) {
+    alert("Please verify your OTP first.");
+    window.location.href = "verify.html?email=" + encodeURIComponent(email);
+    return;
+  }
+
+  // 4. Check Setup Data for normal users
+  const { data: setupData } = await client
+    .from("setup")
+    .select("*")
+    .eq("user_id", data.user.id)
+    .limit(1);
+
+  // 5. Redirect based on role
+  if (data.user.email === "shashi841505@gmail.com") {
+    window.location.href = "admin-dashboard.html";
+  } else {
+    if (setupData && setupData.length > 0) {
+      window.location.href = "home.html";
+    } else {
+      window.location.href = "setup.html";
+    }
+  }
 }
-document.getElementById("pass").addEventListener("keypress",function(e){ if(e.key==="Enter"){ checkLogin(); }});
 
 function forgotPassword(){
     window.location.href = "forgot-password.html";

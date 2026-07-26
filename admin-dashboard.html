@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sagum Management System | Admin Dashboard</title>
+
+    <link rel="icon" href="images/appicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+
+    <!-- Chart.js & Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ================= Sidebar ================= -->
+    <aside class="sidebar">
+        <div class="brand">
+            <h1>SM System</h1>
+            <p>Sagum Management System</p>
+        </div>
+        <ul>
+            <li class="menu-item active" data-page="dashboard">🏠 Dashboard</li>
+            <li class="menu-item" data-page="registrations">👤 Registrations</li>
+            <li class="menu-item" data-page="guest">🎉 Guest Entry</li>
+            <li class="menu-item" data-page="collection">💰 Collection</li>
+            <li class="menu-item" data-page="analytics">📊 Analytics</li>
+            <li class="menu-item" data-page="settings">⚙ Settings</li>
+            <li id="logoutBtn">🚪 Logout</li>
+        </ul>
+    </aside>
+
+    <!-- ================= Main ================= -->
+    <main class="main">
+
+        <!-- ================= Header ================= -->
+        <header class="header">
+            <div>
+                <h2>Dashboard</h2>
+                <p>Welcome Back, Shashi 👋</p>
+            </div>
+            <div class="header-right">
+                <input type="text" id="searchBox" placeholder="Search...">
+                <button id="refreshBtn">🔄</button>
+                <button id="darkBtn">🌙</button>
+                <div class="notification">
+                    🔔 <span class="badge">3</span>
+                </div>
+                <div class="admin-profile">
+                    <img src="images/shashi.jpg" class="profile-photo" alt="Shashi" onerror="this.src='https://via.placeholder.com/52'">
+                    <div>
+                        <b>Shashi</b>
+                        <p id="liveClock">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ================= Dashboard Section ================= -->
+        <section class="page-section" id="dashboard">
+            <section class="cards">
+                <div class="card">
+                    <span>👥</span>
+                    <h4>Total Registration</h4>
+                    <h2 id="totalRegistration">0</h2>
+                    <p>Registered Users</p>
+                </div>
+                <div class="card">
+                    <span>🎉</span>
+                    <h4>Total Guest Entry</h4>
+                    <h2 id="totalGuest">0</h2>
+                    <p>Guest Records</p>
+                </div>
+                <div class="card">
+                    <span>💰</span>
+                    <h4>Total Collection</h4>
+                    <h2 id="totalAmount">₹0</h2>
+                    <p>Collected Amount</p>
+                </div>
+                <div class="card">
+                    <span>📅</span>
+                    <h4>Today's Entry</h4>
+                    <h2 id="todayEntry">0</h2>
+                    <p>Today's Guests</p>
+                </div>
+                <div class="card">
+                    <span>📝</span>
+                    <h4>Today's Registration</h4>
+                    <h2 id="todayRegistration">0</h2>
+                    <p>Today's Users</p>
+                </div>
+                <div class="card">
+                    <span>🟢</span>
+                    <h4>Online Users</h4>
+                    <h2 id="onlineUsers">0</h2>
+                    <p>Currently Active</p>
+                </div>
+            </section>
+
+            <!-- ================= Charts Grid ================= -->
+            <section class="dashboard-grid">
+                <div class="left-panel">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3>📈 Monthly Registration</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="registrationChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h3>💰 Monthly Collection</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="collectionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-panel">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3>💳 Payment Mode</h3>
+                        </div>
+                        <div class="chart-container small-chart">
+                            <canvas id="paymentChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h3>📊 Quick Analytics</h3>
+                        </div>
+                        <div class="analytics">
+                            <div class="analytics-card">
+                                <h4>Cash</h4>
+                                <h2 id="cashCount">0</h2>
+                            </div>
+                            <div class="analytics-card">
+                                <h4>UPI</h4>
+                                <h2 id="upiCount">0</h2>
+                            </div>
+                            <div class="analytics-card">
+                                <h4>States</h4>
+                                <h2 id="stateCount">0</h2>
+                            </div>
+                            <div class="analytics-card">
+                                <h4>Districts</h4>
+                                <h2 id="districtCount">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h3>📅 Today's Summary</h3>
+                        </div>
+                        <div class="summary">
+                            <div><span>New Registration</span><b id="summaryRegistration">0</b></div>
+                            <div><span>Guest Entry</span><b id="summaryGuest">0</b></div>
+                            <div><span>Collection</span><b id="summaryAmount">₹0</b></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- ================= Registrations Section ================= -->
+        <section class="page-section" id="registrations" style="display:none;">
+            <div class="table-box">
+                <div class="box-header">
+                    <h3>👤 Latest Registrations</h3>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>State</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrationTable">
+                            <tr><td colspan="4">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= Guest Entry Section ================= -->
+        <section class="page-section" id="guest" style="display:none;">
+            <div class="table-box">
+                <div class="box-header">
+                    <h3>🎉 Latest Guest Entry</h3>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Village</th>
+                                <th>Amount</th>
+                                <th>Payment</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guestTable">
+                            <tr><td colspan="4">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= Collection Section ================= -->
+        <section class="page-section" id="collection" style="display:none;">
+            <div class="box">
+                <div class="box-header">
+                    <h3>💰 Collection Report</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="collectionReportChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= Analytics Section ================= -->
+        <section class="page-section" id="analytics" style="display:none;">
+            <div class="box">
+                <div class="box-header">
+                    <h3>📊 Analytics Overview</h3>
+                </div>
+                <p style="padding:20px;font-size:18px;">Analytics data will appear here.</p>
+            </div>
+        </section>
+
+        <!-- ================= Settings Section ================= -->
+        <section class="page-section" id="settings" style="display:none;">
+            <div class="box">
+                <div class="box-header">
+                    <h3>⚙ Settings</h3>
+                </div>
+                <p style="padding:20px;font-size:18px;">Settings Panel Coming Soon...</p>
+            </div>
+        </section>
+
+        <!-- ================= Footer ================= -->
+        <footer class="footer">
+            <div>© 2026 Sagum Management System</div>
+            <div>Developed by <b>Shashi</b></div>
+        </footer>
+
+    </main>
+</div>
+
+<!-- JavaScript Files -->
+<script src="js/supabase-admin.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/admin-dashboard.js"></script>
+
+</body>
+</html>
