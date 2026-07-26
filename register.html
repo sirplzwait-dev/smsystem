@@ -252,74 +252,60 @@ async function registerUser() {
         return;
     }
 
-    
-
     try {
-  const { data, error } = await sb.auth.signUp({
-    email: email,
-    password: password,
-    options: {
-        data: {
-            name: name,
-            state: state,
-            mobile: mobile
+        const { data, error } = await sb.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    name: name,
+                    state: state,
+                    mobile: mobile
+                }
+            }
+        });
+
+        console.log("DATA =", data);
+        console.log("ERROR =", error);
+
+        if (error) {
+            hideLoading();
+            alert(error.message);
+            return;
         }
-    }
-});
 
-console.log("DATA =", data);
-console.log("ERROR =", error);
-console.log("USER =", data.user);
-console.log("METADATA =", data.user?.user_metadata);
-if (error) {
-    hideLoading();
-    alert(error.message);
-    return;
-}
+        if (!data || !data.user) {
+            hideLoading();
+            alert("Registration failed. Please try again after a few minutes.");
+            return;
+        }
 
-if (!data || !data.user) {
-    hideLoading();
-    alert("Registration failed. Please try again after a few minutes.");
-    return;
-}
+        const session = sb.auth.getSession();
 
-      
+        const response = await fetch(
+            "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/send-otp",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": SUPABASE_KEY
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    user_id: data.user.id
+                })
+            }
+        );
 
+        const result = await response.json();
+        console.log("Welcome Response:", response.status, result);
 
-
-const response = await fetch(
-  "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/send-otp",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${session.access_token}`,
-      "apikey": "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
-    },
-    body: JSON.stringify({
-      name,
-      email,
-      user_id: data.user.id
-    })
-  }
-);,
-    body: JSON.stringify({
-      name,
-      email,
-      user_id: data.user?.id || null
-    })
-  }
-);
-
-const result = await response.json();
-console.log("Welcome Response:", response.status, result);
-
-if (!response.ok) {
-  throw new Error(result.message || "Welcome email failed.");
-}
+        if (!response.ok) {
+            throw new Error(result.message || "Welcome email failed.");
+        }
 
         hideLoading();
-
         window.location.href = "verify.html?email=" + encodeURIComponent(email);
 
     } catch (err) {
