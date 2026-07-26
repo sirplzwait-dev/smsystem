@@ -428,7 +428,7 @@ header{
 }
 .alert-tip { background: #eef9f0; border-left: 3px solid #198754; color: #155724; }
 
-/* Screenshot Preview Box */
+/* Responsive Screenshot Boxes */
 .screenshot-box {
     margin-top: 12px;
     border: 1.5px dashed var(--card-border);
@@ -443,15 +443,38 @@ header{
     align-items: center;
     position: relative;
 }
-.screenshot-box img {
+
+.screenshot-box img.desktop-img {
+    display: block !important;
     max-width: 100%;
     height: auto;
     border-radius: 6px;
-    max-height: 180px;
+    max-height: 200px;
     object-fit: contain;
     cursor: zoom-in;
-    transition: transform 0.3s;
 }
+
+.screenshot-box img.mobile-img {
+    display: none !important;
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    max-height: 250px;
+    object-fit: contain;
+    cursor: zoom-in;
+}
+
+@media(max-width: 900px){
+    .sidebar { display: none !important; }
+    .main-layout { flex-direction: column; padding: 0 8px; margin-top: 10px; }
+    .manual-wrapper { padding: 15px; border-radius: 16px; }
+    .manual-title { font-size: 18px; }
+    body { padding-bottom: 50px; }
+    
+    .screenshot-box img.desktop-img { display: none !important; }
+    .screenshot-box img.mobile-img { display: block !important; }
+}
+
 .skeleton-loader {
     font-size: 12px;
     color: #888;
@@ -573,23 +596,6 @@ header{
     font-size: 11px;
     font-weight: bold;
 }
-
-/* Mobile Responsive Adjustments - Sidebar stays as a collapsible side card on mobile */
-@media(max-width: 900px){
-    .main-layout { flex-direction: column; padding: 0 8px; margin-top: 10px; }
-    .sidebar {
-        width: 100%;
-        position: relative;
-        top: 0;
-        height: auto;
-        margin-bottom: 15px;
-        max-height: 220px;
-        overflow-y: auto;
-    }
-    .manual-wrapper { padding: 15px; border-radius: 16px; }
-    .manual-title { font-size: 18px; }
-    body { padding-bottom: 50px; }
-}
 </style>
 </head>
 <body data-theme="light">
@@ -613,7 +619,7 @@ header{
 </header>
 
 <div class="main-layout">
-    <!-- Quick Navigation Sidebar (Side/Collapsible drawer on mobile) -->
+    <!-- Quick Navigation Sidebar -->
     <aside class="sidebar">
         <h3><i class="fas fa-compass"></i> Quick Navigation</h3>
         <ul>
@@ -684,7 +690,8 @@ header{
                         <p>सबसे पहले <b>Register</b> पेज पर जाकर अपनी जानकारी भरें। ईमेल वेरीफाई करने के बाद <b>Login</b> पेज से प्रवेश करें।</p>
                         <div class="screenshot-box">
                             <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-                            <img src="login.jpg" alt="Login Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="login.jpg" alt="Login Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="login_m.jpg" alt="Login Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
                             <div class="screenshot-caption">Login Screen Preview</div>
                         </div>
                     </div>
@@ -693,7 +700,8 @@ header{
                         <p>लॉगिन के बाद सेटअप पेज खुलेगा। यहाँ दूल्हा-दुल्हन का नाम, कार्यक्रम की तारीख और अपना <b>UPI QR Code</b> सेट करें।</p>
                         <div class="screenshot-box">
                             <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-                            <img src="setup.jpg" alt="Setup Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="setup.jpg" alt="Setup Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="setup_m.jpg" alt="Setup Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
                             <div class="screenshot-caption">Setup Screen Preview</div>
                         </div>
                     </div>
@@ -713,7 +721,8 @@ header{
                         <p>इस पेज पर आपको कुल मेहमानों, प्राप्त शगुन, कैश बैलेंस और यूपीआई कलेक्शन की पूरी जानकारी एक ही नजर में मिल जाती है।</p>
                         <div class="screenshot-box">
                             <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-                            <img src="home.jpg" alt="Dashboard Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="home.jpg" alt="Dashboard Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="home_m.jpg" alt="Dashboard Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
                             <div class="screenshot-caption">Dashboard Preview</div>
                         </div>
                     </div>
@@ -751,7 +760,8 @@ header{
 
                         <div class="screenshot-box">
                             <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-                            <img src="entry.jpg" alt="Shagun Entry Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="entry.jpg" alt="Shagun Entry Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="entry_m.jpg" alt="Shagun Entry Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
                             <div class="screenshot-caption">Shagun Entry Screen</div>
                         </div>
                     </div>
@@ -771,7 +781,8 @@ header{
                         <p>सभी मेहमानों की सूचियों को देखने, खोजने तथा Excel या PDF फॉर्मेट में डाउनलोड करने के लिए रिपोर्ट पेज का उपयोग होता है।</p>
                         <div class="screenshot-box">
                             <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-                            <img src="report.jpg" alt="Report Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="report.jpg" alt="Report Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="report_m.jpg" alt="Report Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
                             <div class="screenshot-caption">Report & Export Screen</div>
                         </div>
                     </div>
@@ -791,7 +802,8 @@ header{
                         <p>दिन के अंत में फिजिकल नोटों (₹500 से ₹1) की गिनती करके सिस्टम के कुल अमाउंट से मिलान करने के लिए।</p>
                         <div class="screenshot-box">
                             <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-                            <img src="cash counter.jpg" alt="Cash Counter Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="cash counter.jpg" alt="Cash Counter Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="cash caunter_m.jpg" alt="Cash Counter Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
                             <div class="screenshot-caption">Cash Counter Screen</div>
                         </div>
                     </div>
@@ -811,7 +823,8 @@ header{
                         <p>शादी के दौरान होने वाले दैनिक खर्चों (Cash Out) और अतिरिक्त प्राप्तियों (Cash In) को ट्रैक करने के लिए।</p>
                         <div class="screenshot-box">
                             <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-                            <img src="cash book.jpg" alt="Cash Book Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="cash book.jpg" alt="Cash Book Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="cash book_m.jpg" alt="Cash Book Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
                             <div class="screenshot-caption">Cash Book Screen</div>
                         </div>
                     </div>
@@ -831,7 +844,8 @@ header{
                         <p>डेटाबेस रिकॉर्ड प्रबंधित करने और फुल डेटा कंट्रोल के लिए। 🟡 <b>Note:</b> एडमिन का पासवर्ड आपको आपकी रजिस्टर्ड ईमेल पर भेजी जाएगी।</p>
                         <div class="screenshot-box">
                             <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-                            <img src="admin.jpg" alt="Admin Screenshot" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="admin.jpg" alt="Admin Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="admin_m.jpg" alt="Admin Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
                             <div class="screenshot-caption">Super Admin Dashboard</div>
                         </div>
                     </div>
@@ -882,8 +896,8 @@ header{
             <div class="action-buttons-box">
                 <h3>Ready to manage your event digitally?</h3>
                 <div class="manual-action-btns">
-                    <a onclick="showComingSoon()" class="get-started-btn">🚀 Get Started</a>
-                    <a onclick="showComingSoon()" class="login-portal-btn">🔐 Login</a>
+                    <a href="register.html" class="get-started-btn">🚀 Get Started</a>
+                    <a href="login.html" class="login-portal-btn">🔐 Login</a>
                 </div>
             </div>
 
@@ -891,7 +905,7 @@ header{
     </div>
 </div>
 
-<!-- Footer Bar (Home Page Style) -->
+<!-- Footer Bar -->
 <div class="footer-area">
     <div class="footer-left">
         🌐 <strong>www.sgunms.in</strong>
@@ -909,16 +923,6 @@ header{
 </div>
 
 <script>
-function showComingSoon() {
-    Swal.fire({
-        icon: 'info',
-        title: 'Coming Soon! 🚀',
-        text: 'Login & Account features will be available soon in the next update.',
-        confirmButtonColor: '#800000',
-        confirmButtonText: 'OK'
-    });
-}
-
 function toggleAccordion(header) {
     const group = header.parentElement;
     const isActive = group.classList.contains('active');
@@ -954,7 +958,8 @@ function toggleTheme() {
 
 window.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('manualTheme') || 'light';
-    document.body.setAttribute('data-theme', savedTheme);
+    const body = document.body;
+    body.setAttribute('data-theme', savedTheme);
     const btn = document.getElementById('themeToggleBtn');
     if(savedTheme === 'dark') {
         btn.innerHTML = '<i class="fas fa-sun"></i> <span>Light</span>';
@@ -1018,7 +1023,6 @@ function zoomImage(imgElement) {
     lightbox.style.display = 'flex';
 }
 
-// Active Sidebar Link on Scroll
 window.addEventListener('scroll', () => {
     let scrollPos = window.scrollY;
     document.querySelectorAll('.accordion-group').forEach(group => {
