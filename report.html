@@ -20,33 +20,55 @@
         font-family: 'Poppins', sans-serif;
     }
 
-    body {
-        padding: 0;
+    html, body {
+        width: 100%;
+        min-height: 100vh;
         background: #fdf8f5;
         margin: 0;
-        padding-top: 65px; /* Fixed Header के लिए ऊपर जगह */
-        padding-bottom: 60px;
+        overflow-x: hidden;
     }
 
-    /* ऊपर वाली सुंदर और फिक्स (Freeze) हेडर पट्टी जिसमें Title, Home और Logout हैं */
+    body {
+        padding-top: 65px;
+        padding-bottom: 60px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ऊपर वाली सुंदर और फिक्स (Freeze) हेडर पट्टी */
     .top-header-bar {
         width: 100%;
-        height: 55px;
-        background: linear-gradient(135deg, #600000, #800000);
+        height: 65px;
+        background: linear-gradient(135deg, #500000, #800000);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 15px;
+        padding: 0 20px;
         color: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.25);
         position: fixed;
         top: 0;
         left: 0;
         z-index: 1000;
     }
 
+    .headerLeft {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .menuToggle {
+        background: none;
+        border: none;
+        color: #FFD700;
+        font-size: 22px;
+        cursor: pointer;
+        display: none; /* डेस्कटॉप पर छुपा रहेगा */
+    }
+
     .top-title {
-        font-size: 15px;
+        font-size: 18px;
         font-weight: 700;
         color: #FFD700;
         letter-spacing: 0.5px;
@@ -57,38 +79,77 @@
         gap: 8px;
     }
 
-    .actionBtn {
+    .logoutBtn {
         background: #FFD700;
         color: #800000;
         border: none;
-        border-radius: 5px;
-        padding: 4px 10px;
-        font-weight: bold;
-        font-size: 11px;
+        border-radius: 20px;
+        padding: 6px 14px;
+        font-weight: 700;
+        font-size: 12px;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-
-    .actionBtn:hover {
-        background: #fff;
-    }
-
-    .logoutBtn {
-        background: #dc3545;
-        color: #fff;
+        transition: .3s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
     .logoutBtn:hover {
-        background: #bb2d3b;
+        background: #fff;
+        transform: translateY(-2px);
+    }
+
+    /* मुख्य लेआउट और साइडबार */
+    .main {
+        display: flex;
+        width: 100%;
+        min-height: calc(100vh - 65px);
+        position: relative;
+        flex: 1;
+    }
+
+    .sidebar {
+        width: 240px;
+        background: #1a1a1a;
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        z-index: 999;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    .sidebar a {
+        color: #ccc;
+        text-decoration: none;
+        padding: 14px 22px;
+        font-size: 14px;
+        font-weight: 500;
+        border-left: 4px solid transparent;
+        transition: .3s;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .sidebar a:hover {
+        background: #800000;
         color: #fff;
+        border-left: 4px solid #FFD700;
+    }
+
+    .sidebar a.active {
+        background: #800000;
+        color: #fff;
+        border-left: 4px solid #FFD700;
+        font-weight: 600;
     }
 
     .main-wrapper {
-        padding: 10px 15px;
+        flex: 1;
+        padding: 15px;
         max-width: 1100px;
         margin: auto;
+        width: 100%;
     }
 
     /* Action Buttons */
@@ -329,91 +390,119 @@
         font-size: 12px;
         z-index: 999;
     }
+
+    /* केवल मोबाइल स्क्रीन के लिए */
+    @media(max-width: 768px){
+        .menuToggle { display: block; }
+        .sidebar {
+            position: fixed;
+            left: -240px;
+            top: 65px;
+            height: calc(100vh - 65px);
+        }
+        .sidebar.active { left: 0; }
+    }
 </style>
 </head>
 <body>
 
-<!-- Top Navigation Bar (Fixed / Freeze) जिसमें Title, Home और Logout बटन हैं -->
+<!-- Top Navigation Bar (Fixed / Freeze) -->
 <div class="top-header-bar">
-    <div class="top-title">📊 शगुन एवं गेस्ट रिपोर्ट</div>
+    <div class="headerLeft">
+        <button class="menuToggle" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="top-title">📊 शगुन एवं गेस्ट रिपोर्ट</div>
+    </div>
     <div class="header-btns">
-        <button class="actionBtn" onclick="location.href='home.html'">🏠 Home</button>
-        <button class="actionBtn logoutBtn" id="logoutBtn">🚪 Logout</button>
+        <button class="logoutBtn" id="logoutBtn">🚪 Logout</button>
     </div>
 </div>
 
-<div class="main-wrapper">
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-        <button onclick="exportExcel()" style="background:#27ae60;">📊 Excel Export</button>
-        <button onclick="exportPDF()" style="background:#c0392b;">📄 PDF Export</button>
-        <button onclick="backupData()" style="background:#2980b9;">💾 Backup</button>
+<div class="main">
+    <!-- साइडबार -->
+    <div class="sidebar" id="sidebar">
+        <a href="home.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="entry.html"><i class="fa-solid fa-user-plus"></i> Shagun Entry</a>
+        <a href="cash-counter.html"><i class="fa-solid fa-calculator"></i> Cash Counter</a>
+        <a href="cashbook.html"><i class="fa-solid fa-book-open"></i> Cash In / Cash Out</a>
+        <a href="report.html" class="active"><i class="fa-solid fa-chart-pie"></i> Report</a>
+        <a href="admin.html"><i class="fa-solid fa-crown"></i> Super Admin</a>
     </div>
 
-    <!-- Summary Cards -->
-    <div class="summary-grid">
-        <div class="summary-card">
-            <h3>👥 कुल गेस्ट</h3>
-            <h1 id="totalGuests">0</h1>
+    <div class="main-wrapper">
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button onclick="exportExcel()" style="background:#27ae60;">📊 Excel Export</button>
+            <button onclick="exportPDF()" style="background:#c0392b;">📄 PDF Export</button>
+            <button onclick="backupData()" style="background:#2980b9;">💾 Backup</button>
         </div>
-        <div class="summary-card cash-card">
-            <h3>💵 Cash Shagun</h3>
-            <h1 id="cashShagun">₹0</h1>
-        </div>
-        <div class="summary-card upi-card">
-            <h3>📱 UPI Shagun</h3>
-            <h1 id="upiShagun">₹0</h1>
-        </div>
-        <div class="summary-card total-card">
-            <h3>💰 कुल योग</h3>
-            <h1 id="totalShagun">₹0</h1>
-        </div>
-    </div>
 
-    <!-- Chart Toggle Section -->
-    <div class="chart-toggle-section">
-        <div class="chart-controls">
-            <button class="chart-toggle-btn" id="toggleChartBtn" onclick="toggleChartBox()">📈 ग्राफ एवं विवरण देखें (Open Chart)</button>
-            <select id="chartTypeSelect" onchange="renderSelectedChart()" style="display:none;">
-                <option value="mode">भुगतान माध्यम (Cash vs UPI)</option>
-                <option value="district">जिला वार (District Wise)</option>
-                <option value="village">गाँव वार (Village Wise)</option>
-            </select>
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>👥 कुल गेस्ट</h3>
+                <h1 id="totalGuests">0</h1>
+            </div>
+            <div class="summary-card cash-card">
+                <h3>💵 Cash Shagun</h3>
+                <h1 id="cashShagun">₹0</h1>
+            </div>
+            <div class="summary-card upi-card">
+                <h3>📱 UPI Shagun</h3>
+                <h1 id="upiShagun">₹0</h1>
+            </div>
+            <div class="summary-card total-card">
+                <h3>💰 कुल योग</h3>
+                <h1 id="totalShagun">₹0</h1>
+            </div>
         </div>
-        <div class="chart-wrapper" id="chartBox">
-            <canvas id="shagunChart"></canvas>
-        </div>
-        <!-- Numeric Breakdown Table -->
-        <div class="numeric-breakdown" id="numericBreakdownBox">
-            <table>
-                <thead>
-                    <tr id="breakdownHead"><th>श्रेणी (Category)</th><th>राशि (Amount)</th></tr>
-                </thead>
-                <tbody id="breakdownBody"></tbody>
-            </table>
-        </div>
-    </div>
 
-    <div class="container">
-        <div class="card">
-            <input type="text" id="villageFilter" placeholder="🔍 नाम, जिला या गाँव से खोजें...">
-
-            <div class="table-container">
+        <!-- Chart Toggle Section -->
+        <div class="chart-toggle-section">
+            <div class="chart-controls">
+                <button class="chart-toggle-btn" id="toggleChartBtn" onclick="toggleChartBox()">📈 ग्राफ एवं विवरण देखें (Open Chart)</button>
+                <select id="chartTypeSelect" onchange="renderSelectedChart()" style="display:none;">
+                    <option value="mode">भुगतान माध्यम (Cash vs UPI)</option>
+                    <option value="district">जिला वार (District Wise)</option>
+                    <option value="village">गाँव वार (Village Wise)</option>
+                </select>
+            </div>
+            <div class="chart-wrapper" id="chartBox">
+                <canvas id="shagunChart"></canvas>
+            </div>
+            <!-- Numeric Breakdown Table -->
+            <div class="numeric-breakdown" id="numericBreakdownBox">
                 <table>
                     <thead>
-                        <tr>
-                            <th>नाम</th>
-                            <th>राज्य</th>
-                            <th>जिला</th>
-                            <th>गाँव</th>
-                            <th>Mode</th>
-                            <th>शगुन राशि</th>
-                        </tr>
+                        <tr id="breakdownHead"><th>श्रेणी (Category)</th><th>राशि (Amount)</th></tr>
                     </thead>
-                    <tbody id="tableBody">
-                        <tr><td colspan="6" style="text-align: center; color: #888; padding: 20px;">डेटा लोड हो रहा है...</td></tr>
-                    </tbody>
+                    <tbody id="breakdownBody"></tbody>
                 </table>
+            </div>
+        </div>
+
+        <div class="container" style="padding: 0;">
+            <div class="card">
+                <input type="text" id="villageFilter" placeholder="🔍 नाम, जिला या गाँव से खोजें...">
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>नाम</th>
+                                <th>राज्य</th>
+                                <th>जिला</th>
+                                <th>गाँव</th>
+                                <th>Mode</th>
+                                <th>शगुन राशि</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr><td colspan="6" style="text-align: center; color: #888; padding: 20px;">डेटा लोड हो रहा है...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -425,6 +514,10 @@
 </div>
 
 <script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+
 const sb = window.supabase.createClient(
 "https://rdlliurzgwwfjscgwssa.supabase.co",
 "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
@@ -446,7 +539,7 @@ async function getOnlineGuests(){
         const {data, error} = await sb
         .from("guests")
         .select("*")
-        .eq("user_id", user.id) // 👈 यह लाइन जोड़नी है ताकि केवल लॉगिन यूजर का ही डेटा दिखे
+        .eq("user_id", user.id) // 👈 यह लाइन जोड़नी है ताकि केवल लॉगिन यूजर का ही डेटा दिखे
         .order("created_at", {ascending: false});
 
         if(error){ console.log(error); return []; }

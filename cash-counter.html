@@ -15,32 +15,49 @@
     font-family:'Poppins',sans-serif;
 }
 
-body{
-    background:#f5f6fa;
+html,body{
+    width:100%;
     min-height:100vh;
-    display:flex;
-    flex-direction:column;
+    background:#f4f6f9;
+    overflow-x: hidden;
 }
 
 /* ऊपर वाली सुंदर हेडर पट्टी */
 .header{
-    height:55px;
-    background:linear-gradient(135deg, #600000, #800000);
+    width:100%;
+    height:65px;
+    background:linear-gradient(135deg, #500000, #800000);
     color:#fff;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:0 15px;
-    box-shadow:0 2px 8px rgba(0,0,0,.2);
+    padding:0 20px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.25);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menuToggle {
+    background: none;
+    border: none;
+    color: #FFD700;
+    font-size: 22px;
+    cursor: pointer;
+    display: none; /* डेस्कटॉप पर छुपा रहेगा */
+}
+
 .header-title{
-    font-size:16px;
+    font-size:18px;
     font-weight:700;
     color:#FFD700;
+    letter-spacing: 0.5px;
 }
 
 .header-btns{
@@ -48,86 +65,132 @@ body{
     gap:8px;
 }
 
-.actionBtn {
+.logoutBtn {
     background: #FFD700;
     color: #800000;
     border: none;
-    border-radius: 5px;
-    padding: 4px 10px;
-    font-weight: bold;
-    font-size: 11px;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-weight: 700;
+    font-size: 12px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.actionBtn:hover {
-    background: #fff;
-}
-
-.logoutBtn {
-    background: #dc3545;
-    color: #fff;
+    transition: .3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 .logoutBtn:hover {
-    background: #bb2d3b;
-    color: #fff;
+    background: #fff;
+    transform: translateY(-2px);
+}
+
+/* मुख्य लेआउट और साइडबार */
+.main{
+    display:flex;
+    width:100%;
+    min-height:calc(100vh - 65px);
+    position: relative;
+}
+
+.sidebar{
+    width:240px;
+    background:#1a1a1a;
+    display:flex;
+    flex-direction:column;
+    padding-top:20px;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    z-index: 999;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.sidebar a{
+    color:#ccc;
+    text-decoration:none;
+    padding:14px 22px;
+    font-size:14px;
+    font-weight:500;
+    border-left:4px solid transparent;
+    transition:.3s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar a:hover{
+    background:#800000;
+    color:#fff;
+    border-left:4px solid #FFD700;
+}
+
+.sidebar a.active{
+    background:#800000;
+    color:#fff;
+    border-left:4px solid #FFD700;
+    font-weight: 600;
 }
 
 .container{
     flex:1;
-    overflow:visible;
-    padding:10px;
+    padding:20px;
     max-width:800px;
     margin:auto;
     width:100%;
+    overflow-y: auto;
+    padding-bottom: 60px;
 }
 
 .topCard, .summary, .counter{
     background:#fff;
-    padding:10px 12px;
-    border-radius:10px;
-    box-shadow:0 3px 10px rgba(0,0,0,.04);
-    margin-bottom:10px;
+    padding:15px;
+    border-radius:14px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.05);
+    margin-bottom:15px;
+    border: 1px solid #eaeaea;
 }
 
 .topCard h2, .counter h2{
     color:#800000;
-    margin-bottom:4px;
-    font-size:14px;
-    font-weight:600;
+    margin-bottom:6px;
+    font-size:15px;
+    font-weight:700;
 }
 
 .topCard input{
     width:100%;
-    padding:6px;
-    font-size:16px;
+    padding:10px;
+    font-size:20px;
     font-weight:bold;
     color:#800000;
     text-align:center;
-    border:1px solid #ddd;
-    border-radius:6px;
+    border:1.5px solid #d4af37;
+    border-radius:8px;
     outline:none;
-    background:#fafafa;
+    background:#fffcfc;
 }
 
 .summary{
     display:grid;
     grid-template-columns:repeat(2, 1fr);
-    gap:10px;
-    padding:8px 12px;
+    gap:12px;
+    padding:12px 15px;
+}
+
+.summary .card{
+    background: #fafafa;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #eee;
 }
 
 .summary .card h3{
     color:#666;
-    margin-bottom:2px;
+    margin-bottom:4px;
     font-size:12px;
+    text-transform: uppercase;
 }
 
 .summary .card h1{
-    font-size:18px;
+    font-size:20px;
     color:#800000;
 }
 
@@ -135,30 +198,31 @@ table{
     width:100%;
     border-collapse:collapse;
     font-size:13px;
+    margin-top: 10px;
 }
 
 th{
     background:#800000;
-    color:#fff;
-    padding:6px;
+    color:#FFD700;
+    padding:10px;
     font-size:13px;
     text-align:center;
 }
 
 td{
-    padding:4px 6px;
-    border-bottom:1px solid #eee;
+    padding:8px 10px;
+    border-bottom:1px solid #f1f1f1;
     text-align:center;
 }
 
 .qty{
-    width:40px;
-    height:26px;
+    width:45px;
+    height:28px;
     font-size:13px;
     text-align:center;
     border:1px solid #ccc;
     border-radius:4px;
-    margin:0 4px;
+    margin:0 6px;
     outline:none;
 }
 
@@ -167,10 +231,10 @@ td{
 }
 
 .plus, .minus{
-    width:22px;
-    height:22px;
+    width:26px;
+    height:26px;
     border:none;
-    border-radius:4px;
+    border-radius:6px;
     cursor:pointer;
     font-size:13px;
     font-weight:bold;
@@ -191,39 +255,59 @@ td{
 
 .buttons{
     display:flex;
-    gap:8px;
-    margin-top:10px;
+    gap:10px;
+    margin-top:15px;
 }
 
 .buttons button{
     flex:1;
-    padding:8px;
+    padding:10px;
     border:none;
-    border-radius:6px;
+    border-radius:8px;
     font-size:13px;
     font-weight:bold;
     cursor:pointer;
     transition:0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
 #resetBtn{background:#ffc107; color:#333;}
 .buttons button:last-child{background:#0d6efd; color:#fff;}
-.buttons button:hover{opacity:0.9;}
+.buttons button:hover{opacity:0.9; transform: translateY(-2px);}
 
 .footer{
+    width:100%;
     height:38px;
-    background:#800000;
+    background:#500000;
     display:flex;
     justify-content:center;
     align-items:center;
     padding:0 12px;
     color:#fff;
     font-size:11px;
-    margin-top:auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
 }
 
 table tr{transition:.2s;}
 table tr:hover{background:#fff8f2;}
+
+/* केवल मोबाइल व्यू के लिए */
+@media(max-width: 768px){
+    .menuToggle { display: block; }
+    .sidebar {
+        position: fixed;
+        left: -240px;
+        top: 65px;
+        height: calc(100vh - 65px);
+    }
+    .sidebar.active {
+        left: 0;
+    }
+    .container { padding: 10px; }
+}
 </style>
 </head>
 
@@ -238,48 +322,64 @@ const sb = window.supabase.createClient(
 
 <body>
 <div class="header">
-    <div class="header-title">💵 Cash Counter</div>
+    <div class="headerLeft">
+        <button class="menuToggle" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="header-title">💵 Cash Counter</div>
+    </div>
     <div class="header-btns">
-        <button class="actionBtn" onclick="location.href='home.html'">🏠 Home</button>
-        <button class="actionBtn logoutBtn" id="logoutBtn">🚪 Logout</button>
+        <button class="logoutBtn" id="logoutBtn">🚪 Logout</button>
     </div>
 </div>
 
-<div class="container">
-    <div class="topCard">
-        <h2>Total System Amount</h2>
-        <input type="text" id="targetAmount" readonly>
+<div class="main">
+    <!-- साइडबार -->
+    <div class="sidebar" id="sidebar">
+        <a href="home.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="entry.html"><i class="fa-solid fa-user-plus"></i> Shagun Entry</a>
+        <a href="cash-counter.html" class="active"><i class="fa-solid fa-calculator"></i> Cash Counter</a>
+        <a href="cashbook.html"><i class="fa-solid fa-book-open"></i> Cash In / Cash Out</a>
+        <a href="report.html"><i class="fa-solid fa-chart-pie"></i> Report</a>
+        <a href="admin.html"><i class="fa-solid fa-crown"></i> Super Admin</a>
     </div>
 
-    <div class="summary">
-        <div class="card">
-            <h3>Counted Cash</h3>
-            <h1 id="totalCash">₹0</h1>
+    <div class="container">
+        <div class="topCard">
+            <h2>Total System Amount</h2>
+            <input type="text" id="targetAmount" readonly>
         </div>
-        <div class="card">
-            <h3>Difference</h3>
-            <h1 id="difference">₹0</h1>
+
+        <div class="summary">
+            <div class="card">
+                <h3>Counted Cash</h3>
+                <h1 id="totalCash">₹0</h1>
+            </div>
+            <div class="card">
+                <h3>Difference</h3>
+                <h1 id="difference">₹0</h1>
+            </div>
         </div>
-    </div>
 
-    <div class="counter">
-        <h2>💰 Note Denomination</h2>
-        <table>
-            <tr><th>Note</th><th>Qty</th><th>Amount</th></tr>
-            <tr><td>₹500</td><td><button class="minus">−</button><input class="qty" data-note="500" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
-            <tr><td>₹200</td><td><button class="minus">−</button><input class="qty" data-note="200" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
-            <tr><td>₹100</td><td><button class="minus">−</button><input class="qty" data-note="100" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
-            <tr><td>₹50</td><td><button class="minus">−</button><input class="qty" data-note="50" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
-            <tr><td>₹20</td><td><button class="minus">−</button><input class="qty" data-note="20" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
-            <tr><td>₹10</td><td><button class="minus">−</button><input class="qty" data-note="10" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
-            <tr><td>₹5</td><td><button class="minus">−</button><input class="qty" data-note="5" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
-            <tr><td>₹2</td><td><button class="minus">−</button><input class="qty" data-note="2" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
-            <tr><td>₹1</td><td><button class="minus">−</button><input class="qty" data-note="1" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
-        </table>
+        <div class="counter">
+            <h2>💰 Note Denomination</h2>
+            <table>
+                <tr><th>Note</th><th>Qty</th><th>Amount</th></tr>
+                <tr><td>₹500</td><td><button class="minus">−</button><input class="qty" data-note="500" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹200</td><td><button class="minus">−</button><input class="qty" data-note="200" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹100</td><td><button class="minus">−</button><input class="qty" data-note="100" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹50</td><td><button class="minus">−</button><input class="qty" data-note="50" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹20</td><td><button class="minus">−</button><input class="qty" data-note="20" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹10</td><td><button class="minus">−</button><input class="qty" data-note="10" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹5</td><td><button class="minus">−</button><input class="qty" data-note="5" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹2</td><td><button class="minus">−</button><input class="qty" data-note="2" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹1</td><td><button class="minus">−</button><input class="qty" data-note="1" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+            </table>
 
-        <div class="buttons">
-            <button id="resetBtn">🔄 Reset</button>
-            <button onclick="window.print()">🖨 Print</button>
+            <div class="buttons">
+                <button id="resetBtn">🔄 Reset</button>
+                <button onclick="window.print()">🖨 Print</button>
+            </div>
         </div>
     </div>
 </div>
@@ -289,6 +389,10 @@ const sb = window.supabase.createClient(
 </div>
 
 <script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+
 const qtyInputs = document.querySelectorAll(".qty");
 const target = document.getElementById("targetAmount");
 const totalCash = document.getElementById("totalCash");
