@@ -220,10 +220,8 @@ if (!profile.otp_verified) {
 }
 document.getElementById("pass").addEventListener("keypress",function(e){ if(e.key==="Enter"){ checkLogin(); }});
 
-async function forgotPassword(){
-  const email=prompt("Enter your Registered Email"); if(!email) return;
-  const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:"https://sgunms.in/reset-password.html"});
-  if(error){ alert(error.message); } else { alert("Password Reset Link has been sent to your Email."); }
+function forgotPassword(){
+    window.location.href = "forgot-password.html";
 }
 </script>
 </body>
