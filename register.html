@@ -285,18 +285,18 @@ if (!data || !data.user) {
 
       
 
-     const response = await fetch(
-  "https://rdlliurzgwwfjscgwssa.functions.supabase.co/functions/v1/send-welcome",
+ const response = await fetch(
+  "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/send-otp",
   {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-body: JSON.stringify({
-  name,
-  email,
-  user_id: data.user?.id || null
-})
+    body: JSON.stringify({
+      name,
+      email,
+      user_id: data.user?.id || null
+    })
   }
 );
 
