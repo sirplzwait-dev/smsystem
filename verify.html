@@ -88,7 +88,8 @@ color:#fff;
 <h2>Email Verification</h2>
 
 <p>
-Enter the OTP sent to your email.
+An OTP has been sent to your registered email address.
+Please enter the 6-digit OTP to continue.
 </p>
 
 <input
@@ -113,7 +114,7 @@ Resend OTP (60)
 
 <script>
 
-alert("New verify.html loaded");
+
 
 const SUPABASE_URL = "https://rdlliurzgwwfjscgwssa.supabase.co";
 const SUPABASE_KEY = "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc";
@@ -190,7 +191,7 @@ async function verifyOtp() {
         return;
     }
 
-    alert("Email verified successfully.");
+    alert("Email verified successfully. Please complete your setup.");
 
     window.location.href =
         "setup.html?email=" + encodeURIComponent(email);
