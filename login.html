@@ -220,6 +220,25 @@ async function checkLogin(){
     btn.innerHTML = "🔐 Login";
     return;
   }
+  // =========================
+// Admin Login (OTP Skip)
+// =========================
+if (data.user.email === "shashi841505@gmail.com") {
+
+    const { data: setupData } = await client
+        .from("setup")
+        .select("*")
+        .eq("user_id", data.user.id)
+        .limit(1);
+
+    if (setupData && setupData.length > 0) {
+        window.location.href = "admin-dashboard.html";
+    } else {
+        window.location.href = "setup.html";
+    }
+
+    return;
+}
 
   // 3. Check OTP Verification from Profiles table
   const { data: profile, error: profileError } = await client
