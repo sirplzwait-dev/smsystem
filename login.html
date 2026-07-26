@@ -190,6 +190,30 @@ async function checkLogin(){
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Logging in...';
   const {data,error}=await client.auth.signInWithPassword({email,password});
   if(error){ alert(error.message); btn.disabled=false; btn.innerHTML="🔐 Login"; return; }
+  
+  // Check OTP Verification
+const { data: profile, error: profileError } = await client
+  .from("profiles")
+  .select("otp_verified")
+  .eq("id", data.user.id)
+  .single();
+
+if (profileError) {
+  alert(profileError.message);
+  btn.disabled = false;
+  btn.innerHTML = "🔐 Login";
+  return;
+}
+
+if (!profile.otp_verified) {
+  alert("Please verify your OTP first.");
+
+  window.location.href =
+    "verify.html?email=" + encodeURIComponent(email);
+
+  return;
+}
+  
   const {data:setupData}=await client.from("setup").select("*").eq("user_id",data.user.id).limit(1);
   if(setupData && setupData.length>0){ window.location.href="home.html"; }
   else{ window.location.href="setup.html"; }

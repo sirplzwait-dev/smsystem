@@ -271,6 +271,17 @@ console.log("DATA =", data);
 console.log("ERROR =", error);
 console.log("USER =", data.user);
 console.log("METADATA =", data.user?.user_metadata);
+if (error) {
+    hideLoading();
+    alert(error.message);
+    return;
+}
+
+if (!data || !data.user) {
+    hideLoading();
+    alert("Registration failed. Please try again after a few minutes.");
+    return;
+}
 
       
 
@@ -281,10 +292,10 @@ console.log("METADATA =", data.user?.user_metadata);
     headers: {
       "Content-Type": "application/json"
     },
-  body: JSON.stringify({
+body: JSON.stringify({
   name,
   email,
-  user_id: data.user.id
+  user_id: data.user?.id || null
 })
   }
 );
