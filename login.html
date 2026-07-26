@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sagum Management System | Login</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PSQRN0SV09');
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -220,19 +231,14 @@ async function checkLogin(){
     btn.innerHTML = "🔐 Login";
     return;
   }
-  // =========================
-// Admin Login (OTP Skip)
-// =========================
-// =========================
-// Admin Login (OTP Skip)
-// =========================
-if (data.user.email === "shashi841505@gmail.com") {
-    window.location.href = "admin-dashboard.html";
-    return;
-}
 
+  // 3. Admin Login (OTP Skip)
+  if (data.user.email === "shashi841505@gmail.com") {
+      window.location.href = "admin-dashboard.html";
+      return;
+  }
 
-  // 3. Check OTP Verification from Profiles table
+  // 4. Check OTP Verification from Profiles table
   const { data: profile, error: profileError } = await client
     .from("profiles")
     .select("otp_verified")
@@ -252,22 +258,18 @@ if (data.user.email === "shashi841505@gmail.com") {
     return;
   }
 
-  // 4. Check Setup Data for normal users
+  // 5. Check Setup Data for normal users
   const { data: setupData } = await client
     .from("setup")
     .select("*")
     .eq("user_id", data.user.id)
     .limit(1);
 
-  // 5. Redirect based on role
-  if (data.user.email === "shashi841505@gmail.com") {
-    window.location.href = "admin-dashboard.html";
+  // 6. Redirect based on setup data
+  if (setupData && setupData.length > 0) {
+    window.location.href = "home.html";
   } else {
-    if (setupData && setupData.length > 0) {
-      window.location.href = "home.html";
-    } else {
-      window.location.href = "setup.html";
-    }
+    window.location.href = "setup.html";
   }
 }
 
@@ -275,5 +277,6 @@ function forgotPassword(){
     window.location.href = "forgot-password.html";
 }
 </script>
+<script src="js/visitor.js"></script>
 </body>
 </html>

@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard | Sagum Management System</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PSQRN0SV09');
+</script>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -480,16 +491,13 @@ async function loadUserProfile() {
             return;
         }
 
-        // ईमेल से यूजरनेम निकाल कर डिफ़ॉल्ट तैयार करें (जैसे user@gmail.com से 'user')
         let displayName = user.email ? user.email.split('@')[0] : "User";
 
-        // अब profiles टेबल से नाम चेक करें (id से)
         const { data } = await sb.from("profiles").select("name").eq("id", user.id).maybeSingle();
         
         if (data && data.name) {
             displayName = data.name;
         } else {
-            // अगर id से नहीं मिला तो user_id से चेक करें
             const { data: data2 } = await sb.from("profiles").select("name").eq("user_id", user.id).maybeSingle();
             if (data2 && data2.name) {
                 displayName = data2.name;
@@ -519,7 +527,7 @@ async function loadGuests(userId){
     const {data=[]}=await sb
     .from("guests")
     .select("*")
-    .eq("user_id", userId); // केवल लॉगिन यूजर का डेटा दिखेगा
+    .eq("user_id", userId);
 
     let totalGuests=data.length;
     let totalShagun=0;
@@ -541,7 +549,7 @@ async function loadCashBook(userId){
     const {data:guests=[]} = await sb
     .from("guests")
     .select("amount,payment_mode")
-    .eq("user_id", userId); // केवल लॉगिन यूजर का डेटा
+    .eq("user_id", userId);
 
     let cashShagun = 0;
     guests.forEach(g=>{
@@ -553,7 +561,7 @@ async function loadCashBook(userId){
     const {data=[]} = await sb
     .from("cash_history")
     .select("*")
-    .eq("user_id", userId) // केवल लॉगिन यूजर का डेटा
+    .eq("user_id", userId)
     .eq("status","active");
 
     let cashIn = 0;
@@ -581,7 +589,7 @@ async function loadRecent(userId){
     const {data=[],error} = await sb
         .from("guests")
         .select("name,payment_mode,amount")
-        .eq("user_id", userId) // केवल लॉगिन यूजर का डेटा
+        .eq("user_id", userId)
         .order("created_at",{ascending:false})
         .limit(10);
 

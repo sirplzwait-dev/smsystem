@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sagun Report | Sagum Management System</title>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PSQRN0SV09');
+</script>
+
 <!-- External Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -539,7 +549,7 @@ async function getOnlineGuests(){
         const {data, error} = await sb
         .from("guests")
         .select("*")
-        .eq("user_id", user.id) // 👈 यह लाइन जोड़नी है ताकि केवल लॉगिन यूजर का ही डेटा दिखे
+        .eq("user_id", user.id)
         .order("created_at", {ascending: false});
 
         if(error){ console.log(error); return []; }
@@ -833,6 +843,6 @@ document.getElementById("logoutBtn").onclick = async () => {
     window.location.replace("login.html");
 };
 </script>
-
+<script src="js/visitor.js"></script>
 </body>
 </html>
