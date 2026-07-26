@@ -285,13 +285,7 @@ if (!data || !data.user) {
 
       
 
- const response = await fetch(
-  "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/send-otp",
-  {
-    method: "POST",
-  const {
-  data: { session },
-} = await sb.auth.getSession();
+
 
 const response = await fetch(
   "https://rdlliurzgwwfjscgwssa.supabase.co/functions/v1/send-otp",
