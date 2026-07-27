@@ -36,7 +36,15 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
+
+  // Supabase requests ko cache mat karo
+  if (event.request.url.includes("supabase.co")) {
+    return;
+  }
+
   event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
+    fetch(event.request)
+      .catch(() => caches.match(event.request))
   );
+
 });
