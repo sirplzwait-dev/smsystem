@@ -2,7 +2,7 @@
 // Visitor Tracker v2
 // ===============================
 
-const client = window.client || window.supabase.createClient(
+const client = window.client;
     "https://rdlliurzgwwfjscgwssa.supabase.co",
     "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
 );

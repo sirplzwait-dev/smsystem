@@ -8,7 +8,7 @@ let paymentChart;
 
 async function loadCharts() {
     // सुरक्षित रूप से Supabase client की पहचान करें (client या sb)
-    const dbClient = typeof client !== 'undefined' ? client : (typeof sb !== 'undefined' ? sb : null);
+   const dbClient = window.client;
 
     if (!dbClient) {
         console.error("Supabase client is not initialized or defined!");
