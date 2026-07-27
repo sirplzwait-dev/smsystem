@@ -24,7 +24,14 @@ setInterval(updateClock, 1000);
 // ==========================================
 document.addEventListener("DOMContentLoaded", async () => {
     // 1. Check Authentication & Admin Email Access
-    const dbClient = window.supabaseClient || window.client || window.sb;
+    const dbClient =
+    window.client ||
+    window.supabaseClient ||
+    window.sb ||
+    window.supabase.createClient(
+        "https://rdlliurzgwwfjscgwssa.supabase.co",
+        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+    );
     
     if (!dbClient) {
         console.error("Supabase client is not initialized.");

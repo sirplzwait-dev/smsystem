@@ -197,30 +197,61 @@ Header
     gap:12px;
 }
 
+.avatar{
+	
+	
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#5d0015,#b8860b);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    font-size:22px;
+    font-weight:bold;
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+
 .profile-photo{
     width:55px;
     height:55px;
     border-radius:50%;
     object-fit:cover;
-    border:3px solid #b8860b;
-    box-shadow:0 5px 15px rgba(0,0,0,.2);
+    border:2px solid #ddd;
+    display:block;
+}
+
+.admin-info{
+    display:flex;
+    flex-direction:column;
 }
 
 .admin-info b{
-    display:block;
     font-size:15px;
-    color:#222;
+    margin:0;
 }
 
 .admin-info small{
-    color:#888;
+    color:#777;
     font-size:12px;
 }
 
-.admin-info p{
-    margin-top:3px;
+#liveClock{
+    font-size:11px;
+    color:#999;
+    margin-top:2px;
+}
+
+.admin-profile b{
+    display:block;
+    font-size:15px;
+}
+
+.admin-profile p{
     font-size:12px;
-    color:#666;
+    color:#777;
+    margin-top:3px;
 }
 
 /* ===========================================
