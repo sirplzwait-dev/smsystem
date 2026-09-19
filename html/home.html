@@ -912,5 +912,21 @@ function openHomeEvent(page){window.location.href=page;}</script>
 @media(max-width:700px){.home-event-count-badge{font-size:10px;padding:3px 8px;margin-left:5px;}}
 @media(max-width:700px){.new-event-area .event-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 </style>
-
-<script>window.addEventListener('sagun:sync',function(){ if(typeof loadHome==='function') loadHome(); });</script>
+<style>
+/* MOBILE EVENT CARD OVERFLOW FIX */
+#dynamicHomeEvents{min-width:0;max-width:100%;}
+#dynamicHomeEvents .event-card-premium{min-width:0;max-width:100%;box-sizing:border-box;}
+@media(max-width:700px){
+  #dynamicHomeEvents{grid-template-columns:minmax(0,1fr)!important;gap:10px!important;width:100%;}
+  #dynamicHomeEvents .event-card-premium{width:100%;min-width:0;min-height:165px;padding:14px!important;}
+  #dynamicHomeEvents .event-card-title{font-size:16px;overflow-wrap:anywhere;word-break:break-word;}
+  #dynamicHomeEvents .event-card-date,
+  #dynamicHomeEvents .event-card-person{max-width:100%;overflow-wrap:anywhere;word-break:break-word;}
+  #dynamicHomeEvents .event-card-footer{left:14px;right:14px;gap:5px;flex-wrap:wrap;}
+  #dynamicHomeEvents .event-card-footer>span:first-child{max-width:34%;}
+  #dynamicHomeEvents .home-event-report-btn,
+  #dynamicHomeEvents .home-event-delete-btn{padding:5px 7px;font-size:9px;}
+  .new-event-area .event-grid{grid-template-columns:minmax(0,1fr)!important;width:100%;}
+  .new-event-area .new-event-card{width:100%;min-width:0;}
+}
+</style>
