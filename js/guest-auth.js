@@ -46,8 +46,11 @@
   }
   function isGuest(){ return valid() && localStorage.getItem('sagunUserMode')==='guest'; }
   function logoutGuest(){
+    DATA_KEYS.forEach(k=>localStorage.removeItem(k));
+    ['currentEventId','sgunmsActiveEvent','currentEventType','selectedEventType','pendingEventType','currentMarriageEvent','currentEventSetup'].forEach(k=>localStorage.removeItem(k));
     localStorage.removeItem('sagunUserMode');
     localStorage.removeItem('sagunActiveUserId');
+    localStorage.removeItem('sagunActiveAccountType');
     sessionStorage.clear();
     location.href='../html/login.html';
   }

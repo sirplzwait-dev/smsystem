@@ -65,9 +65,13 @@ async function loginWithGoogle(){
  
 
 async function redirectRegisteredUser(user){
-  localStorage.setItem('sagunActiveUserId', String(user.id));
-  localStorage.setItem('sagunActiveAccountType', 'registered');
-  localStorage.removeItem('sagunUserMode');
+  if(window.SagunStore?.prepareUserContext) window.SagunStore.prepareUserContext(user.id);
+  else {
+    localStorage.setItem('sagunLastAuthUserId', String(user.id));
+    localStorage.setItem('sagunActiveUserId', String(user.id));
+    localStorage.setItem('sagunActiveAccountType', 'registered');
+    localStorage.removeItem('sagunUserMode');
+  }
   // Google/Email users are permanent registered accounts.
   // If a valid session already exists, do not send them to Guest Mode.
   const email = (user?.email || "").toLowerCase();
@@ -93,7 +97,8 @@ async function redirectRegisteredUser(user){
   }
 
   // Login ke baad hamesha Dashboard/Home par जाएँ.
-  // Event Setup user Home se khud Add Event karke खोल सकता है.
+  // Cloud data isi user ke user_id se Home par load hoga.
+  try{ await window.SagunStore?.syncNow?.(); }catch(_){}
   window.location.href = "../html/home.html";
 }
 

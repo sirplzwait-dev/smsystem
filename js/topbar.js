@@ -91,7 +91,7 @@
   }
   document.addEventListener('click',e=>{if(!bar.contains(e.target)){panel.classList.remove('open');btn.setAttribute('aria-expanded','false');if(quickPanel){quickPanel.classList.remove('open');quickBtn.setAttribute('aria-expanded','false')}}});
   bar.querySelector('#sagunBack').onclick=()=>{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1)history.back();else location.href='home.html'};
-  async function logout(){try{if(window.sb&&window.sb.auth)await window.sb.auth.signOut();}catch(e){}try{localStorage.removeItem('currentEventType');localStorage.removeItem('selectedEventType');localStorage.removeItem('pendingEventType');}catch(e){}location.href='login.html'}
+  async function logout(){try{if(window.sb&&window.sb.auth)await window.sb.auth.signOut();}catch(e){}try{window.SagunStore?.clearTransient?.();localStorage.removeItem('sagunActiveUserId');localStorage.removeItem('sagunActiveAccountType');localStorage.removeItem('sagunUserMode');localStorage.removeItem('sagunGuestSession');}catch(e){}location.href='login.html'}
   bar.querySelector('#sagunLogout').onclick=logout;
   // Keep navigation permanently visible. No auto-hide timers or triggers.
   clearTimeout(timer);

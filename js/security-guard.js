@@ -47,10 +47,18 @@
       const user=data?.user;
       if(error || !user?.id){ goLogin(); return; }
 
-      localStorage.setItem("sagunActiveUserId",String(user.id));
-      localStorage.setItem("sagunActiveAccountType","registered");
-      localStorage.removeItem("sagunUserMode");
-      localStorage.removeItem("sagunGuestSession");
+      if(window.SagunStore?.prepareUserContext) window.SagunStore.prepareUserContext(user.id);
+      else {
+        const previous=String(localStorage.getItem('sagunLastAuthUserId')||'').trim();
+        if(previous && previous!==String(user.id)){
+          ['currentEventId','sgunmsActiveEvent','currentEventType','selectedEventType','pendingEventType','currentMarriageEvent','eventSetupData','sagunSetup','offlineSetupData','currentEventSetup','birthdaySetup','birthdayPhoto','birthdayPhotoPending','profileData','sagunProfile','userName'].forEach(k=>localStorage.removeItem(k));
+        }
+        localStorage.setItem('sagunLastAuthUserId',String(user.id));
+        localStorage.setItem('sagunActiveUserId',String(user.id));
+        localStorage.setItem('sagunActiveAccountType','registered');
+        localStorage.removeItem('sagunUserMode');
+        localStorage.removeItem('sagunGuestSession');
+      }
 
       if(adminPages.has(file) && String(user.email||"").toLowerCase()!=="shashi841505@gmail.com"){
         location.replace("home.html");
