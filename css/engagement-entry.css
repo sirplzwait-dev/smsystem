@@ -1746,3 +1746,11 @@ h1{
 .note{margin-top:4px !important;font-size:12px !important;line-height:1.3 !important;}
 @media (min-width:769px){.invite,.entry,.note{position:relative;top:8px;}}
 @media (max-width:768px){.invite{font-size:14px !important;}.note{font-size:10px !important;}}
+
+/* Entry success message */
+.engagement-success{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:99999;width:min(420px,90vw);padding:28px 24px;border-radius:24px;background:rgba(255,255,255,.98);box-shadow:0 24px 70px rgba(80,0,30,.28);text-align:center;border:1px solid rgba(160,80,40,.22)}
+.engagement-success .success-icon{width:58px;height:58px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#fff3d8;color:#8a001f;font-size:34px;font-weight:900}
+.engagement-success h3{margin:6px 0 10px;color:#7d1230;font-size:21px}
+.engagement-success p{margin:7px 0;color:#51313a}
+.engagement-success small{display:block;margin:14px 0;color:#8a6970;line-height:1.5}
+.engagement-success button{border:0;border-radius:12px;padding:10px 24px;background:#8a001f;color:#fff;font-weight:800;cursor:pointer}

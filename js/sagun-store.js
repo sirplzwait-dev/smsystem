@@ -49,7 +49,7 @@
     try{
       const sb=cloud(); if(!sb)return null;
       const r=await sb.auth.getUser(); const u=r?.data?.user;
-      if(u?.id){prepareUserContext(u.id);return u;}
+      if(u?.id){prepareUserContext(u.id);startRealtime(u.id);return u;}
     }catch(_){ }
     return null;
   }
@@ -154,41 +154,184 @@
     if(changed)put(ENTRIES,{...p,[key]:list});
   }
 
+
+  // ---- Background cloud sync / realtime ---------------------------------
+  let realtimeChannel=null;
+  let realtimeUserId='';
+  let syncTimer=null;
+  let syncBusy=false;
+  let lastBackgroundSync=0;
+
+  function fireDataUpdated(kind){
+    try{ window.dispatchEvent(new CustomEvent('sgunms:data-updated',{detail:{kind}})); }catch(_){}
+  }
+
+  function mergeRemoteEvent(row, uid){
+    if(!row?.id || String(row.user_id||'')!==String(uid)) return;
+    const s='user:'+uid, p=parse(EVENTS), list=Array.isArray(p[s])?p[s]:[];
+    const idx=list.findIndex(x=>idOf(x)===String(row.id));
+    if(idx>=0) list[idx]={...list[idx],...row,userId:uid};
+    else list.unshift({...row,userId:uid});
+    p[s]=list.slice(0,500); put(EVENTS,p);
+  }
+
+  function mergeRemoteEntry(row, uid){
+    if(!row?.id || String(row.user_id||'')!==String(uid)) return;
+    const s='user:'+uid, p=parse(ENTRIES), list=Array.isArray(p[s])?p[s]:[];
+    const idx=list.findIndex(x=>entryId(x)===String(row.id));
+    const normalized={...row,userId:uid,eventId:row.event_id};
+    if(idx>=0) list[idx]={...list[idx],...normalized};
+    else list.unshift(normalized);
+    p[s]=list.slice(0,10000); put(ENTRIES,p);
+  }
+
+  function removeRemoteEvent(id,uid){
+    const s='user:'+uid, p=parse(EVENTS), n=parse(ENTRIES), d=parse(DELETED);
+    p[s]=(p[s]||[]).filter(x=>idOf(x)!==String(id));
+    n[s]=(n[s]||[]).filter(x=>String(x?.event_id||x?.eventId||'')!==String(id));
+    d[s]=Array.from(new Set([...(d[s]||[]).map(String),String(id)])).slice(-1000);
+    put(EVENTS,p); put(ENTRIES,n); put(DELETED,d);
+  }
+
+  function removeRemoteEntry(id,uid){
+    const s='user:'+uid, p=parse(ENTRIES);
+    p[s]=(p[s]||[]).filter(x=>entryId(x)!==String(id));
+    put(ENTRIES,p);
+  }
+
+  function startRealtime(uid){
+    if(!uid || !navigator.onLine) return;
+    const sb=cloud(); if(!sb) return;
+    if(realtimeChannel && realtimeUserId===uid) return;
+    try{
+      if(realtimeChannel){ sb.removeChannel(realtimeChannel); realtimeChannel=null; }
+      realtimeUserId=uid;
+      realtimeChannel=sb.channel('sgunms-sync-'+uid)
+        .on('postgres_changes',{event:'*',schema:'public',table:'events',filter:'user_id=eq.'+uid},payload=>{
+          if(payload.eventType==='DELETE') removeRemoteEvent(payload.old?.id,uid);
+          else mergeRemoteEvent(payload.new,uid);
+          fireDataUpdated('events');
+        })
+        .on('postgres_changes',{event:'*',schema:'public',table:'guests',filter:'user_id=eq.'+uid},payload=>{
+          if(payload.eventType==='DELETE') removeRemoteEntry(payload.old?.id,uid);
+          else mergeRemoteEntry(payload.new,uid);
+          fireDataUpdated('entries');
+        })
+        .subscribe(status=>{
+          if(status==='SUBSCRIBED') fireDataUpdated('connected');
+        });
+    }catch(e){ console.warn('Realtime sync:',e); }
+  }
+
+  async function backgroundRefresh(uid, force=false){
+    if(!uid || !navigator.onLine || syncBusy) return false;
+    const now=Date.now();
+    if(!force && now-lastBackgroundSync<15000) return false;
+    syncBusy=true;
+    try{
+      const sb=cloud(); if(!sb) return false;
+      const [er,gr]=await Promise.all([
+        sb.from('events').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
+        sb.from('guests').select('*').eq('user_id',uid).order('created_at',{ascending:false})
+      ]);
+      if(!er.error){
+        const s='user:'+uid,p=parse(EVENTS),local=Array.isArray(p[s])?p[s]:[];
+        const map=new Map(local.map(x=>[idOf(x),x]));
+        for(const row of (er.data||[])) map.set(String(row.id),{...map.get(String(row.id)),...row,userId:uid});
+        p[s]=Array.from(map.values()).filter(x=>!((parse(DELETED)[s]||[]).map(String).includes(idOf(x)))).slice(0,500); put(EVENTS,p);
+      }
+      if(!gr.error){
+        const s='user:'+uid,p=parse(ENTRIES),local=Array.isArray(p[s])?p[s]:[];
+        const map=new Map(local.map(x=>[entryId(x),x]));
+        for(const row of (gr.data||[])) map.set(String(row.id),{...map.get(String(row.id)),...row,userId:uid,eventId:row.event_id});
+        p[s]=Array.from(map.values()).slice(0,10000); put(ENTRIES,p);
+      }
+      lastBackgroundSync=now;
+      fireDataUpdated('refresh');
+      return !er.error && !gr.error;
+    }catch(e){ console.warn('Background refresh:',e); return false; }
+    finally{ syncBusy=false; }
+  }
+
+  function scheduleBackgroundSync(delay=200){
+    clearTimeout(syncTimer);
+    syncTimer=setTimeout(async()=>{
+      const u=await currentUser();
+      if(!u || !navigator.onLine) return;
+      startRealtime(u.id);
+      await syncNowInternal(u.id);
+      await backgroundRefresh(u.id,false);
+    },delay);
+  }
+
+  async function syncNowInternal(uid){
+    if(!uid || !navigator.onLine) return false;
+    const s='user:'+uid,p=parse(EVENTS),n=parse(ENTRIES);
+    await syncLocalEvents(uid,[...(p[s]||[]),...eventListFromLegacy(s)]);
+    await syncLocalEntries(uid,[...(n[s]||[]),...entryListFromLegacy(s)]);
+    return true;
+  }
+
   async function getEvents(){
-    const s=await scope(), p=parse(EVENTS), canonical=Array.isArray(p[s])?p[s]:[], legacy=eventListFromLegacy(s), out=[], seen=new Set();
-    let cloudRows=[];
+    const s=await scope(), p=parse(EVENTS), canonical=Array.isArray(p[s])?p[s]:[], legacy=eventListFromLegacy(s);
+    const merge=(rows)=>{
+      const seen=new Set(), out=[];
+      for(const x of rows){
+        if(!x||typeof x!=='object')continue;
+        const id=idOf(x); if(!id||seen.has(id))continue;
+        seen.add(id); out.push({...x,user_id:s.startsWith('user:')?s.slice(5):x.user_id,userId:s.startsWith('user:')?s.slice(5):x.userId});
+      }
+      const d=parse(DELETED),deleted=new Set(Array.isArray(d[s])?d[s].map(String):[]);
+      return out.filter(x=>!deleted.has(idOf(x)));
+    };
+    const local=merge([...canonical,...legacy]);
     if(s.startsWith('user:')){
-      const uid=s.slice(5); await syncLocalEvents(uid,[...canonical,...legacy]);
-      try{const c=cloud();if(c){const r=await c.from('events').select('*').eq('user_id',uid).order('created_at',{ascending:false});if(!r.error)cloudRows=r.data||[];else console.warn('Cloud events read:',r.error.message)}}catch(e){console.warn('Cloud events read:',e)}
+      const uid=s.slice(5);
+      startRealtime(uid);
+      // Only block on the first load when this device has no cached events.
+      if(!local.length && navigator.onLine) await backgroundRefresh(uid,true);
+      else scheduleBackgroundSync(250);
+      const fresh=parse(EVENTS),rows=Array.isArray(fresh[s])?fresh[s]:[];
+      return merge(rows.length?rows:local);
     }
-    for(const x of [...cloudRows,...canonical,...legacy]){
-      if(!x||typeof x!=='object')continue;const id=idOf(x);if(!id||seen.has(id))continue;seen.add(id);out.push({...x,user_id:s.startsWith('user:')?s.slice(5):x.user_id,userId:s.startsWith('user:')?s.slice(5):x.userId});
-    }
-    const d=parse(DELETED),deleted=new Set(Array.isArray(d[s])?d[s].map(String):[]);
-    return out.filter(x=>!deleted.has(idOf(x)));
+    return local;
   }
 
   async function getEntries(){
-    const s=await scope(), p=parse(ENTRIES), canonical=Array.isArray(p[s])?p[s]:[], legacy=entryListFromLegacy(s), out=[], seen=new Set();
-    let cloudRows=[];
+    const s=await scope(), p=parse(ENTRIES), canonical=Array.isArray(p[s])?p[s]:[], legacy=entryListFromLegacy(s);
+    const merge=(rows)=>{
+      const seen=new Set(), out=[];
+      for(const x of rows){
+        if(!x||typeof x!=='object')continue;
+        const y={...x,event_id:String(x?.event_id||x?.eventId||'').trim(),eventId:String(x?.event_id||x?.eventId||'').trim()};
+        const id=entryId(y),eid=y.event_id; if(!eid)continue;
+        const k=id?'id:'+id:'fp:'+eid+'|'+String(y.name||'').trim().toLowerCase()+'|'+String(y.amount||0)+'|'+String(y.created_at||y.createdAt||'');
+        if(seen.has(k))continue; seen.add(k);
+        out.push({...y,user_id:s.startsWith('user:')?s.slice(5):y.user_id,userId:s.startsWith('user:')?s.slice(5):y.userId});
+      }
+      return out;
+    };
+    const local=merge([...canonical,...legacy]);
     if(s.startsWith('user:')){
-      const uid=s.slice(5); await syncLocalEntries(uid,[...canonical,...legacy]);
-      try{const c=cloud();if(c){const r=await c.from('guests').select('*').eq('user_id',uid).order('created_at',{ascending:false});if(!r.error)cloudRows=r.data||[];else console.warn('Cloud guests read:',r.error.message)}}catch(e){console.warn('Cloud guests read:',e)}
+      const uid=s.slice(5);
+      startRealtime(uid);
+      if(!local.length && navigator.onLine) await backgroundRefresh(uid,true);
+      else scheduleBackgroundSync(250);
+      const fresh=parse(ENTRIES),rows=Array.isArray(fresh[s])?fresh[s]:[];
+      return merge(rows.length?rows:local);
     }
-    const normalize=x=>({...x,event_id:String(x?.event_id||x?.eventId||'').trim(),eventId:String(x?.event_id||x?.eventId||'').trim()});
-    for(const x of [...cloudRows,...canonical,...legacy]){
-      if(!x||typeof x!=='object')continue;const y=normalize(x),id=entryId(y),eid=y.event_id;if(!eid)continue;
-      const k=id?'id:'+id:'fp:'+eid+'|'+String(y.name||y.guestName||'').trim().toLowerCase()+'|'+String(y.amount||0)+'|'+String(y.village||'').trim().toLowerCase()+'|'+String(y.created_at||y.createdAt||'');
-      if(seen.has(k))continue;seen.add(k);out.push({...y,user_id:s.startsWith('user:')?s.slice(5):y.user_id,userId:s.startsWith('user:')?s.slice(5):y.userId});
-    }
-    return out;
+    return local;
   }
 
   async function addEvent(event){
     const s=await scope();if(!event||typeof event!=='object')throw new Error('Invalid event');
     const id=idOf(event)||crypto.randomUUID(),rec={...event,id,user_id:s.startsWith('user:')?s.slice(5):'',userId:s.startsWith('user:')?s.slice(5):''};
     const p=parse(EVENTS),list=Array.isArray(p[s])?p[s]:[],i=list.findIndex(x=>idOf(x)===id);if(i>=0)list[i]={...list[i],...rec};else list.unshift(rec);p[s]=list.slice(0,500);put(EVENTS,p);
-    if(s.startsWith('user:')){const k='sagunEventHistory_'+s.slice(5),old=arr(k),j=old.findIndex(x=>idOf(x)===id);if(j>=0)old[j]={...old[j],...rec};else old.unshift(rec);put(k,old.slice(0,500));await syncLocalEvents(s.slice(5),[rec]);}
+    if(s.startsWith('user:')){
+      const k='sagunEventHistory_'+s.slice(5),old=arr(k),j=old.findIndex(x=>idOf(x)===id);
+      if(j>=0)old[j]={...old[j],...rec};else old.unshift(rec);put(k,old.slice(0,500));
+      scheduleBackgroundSync(50);
+    }
     localStorage.setItem('currentEventId',id);localStorage.setItem('sgunmsActiveEvent',JSON.stringify(rec));return rec;
   }
 
@@ -196,7 +339,7 @@
     const s=await scope(),eid=String(entry?.event_id||entry?.eventId||localStorage.getItem('currentEventId')||'').trim();if(!eid)throw new Error('Entry cannot be saved without event_id');
     const id=entryId(entry)||crypto.randomUUID(),rec={...entry,id,user_id:s.startsWith('user:')?s.slice(5):'',userId:s.startsWith('user:')?s.slice(5):'',event_id:eid,eventId:eid};
     const p=parse(ENTRIES),list=Array.isArray(p[s])?p[s]:[],i=list.findIndex(x=>entryId(x)===id);if(i>=0)list[i]={...list[i],...rec};else list.unshift(rec);p[s]=list.slice(0,10000);put(ENTRIES,p);
-    if(s.startsWith('user:')) await syncLocalEntries(s.slice(5),[rec]);
+    if(s.startsWith('user:')) scheduleBackgroundSync(50);
     return rec;
   }
 
@@ -210,6 +353,12 @@
   window.addEventListener('online',()=>{
     setTimeout(()=>{try{window.SagunStore?.syncNow?.()}catch(_){}} ,300);
   });
+  window.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible') scheduleBackgroundSync(300);
+  });
+  window.addEventListener('focus',()=>scheduleBackgroundSync(300));
+  setInterval(()=>{ if(navigator.onLine) scheduleBackgroundSync(100); },30000);
+  setTimeout(()=>scheduleBackgroundSync(500),1200);
   window.SagunStore={uid:scope,getEvents,getEntries,addEvent,addEntry,deleteEvent,migrate:async()=>true,
     prepareUserContext,clearTransient,
     eventsSync:(u)=>{const p=parse(EVENTS),s=u?('user:'+u):scopeSync();return Array.isArray(p[s])?p[s]:[]},
