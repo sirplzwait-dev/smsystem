@@ -41,7 +41,7 @@ async function saveEntry(){
   if(!name){alert("कृपया नाम दर्ज करें।");return}
   if(!amount){alert("कृपया शगुन की राशि दर्ज करें।");return}
   const entry={
-    id:Date.now(),
+    id:(crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+"-"+Math.random().toString(36).slice(2)),
     eventType:"reception",
     event_id:localStorage.getItem("currentEventId") || "",
     eventId:localStorage.getItem("currentEventId") || "",
@@ -57,7 +57,7 @@ async function saveEntry(){
     paymentMode:document.getElementById("paymentMode").value,
     createdAt:new Date().toISOString()
   };
-  if(window.SagunStore) await window.SagunStore.addEntry(entry);
+  if(window.SagunStore) await window.SagunStore.addEntry(entry,{cloud:true});
   else { const list=JSON.parse(localStorage.getItem("sagunEntries")||"[]"); list.push(entry); localStorage.setItem("sagunEntries",JSON.stringify(list)); }
   alert("✅ Entry सफलतापूर्वक सेव हो गई।");
   resetForm();

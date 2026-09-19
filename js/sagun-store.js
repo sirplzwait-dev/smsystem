@@ -4,6 +4,7 @@
   const UID_KEY='sagunActiveUserId', MODE_KEY='sagunUserMode', GUEST_SESSION='sagunGuestSession';
   const SUPA_URL='https://rdlliurzgwwfjscgwssa.supabase.co';
   const SUPA_KEY='sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc';
+  function cloud(){try{return window.supabase?.createClient?window.supabase.createClient(SUPA_URL,SUPA_KEY,{auth:{persistSession:true,storageKey:'sgunms-auth-session'}}):null}catch(_){return null}}
   const parse=k=>{try{const v=JSON.parse(localStorage.getItem(k)||'{}');return v&&typeof v==='object'&&!Array.isArray(v)?v:{};}catch(_){return{}}};
   const put=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(_){return false}};
   const arr=k=>{try{const v=JSON.parse(localStorage.getItem(k)||'[]');return Array.isArray(v)?v:[];}catch(_){return[]}};
@@ -58,14 +59,23 @@
   async function getEvents(){
     const s=await scope(), p=parse(EVENTS), canonical=Array.isArray(p[s])?p[s]:[];
     const legacy=eventListFromLegacy(s), out=[], seen=new Set();
-    for(const x of [...canonical,...legacy]){if(!x||typeof x!=='object')continue;const id=idOf(x);if(!id||seen.has(id))continue;seen.add(id);out.push({...x,user_id:s.startsWith('user:')?s.slice(5):x.user_id,userId:s.startsWith('user:')?s.slice(5):x.userId})}
+    let cloudRows=[];
+    if(s.startsWith('user:')){
+      try{const c=cloud(); if(c){const r=await c.from('events').select('*').eq('user_id',s.slice(5)).order('created_at',{ascending:false}); if(!r.error) cloudRows=r.data||[]; else console.warn('Cloud events read:',r.error.message)}}catch(e){}
+    }
+    for(const x of [...cloudRows,...canonical,...legacy]){if(!x||typeof x!=='object')continue;const id=idOf(x);if(!id||seen.has(id))continue;seen.add(id);out.push({...x,user_id:s.startsWith('user:')?s.slice(5):x.user_id,userId:s.startsWith('user:')?s.slice(5):x.userId})}
     const d=parse(DELETED), deleted=new Set(Array.isArray(d[s])?d[s].map(String):[]);
     return out.filter(x=>!deleted.has(idOf(x)));
   }
   async function getEntries(){
     const s=await scope(), p=parse(ENTRIES), canonical=Array.isArray(p[s])?p[s]:[];
     const legacy=entryListFromLegacy(s), out=[], seen=new Set();
-    for(const x of [...canonical,...legacy]){if(!x||typeof x!=='object')continue;const id=entryId(x), eid=String(x?.event_id||x?.eventId||'').trim();if(!eid)continue;const k=id?'id:'+id:'fp:'+eid+'|'+JSON.stringify(x);if(seen.has(k))continue;seen.add(k);out.push({...x,user_id:s.startsWith('user:')?s.slice(5):x.user_id,userId:s.startsWith('user:')?s.slice(5):x.userId,event_id:eid,eventId:eid})}
+    let cloudRows=[];
+    if(s.startsWith('user:')){
+      try{const c=cloud(); if(c){const r=await c.from('guests').select('*').eq('user_id',s.slice(5)).order('created_at',{ascending:false}); if(!r.error) cloudRows=r.data||[]; else console.warn('Cloud guests read:',r.error.message)}}catch(e){}
+    }
+    const normalize=x=>({...x,event_id:String(x?.event_id||x?.eventId||'').trim(),eventId:String(x?.event_id||x?.eventId||'').trim()});
+    for(const x of [...cloudRows,...canonical,...legacy]){if(!x||typeof x!=='object')continue;const y=normalize(x),id=entryId(y),eid=y.event_id;if(!eid)continue;const k=id?'id:'+id:'fp:'+eid+'|'+String(y.name||y.guestName||'').trim().toLowerCase()+'|'+String(y.amount||0)+'|'+String(y.village||'').trim().toLowerCase()+'|'+String(y.created_at||y.createdAt||'');if(seen.has(k))continue;seen.add(k);out.push({...y,user_id:s.startsWith('user:')?s.slice(5):y.user_id,userId:s.startsWith('user:')?s.slice(5):y.userId})}
     return out;
   }
   async function addEvent(event){
@@ -76,10 +86,20 @@
     localStorage.setItem('currentEventId',id);localStorage.setItem('sgunmsActiveEvent',JSON.stringify(rec));
     return rec;
   }
-  async function addEntry(entry){
+  async function addEntry(entry,options={}){
     const s=await scope(), eid=String(entry?.event_id||entry?.eventId||localStorage.getItem('currentEventId')||'').trim(); if(!eid)throw new Error('Entry cannot be saved without event_id');
     const id=entryId(entry)||crypto.randomUUID(), rec={...entry,id,user_id:s.startsWith('user:')?s.slice(5):'',userId:s.startsWith('user:')?s.slice(5):'',event_id:eid,eventId:eid};
-    const p=parse(ENTRIES), list=Array.isArray(p[s])?p[s]:[], i=list.findIndex(x=>entryId(x)===id);if(i>=0)list[i]={...list[i],...rec};else list.unshift(rec);p[s]=list.slice(0,10000);put(ENTRIES,p);return rec;
+    const p=parse(ENTRIES), list=Array.isArray(p[s])?p[s]:[], i=list.findIndex(x=>entryId(x)===id); if(i>=0)list[i]={...list[i],...rec};else list.unshift(rec);p[s]=list.slice(0,10000);put(ENTRIES,p);
+    if(options.cloud && s.startsWith('user:')){
+      try{
+        const c=cloud(); if(c){
+          const row={user_id:s.slice(5),name:rec.name||rec.guestName||'',state:rec.state||'Bihar',district:rec.district||'',village:rec.village||rec.city||'',amount:Number(rec.amount||rec.cashAmount||0)||0,payment_mode:rec.payment_mode||rec.paymentMode||rec.mode||rec.type||'Cash',gift_type:rec.gift_type||null,gift_description:rec.gift_description||rec.giftDescription||null,event_id:eid||null,event_type:rec.event_type||rec.eventType||null,event_person:rec.event_person||rec.eventPerson||null,event_person_2:rec.event_person_2||rec.eventPerson2||null,event_date:rec.event_date||rec.eventDate||null,created_at:rec.created_at||rec.createdAt||new Date().toISOString()};
+          if(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(id))) row.id=id;
+          const r=await c.from('guests').upsert(row,{onConflict:'id'}); if(r.error) console.warn('Cloud entry save:',r.error.message);
+        }
+      }catch(e){console.warn('Cloud entry save:',e)}
+    }
+    return rec;
   }
   async function deleteEvent(id){const s=await scope(), eid=String(id||'').trim();if(!eid)return false;const p=parse(EVENTS),n=parse(ENTRIES),d=parse(DELETED);p[s]=(p[s]||[]).filter(x=>idOf(x)!==eid);n[s]=(n[s]||[]).filter(x=>String(x?.event_id||x?.eventId||'')!==eid);d[s]=Array.from(new Set([...(d[s]||[]).map(String),eid])).slice(-1000);put(EVENTS,p);put(ENTRIES,n);put(DELETED,d);return true}
   window.SagunStore={uid:scope,getEvents,getEntries,addEvent,addEntry,deleteEvent,migrate:async()=>true,eventsSync:(u)=>{const p=parse(EVENTS),s=u?('user:'+u):scopeSync();return Array.isArray(p[s])?p[s]:[]},entriesSync:(u)=>{const p=parse(ENTRIES),s=u?('user:'+u):scopeSync();return Array.isArray(p[s])?p[s]:[]},deletedEvents:async()=>{const s=await scope(),d=parse(DELETED);return Array.isArray(d[s])?d[s]:[]},EVENTS_KEY:EVENTS,ENTRIES_KEY:ENTRIES};

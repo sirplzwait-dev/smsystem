@@ -6,7 +6,7 @@
   const SESSION_KEY='sagunGuestSession';
   const DEVICE_KEY='sgunmsGuestDeviceId';
   const DATA_KEYS=['eventSetupData','sagunSetup','offlineSetupData','birthdaySetup','birthdayPhoto','birthdayPhotoPending','birthdayGuests','offlineGuests','eventEntries','sagunEntries','cashHistory','sagunEventHistory'];
-  const RETENTION_DAYS=7;
+  const RETENTION_DAYS=30;
   const WARNING_DAYS=3;
 
   function read(){ try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(e){return null} }
@@ -38,15 +38,13 @@
     let s=read();
     if(!s || !s.expiresAt || Date.now()>=Number(s.expiresAt) || s.deviceId!==deviceId()){
       const now=Date.now();
-      s={mode:'guest',guestId:'guest_'+now+'_'+Math.random().toString(36).slice(2,8),deviceId:deviceId(),createdAt:now,expiresAt:now+7*86400000};
+      s={mode:'guest',guestId:'guest_'+now+'_'+Math.random().toString(36).slice(2,8),deviceId:deviceId(),createdAt:now,expiresAt:now+RETENTION_DAYS*86400000};
       localStorage.setItem(SESSION_KEY,JSON.stringify(s));
     }
     localStorage.setItem('sagunUserMode','guest');
-    localStorage.removeItem('sagunActiveUserId');
-    localStorage.setItem('sagunActiveAccountType','guest');
     location.href='../html/home.html';
   }
-  function isGuest(){ return valid(); }
+  function isGuest(){ return valid() && localStorage.getItem('sagunUserMode')==='guest'; }
   function logoutGuest(){
     localStorage.removeItem('sagunUserMode');
     localStorage.removeItem('sagunActiveUserId');
