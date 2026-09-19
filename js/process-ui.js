@@ -1,9 +1,11 @@
-/* SGUNMS beautiful global loading / process UI */
+/* SGUNMS lightweight process UI
+   Important: normal Supabase/background fetches do NOT show a full-screen loader.
+   Loaders are shown only for explicit user actions or when code calls SagunProcess.loading().
+*/
 (function(){
   if(window.SagunProcess) return;
 
   let overlay=null, textEl=null, subEl=null, progress=null, timer=null;
-  let pendingFetches=0, fetchTimer=null;
 
   function ensure(){
     if(overlay) return;
@@ -25,9 +27,10 @@
 
   function startBar(){
     if(!progress) return;
-    progress.style.opacity='1'; progress.style.width='12%';
-    setTimeout(()=>{if(progress?.style.opacity==='1') progress.style.width='48%'},120);
-    setTimeout(()=>{if(progress?.style.opacity==='1') progress.style.width='76%'},500);
+    progress.style.opacity='1';
+    progress.style.width='12%';
+    setTimeout(()=>{ if(progress?.style.opacity==='1') progress.style.width='48%'; },120);
+    setTimeout(()=>{ if(progress?.style.opacity==='1') progress.style.width='76%'; },500);
   }
 
   function hide(){
@@ -36,17 +39,21 @@
     overlay.classList.remove('active');
     if(progress){
       progress.style.width='100%';
-      setTimeout(()=>{if(progress){progress.style.opacity='0';progress.style.width='0'}},280);
+      setTimeout(()=>{
+        if(progress){ progress.style.opacity='0'; progress.style.width='0'; }
+      },280);
     }
   }
 
-  function show(message='Please wait...', sub='काम हो रहा है…', autoHide=true){
+  function show(message='Please wait...', sub='काम हो रहा है…', autoHide=false){
     ensure();
-    textEl.textContent=message; subEl.textContent=sub;
+    textEl.textContent=message;
+    subEl.textContent=sub;
     overlay.classList.add('active');
     startBar();
     clearTimeout(timer);
-    if(autoHide) timer=setTimeout(hide,20000);
+    // Safety timeout only. Real operations should call hide() when finished.
+    if(autoHide) timer=setTimeout(hide,8000);
   }
 
   function labelFor(el){
@@ -67,13 +74,14 @@
     el.setAttribute('aria-busy','true');
     el.dataset.sagunOldDisabled=el.disabled?'1':'0';
     if('disabled' in el) el.disabled=true;
+    // Do not leave buttons disabled forever if a page forgets to hide the loader.
     setTimeout(()=>{
-      if(document.body.contains(el) && !overlay?.classList.contains('active')){
+      if(document.body.contains(el)){
         el.classList.remove('sagun-btn-processing');
         el.removeAttribute('aria-busy');
         if('disabled' in el) el.disabled=el.dataset.sagunOldDisabled==='1';
       }
-    },20000);
+    },10000);
   }
 
   window.SagunProcess={
@@ -84,47 +92,48 @@
     syncing:()=>show('Syncing…','डेटा sync हो रहा है…',false)
   };
 
-  // Button/form feedback.
+  // Explicit user actions only. Background Supabase reads/writes are intentionally silent.
   document.addEventListener('click',e=>{
     const el=e.target.closest?.('button,input[type=submit],input[type=button],a');
     if(!el || el.disabled || el.closest('[data-no-process-animation]')) return;
+
+    // Opening a confirmation modal is NOT the deletion itself.
+    const id=(el.id||'').toLowerCase();
+    if(['deletebtn','opendeletemodal','showdeletemodal','deleteeventbtn'].includes(id)) return;
+
     const t=((el.innerText||el.value||el.getAttribute('aria-label')||'')+'').toLowerCase();
     if(!/save|submit|add|update|delete|remove|erase|export|download|pdf|excel|report|upload|sync|backup|restore|login|sign in|register|create account|verify|send|resend|confirm|continue|next|logout/.test(t)) return;
     if(el.tagName==='A' && /^(#|javascript:)/.test(el.getAttribute('href')||'')) return;
-    const [a,b]=labelFor(el); buttonBusy(el); show(a,b,true);
+
+    const [a,b]=labelFor(el);
+    buttonBusy(el);
+    show(a,b,true);
   },true);
 
   document.addEventListener('submit',e=>{
     if(e.target.closest('[data-no-process-animation]')) return;
     const submit=e.target.querySelector('button[type=submit],input[type=submit]');
-    const [a,b]=labelFor(submit||e.target); if(submit) buttonBusy(submit); show(a,b,true);
+    const [a,b]=labelFor(submit||e.target);
+    if(submit) buttonBusy(submit);
+    show(a,b,true);
   },true);
 
-  // Slow GET requests (Supabase data loading etc.) get a loader only after 350ms.
-  const nativeFetch=window.fetch;
-  if(nativeFetch){
-    window.fetch=function(input,init){
-      const opts=init||{};
-      const method=(opts.method || input?.method || 'GET').toUpperCase();
-      let started=false;
-      const begin=()=>{if(started)return;started=true;pendingFetches++;show('Loading…','डेटा लोड हो रहा है…',false)};
-      if(method==='GET') fetchTimer=setTimeout(begin,1200); else { begin(); }
-      return nativeFetch.apply(this,arguments).finally(()=>{
-        clearTimeout(fetchTimer);
-        if(started){ pendingFetches=Math.max(0,pendingFetches-1); if(pendingFetches===0) setTimeout(hide,100); }
-      });
-    };
-  }
-
-  // Beautiful image placeholders until photos actually arrive.
+  // Image placeholders remain useful without blocking the page.
   function watchImage(img){
     if(!img || img.dataset.sagunLoadingWatched) return;
     img.dataset.sagunLoadingWatched='1';
     if(img.complete && img.naturalWidth>0) return;
     img.classList.add('sagun-image-loading');
-    const done=()=>{img.classList.remove('sagun-image-loading');img.classList.add('sagun-image-loaded');img.removeEventListener('load',done);img.removeEventListener('error',done)};
-    img.addEventListener('load',done); img.addEventListener('error',done);
+    const done=()=>{
+      img.classList.remove('sagun-image-loading');
+      img.classList.add('sagun-image-loaded');
+      img.removeEventListener('load',done);
+      img.removeEventListener('error',done);
+    };
+    img.addEventListener('load',done);
+    img.addEventListener('error',done);
   }
+
   document.querySelectorAll('img').forEach(watchImage);
   new MutationObserver(m=>m.forEach(x=>x.addedNodes?.forEach(n=>{
     if(n.nodeType!==1)return;
@@ -132,8 +141,6 @@
     n.querySelectorAll?.('img').forEach(watchImage);
   }))).observe(document.documentElement,{childList:true,subtree:true});
 
-  // Do not block every page load with a full-screen overlay.
-  // Cached/local-first pages should appear immediately; only genuinely slow work gets the overlay.
-  window.addEventListener('load',()=>setTimeout(()=>{if(pendingFetches===0)hide()},180));
-  window.addEventListener('pageshow',()=>{if(pendingFetches===0)hide()});
+  // Deliberately no automatic initial-page overlay and no fetch interception.
+  // This keeps cached/offline-first pages instant and prevents loaders on every Supabase request.
 })();
