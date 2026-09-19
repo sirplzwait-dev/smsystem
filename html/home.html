@@ -414,7 +414,7 @@ function openHomeEvent(page){window.location.href=page;}</script>
  let homeRenderSeq=0;
  async function renderMyEvents(){
    const seq=++homeRenderSeq, box=document.getElementById('dynamicHomeEvents'); if(!box)return;
-   box.innerHTML='<div class="sagun-event-empty">Loading Events...</div>'; eventCache.length=0;
+   box.innerHTML=''; eventCache.length=0;
    const read=k=>{try{const v=JSON.parse(localStorage.getItem(k)||'[]');return Array.isArray(v)?v:(v&&Array.isArray(v.events)?v.events:[])}catch(_){return[]}};
    const id=e=>String(e?.id||e?.eventId||e?.event_id||e?.key||'').trim();
    const owner=e=>String(e?.user_id||e?.userId||e?.uid||e?.owner_id||e?.ownerId||'').trim();
@@ -648,6 +648,7 @@ function openHomeEvent(page){window.location.href=page;}</script>
  window.renderMyEvents=renderMyEvents;
  document.addEventListener("DOMContentLoaded",renderMyEvents);
  window.addEventListener("storage",renderMyEvents);
+ window.addEventListener("sgunms:data-updated",()=>{clearTimeout(window.__sgunHomeRefreshTimer);window.__sgunHomeRefreshTimer=setTimeout(renderMyEvents,60);});
  window.addEventListener("pageshow",renderMyEvents);
  window.addEventListener("load",()=>setTimeout(renderMyEvents,250));
 })();
@@ -903,26 +904,6 @@ function openHomeEvent(page){window.location.href=page;}</script>
 @media(max-width:1100px){.dashboard-summary{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:700px){.dashboard-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}.tools-section .quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
-
-<script>
-/* Background sync: refresh the dashboard quietly when another device changes data. */
-(function(){
-  let refreshTimer=null;
-  function refreshFromCloud(){
-    clearTimeout(refreshTimer);
-    refreshTimer=setTimeout(async()=>{
-      try{
-        if(window.SagunStore?.refresh) await window.SagunStore.refresh();
-        if(typeof window.renderMyEvents==='function') await window.renderMyEvents();
-        if(typeof window.refreshHomeEntryCounts==='function') window.refreshHomeEntryCounts();
-      }catch(e){ console.warn('Background dashboard sync:',e); }
-    },120);
-  }
-  window.addEventListener('sgunms:data-updated',refreshFromCloud);
-  window.addEventListener('focus',refreshFromCloud);
-})();
-</script>
-
 </body>
 </html><style>
 /* New Event + created Events: keep them together in one row on desktop */

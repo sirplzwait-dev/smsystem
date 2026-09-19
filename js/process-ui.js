@@ -102,7 +102,7 @@
     if(['deletebtn','opendeletemodal','showdeletemodal','deleteeventbtn'].includes(id)) return;
 
     const t=((el.innerText||el.value||el.getAttribute('aria-label')||'')+'').toLowerCase();
-    if(!/save|submit|add|update|delete|remove|erase|export|download|pdf|excel|report|upload|sync|backup|restore|login|sign in|register|create account|verify|send|resend|confirm|continue|next|logout/.test(t)) return;
+    if(!/save|submit|add|update|delete|remove|erase|export|download|pdf|excel|report|upload|sync|backup|restore|login|sign in|register|create account|verify|send|resend|confirm|logout/.test(t)) return;
     if(el.tagName==='A' && /^(#|javascript:)/.test(el.getAttribute('href')||'')) return;
 
     const [a,b]=labelFor(el);
