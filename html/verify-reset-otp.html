@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Verify Reset OTP</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <link rel="stylesheet" href="../css/verify-reset-otp.css"">
+<script src="offline-test.js"></script>
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Verify OTP</h2>
+
+<p>Enter the OTP sent to your email.</p>
+
+<input
+id="otp"
+maxlength="6"
+placeholder="Enter OTP">
+
+<button
+class="verifyBtn"
+onclick="verifyOtp()">
+Verify OTP
+</button>
+
+<button
+id="resend"
+onclick="resendOtp()"
+disabled>
+Resend OTP (60)
+</button>
+
+</div>
+
+
+
+    <script src="../js/verify-reset-otp.js"" defer></script>
+  <script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

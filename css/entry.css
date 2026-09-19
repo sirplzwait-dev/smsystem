@@ -1,0 +1,353 @@
+/* Extracted from entry.html - functionality unchanged */
+
+        /* Fullscreen Loading Overlay */
+        #pageLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #600000, #800000, #b38f00, #ffd700);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            color: #fff;
+            text-align: center;
+            font-family: 'Georgia', serif;
+            transition: opacity 0.5s ease;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #FFD700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loader-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #FFD700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        .loader-subtext {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .popup{
+            display:none;
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.7);
+            justify-content:center;
+            align-items:center;
+            z-index:9999;
+        }
+
+        .popup-content{
+            background:#fff;
+            padding:20px;
+            border-radius:10px;
+            text-align:center;
+            position:relative;
+        }
+
+        .close-btn{
+            position:absolute;
+            top:10px;
+            right:10px;
+            cursor:pointer;
+        }
+    
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width:100%;
+            min-height:100%;
+            overflow-x:hidden;
+            overflow-y:auto;
+            font-family:'Georgia', serif;
+        }
+        
+        .card { 
+            width: 100vw; 
+            min-height: 100vh; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background: linear-gradient(135deg, #ffffff 0%, #fff7cc 50%, #ffd700 100%);
+            padding-bottom: 50px;
+        }
+
+        .decor-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .side-flower { position: absolute; top: 0; width: 220px; }
+        .left-flower { left: 28%; } .right-flower { right: 28%; }
+        .hanging-image { position: absolute; top: 0; width: 320px; height: 100%; object-fit: contain; object-position: top; animation: blink 2s infinite alternate; }
+        @keyframes blink { 0% { opacity: 0.7; } 100% { opacity: 0.9; } }
+        .left-side { left: 0px; } .right-side { right: 0px; }
+        .corner-flower { position: absolute; bottom: 0; width: 200px; }
+        .left-corner { left: 0; } .right-corner { right: 0; transform: scaleX(-1); }
+
+        .main-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 10px; }
+        
+        .header-section { margin-top: 10px; text-align: center; }
+        .ganesh { width: 65px; height: 65px; border-radius: 50%; border: 2px solid #800000; }
+        .title { font-size: 1.8rem; color: #800000; font-family: 'cursive', cursive; margin: 2px 0; }
+        .date-text { font-size: 1.1rem; color: #800000; margin-bottom: 5px; font-weight: bold; }
+        
+        .msg-container { height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .welcome-msg { font-size: 1rem; font-weight: bold; text-align: center; line-height: 1.2; color: #333; }
+        .signature { font-size: 1rem; color: #d84315; font-weight: bold; font-style: italic; margin-top: 3px; }
+
+        .couple-section { display: flex; justify-content: center; align-items: center; gap: 25px; margin-top: 15px; text-align: center; }
+        .couple-box { display: flex; flex-direction: column; align-items: center; }
+        .photo-frame { width: 180px; height: 180px; border: 4px solid #800000; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .name-label { font-size: 0.85rem; color: #5d4037; font-weight: bold; margin-top: 6px; }
+        .name { font-size: 1.1rem; color: #800000; font-family: 'Arial Black', sans-serif; text-transform: uppercase; margin-top: 2px; }
+        .sang-elegant { font-size: 2.2rem; color: #d84315; font-family: 'cursive', cursive; font-weight: bold; }
+        
+        /* डेस्कटॉप के लिए फॉर्म सेक्शन: सभी फील्ड्स एक ही लाइन में रहेंगे */
+        .form-section{
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border: 1.5px solid #800000;
+            border-radius: 12px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .input-box {
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1.5px solid #800000;
+            flex: 1;
+            min-width: 0;
+            height: 42px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.98);
+            color: #000;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .input-box:focus{
+            outline: none;
+            border: 2px solid #ff0000;
+            background: #ffff66;
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        .submit-btn{
+            background: #800000;
+            color: #ffffff;
+            flex: 0 0 95px;
+            height: 42px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #800000;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #600000;
+        }
+        
+        #thankYouMsg{
+            display: none;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg,#800000,#c62828);
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp{
+            from{ opacity:0; transform:translateY(20px); }
+            to{ opacity:1; transform:translateY(0); }
+        }  
+
+        /* ऊपर वाली पट्टी (Header Bar) */
+        .top-header-bar {
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(135deg, #600000, #800000);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .top-logo {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .actionBtn {
+            background: #FFD700;
+            color: #800000;
+            border: none;
+            border-radius: 5px;
+            padding: 4px 10px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .actionBtn:hover {
+            background: #fff;
+        }
+
+        .logoutBtn {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .logoutBtn:hover {
+            background: #bb2d3b;
+            color: #fff;
+        }
+
+        .footer-area{
+            width:100%;
+            height:45px;
+            background:#800000;
+            color:#fff;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            display:flex;
+            align-items:center;
+            z-index: 1000;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+        }
+
+        .footer-left{
+            padding:0 10px;
+            white-space:nowrap;
+            font-size:12px;
+            font-weight:bold;
+        }
+
+        .footer-center{
+            flex:1;
+            overflow:hidden;
+        }
+
+        .footer-center marquee{
+            color:#fff;
+            font-size:12px;
+            font-weight:bold;
+        }
+
+        /* मोबाइल के लिए मीडिया क्वेरी: केवल मोबाइल स्क्रीन पर State और Dist छिपे रहेंगे */
+        @media (max-width:768px){
+            .card{
+                width:100%;
+                min-height:100vh;
+                height:auto;
+                position:relative;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                background:linear-gradient(135deg,#ffffff 0%,#fff7cc 50%,#ffd700 100%);
+                padding-bottom: 60px;
+            }
+            .title{ font-size:1.4rem; }
+            .date-text{ font-size:0.95rem; }
+            
+            .couple-section{ 
+                flex-direction: column; 
+                gap: 8px; 
+                margin-top: 10px; 
+            }
+            .photo-frame{ 
+                width: 115px; 
+                height: 115px; 
+                border-width: 3px;
+            }
+            .sang-elegant{ 
+                font-size: 1.5rem; 
+                margin: -2px 0;
+            }
+            .name-label { font-size: 0.75rem; }
+            .name { font-size: 0.95rem; }
+
+            /* मोबाइल में state और dist को छिपाया गया है */
+            #guestState, #guestDist {
+                display: none !important;
+            }
+
+            .form-section{ 
+                width: 96%; 
+                padding: 8px;
+                gap: 6px;
+                margin-top: 12px;
+                flex-wrap: wrap; 
+            }
+
+            .input-box {
+                font-size: 0.9rem;
+                padding: 6px;
+                height: 42px;
+                flex: 1 1 45%; 
+            }
+
+            #guestName {
+                flex: 1 1 100%; 
+            }
+
+            .submit-btn {
+                flex: 1 1 100%;
+                height: 42px;
+                font-size: 0.95rem;
+            }
+
+            .hanging-image{ width:70px; }
+            .side-flower{ width:75px; }
+            .corner-flower{ width:75px; }
+            
+            .footer-left{ font-size:9px; padding:0 5px; }
+        }
+    

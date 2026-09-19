@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Sagun Setup - Tilak & Barat Details</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
+    <!-- Flatpickr Library for Custom Modern Calendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+        *{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+        body{ 
+            background: linear-gradient(135deg, #600000, #800000, #b38f00, #ffd700); 
+            background-size: 300% 300%;
+            animation: gradientBG 10s ease infinite;
+            min-height: 100vh; 
+            width: 100vw; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 15px; 
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container{ 
+            width: 100%; 
+            max-width: 600px; 
+            background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(10px);
+            padding: 20px 25px; 
+            border-radius: 22px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3), 0 0 0 2px rgba(255, 215, 0, 0.4); 
+        }
+
+        h2 { 
+            text-align: center; 
+            color: #800000; 
+            font-size: 20px; 
+            font-weight: 700;
+            margin-bottom: 12px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px dashed #ffd700;
+            padding-bottom: 6px;
+        }
+
+        label { 
+            display: block; 
+            margin-top: 8px; 
+            font-weight: 600; 
+            color: #444; 
+            font-size: 13px; 
+        }
+
+        input[type="text"], select { 
+            width: 100%; 
+            padding: 9px 12px; 
+            margin-top: 3px; 
+            border: 1.5px solid #d4af37; 
+            border-radius: 8px; 
+            outline: none; 
+            font-size: 14px; 
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: #800000;
+            box-shadow: 0 0 8px rgba(128, 0, 0, 0.2);
+        }
+        
+        .custom-calendar {
+            width: 100%;
+            padding: 9px 12px;
+            margin-top: 3px;
+            border: 1.5px solid #d4af37;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            background: #fffcfc;
+            color: #800000;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .grid-row { display: flex; gap: 12px; }
+        .grid-col { flex: 1; }
+
+        .image-upload-wrapper { 
+            position: relative; 
+            width: 85px; 
+            height: 85px; 
+            margin: 8px auto; 
+            border: 2px dashed #800000; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: #fff8f8; 
+            transition: all 0.3s ease;
+        }
+
+        .image-upload-wrapper:hover {
+            transform: scale(1.05);
+            border-color: #d4af37;
+            background: #fff0f0;
+        }
+
+        .image-upload-wrapper img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+        
+        .section-box { 
+            background: linear-gradient(135deg, #fffcfc, #fff5f5); 
+            border: 1px solid #f2d6d6; 
+            padding: 10px 14px; 
+            border-radius: 12px; 
+            margin-top: 10px; 
+        }
+
+        .section-box h3 { 
+            color: #800000; 
+            font-size: 13px; 
+            font-weight: 700;
+            margin-bottom: 4px; 
+            border-bottom: 1.5px solid #ffd700; 
+            padding-bottom: 2px; 
+        }
+        
+        .flex-inputs { display: flex; gap: 10px; align-items: center; }
+
+        /* ===== OFFLINE PHOTO EDITOR ===== */
+        .cropModal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:12px;background:rgba(12,8,12,.82);backdrop-filter:blur(7px);z-index:99999;overflow:auto}
+        .cropModal.open{display:flex}
+        .cropBox{width:min(94vw,520px);max-height:calc(100vh - 24px);overflow:auto;background:linear-gradient(145deg,#fff,#fff8ec);border:2px solid #d4af37;border-radius:22px;padding:14px;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+        .cropHead{text-align:center;margin:2px 0 10px;color:#72102b}.cropHead strong{display:block;font-size:17px}.cropHead span{display:block;margin-top:3px;font-size:11px;color:#8d7662}
+        .editorStage{position:relative;width:min(82vw,420px);height:min(82vw,420px);max-width:420px;max-height:420px;margin:0 auto;border-radius:14px;overflow:hidden;background:#202020;touch-action:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+        #editorCanvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}.editorStage.dragging #editorCanvas{cursor:grabbing}
+        .cropGuide{position:absolute;inset:0;border:2px solid rgba(255,215,0,.95);box-shadow:inset 0 0 0 9999px rgba(0,0,0,.05);pointer-events:none}
+        .cropGuide:before,.cropGuide:after{content:"";position:absolute;background:rgba(255,255,255,.25)}.cropGuide:before{left:33.33%;top:0;width:1px;height:100%;box-shadow:calc(33.33% + 0px) 0 0 rgba(255,255,255,.25)}.cropGuide:after{top:33.33%;left:0;height:1px;width:100%;box-shadow:0 calc(33.33% + 0px) 0 rgba(255,255,255,.25)}
+        .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}.tools button{min-height:42px;padding:8px 5px;border:0;border-radius:10px;background:#800000;color:#fff;cursor:pointer;font-weight:800;font-size:12px;box-shadow:0 4px 10px rgba(0,0,0,.14)}.tools button:active{transform:scale(.98)}#cropSave{background:linear-gradient(135deg,#218838,#27ae60)!important}.tools #closeCrop{background:linear-gradient(135deg,#a93226,#c0392b)!important}
+        @media(max-width:480px){.cropBox{width:96vw;padding:10px;border-radius:18px}.tools{grid-template-columns:repeat(2,1fr)}.tools button{min-height:44px}.cropHead strong{font-size:16px}}
+                #saveBtn { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 15px; 
+            border: none; 
+            border-radius: 10px; 
+            background: linear-gradient(135deg, #800000, #a00000); 
+            color: #fff; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 15px; 
+            box-shadow: 0 5px 15px rgba(128,0,0,0.3);
+            transition: 0.3s;
+        }
+        #saveBtn:hover { background: linear-gradient(135deg, #600000, #800000); transform: translateY(-2px); }
+    
+/* Special event save buttons */
+#anniversarySaveBtn{
+  width:100%;display:block;margin-top:12px;padding:12px 16px;border:0;border-radius:10px;
+  background:linear-gradient(135deg,#8b102d,#c21f4f 55%,#d49a20);color:#fff;font-weight:800;font-size:15px;
+  line-height:1.2;cursor:pointer;box-shadow:0 5px 15px rgba(128,0,0,.3);transition:.2s ease;
+}
+#anniversarySaveBtn:hover{filter:brightness(1.05);transform:translateY(-2px)}
+#engagementSaveBtn,#grihaSaveBtn{
+  width:100%;
+  display:block;
+  margin-top:12px;
+  padding:12px 16px;
+  border:0;
+  border-radius:10px;
+  background:linear-gradient(135deg,#800000,#a00000);
+  color:#fff;
+  font-weight:800;
+  font-size:15px;
+  line-height:1.2;
+  cursor:pointer;
+  box-shadow:0 5px 15px rgba(128,0,0,.3);
+  transition:.2s ease;
+}
+#engagementSaveBtn:hover,#grihaSaveBtn:hover{
+  background:linear-gradient(135deg,#600000,#800000);
+  transform:translateY(-2px);
+}
+#engagementSaveBtn:active,#grihaSaveBtn:active{transform:translateY(0);}
+.special-event-form h3{
+  color:#800000;
+  border-bottom:1.5px solid #ffd700;
+  padding-bottom:5px;
+  margin-bottom:8px;
+}
+
+
+        /* Premium centered typography */
+        @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+        html, body, input, select, button, textarea {
+            font-family: 'Poppins', 'Noto Sans Devanagari', 'Segoe UI', sans-serif !important;
+        }
+        .container {
+            text-align: center;
+        }
+        .container h1, .container h2, .container h3, .container p,
+        .container label, .container .subtitle, .container .section-title,
+        .container .hint, .container .description, .container .field-title {
+            text-align: center !important;
+        }
+        .container h1, .container h2 {
+            font-family: 'Kalam', 'Noto Sans Devanagari', cursive !important;
+            letter-spacing: .3px;
+            text-transform: none !important;
+        }
+        label {
+            font-weight: 700 !important;
+        }
+        input[type="text"], input[type="date"], input[type="number"], input[type="email"], select, textarea {
+            text-align: center;
+            font-weight: 500;
+        }
+        input::placeholder, textarea::placeholder {
+            text-align: center;
+        }
+        button {
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif !important;
+            font-weight: 700 !important;
+        }
+        .section, .card, .form-section, .photo-section, .upload-area {
+            text-align: center;
+        }
+        .section-title, .card-title {
+            font-weight: 800;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 22px 16px; }
+            h2 { font-size: 22px !important; }
+            label { font-size: 14px !important; }
+            input[type="text"], select { font-size: 15px !important; padding: 11px 12px !important; }
+        }
+
+    </style>
+
+<style id="final-event-flow-style">
+.event-choice-panel{}
+#birthdayForm{border:2px solid #d4af37!important;background:linear-gradient(135deg,#fff8fb,#fffdf2)!important}
+#birthdayForm h3{font-size:16px!important}
+#birthdaySaveBtn{width:100%;padding:12px;margin-top:12px;border:0;border-radius:10px;background:linear-gradient(135deg,#800000,#a00000);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+</style>
+
+
+<style id="welcome-name-style">
+#welcomeBy,#birthdayWelcome{
+  width:100%;
+  padding:9px 12px;
+  border:1.5px solid #d4af37;
+  border-radius:8px;
+  font-size:14px;
+  background:#fff;
+}
+</style>
+
+
+<style id="sagun-setup-premium-decoration">
+body{
+  background:
+    radial-gradient(circle at 10% 10%,rgba(255,215,64,.22),transparent 25%),
+    radial-gradient(circle at 90% 15%,rgba(233,30,99,.18),transparent 25%),
+    linear-gradient(135deg,#fff8fb 0%,#fffdf3 45%,#f4f0ff 100%) !important;
+}
+.card,.container{
+  position:relative;
+  border:2px solid rgba(255,193,7,.65);
+  box-shadow:0 18px 55px rgba(104,45,120,.16),0 0 0 6px rgba(255,255,255,.55);
+  border-radius:24px;
+}
+.card:before,.container:before{
+  content:"✦  ✨  🎈  ✨  ✦";
+  position:absolute;left:0;right:0;top:-17px;text-align:center;
+  font-size:20px;letter-spacing:8px;pointer-events:none;
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.12));
+  animation:sagunSpark 2s ease-in-out infinite alternate;
+}
+h2,h1{text-align:center;color:#7b0010;text-shadow:0 2px 8px rgba(255,193,7,.25)}
+label{color:#6a1b4d !important;font-weight:800 !important}
+select,input{
+  border:2px solid rgba(156,39,176,.22) !important;
+  background:linear-gradient(135deg,#fff,#fff8fc) !important;
+  box-shadow:0 3px 12px rgba(123,31,162,.07);transition:.2s;
+}
+select:focus,input:focus{
+  border-color:#e91e63 !important;
+  box-shadow:0 0 0 4px rgba(233,30,99,.10),0 6px 18px rgba(123,31,162,.12) !important;
+  transform:translateY(-1px);
+}
+button{box-shadow:0 7px 18px rgba(123,31,162,.18);transition:transform .18s,box-shadow .18s}
+button:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(123,31,162,.25)}
+#marriageOptions,.section-box,#birthdaySection{
+  border-radius:18px !important;
+  border:1.5px solid rgba(255,193,7,.45) !important;
+  background:rgba(255,255,255,.82) !important;
+}
+.image-upload-wrapper{
+  border:3px dashed #d4af37 !important;border-radius:18px !important;
+  background:linear-gradient(135deg,#fffaf0,#fff) !important;
+  box-shadow:inset 0 0 20px rgba(255,193,7,.08);transition:.2s;
+}
+.image-upload-wrapper:hover{transform:scale(1.02);border-color:#e91e63 !important}
+@keyframes sagunSpark{from{opacity:.55;transform:translateY(0)}to{opacity:1;transform:translateY(-3px)}}
+@media(max-width:600px){
+  .card,.container{border-radius:18px}
+  .card:before,.container:before{font-size:15px;letter-spacing:4px}
+}
+</style>
+
+
+<style id="premium-event-cards">
+.event-picker-wrap{margin:0 0 18px;padding:20px;border-radius:24px;background:linear-gradient(145deg,#fffaf2,#fff);border:1px solid #f1dfc2;box-shadow:0 12px 32px rgba(92,55,15,.08)}
+.event-picker-heading{display:flex;align-items:center;gap:12px;margin-bottom:16px}.event-picker-heading.compact{margin-bottom:14px}.event-picker-heading h3{margin:0;font-size:20px;color:#6b3f16}.event-picker-heading p{margin:4px 0 0;color:#8b735d;font-size:13px}.event-picker-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:#fff1d6;font-size:23px;box-shadow:inset 0 0 0 1px #f3d8aa}
+.event-card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.event-card-grid.mini{grid-template-columns:repeat(3,1fr)}
+.event-card{position:relative;border:1px solid #eadcc9;background:#fff;border-radius:20px;padding:17px 10px 14px;cursor:pointer;text-align:center;transition:.2s ease;box-shadow:0 6px 16px rgba(70,42,10,.06);font:inherit;color:#4b3827}.event-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(70,42,10,.12);border-color:#d7a95e}.event-card.active{border-color:#c88628;background:linear-gradient(145deg,#fff6e4,#fff);box-shadow:0 0 0 3px rgba(200,134,40,.12),0 12px 25px rgba(70,42,10,.1)}.event-emoji{display:block;font-size:34px;line-height:1;margin-bottom:9px}.event-card strong{display:block;font-size:16px}.event-card small{display:block;margin-top:3px;color:#9b8062;font-size:11px}
+@media(max-width:700px){.event-card-grid{grid-template-columns:repeat(2,1fr)}.event-card-grid.mini{grid-template-columns:repeat(3,1fr)}.event-picker-wrap{padding:15px}.event-emoji{font-size:30px}}
+@media(max-width:430px){.event-card-grid.mini{grid-template-columns:1fr 1fr 1fr;gap:8px}.event-card{padding:14px 6px}.event-card strong{font-size:14px}}
+</style>
+
+
+<style id="event-details-flow-style">
+  #eventCardGrid, #eventCardGrid + select { display:none !important; }
+  .event-picker-wrap{padding:0;background:transparent;border:0;box-shadow:none;margin:0 0 12px}
+  .event-picker-heading{margin-bottom:12px}
+  .event-details-note{padding:12px 14px;border-radius:14px;background:linear-gradient(135deg,#fff7e8,#fff);border:1px solid #efd9ae;color:#6b4b27;font-size:13px;margin-bottom:12px}
+  #genericForm{display:none}
+  #genericForm input{margin-bottom:4px}
+  .back-setup{display:inline-flex;align-items:center;gap:6px;border:0;background:#fff3df;color:#7a4b16;border:1px solid #e4c58f;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer;margin-bottom:10px}
+</style>
+
+
+<style id="event-details-attractive-v2">
+body{padding:24px 14px!important;background:radial-gradient(circle at 8% 8%,rgba(255,215,0,.28),transparent 24%),radial-gradient(circle at 92% 12%,rgba(233,30,99,.18),transparent 25%),linear-gradient(135deg,#fff7fb,#fffdf4 48%,#f5f1ff)!important;background-attachment:fixed!important}
+.container{max-width:760px!important;padding:24px!important;border-radius:30px!important;background:rgba(255,255,255,.94)!important;border:1px solid rgba(212,175,55,.55)!important;box-shadow:0 24px 70px rgba(77,35,80,.18),0 0 0 7px rgba(255,255,255,.58)!important;overflow:hidden}
+.container:before{content:'✦  ✨  SAGUN  ✨  ✦'!important;top:8px!important;color:#c18a16!important;font-size:12px!important;letter-spacing:5px!important;opacity:.85!important}
+.back-setup{margin-top:22px!important;border-radius:14px!important;padding:10px 15px!important;background:linear-gradient(135deg,#fff7e5,#fff)!important;border:1px solid #e7c98e!important;color:#713f0e!important;box-shadow:0 5px 14px rgba(110,70,20,.08)!important}
+#mainTitle{font-size:27px!important;line-height:1.25!important;margin:10px 0 18px!important;padding:16px 14px!important;border:0!important;border-radius:20px!important;background:linear-gradient(135deg,#fff0f5,#fff8e8)!important;box-shadow:inset 0 0 0 1px rgba(212,175,55,.28),0 10px 25px rgba(112,46,77,.08)!important;letter-spacing:.2px!important}
+#mainTitle:after{content:'\A Event Details • समारोह की जानकारी';white-space:pre;color:#9b7350;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:none;text-shadow:none}
+.event-details-note{font-size:14px!important;line-height:1.6!important;padding:15px 17px!important;border-radius:18px!important;background:linear-gradient(135deg,#fff8e9,#fff)!important;border:1px solid #efd29a!important;box-shadow:0 8px 20px rgba(113,75,20,.07)!important}
+.section-box{padding:17px!important;margin-top:14px!important;border-radius:20px!important;background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(255,248,252,.92))!important;border:1px solid rgba(206,164,68,.32)!important;box-shadow:0 8px 22px rgba(80,45,80,.06)!important}
+.section-box h3{font-size:16px!important;margin-bottom:10px!important;padding:0 0 8px!important;border-bottom:2px solid rgba(212,175,55,.45)!important;color:#74102b!important}
+label{font-size:13px!important;margin-top:11px!important;color:#5e3a4b!important}
+input[type="text"],select{min-height:44px!important;padding:11px 13px!important;border-radius:12px!important;font-size:14px!important}
+input[type="text"]::placeholder{color:#b39aa7!important}
+.image-upload-wrapper{width:92px!important;height:92px!important;border-radius:20px!important}
+#saveBtn,#engagementSaveBtn,#grihaSaveBtn,#birthdaySaveBtn{min-height:50px!important;border-radius:16px!important;font-size:16px!important;background:linear-gradient(135deg,#8b102d,#c21f4f 55%,#d49a20)!important;box-shadow:0 12px 25px rgba(139,16,45,.22)!important;letter-spacing:.2px!important}
+#saveBtn:hover,#engagementSaveBtn:hover,#grihaSaveBtn:hover,#birthdaySaveBtn:hover{filter:brightness(1.05);transform:translateY(-2px)!important}
+.event-card{min-height:126px!important;padding:18px 10px!important;border-radius:22px!important;background:linear-gradient(145deg,#fff,#fff9f1)!important;box-shadow:0 9px 22px rgba(74,44,10,.08)!important}
+.event-card:nth-child(2n){background:linear-gradient(145deg,#fff7fb,#fff)!important}.event-card:nth-child(3n){background:linear-gradient(145deg,#f8f5ff,#fff)!important}.event-card:nth-child(4n){background:linear-gradient(145deg,#f3fff9,#fff)!important}
+.event-emoji{font-size:40px!important}.event-card strong{font-size:16px!important;color:#4e2d3c!important}.event-card small{font-size:11px!important;color:#8c7180!important}
+.flex-inputs{gap:12px!important}
+@media(max-width:600px){body{padding:10px 8px!important}.container{padding:16px!important;border-radius:22px!important}.container:before{font-size:10px!important;letter-spacing:3px!important}#mainTitle{font-size:22px!important;padding:14px 10px!important}.section-box{padding:14px!important;border-radius:17px!important}.event-card{min-height:112px!important}.event-emoji{font-size:34px!important}}
+</style>
+
+
+<style id="event-picker-visibility-fix">
+/* Event Details: सामान्य event chooser नहीं दिखेगा; Marriage में ही sub-event chooser दिखेगा */
+.event-picker-wrap{display:none !important;}
+.event-picker-wrap.marriage-visible{display:block !important;}
+/* नीचे वाला छोटा लाल ribbon हटाया गया */
+#setupPremiumRibbon{display:none !important;}
+</style>
+
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+
+<div class="container">
+    <button class="back-setup" type="button" onclick="location.href='setup.html'">← समारोह बदलें</button>
+    <h2 id="mainTitle">🎉 समारोह चुनें</h2>
+
+    <div class="event-picker-wrap">
+      <div class="event-picker-heading">
+        <span class="event-picker-icon">✨</span>
+        <div><h3>अपना समारोह चुनें</h3><p>जिस कार्यक्रम में मेहमान आएँगे, वही चुनें</p></div>
+      </div>
+      <div class="event-card-grid" id="eventCardGrid">
+        <button type="button" class="event-card" data-event="marriage"><span class="event-emoji">💍</span><strong>शादी</strong><small>Marriage</small></button>
+        <button type="button" class="event-card" data-event="birthday"><span class="event-emoji">🎂</span><strong>जन्मदिन</strong><small>Birthday</small></button>
+        <button type="button" class="event-card" data-event="engagement"><span class="event-emoji">💖</span><strong>सगाई</strong><small>Engagement</small></button>
+        <button type="button" class="event-card" data-event="griha_pravesh"><span class="event-emoji">🏠</span><strong>गृह प्रवेश</strong><small>Grih Pravesh</small></button>
+        <button type="button" class="event-card" data-event="baby_shower"><span class="event-emoji">🍼</span><strong>गोद भराई</strong><small>Baby Shower</small></button>
+        <button type="button" class="event-card" data-event="naamkaran"><span class="event-emoji">👶</span><strong>नामकरण</strong><small>Naamkaran</small></button>
+        <button type="button" class="event-card" data-event="mundan"><span class="event-emoji">✂️</span><strong>मुंडन</strong><small>Mundan</small></button>
+        <button type="button" class="event-card" data-event="upanayan"><span class="event-emoji">📿</span><strong>उपनयन</strong><small>Janeu</small></button>
+        <button type="button" class="event-card" data-event="anniversary"><span class="event-emoji">💐</span><strong>वर्षगांठ</strong><small>Anniversary</small></button>
+        <button type="button" class="event-card" data-event="retirement"><span class="event-emoji">🎖️</span><strong>विदाई / रिटायरमेंट</strong><small>Farewell</small></button>
+        <button type="button" class="event-card" data-event="religious"><span class="event-emoji">🙏</span><strong>धार्मिक आयोजन</strong><small>Religious</small></button>
+        <button type="button" class="event-card" data-event="family_function"><span class="event-emoji">👨‍👩‍👧‍👦</span><strong>पारिवारिक समारोह</strong><small>Family Function</small></button>
+        <button type="button" class="event-card" data-event="puja"><span class="event-emoji">🪔</span><strong>पूजा / उत्सव</strong><small>Puja / Festival</small></button>
+        <button type="button" class="event-card" data-event="other"><span class="event-emoji">🎊</span><strong>अन्य समारोह</strong><small>Other Function</small></button>
+      </div>
+      <select id="mainEvent" onchange="chooseMainEvent()" style="display:none">
+        <option value="">-- समारोह चुनें --</option>
+        <option value="marriage">Marriage / शादी</option>
+        <option value="birthday">Birthday</option>
+        <option value="engagement">Engagement / सगाई</option>
+        <option value="griha_pravesh">गृह प्रवेश</option>
+        <option value="baby_shower">गोद भराई / Baby Shower</option>
+        <option value="naamkaran">नामकरण / Naamkaran</option>
+        <option value="mundan">मुंडन / Mundan</option>
+        <option value="upanayan">उपनयन / जनेऊ</option>
+        <option value="anniversary">वर्षगांठ / Anniversary</option>
+        <option value="retirement">विदाई / Retirement</option>
+        <option value="religious">धार्मिक आयोजन</option>
+        <option value="family_function">पारिवारिक समारोह</option>
+        <option value="puja">पूजा / उत्सव</option>
+        <option value="other">अन्य समारोह</option>
+      </select>
+    </div>
+
+    <div id="marriageOptions" class="section-box" style="display:none;">
+        <div class="event-picker-heading compact"><span class="event-picker-icon">💍</span><div><h3>शादी का कार्यक्रम चुनें</h3><p>जिसमें मेहमानों की Entry होगी</p></div></div>
+        <div class="event-card-grid mini" id="marriageCardGrid">
+          <button type="button" class="event-card" data-marriage-event="tilak"><span class="event-emoji">🪔</span><strong>तिलक</strong><small>Tilak</small></button>
+          <button type="button" class="event-card" data-marriage-event="barat"><span class="event-emoji">🥁</span><strong>बरात</strong><small>Barat</small></button>
+          <button type="button" class="event-card" data-marriage-event="reception"><span class="event-emoji">🎉</span><strong>रिसेप्शन</strong><small>Reception</small></button>
+        </div>
+        <select id="marriageEvent" onchange="chooseMarriageEvent()" style="display:none">
+            <option value="">-- कार्यक्रम चुनें --</option>
+            <option value="tilak">तिलक</option><option value="barat">बरात</option><option value="reception">Reception</option>
+        </select>
+    </div>
+
+    <div id="marriageForm" style="display:none;">
+        <div class="grid-row">
+            <div class="section-box grid-col" id="firstSection">
+                <h3 id="firstTitle">🤵 पहला व्यक्ति</h3>
+                <label id="firstLabel">नाम</label>
+                <input type="text" id="firstName" placeholder="नाम लिखें">
+                <div class="image-upload-wrapper" onclick="document.getElementById('firstPhoto').click()">
+                    <img id="firstPreview" src="https://placehold.co/85x85?text=Photo">
+                </div>
+                <input type="file" id="firstPhoto" accept="image/*" style="display:none">
+            </div>
+
+            <div class="section-box grid-col" id="secondSection">
+                <h3 id="secondTitle">👰 दूसरा व्यक्ति</h3>
+                <label id="secondLabel">नाम</label>
+                <input type="text" id="secondName" placeholder="नाम लिखें">
+                <div class="image-upload-wrapper" onclick="document.getElementById('secondPhoto').click()">
+                    <img id="secondPreview" src="https://placehold.co/85x85?text=Photo">
+                </div>
+                <input type="file" id="secondPhoto" accept="image/*" style="display:none">
+            </div>
+        </div>
+
+        <div class="section-box">
+            <label>स्वागत करने वाले का नाम (स्वागत करता)</label>
+            <input type="text" id="welcomeBy" placeholder="स्वागत करता का नाम">
+
+            <label>📅 कार्यक्रम की तिथि</label>
+            <input type="text" id="eventDate" class="custom-calendar" placeholder="तारीख चुनें">
+
+            <div style="text-align:center;margin-top:8px;">
+                <label>पेमेंट QR</label>
+                <div class="image-upload-wrapper" style="width:65px;height:65px;margin:4px auto;" onclick="document.getElementById('qrPhoto').click()">
+                    <img id="qrPreview" src="https://placehold.co/65x65?text=QR">
+                </div>
+                <input type="file" id="qrPhoto" accept="image/*" style="display:none">
+            </div>
+        </div>
+
+        <button id="saveBtn" onclick="saveMarriage()">🚀 Save Setup Details</button>
+    </div>
+
+    <div id="engagementForm" class="section-box special-event-form" style="display:none;">
+        <h3>💖 Engagement / सगाई Details</h3>
+        <div class="grid-row">
+            <div class="section-box grid-col">
+                <label>🤵 लड़के का नाम</label>
+                <input type="text" id="engagementGroom" placeholder="लड़के का नाम">
+            </div>
+            <div class="section-box grid-col">
+                <label>👰 लड़की का नाम</label>
+                <input type="text" id="engagementBride" placeholder="लड़की का नाम">
+            </div>
+        </div>
+        <label>📅 सगाई की तिथि</label>
+        <input type="text" id="engagementDate" class="custom-calendar" placeholder="तारीख चुनें">
+        <label>🙏 स्वागत करता का नाम</label>
+        <input type="text" id="engagementWelcome" placeholder="उदाहरण: कुमार परिवार">
+        <button id="engagementSaveBtn" onclick="saveEngagement()">💖 Save Engagement Setup</button>
+    </div>
+
+    <div id="grihaPraveshForm" class="section-box special-event-form" style="display:none;">
+        <h3>🏠 गृह प्रवेश Details</h3>
+        <label>👤 गृह स्वामी / परिवार का नाम</label>
+        <input type="text" id="grihaName" placeholder="नाम लिखें">
+        <label>📸 परिवार / गृह की फोटो</label>
+        <div class="image-upload-wrapper" style="width:120px;height:120px;" onclick="document.getElementById('grihaPhoto').click()">
+            <img id="grihaPreview" src="https://placehold.co/120x120?text=Photo">
+        </div>
+        <input type="file" id="grihaPhoto" accept="image/*" style="display:none">
+        <label>📅 गृह प्रवेश की तिथि</label>
+        <input type="text" id="grihaDate" class="custom-calendar" placeholder="तारीख चुनें">
+        <label>🙏 स्वागत करता का नाम</label>
+        <input type="text" id="grihaWelcome" placeholder="उदाहरण: शर्मा परिवार">
+        <button id="grihaSaveBtn" onclick="saveGrihaPravesh()">🏠 Save गृह प्रवेश Setup</button>
+    </div>
+
+    <div id="birthdayForm" class="section-box" style="display:none;">
+        <h3>🎂 Birthday Details</h3>
+
+        <label>👤 Birthday Boy / Girl का नाम</label>
+        <input type="text" id="birthdayName" placeholder="नाम लिखें">
+
+        <label>📅 Birthday Date</label>
+        <input type="text" id="birthdayDate" class="custom-calendar" placeholder="जन्मदिन की तारीख चुनें">
+
+        <label>📸 Birthday Photo</label>
+        <div class="image-upload-wrapper" style="width:120px;height:120px;" onclick="document.getElementById('birthdayPhoto').click()">
+            <img id="birthdayPreview" src="https://placehold.co/120x120?text=Photo">
+        </div>
+        <input type="file" id="birthdayPhoto" accept="image/*" style="display:none">
+
+        <label>🙏 स्वागत करता का नाम</label>
+        <input type="text" id="birthdayWelcome" placeholder="उदाहरण: कुमार परिवार">
+
+        <button id="birthdaySaveBtn" onclick="saveBirthday()">🎂 Save Birthday Setup</button>
+    </div>
+
+    <div id="anniversaryForm" class="section-box special-event-form" style="display:none;">
+        <h3>💐 Anniversary / सालगिरह Details</h3>
+        <div class="grid-row">
+            <div class="section-box grid-col">
+                <label>👨 पति / Husband का नाम</label>
+                <input type="text" id="anniversaryHusband" placeholder="पति का नाम">
+            </div>
+            <div class="section-box grid-col">
+                <label>👩 पत्नी / Wife का नाम</label>
+                <input type="text" id="anniversaryWife" placeholder="पत्नी का नाम">
+            </div>
+        </div>
+        <label>📅 विवाह की तारीख</label>
+        <input type="date" id="anniversaryDate" class="custom-calendar" aria-label="विवाह की तारीख">
+        <div id="anniversaryYearInfo" style="margin-top:10px;text-align:center;font-weight:800;color:#8b1e3f;font-size:15px;">❤️ कितवीं Anniversary: —</div>
+        <label>🙏 स्वागत करता का नाम</label>
+        <input type="text" id="anniversaryWelcome" placeholder="उदाहरण: कुमार परिवार">
+        <button id="anniversarySaveBtn" onclick="saveAnniversary()">💐 Save Anniversary Setup</button>
+    </div>
+
+    <div id="genericForm" class="section-box special-event-form">
+      <h3 id="genericTitle">🎊 समारोह की Details</h3>
+      <div class="event-details-note">इस समारोह के लिए जरूरी जानकारी भरें। Save करने के बाद सीधे Guest Entry पर जाएँ।</div>
+      <label>👤 मुख्य व्यक्ति / परिवार का नाम</label>
+      <input type="text" id="genericName" placeholder="नाम लिखें">
+      <label>📅 कार्यक्रम की तिथि</label>
+      <input type="text" id="genericDate" class="custom-calendar" placeholder="तारीख चुनें">
+      <label>🙏 स्वागत करता का नाम</label>
+      <input type="text" id="genericWelcome" placeholder="उदाहरण: कुमार परिवार">
+      <button id="genericSaveBtn" onclick="saveGenericEvent()" style="width:100%;padding:12px;margin-top:12px;border:0;border-radius:10px;background:linear-gradient(135deg,#800000,#a00000);color:#fff;font-weight:800;font-size:15px;cursor:pointer">💾 Details Save करें → Entry</button>
+    </div>
+
+</div>
+
+<div class="cropModal" id="cropModal" aria-hidden="true">
+  <div class="cropBox">
+    <div class="cropHead">
+      <strong>📸 फोटो एडिट करें / Edit Photo</strong>
+      <span>खींचें • Zoom करें • Rotate करें</span>
+    </div>
+    <div class="editorStage" id="editorStage">
+      <canvas id="editorCanvas" width="420" height="420"></canvas>
+      <div class="cropGuide" aria-hidden="true"></div>
+    </div>
+    <div class="tools">
+      <button type="button" id="zoomIn">＋ Zoom</button>
+      <button type="button" id="zoomOut">－ Zoom</button>
+      <button type="button" id="rotateLeft">⟲ Left</button>
+      <button type="button" id="rotateRight">⟳ Right</button>
+      <button type="button" id="resetEditor">↺ Reset</button>
+      <button type="button" id="flipEditor">↔ Flip</button>
+      <button type="button" id="cropSave">✔ Save / सेव</button>
+      <button type="button" id="closeCrop">✖ Close / बंद</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Event cards select the existing event selector without changing existing forms.
+document.querySelectorAll('#eventCardGrid .event-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('#eventCardGrid .event-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    const select = document.getElementById('mainEvent');
+    select.value = card.dataset.event;
+    chooseMainEvent();
+    document.querySelectorAll('#eventCardGrid .event-card').forEach(c => {
+      c.setAttribute('aria-pressed', c === card ? 'true' : 'false');
+    });
+  });
+});
+
+flatpickr("#eventDate", {
+  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
+});
+flatpickr("#birthdayDate", {
+  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
+});
+flatpickr("#engagementDate", {
+  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
+});
+flatpickr("#grihaDate", {
+  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
+});
+
+let currentPreview="", cropped={};
+const editor={img:null,scale:1,rotation:0,x:0,y:0,drag:false,lastX:0,lastY:0,url:null,flipX:1};
+const canvas=document.getElementById('editorCanvas'), ctx=canvas.getContext('2d');
+const stage=document.getElementById('editorStage'), modal=document.getElementById('cropModal');
+
+function fitEditor(){
+  if(!editor.img)return;
+  const w=editor.img.naturalWidth||editor.img.width, h=editor.img.naturalHeight||editor.img.height;
+  const base=Math.max(canvas.width/w,canvas.height/h);
+  editor.scale=base; editor.x=canvas.width/2; editor.y=canvas.height/2; editor.rotation=0; editor.flipX=1;
+  drawEditor();
+}
+function drawEditor(){
+  if(!editor.img)return;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.save(); ctx.fillStyle='#202020'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.translate(editor.x,editor.y); ctx.rotate(editor.rotation*Math.PI/180); ctx.scale(editor.flipX,1);
+  const w=editor.img.naturalWidth*editor.scale, h=editor.img.naturalHeight*editor.scale;
+  ctx.drawImage(editor.img,-w/2,-h/2,w,h); ctx.restore();
+}
+function changeZoom(delta){editor.scale=Math.max(.05,Math.min(8,editor.scale*(1+delta)));drawEditor()}
+function rotate(deg){editor.rotation=(editor.rotation+deg)%360;drawEditor()}
+function closeCrop(){
+  modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
+  if(editor.url){URL.revokeObjectURL(editor.url);editor.url=null;} editor.img=null; editor.drag=false;
+}
+function openCrop(file, previewId){
+  if(!file)return; currentPreview=previewId;
+  if(!file.type.startsWith('image/')){Swal.fire('गलत फाइल','कृपया image file चुनें।','warning');return;}
+  if(editor.url)URL.revokeObjectURL(editor.url);
+  editor.url=URL.createObjectURL(file); editor.img=new Image();
+  editor.img.onload=()=>{fitEditor();};
+  editor.img.onerror=()=>{Swal.fire('फोटो नहीं खुली','इस फोटो format को browser नहीं पढ़ पा रहा है।','error');closeCrop();};
+  editor.img.src=editor.url;
+  modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+}
+
+function pointerPos(e){const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*(canvas.width/r.width),y:(e.clientY-r.top)*(canvas.height/r.height)}}
+canvas.addEventListener('pointerdown',e=>{if(!editor.img)return;const p=pointerPos(e);editor.drag=true;editor.lastX=p.x;editor.lastY=p.y;stage.classList.add('dragging');canvas.setPointerCapture(e.pointerId)});
+canvas.addEventListener('pointermove',e=>{if(!editor.drag)return;const p=pointerPos(e);editor.x+=p.x-editor.lastX;editor.y+=p.y-editor.lastY;editor.lastX=p.x;editor.lastY=p.y;drawEditor()});
+canvas.addEventListener('pointerup',e=>{editor.drag=false;stage.classList.remove('dragging');try{canvas.releasePointerCapture(e.pointerId)}catch(_){}});
+canvas.addEventListener('pointercancel',()=>{editor.drag=false;stage.classList.remove('dragging')});
+canvas.addEventListener('wheel',e=>{e.preventDefault();changeZoom(e.deltaY<0?.08:-.08)},{passive:false});
+
+document.getElementById('zoomIn').onclick=()=>changeZoom(.12);
+document.getElementById('zoomOut').onclick=()=>changeZoom(-.12);
+document.getElementById('rotateLeft').onclick=()=>rotate(-90);
+document.getElementById('rotateRight').onclick=()=>rotate(90);
+document.getElementById('resetEditor').onclick=fitEditor;
+ document.getElementById('flipEditor').onclick=()=>{if(editor.img){editor.flipX*=-1;drawEditor()}};
+document.getElementById('closeCrop').onclick=closeCrop;
+document.getElementById('cropSave').onclick=()=>{
+  if(!editor.img)return;
+  canvas.toBlob(blob=>{
+    if(!blob)return;
+    const file=new File([blob],'photo.jpg',{type:'image/jpeg'});
+    cropped[currentPreview]=file;
+    const target=document.getElementById(currentPreview);
+    if(target){if(target.dataset.objectUrl)URL.revokeObjectURL(target.dataset.objectUrl);target.dataset.objectUrl=URL.createObjectURL(file);target.src=target.dataset.objectUrl;}
+    closeCrop();
+  },'image/jpeg',.92);
+};
+modal.addEventListener('click',e=>{if(e.target===modal)closeCrop()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeCrop()});
+
+document.getElementById('firstPhoto').onchange=e=>openCrop(e.target.files[0],'firstPreview');
+document.getElementById('secondPhoto').onchange=e=>openCrop(e.target.files[0],'secondPreview');
+document.getElementById('qrPhoto').onchange=e=>openCrop(e.target.files[0],'qrPreview');
+document.getElementById('birthdayPhoto').onchange=e=>openCrop(e.target.files[0],'birthdayPreview');
+document.getElementById('grihaPhoto').onchange=e=>openCrop(e.target.files[0],'grihaPreview');
+
+async function fileData(file){
+  if(!file)return "";
+  return await new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=()=>resolve(r.result);
+    r.onerror=reject;
+    r.readAsDataURL(file);
+  });
+}
+
+
+function chooseMainEvent(){
+  const v=document.getElementById("mainEvent").value;
+  const picker=document.querySelector('.event-picker-wrap');
+  if(picker) picker.classList.toggle('marriage-visible', v==='marriage');
+  const mo=document.getElementById("marriageOptions");
+  if(mo) mo.style.display = v==="marriage" ? "block" : "none";
+  const mf=document.getElementById("marriageForm"); if(mf) mf.style.display="none";
+  const bf=document.getElementById("birthdayForm"); if(bf) bf.style.display=v==="birthday" ? "block" : "none";
+  const ef=document.getElementById("engagementForm"); if(ef) ef.style.display=v==="engagement" ? "block" : "none";
+  const gf=document.getElementById("grihaPraveshForm"); if(gf) gf.style.display=v==="griha_pravesh" ? "block" : "none";
+  const af=document.getElementById("anniversaryForm"); if(af) af.style.display=v==="anniversary" ? "block" : "none";
+  const titles={
+    marriage:"💍 Marriage / शादी",birthday:"🎂 Birthday",engagement:"💖 Engagement / सगाई",griha_pravesh:"🏠 गृह प्रवेश",
+    baby_shower:"🍼 गोद भराई / Baby Shower",naamkaran:"👶 नामकरण / Naamkaran",mundan:"✂️ मुंडन / Mundan",
+    upanayan:"📿 उपनयन / जनेऊ",anniversary:"💐 वर्षगांठ / Anniversary",retirement:"🎖️ विदाई / Retirement",
+    religious:"🙏 धार्मिक आयोजन",family_function:"👨‍👩‍👧‍👦 पारिवारिक समारोह",puja:"🪔 पूजा / उत्सव",other:"🎊 अन्य समारोह"
+  };
+  const t=document.getElementById("mainTitle"); if(t) t.textContent=titles[v]||"🎉 समारोह चुनें";
+}
+
+function chooseMarriageEvent(){
+  const v=document.getElementById("marriageEvent").value;
+  const form=document.getElementById("marriageForm"); if(form) form.style.display=v ? "block" : "none";
+  const a=document.getElementById("firstTitle"), b=document.getElementById("secondTitle");
+  const al=document.getElementById("firstLabel"), bl=document.getElementById("secondLabel");
+  const f=document.getElementById("firstName"), s=document.getElementById("secondName");
+  const config={
+    tilak:{title:"🪔 लड़के का तिलक / Tilak",a:"🤵 वर पक्ष / Groom Side",al:"लड़के का नाम / Groom Name",fp:"लड़के का नाम लिखें / Enter groom name",b:"👰 वधू पक्ष / Bride Side",bl:"लड़की का नाम / Bride Name",sp:"लड़की का नाम लिखें / Enter bride name"},
+    barat:{title:"🥁 बरात / Barat",a:"👰 वधू पक्ष / Bride Side",al:"लड़की का नाम / Bride Name",fp:"लड़की का नाम लिखें / Enter bride name",b:"🤵 बरात पक्ष / Groom Side",bl:"लड़के का नाम / Groom Name",sp:"लड़के का नाम लिखें / Enter groom name"},
+    reception:{title:"🎉 रिसेप्शन / Reception",a:"🤵 दूल्हा / Groom",al:"दूल्हे का नाम / Groom Name",fp:"दूल्हे का नाम लिखें / Enter groom name",b:"👰 दुल्हन / Bride",bl:"दुल्हन का नाम / Bride Name",sp:"दुल्हन का नाम लिखें / Enter bride name"}
+  };
+  const c=config[v]; if(!c)return;
+  const t=document.getElementById("mainTitle"); if(t)t.textContent=c.title;
+  if(a)a.textContent=c.a; if(al)al.textContent=c.al; if(f)f.placeholder=c.fp;
+  if(b)b.textContent=c.b; if(bl)bl.textContent=c.bl; if(s)s.placeholder=c.sp;
+}
+
+async function saveCanonicalEvent(data){
+  if(!window.SagunStore || typeof window.SagunStore.addEvent!=="function") throw new Error("SagunStore unavailable");
+  const saved=await window.SagunStore.addEvent({...data});
+  if(saved && saved.id){ data.id=saved.id; localStorage.setItem("currentEventId",String(saved.id)); }
+  return saved||data;
+}
+
+async function saveMarriage(){
+  const type=document.getElementById("marriageEvent").value;
+  const n1=document.getElementById("firstName").value.trim();
+  const n2=document.getElementById("secondName").value.trim();
+  const welcomeEl=document.getElementById("welcomeBy");
+  const welcome=welcomeEl ? welcomeEl.value.trim() : "";
+  const date=document.getElementById("eventDate").value.trim();
+
+  if(!type)return Swal.fire("कार्यक्रम चुनें","तिलक, बरात या Reception चुनें।","warning");
+  if(!n1||!n2)return Swal.fire("नाम भरें","दोनों नाम जरूरी हैं।","warning");
+  if(!welcome)return Swal.fire("स्वागतकर्ता का नाम भरें","कृपया स्वागत करता का नाम लिखें।","warning");
+
+  const p1=await fileData(cropped.firstPreview);
+  const p2=await fileData(cropped.secondPreview);
+  const qr=await fileData(cropped.qrPreview);
+
+  const brideFirst = type==="barat";
+  const groom = brideFirst ? n2 : n1;
+  const bride = brideFirst ? n1 : n2;
+  const groomPhoto = brideFirst ? p2 : p1;
+  const bridePhoto = brideFirst ? p1 : p2;
+
+  const data={
+    event_group:"marriage", event_type:type,
+    groom_name:groom, bride_name:bride, welcome_name:welcome,
+    event_date:date, groom_photo_url:groomPhoto, bride_photo_url:bridePhoto,
+    qr_url:qr, first_photo_url:p1, second_photo_url:p2,
+    saved_at:new Date().toISOString()
+  };
+  await saveCanonicalEvent(data);
+  localStorage.setItem("eventSetupData",JSON.stringify(data));
+  localStorage.setItem("sagunSetup",JSON.stringify(data));
+  localStorage.setItem("offlineSetupData",JSON.stringify(data));
+
+  const page = type === "tilak" ? "tilak-entry.html" : (type === "reception" ? "reception-entry.html" : "barat-entry.html");
+  await Swal.fire({icon:"success",title:"Setup Saved",timer:900,showConfirmButton:false});
+  location.href=page;
+}
+
+async function saveEngagement(){
+  const groom=document.getElementById("engagementGroom").value.trim();
+  const bride=document.getElementById("engagementBride").value.trim();
+  const date=document.getElementById("engagementDate").value.trim();
+  const welcome=document.getElementById("engagementWelcome").value.trim();
+  if(!groom||!bride)return Swal.fire("नाम भरें","लड़के और लड़की दोनों के नाम जरूरी हैं।","warning");
+  if(!date)return Swal.fire("तारीख चुनें","सगाई की तारीख चुनें।","warning");
+  const data={event_group:"engagement",event_type:"engagement",groom_name:groom,bride_name:bride,event_date:date,welcome_name:welcome,saved_at:new Date().toISOString()};
+  await saveCanonicalEvent(data);
+  localStorage.setItem("eventSetupData",JSON.stringify(data));
+  localStorage.setItem("sagunSetup",JSON.stringify(data));
+  localStorage.setItem("offlineSetupData",JSON.stringify(data));
+  await Swal.fire({icon:"success",title:"💖 Engagement Setup Saved",timer:900,showConfirmButton:false});
+  localStorage.setItem("currentMarriageEvent","engagement");
+  location.href="engagement-entry.html";
+}
+
+async function saveGrihaPravesh(){
+  const name=document.getElementById("grihaName").value.trim();
+  const date=document.getElementById("grihaDate").value.trim();
+  const welcome=document.getElementById("grihaWelcome").value.trim();
+  if(!name)return Swal.fire("नाम भरें","गृह स्वामी / परिवार का नाम लिखें।","warning");
+  if(!date)return Swal.fire("तारीख चुनें","गृह प्रवेश की तारीख चुनें।","warning");
+  const photo=await fileData(cropped.grihaPreview);
+  const data={event_group:"griha_pravesh",event_type:"griha_pravesh",name,griha_name:name,event_date:date,welcome_name:welcome,photo_url:photo,first_photo_url:photo,saved_at:new Date().toISOString()};
+  await saveCanonicalEvent(data);
+  localStorage.setItem("eventSetupData",JSON.stringify(data));
+  localStorage.setItem("sagunSetup",JSON.stringify(data));
+  localStorage.setItem("offlineSetupData",JSON.stringify(data));
+  await Swal.fire({icon:"success",title:"🏠 गृह प्रवेश Setup Saved",timer:900,showConfirmButton:false});
+  location.href="griha-pravesh-entry.html";
+}
+
+async function saveBirthday(){
+  const name=document.getElementById("birthdayName").value.trim();
+  const date=document.getElementById("birthdayDate").value.trim();
+  const welcome=document.getElementById("birthdayWelcome").value.trim();
+
+  if(!name)return Swal.fire("नाम भरें","Birthday Boy / Girl का नाम लिखें।","warning");
+  if(!date)return Swal.fire("तारीख चुनें","Birthday की तारीख चुनें।","warning");
+
+  const photo=await fileData(cropped.birthdayPreview);
+  const data={
+    event_group:"birthday", event_type:"birthday",
+    name:name, birthday_name:name, welcome_name:welcome,
+    event_date:date, birthday_date:date,
+    photo_url:photo, birthday_photo_url:photo,
+    first_photo_url:photo, saved_at:new Date().toISOString()
+  };
+
+  await saveCanonicalEvent(data);
+
+  localStorage.setItem("birthdaySetup",JSON.stringify(data));
+  localStorage.setItem("eventSetupData",JSON.stringify(data));
+  localStorage.setItem("offlineSetupData",JSON.stringify(data));
+  localStorage.setItem("birthdayPhoto",photo);
+  localStorage.setItem("birthdayPhotoPending",photo);
+
+  await Swal.fire({icon:"success",title:"🎂 Birthday Setup Saved",timer:900,showConfirmButton:false});
+  location.href="birthday-entry.html";
+}
+</script>
+
+<div id="setupPremiumRibbon" aria-hidden="true">
+  
+</div>
+<style>
+#setupPremiumRibbon{
+  position:fixed;left:50%;bottom:8px;transform:translateX(-50%);
+  z-index:9998;padding:6px 15px;border-radius:999px;
+  background:rgba(123,0,16,.92);color:#fff;border:1px solid #ffd54f;
+  box-shadow:0 5px 18px rgba(0,0,0,.16);font-size:11px;font-weight:800;
+  white-space:nowrap;
+}
+#setupPremiumRibbon b{color:#ffe082}
+@media(max-width:600px){#setupPremiumRibbon{font-size:9px;padding:5px 9px;bottom:5px}}
+</style>
+
+
+<script id="event-card-controls">
+(function(){
+  const main=document.getElementById('mainEvent');
+  const marriage=document.getElementById('marriageEvent');
+  document.querySelectorAll('[data-event]').forEach(card=>card.addEventListener('click',()=>{
+    main.value=card.dataset.event;
+    document.querySelectorAll('[data-event]').forEach(c=>c.classList.remove('active')); card.classList.add('active');
+    chooseMainEvent();
+  }));
+  document.querySelectorAll('[data-marriage-event]').forEach(card=>card.addEventListener('click',()=>{
+    marriage.value=card.dataset.marriageEvent;
+    document.querySelectorAll('[data-marriage-event]').forEach(c=>c.classList.remove('active')); card.classList.add('active');
+    chooseMarriageEvent();
+  }));
+})();
+</script>
+
+
+<script id="separate-event-details-flow">
+(function(){
+  const key='pendingEventType';
+  const type=localStorage.getItem(key)||localStorage.getItem('selectedEventType')||'';
+  const labels={
+    baby_shower:'🍼 गोद भराई / Baby Shower', naamkaran:'👶 नामकरण / Naamkaran',
+    mundan:'✂️ मुंडन / Mundan', upanayan:'📿 उपनयन / जनेऊ', anniversary:'💐 वर्षगांठ / Anniversary',
+    retirement:'🎖️ विदाई / Retirement', religious:'🙏 धार्मिक आयोजन', family_function:'👨‍👩‍👧‍👦 पारिवारिक समारोह',
+    puja:'🪔 पूजा / उत्सव', other:'🎊 अन्य समारोह'
+  };
+  if(type){
+    const main=document.getElementById('mainEvent'); if(main) main.value=type;
+    const picker=document.querySelector('.event-picker-wrap');
+    if(picker) picker.classList.toggle('marriage-visible', type==='marriage');
+    if(typeof chooseMainEvent==='function') chooseMainEvent();
+    const generic=document.getElementById('genericForm');
+    if(generic && !['marriage','birthday','engagement','griha_pravesh','anniversary'].includes(type)){
+      generic.style.display='block';
+      document.getElementById('mainTitle').textContent=labels[type]||'🎊 समारोह Details';
+      document.getElementById('genericTitle').textContent=(labels[type]||'🎊 समारोह')+' Details';
+      if(window.flatpickr) flatpickr('#genericDate',{dateFormat:'d-m-Y',altInput:true,altFormat:'F j, Y',allowInput:true});
+    }
+  }
+})();
+
+function anniversaryOrdinal(n){
+  const x=n%100;
+  return n + ((x>=11&&x<=13)?"th":(n%10===1?"st":n%10===2?"nd":n%10===3?"rd":"th"));
+}
+function getAnniversaryNumber(dateStr){
+  if(!dateStr) return 0;
+  const start=new Date(dateStr+"T00:00:00");
+  if(Number.isNaN(start.getTime())) return 0;
+  const now=new Date();
+  let n=now.getFullYear()-start.getFullYear();
+  const before=(now.getMonth()<start.getMonth()) || (now.getMonth()===start.getMonth() && now.getDate()<start.getDate());
+  if(before) n--;
+  return n>0?n:0;
+}
+function updateAnniversaryCount(){
+  const el=document.getElementById('anniversaryDate');
+  const info=document.getElementById('anniversaryYearInfo');
+  if(!el||!info) return;
+  const n=getAnniversaryNumber(el.value);
+  info.textContent=n?('❤️ कितवीं Anniversary: '+anniversaryOrdinal(n)): '❤️ कितवीं Anniversary: —';
+}
+(function(){
+  const el=document.getElementById('anniversaryDate');
+  if(el){el.addEventListener('change',updateAnniversaryCount);el.addEventListener('input',updateAnniversaryCount);}
+})();
+async function saveAnniversary(){
+  const husband=document.getElementById('anniversaryHusband').value.trim();
+  const wife=document.getElementById('anniversaryWife').value.trim();
+  const date=document.getElementById('anniversaryDate').value;
+  const welcome=document.getElementById('anniversaryWelcome').value.trim();
+  if(!husband||!wife) return Swal.fire('नाम भरें','पति और पत्नी दोनों के नाम जरूरी हैं।','warning');
+  if(!date) return Swal.fire('तारीख चुनें','विवाह की तारीख चुनें।','warning');
+  const n=getAnniversaryNumber(date);
+  if(!n) return Swal.fire('तारीख जाँचें','विवाह की तारीख भविष्य की नहीं होनी चाहिए।','warning');
+  const data={event_group:'anniversary',event_type:'anniversary',wedding_type:'anniversary',husband_name:husband,wife_name:wife,groom_name:husband,bride_name:wife,name:husband,event_person:husband,event_person_2:wife,event_date:date,anniversary_date:date,anniversary_number:n,anniversary_ordinal:anniversaryOrdinal(n),welcome_name:welcome,saved_at:new Date().toISOString()};
+  await saveCanonicalEvent(data);
+  localStorage.setItem('eventSetupData',JSON.stringify(data));
+  localStorage.setItem('sagunSetup',JSON.stringify(data));
+  localStorage.setItem('offlineSetupData',JSON.stringify(data));
+  localStorage.setItem('currentEventType','anniversary');
+  localStorage.setItem('selectedEventType','anniversary');
+  localStorage.setItem('pendingEventType','anniversary');
+  await Swal.fire({icon:'success',title:'💐 Anniversary Setup Saved',timer:900,showConfirmButton:false});
+  location.href='anniversary-entry.html';
+}
+
+async function saveGenericEvent(){
+  const type=localStorage.getItem('pendingEventType')||'other';
+  const name=document.getElementById('genericName').value.trim();
+  const date=document.getElementById('genericDate').value.trim();
+  const welcome=document.getElementById('genericWelcome').value.trim();
+  if(!name) return Swal.fire('नाम भरें','मुख्य व्यक्ति / परिवार का नाम लिखें।','warning');
+  if(!date) return Swal.fire('तारीख चुनें','कार्यक्रम की तारीख चुनें।','warning');
+  const data={event_group:type,event_type:type,name,event_name:name,event_date:date,welcome_name:welcome,saved_at:new Date().toISOString()};
+  await saveCanonicalEvent(data);
+  localStorage.setItem('eventSetupData',JSON.stringify(data));
+  localStorage.setItem('sagunSetup',JSON.stringify(data));
+  localStorage.setItem('offlineSetupData',JSON.stringify(data));
+  localStorage.setItem('currentEventType',type);
+  await Swal.fire({icon:'success',title:'Setup Saved',timer:800,showConfirmButton:false});
+  location.href='generic-event-entry.html';
+}
+</script>
+
+<script src="../js/guest-auth.js"></script>
+<script src="../js/sagun-store.js"></script>
+<script>
+(async function(){
+  try{
+    if(window.supabase?.createClient){
+      const sb=window.supabase.createClient('https://rdlliurzgwwfjscgwssa.supabase.co','sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc');
+      const r=await sb.auth.getUser();
+      if(r?.data?.user){
+        localStorage.removeItem('sagunUserMode');
+        const n=document.getElementById('sgunmsGuestNotice'); if(n) n.remove();
+      }
+    }
+  }catch(e){}
+})();
+</script>
+
+  <script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

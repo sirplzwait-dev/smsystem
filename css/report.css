@@ -1,0 +1,390 @@
+/* Extracted from report.html - functionality unchanged */
+
+    * {
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    html, body {
+        width: 100%;
+        min-height: 100vh;
+        background: #fdf8f5;
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    body {
+        padding-top: 65px;
+        padding-bottom: 60px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ऊपर वाली सुंदर और फिक्स (Freeze) हेडर पट्टी */
+    .top-header-bar {
+        width: 100%;
+        height: 65px;
+        background: linear-gradient(135deg, #500000, #800000);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        color: #fff;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+
+    .headerLeft {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .menuToggle {
+        background: none;
+        border: none;
+        color: #FFD700;
+        font-size: 22px;
+        cursor: pointer;
+        display: none; /* डेस्कटॉप पर छुपा रहेगा */
+    }
+
+    .top-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #FFD700;
+        letter-spacing: 0.5px;
+    }
+
+    .header-btns {
+        display: flex;
+        gap: 8px;
+    }
+
+    .logoutBtn {
+        background: #FFD700;
+        color: #800000;
+        border: none;
+        border-radius: 20px;
+        padding: 6px 14px;
+        font-weight: 700;
+        font-size: 12px;
+        cursor: pointer;
+        transition: .3s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .logoutBtn:hover {
+        background: #fff;
+        transform: translateY(-2px);
+    }
+
+    /* मुख्य लेआउट और साइडबार */
+    .main {
+        display: flex;
+        width: 100%;
+        min-height: calc(100vh - 65px);
+        position: relative;
+        flex: 1;
+    }
+
+    .sidebar {
+        width: 240px;
+        background: #1a1a1a;
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        z-index: 999;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    .sidebar a {
+        color: #ccc;
+        text-decoration: none;
+        padding: 14px 22px;
+        font-size: 14px;
+        font-weight: 500;
+        border-left: 4px solid transparent;
+        transition: .3s;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .sidebar a:hover {
+        background: #800000;
+        color: #fff;
+        border-left: 4px solid #FFD700;
+    }
+
+    .sidebar a.active {
+        background: #800000;
+        color: #fff;
+        border-left: 4px solid #FFD700;
+        font-weight: 600;
+    }
+
+    .main-wrapper {
+        flex: 1;
+        padding: 15px;
+        max-width: 1100px;
+        margin: auto;
+        width: 100%;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .action-buttons button {
+        cursor: pointer;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        color: white;
+        flex: 1;
+        min-width: 100px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .action-buttons button:hover {
+        transform: translateY(-2px);
+        opacity: 0.95;
+    }
+
+    /* Summary Grid */
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    @media (min-width: 768px) {
+        .summary-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .summary-card {
+        background: #ffffff;
+        padding: 15px;
+        border-radius: 14px;
+        box-shadow: 0 6px 20px rgba(128,0,0,0.08);
+        border: 1px solid #f2e2d0;
+        border-left: 5px solid #800000;
+        text-align: left;
+        transition: 0.3s;
+    }
+
+    .summary-card.cash-card { border-left-color: #198754; }
+    .summary-card.upi-card { border-left-color: #0d6efd; }
+    .summary-card.total-card { border-left-color: #ffd700; background: linear-gradient(135deg, #500000, #800000); color: #fff; }
+
+    .summary-card h3 {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 5px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .summary-card.total-card h3 { color: #ffeb3b; }
+
+    .summary-card h1 {
+        font-size: 18px;
+        color: #800000;
+        font-weight: 700;
+    }
+
+    .summary-card.cash-card h1 { color: #198754; }
+    .summary-card.upi-card h1 { color: #0d6efd; }
+    .summary-card.total-card h1 { color: #ffd700; font-size: 20px; }
+
+    /* Chart Toggle Section */
+    .chart-toggle-section {
+        background: white;
+        padding: 15px;
+        border-radius: 14px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        margin-bottom: 15px;
+        border: 1px solid #f2e2d0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .chart-controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .chart-controls select {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1.5px solid #d4af37;
+        font-size: 13px;
+        outline: none;
+        background: #fffcfc;
+        font-weight: 600;
+        color: #800000;
+    }
+
+    .chart-toggle-btn {
+        background: #800000;
+        color: #ffd700;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.2s;
+    }
+
+    .chart-toggle-btn:hover {
+        background: #500000;
+    }
+
+    .chart-wrapper {
+        display: none; 
+        position: relative;
+        height: 260px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Numeric Breakdown Table inside Chart Box */
+    .numeric-breakdown {
+        display: none;
+        margin-top: 12px;
+        max-height: 150px;
+        overflow-y: auto;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        font-size: 13px;
+    }
+
+    .numeric-breakdown table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .numeric-breakdown th {
+        background: #500000;
+        color: #ffd700;
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .numeric-breakdown td {
+        padding: 6px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    /* Card & Search */
+    .card {
+        background: white;
+        padding: 18px;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        border: 1px solid #f2e2d0;
+    }
+
+    #villageFilter {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 10px;
+        border: 1.5px solid #d4af37;
+        font-size: 14px;
+        outline: none;
+        margin-bottom: 15px;
+        background: #fffcfc;
+    }
+
+    #villageFilter:focus {
+        border-color: #800000;
+        box-shadow: 0 0 8px rgba(128,0,0,0.15);
+    }
+
+    .table-container {
+        max-height: 380px;
+        overflow-y: auto;
+        border-radius: 10px;
+        border: 1px solid #eee;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    thead th {
+        position: sticky;
+        top: 0;
+        background: #800000;
+        color: #ffd700;
+        padding: 12px 10px;
+        font-size: 14px;
+        z-index: 10;
+        text-align: center;
+    }
+
+    td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #f1f1f1;
+        text-align: center;
+        color: #444;
+    }
+
+    tbody tr:hover {
+        background: #fff8f2;
+    }
+
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 42px;
+        background: #500000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 15px;
+        color: #fff;
+        font-size: 12px;
+        z-index: 999;
+    }
+
+    /* केवल मोबाइल स्क्रीन के लिए */
+    @media(max-width: 768px){
+        .menuToggle { display: block; }
+        .sidebar {
+            position: fixed;
+            left: -240px;
+            top: 65px;
+            height: calc(100vh - 65px);
+        }
+        .sidebar.active { left: 0; }
+    }
+

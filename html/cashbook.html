@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Book | Sagum Management System</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/cashbook.css"">
+<script src="offline-test.js"></script>
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+
+<div class="header">
+    <div class="headerLeft">
+        <button class="menuToggle" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="top-logo">💰 Cash Book</div>
+    </div>
+    <div class="headerRight">
+        <button class="logoutBtn" id="logoutBtn">🚪 Logout</button>
+    </div>
+</div>
+
+<div class="main">
+    <div class="sidebar" id="sidebar">
+        <a href="home.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="entry.html"><i class="fa-solid fa-user-plus"></i> Shagun Entry</a>
+        <a href="cash-counter.html"><i class="fa-solid fa-calculator"></i> Cash Counter</a>
+        <a href="cashbook.html" class="active"><i class="fa-solid fa-book-open"></i> Cash In / Cash Out</a>
+        <a href="report.html"><i class="fa-solid fa-chart-pie"></i> Report</a>
+        <a href="admin.html"><i class="fa-solid fa-crown"></i> Super Admin</a>
+    </div>
+
+    <div class="content">
+        <div class="cards">
+            <div class="card">
+                <h3>Total Cash In</h3>
+                <h1 id="cashInTotal">₹0</h1>
+            </div>
+            <div class="card">
+                <h3>Total Cash Out</h3>
+                <h1 id="cashOutTotal">₹0</h1>
+            </div>
+            <div class="card">
+                <h3>Current Cash</h3>
+                <h1 id="cashBalance">₹0</h1>
+            </div>
+        </div>
+
+        <div class="forms">
+            <div class="box">
+                <h2>➕ Cash In</h2>
+                <input id="inPerson" placeholder="Person Name">
+                <input id="inPurpose" placeholder="Purpose">
+                <input id="inAmount" type="number" placeholder="Amount">
+                <button class="cashInBtn" id="saveCashIn">Save Cash In</button>
+            </div>
+            <div class="box">
+                <h2>➖ Cash Out</h2>
+                <input id="outPerson" placeholder="Person Name">
+                <input id="outPurpose" placeholder="Purpose">
+                <input id="outAmount" type="number" placeholder="Amount">
+                <button class="cashOutBtn" id="saveCashOut">Save Cash Out</button>
+            </div>
+        </div>
+
+        <div class="history">
+            <h2>📜 Cash History</h2>
+            <div id="historyList">No Record Found</div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div>🌐 Visit us at <strong>www.sgunms.in</strong></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../js/visitor.js""></script>
+    <script src="../js/guest-auth.js"></script>
+<script src="../js/cashbook.js"" defer></script>
+  <script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

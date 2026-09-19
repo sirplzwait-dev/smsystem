@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>शगुन दिया | Sagun Management System</title>
+<link rel="stylesheet" href="../css/topbar.css"><link rel="stylesheet" href="../css/shagun-given.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+<header class="topbar"><div class="logo">📤 SHAGUN DIYA</div><div class="top-actions"><button onclick="location.href='shagun.html'">🎁 Shagun</button><button onclick="location.href='home.html'">🏠 Home</button></div></header>
+<main class="given-page">
+<section class="given-hero"><div class="given-icon">📤</div><div><div class="eyebrow">OUTGOING SHAGUN</div><h1>शगुन दिया</h1><p>जब आप किसी शादी या समारोह में जाएँ, तो आपने क्या शगुन दिया — यहाँ दर्ज करें।</p></div></section>
+<section class="form-card">
+<h2>📝 शगुन की Entry</h2>
+<div class="form-grid">
+<label>किसको दिया?<input id="person" required placeholder="नाम" maxlength="100"></label>
+<label>समारोह / कहाँ दिया?<input id="occasion" placeholder="जैसे शादी, तिलक, रिसेप्शन" maxlength="120"></label>
+<label>दिनांक<div class="date-row"><input id="date" type="date"><button type="button" id="todayBtn" title="आज की तारीख">आज</button></div></label>
+<label>रिश्ता<input id="relation" placeholder="जैसे भाई, मित्र, रिश्तेदार" maxlength="80"></label>
+<label>गाँव / शहर<input id="place" placeholder="स्थान" maxlength="100"></label>
+<label>शगुन का प्रकार<select id="type"><option value="Cash">💵 Cash</option><option value="Gift">🎁 Gift</option><option value="Cash+Gift">💵🎁 Cash + Gift</option></select></label>
+<label id="amountField">राशि ₹<input id="amount" type="number" min="0" step="1" placeholder="Cash की राशि"></label>
+<label id="giftField" class="hidden-field">Gift / वस्तु का विवरण<input id="gift" placeholder="जैसे कपड़े, सामान आदि" maxlength="160"></label>
+<label class="wide">Remark<textarea id="remark" rows="3" placeholder="कोई अतिरिक्त जानकारी" maxlength="300"></textarea></label>
+</div>
+<div class="actions"><button class="save" id="save">✅ Entry Save करें</button><button class="clear" id="clear">↺ Clear</button></div><div id="msg"></div>
+</section>
+<section class="list-card"><div class="list-head"><div><h2>📜 शगुन दिया — Entries</h2><small id="count">0 entries</small></div><button onclick="clearAll()">🗑️ सभी हटाएँ</button></div><div id="list"></div></section>
+</main>
+<script src="../js/guest-auth.js"></script><script src="../js/shagun-given.js"></script><script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body></html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>गृह प्रवेश — अतिथि प्रविष्टि</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Arial,"Noto Sans Devanagari",sans-serif}
+body{min-height:100vh;overflow:hidden;background:#5b1807}
+.page{position:relative;min-height:100vh;background:linear-gradient(180deg,#0000 0%,#0000 68%,#0005 100%),url('../assets/griha-pravesh-bg.png') center/cover no-repeat;display:flex;align-items:flex-end;justify-content:center;padding:0 18px 14px}
+.guest-btn{position:relative;z-index:4;width:min(170px,42vw);height:34px;min-height:34px;padding:2px 10px;border:1.5px solid #f6d477;border-radius:18px;background:linear-gradient(180deg,#a51c0d,#690b05);box-shadow:0 5px 18px #0008,inset 0 1px #fff6;color:#ffe9a3;font-size:14px;font-weight:800;cursor:pointer;letter-spacing:.1px;transition:transform .2s,filter .2s;line-height:1}
+.guest-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.guest-btn span{display:none}
+.bell{position:fixed;top:11%;z-index:3;width:34px;height:34px;border-radius:7px 7px 15px 15px;background:linear-gradient(90deg,#a96d08,#ffd96a,#a96d08);box-shadow:0 3px 8px #0008;transform-origin:50% 0;animation:bellSwing 1.5s ease-in-out infinite}
+.bell:before{content:"";position:absolute;left:50%;top:-10px;width:8px;height:10px;border-radius:6px 6px 0 0;background:#d59a20;transform:translateX(-50%);box-shadow:0 -7px 0 -2px #e9bb48}
+.bell:after{content:"";position:absolute;left:50%;bottom:-7px;width:10px;height:7px;border-radius:0 0 8px 8px;background:#b77a10;transform:translateX(-50%)}
+.bell.left{left:7%}.bell.right{right:7%;animation-delay:.35s}
+@keyframes bellSwing{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+.modal{position:fixed;inset:0;background:#180600aa;backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal.show{display:flex}.card{width:min(480px,100%);background:linear-gradient(145deg,#fffaf0,#fff1d5);border:2px solid #d9a62e;border-radius:24px;box-shadow:0 20px 70px #0009;padding:26px}.card h2{margin:0;text-align:center;color:#8d1609;font-size:28px}.sub{text-align:center;color:#76533b;margin:6px 0 22px}.field{margin:14px 0}.field label{display:block;font-weight:700;color:#552518;margin-bottom:6px}.field input{width:100%;padding:14px;border:1px solid #d4b16a;border-radius:12px;background:#fff;font-size:16px;outline:none}.field input:focus{border-color:#9e1c0e;box-shadow:0 0 0 3px #9e1c0e18}.actions{display:flex;gap:10px;margin-top:20px}.actions button{flex:1;padding:13px;border:0;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer}.cancel{background:#eee0ca;color:#5b3424}.save{background:#9d180b;color:#fff}.status{text-align:center;min-height:20px;color:#23751f;font-weight:700;margin:12px 0 0}.loader{position:fixed;inset:0;z-index:20;background:#fff8ec;display:flex;align-items:center;justify-content:center;color:#8d1609;font-weight:700}.hidden{display:none!important}
+.sound-control{position:fixed;right:18px;bottom:18px;z-index:12;width:112px;height:32px;border:1px solid #f1d27a;border-radius:16px;background:#6f0b05eF;color:#ffe9a3;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px #0007}.sound-control.off{background:#3b241c;color:#f5e7d0;border-color:#c8ad8f}.sound-control:active{transform:scale(.97)}
+@media(max-width:600px){.page{padding:0 12px 12px}.guest-btn{width:150px;height:32px;min-height:32px;font-size:13px;padding:2px 8px}.guest-btn span{font-size:9px}.bell{width:28px;height:28px;top:10%}.bell.left{left:4%}.bell.right{right:4%}.card{padding:21px}.card h2{font-size:24px}}
+</style>
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<script>/* Query -> active event bridge */
+(function(){try{const q=new URLSearchParams(location.search);const id=q.get("event_id")||q.get("eventId");if(id){localStorage.setItem("currentEventId",String(id));try{localStorage.setItem("sgunmsActiveEvent",JSON.stringify({id:String(id)}));}catch(e){}}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+<div class="loader" id="loader">गृह प्रवेश पेज लोड हो रहा है...</div>
+<div class="bell left" aria-hidden="true"></div><div class="bell right" aria-hidden="true"></div>
+<main class="page">
+  <button class="guest-btn" id="guestBtn">GUEST ENTRY</button>
+</main>
+<button class="sound-control" id="soundControl">🔊 ध्वनि बंद</button>
+<audio id="mangalAudio" preload="auto"><source src="../assets/Shankh Sound.mp3" type="audio/mpeg"></audio>
+
+<div class="modal" id="entryModal">
+  <section class="card">
+    <h2>🌸 अतिथि प्रविष्टि</h2>
+    <p class="sub">गृह प्रवेश समारोह में आपका स्वागत है</p>
+    <div class="field"><label for="guestName">अतिथि का नाम</label><input id="guestName" type="text" placeholder="नाम दर्ज करें" autocomplete="name"></div>
+    <div class="field"><label for="guestVillage">गाँव / शहर</label><input id="guestVillage" type="text" placeholder="गाँव / शहर दर्ज करें"></div>
+    <div class="actions"><button class="cancel" id="cancelBtn">बंद करें</button><button class="save" id="saveBtn">✓ Entry Save करें</button></div>
+    <p class="status" id="status"></p>
+  </section>
+</div>
+
+<script>
+const sb=window.supabase.createClient("https://rdlliurzgwwfjscgwssa.supabase.co","sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");
+const modal=document.getElementById('entryModal'),nameEl=document.getElementById('guestName'),villageEl=document.getElementById('guestVillage'),statusEl=document.getElementById('status');
+function openEntry(){modal.classList.add('show');setTimeout(()=>nameEl.focus(),80)}
+function closeEntry(){modal.classList.remove('show');statusEl.textContent=''}
+// गृह प्रवेश शंख ध्वनि: पहली interaction पर शुरू होगी और हर 1 मिनट में बजेगी
+const mangalAudio=document.getElementById('mangalAudio');
+const soundControl=document.getElementById('soundControl');
+let soundEnabled=true, soundTimer=null, soundStarted=false;
+
+async function playShankh(){
+  if(!soundEnabled)return;
+  try{
+    mangalAudio.currentTime=0;
+    await mangalAudio.play();
+  }catch(e){}
+}
+function startMangalDhwanि(){
+  if(soundStarted || !soundEnabled)return;
+  soundStarted=true;
+  playShankh();
+  soundTimer=setInterval(playShankh,60000);
+}
+function stopMangalDhwanि(){
+  soundEnabled=false;
+  soundStarted=false;
+  if(soundTimer){clearInterval(soundTimer);soundTimer=null;}
+  mangalAudio.pause();
+  mangalAudio.currentTime=0;
+  soundControl.textContent='🔇 ध्वनि चालू करें';
+  soundControl.classList.add('off');
+}
+function enableMangalDhwanि(){
+  soundEnabled=true;
+  soundControl.textContent='🔊 ध्वनि बंद';
+  soundControl.classList.remove('off');
+  soundStarted=false;
+  startMangalDhwanि();
+}
+soundControl.onclick=(e)=>{
+  e.stopPropagation();
+  if(soundEnabled) stopMangalDhwanि(); else enableMangalDhwanि();
+};
+document.getElementById('cancelBtn').onclick=closeEntry;
+document.addEventListener('pointerdown',()=>startMangalDhwanि(),{once:true,passive:true});
+modal.addEventListener('click',e=>{if(e.target===modal)closeEntry()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeEntry()});
+async function saveGuest(){
+ const name=nameEl.value.trim().toUpperCase(),village=villageEl.value.trim().toUpperCase();
+ if(!name)return Swal.fire('त्रुटि','कृपया अतिथि का नाम दर्ज करें।','error');
+ if(!village)return Swal.fire('त्रुटि','कृपया गाँव / शहर दर्ज करें।','error');
+ let userId='offline-user';try{const {data:{user}}=await sb.auth.getUser();if(user)userId=user.id}catch(e){}
+ const record={user_id:userId,name,village,event_type:'griha_pravesh',timestamp:new Date().toISOString()};
+ const local=JSON.parse(localStorage.getItem('offlineGuests')||'[]');local.push(record);localStorage.setItem('offlineGuests',JSON.stringify(local));
+ if(navigator.onLine){try{const res=await sb.from('guests').insert([record]);if(!res.error)localStorage.setItem('offlineGuests',JSON.stringify(local.filter(x=>x.timestamp!==record.timestamp)))}catch(e){}}
+ statusEl.textContent=name+' जी की Entry सुरक्षित हो गई।';nameEl.value='';villageEl.value='';nameEl.focus();
+}
+document.getElementById('saveBtn').onclick=saveGuest;
+window.addEventListener('load',()=>document.getElementById('loader').classList.add('hidden'));
+</script>
+  <script src="../js/sagun-store.js"></script>
+<script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

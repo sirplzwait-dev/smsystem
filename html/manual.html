@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Manual & Guide | sagun Management System</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="../css/manual.css"">
+<script src="offline-test.js"></script>
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body data-theme="light">
+
+<!-- Header -->
+<header>
+<div class="container">
+    <div class="logo" onclick="location.href='../index.html'">
+        <img src="../assets/images/appicon.ico"" alt="Logo">
+        <div>
+            <h2>sagun Management System</h2>
+            <p>Smart Wedding Platform</p>
+        </div>
+    </div>
+    
+    <div class="header-right">
+        <a href="../index.html" class="back-btn"><i class="fas fa-home"></i> Home</a>
+        <button class="icon-btn" onclick="toggleTheme()" id="themeToggleBtn"><i class="fas fa-moon"></i> <span>Dark</span></button>
+    </div>
+</div>
+</header>
+
+<div class="main-layout">
+    <!-- Quick Navigation Sidebar -->
+    <aside class="sidebar">
+        <h3><i class="fas fa-compass"></i> Quick Navigation</h3>
+        <ul>
+            <li><a href="#sec-intro" onclick="openSection('sec-intro')"><i class="fas fa-info-circle"></i> Introduction</a></li>
+            <li><a href="#sec-setup" onclick="openSection('sec-setup')"><i class="fas fa-cogs"></i> Account & Setup</a></li>
+            <li><a href="#sec-dashboard" onclick="openSection('sec-dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#sec-shagun" onclick="openSection('sec-shagun')"><i class="fas fa-hand-holding-usd"></i> Shagun Entry</a></li>
+            <li><a href="#sec-reports" onclick="openSection('sec-reports')"><i class="fas fa-chart-bar"></i> Reports & Export</a></li>
+            <li><a href="#sec-counter" onclick="openSection('sec-counter')"><i class="fas fa-calculator"></i> Cash Counter</a></li>
+            <li><a href="#sec-cashbook" onclick="openSection('sec-cashbook')"><i class="fas fa-book"></i> Cash Book</a></li>
+            <li><a href="#sec-admin" onclick="openSection('sec-admin')"><i class="fas fa-crown"></i> Super Admin</a></li>
+            <li><a href="#sec-security" onclick="openSection('sec-security')"><i class="fas fa-question-circle"></i> FAQ & Security</a></li>
+            <li><a href="#sec-contact" onclick="openSection('sec-contact')"><i class="fas fa-headset"></i> Contact Us</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="content-area">
+        <div class="manual-wrapper">
+            <h1 class="manual-title">📖 sagun Management System - User Manual</h1>
+            <p class="subtitle">विवाह एवं पारिवारिक आयोजनों के प्रबंधन हेतु संपूर्ण डिजिटल गाइड</p>
+            
+            <div class="meta-info">
+                <span>📖 Reading Time: <b>8 Mins</b></span>
+                <span>📌 Version: <b>1.0</b></span>
+                <span>📅 Updated: <b>2026</b></span>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="manualSearch" placeholder="🔍 Search Manual (उदा. Cash Book, QR Code)..." onkeyup="searchManual()">
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results">
+                <i class="fas fa-search"></i>
+                <p><b>😕 No matching section found.</b><br>Try another keyword.</p>
+            </div>
+
+            <!-- ACCORDION SECTIONS -->
+
+            <!-- 1. Introduction -->
+            <div class="accordion-group active" id="sec-intro">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>1️⃣ परिचय एवं उद्देश्य (Introduction)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-intro')"><i class="fas fa-link"></i> Link</button>
+                        <h3><i class="fas fa-info-circle" style="color: #800000;"></i> यह क्या करता है?</h3>
+                        <p><b>sagun Management System (SGUNMS)</b> शादियों या अन्य पारिवारिक कार्यक्रमों में मेहमानों के नाम, शगुन (Cash/UPI) और खर्चों का डिजिटल हिसाब रखने का सबसे आसान साधन है। इससे कागजी रजिस्टर खोने या हिसाब में गड़बड़ी का डर पूरी तरह खत्म हो जाता है।</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Account & Setup -->
+            <div class="accordion-group" id="sec-setup">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>2️⃣ Account Setup (रजिस्ट्रेशन और सेटअप)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-setup')"><i class="fas fa-link"></i> Link</button>
+                        <h3>📝 नया अकाउंट और लॉगिन</h3>
+                        <p>सबसे पहले <b>Register</b> पेज पर जाकर अपनी जानकारी भरें। ईमेल वेरीफाई करने के बाद <b>Login</b> पेज से प्रवेश करें।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="../assets/images/login.jpg"" alt="Login Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="../assets/images/login_m.jpg"" alt="Login Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Login Screen Preview</div>
+                        </div>
+                    </div>
+                    <div class="step-box searchable-item">
+                        <h3>⚙️ इवेंट सेटअप (Event Setup)</h3>
+                        <p>लॉगिन के बाद सेटअप पेज खुलेगा। यहाँ दूल्हा-दुल्हन का नाम, कार्यक्रम की तारीख और अपना <b>UPI QR Code</b> सेट करें।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="../assets/images/setup.jpg"" alt="Setup Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="../assets/images/setup_m.jpg"" alt="Setup Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Setup Screen Preview</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Dashboard -->
+            <div class="accordion-group" id="sec-dashboard">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>3️⃣ Dashboard (डैशबोर्ड)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-dashboard')"><i class="fas fa-link"></i> Link</button>
+                        <h3>🏠 यह क्या करता है?</h3>
+                        <p>इस पेज पर आपको कुल मेहमानों, प्राप्त शगुन, कैश बैलेंस और यूपीआई कलेक्शन की पूरी जानकारी एक ही नजर में मिल जाती है।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="../assets/images/home.jpg"" alt="Dashboard Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="../assets/images/home_m.jpg"" alt="Dashboard Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Dashboard Preview</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Shagun Entry -->
+            <div class="accordion-group" id="sec-shagun">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>4️⃣ Shagun Entry (शगुन एंट्री)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-shagun')"><i class="fas fa-link"></i> Link</button>
+                        <h3>💰 यह क्या करता है?</h3>
+                        <p>शादी में आने वाले प्रत्येक मेहमान का नाम और शगुन दर्ज करने के लिए इसका उपयोग किया जाता है।</p>
+                        
+                        <div class="flow-steps">
+                            <div class="flow-step-item">Step 1: Guest Name लिखें</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step-item">Step 2: Village चुनें</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step-item">Step 3: Amount लिखें</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step-item">Step 4: Cash या UPI चुनें</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step-item">Step 5: Save पर क्लिक करें</div>
+                        </div>
+
+                        <div class="alert-box alert-tip">
+                            <i class="fas fa-check-circle"></i>
+                            <div><b>🟢 Tip:</b> अगर इंटरनेट बंद हो जाए, तब भी आपकी एंट्री सुरक्षित रहेगी। इंटरनेट वापस आते ही डेटा अपने आप ऑनलाइन सेव हो जाएगा।</div>
+                        </div>
+
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="../assets/images/entry.jpg"" alt="Shagun Entry Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="../assets/images/entry_m.jpg"" alt="Shagun Entry Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Shagun Entry Screen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Reports -->
+            <div class="accordion-group" id="sec-reports">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>5️⃣ Reports & Export (रिपोर्ट्स)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-reports')"><i class="fas fa-link"></i> Link</button>
+                        <h3>📊 यह क्या करता है?</h3>
+                        <p>सभी मेहमानों की सूचियों को देखने, खोजने तथा Excel या PDF फॉर्मेट में डाउनलोड करने के लिए रिपोर्ट पेज का उपयोग होता है।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="../assets/images/report.jpg"" alt="Report Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="../assets/images/report_m.jpg"" alt="Report Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Report & Export Screen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Cash Counter -->
+            <div class="accordion-group" id="sec-counter">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>6️⃣ Cash Counter (कैश काउंटर)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-counter')"><i class="fas fa-link"></i> Link</button>
+                        <h3>💵 यह क्या करता है?</h3>
+                        <p>दिन के अंत में फिजिकल नोटों (₹500 से ₹1) की गिनती करके सिस्टम के कुल अमाउंट से मिलान करने के लिए।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="../assets/images/cash counter.jpg"" alt="Cash Counter Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="../assets/images/cash caunter_m.jpg"" alt="Cash Counter Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Cash Counter Screen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Cash Book -->
+            <div class="accordion-group" id="sec-cashbook">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>7️⃣ Cash Book (कैश इन / कैश आउट)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-cashbook')"><i class="fas fa-link"></i> Link</button>
+                        <h3>📒 यह क्या करता है?</h3>
+                        <p>शादी के दौरान होने वाले दैनिक खर्चों (Cash Out) और अतिरिक्त प्राप्तियों (Cash In) को ट्रैक करने के लिए।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="../assets/images/cash book.jpg"" alt="Cash Book Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="../assets/images/cash book_m.jpg"" alt="Cash Book Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Cash Book Screen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Super Admin -->
+            <div class="accordion-group" id="sec-admin">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>8️⃣ Super Admin (सुपर एडमिन)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <button class="copy-link-btn" onclick="copyLink('sec-admin')"><i class="fas fa-link"></i> Link</button>
+                        <h3>👑 यह क्या करता है?</h3>
+                        <p>डेटाबेस रिकॉर्ड प्रबंधित करने और फुल डेटा कंट्रोल के लिए। 🟡 <b>Note:</b> एडमिन का पासवर्ड आपको आपकी रजिस्टर्ड ईमेल पर भेजी जाएगी।</p>
+                        <div class="screenshot-box">
+                            <div class="skeleton-loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                            <img src="../assets/images/admin.jpg"" alt="Admin Desktop" class="desktop-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <img src="../assets/images/admin_m.jpg"" alt="Admin Mobile" class="mobile-img" onclick="zoomImage(this)" onload="this.previousElementSibling.style.display='none'">
+                            <div class="screenshot-caption">Super Admin Dashboard</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. Security & FAQ -->
+            <div class="accordion-group" id="sec-security">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>9️⃣ FAQ & Security (सामान्य प्रश्न)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="faq-item searchable-item" style="margin-bottom:10px; border:1px solid var(--card-border); border-radius:8px; padding:12px; background:var(--bg-color);">
+                        <h4 style="color:#800000; font-size:13px; margin-bottom:4px;">❓ क्या मेरा डेटा सुरक्षित है?</h4>
+                        <p style="font-size:12px;">हाँ। आपका डेटा केवल आपके अकाउंट से जुड़ा रहता है। कोई दूसरा उपयोगकर्ता आपका डेटा नहीं देख सकता।</p>
+                    </div>
+                    <div class="faq-item searchable-item" style="margin-bottom:10px; border:1px solid var(--card-border); border-radius:8px; padding:12px; background:var(--bg-color);">
+                        <h4 style="color:#800000; font-size:13px; margin-bottom:4px;">❓ QR Code क्यों नहीं दिख रहा?</h4>
+                        <p style="font-size:12px;">सुनिश्चित करें कि सेटअप पेज पर QR इमेज सही से अपलोड की गई है।</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. Contact Us -->
+            <div class="accordion-group" id="sec-contact">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>🔟 Need Help & Contact</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="step-box searchable-item">
+                        <h3>💬 सहायता और संपर्क</h3>
+                        <p>Need Help? Contact us anytime.</p>
+                        <p style="margin-top: 4px; font-size: 12px; font-weight: bold; color: #800000;">Support Hours: 09:00 AM – 08:00 PM</p>
+                        <a href="https://wa.me/919931516195?text=Hello%20Ji,%20I%20need%20help%20with%20SGUNMS." target="_blank" class="whatsapp-btn-large">
+                            <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                        </a>
+                        <ul style="margin-top: 10px;">
+                            <li><b>Email:</b> <a href="mailto:Sirplzwait@gmail.com" style="color: #800000;">Sirplzwait@gmail.com</a></li>
+                            <li><b>Website:</b> <a href="https://www.sgunms.in" target="_blank" style="color: #800000;">www.sgunms.in</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Get Started & Login Action Box -->
+            <div class="action-buttons-box">
+                <h3>Ready to manage your event digitally?</h3>
+                <div class="manual-action-btns">
+                    <a href="register.html" class="get-started-btn">🚀 Get Started</a>
+                    <a href="login.html" class="login-portal-btn">🔐 Login</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Footer Bar -->
+<div class="footer-area">
+    <div class="footer-left">
+        🌐 <strong>www.sgunms.in</strong>
+    </div>
+    <div class="footer-center">
+        <marquee scrollamount="4">
+            🌱 बेटी बचाओ • 📚 शिक्षा सबसे बड़ा धन है • 🌳 एक पेड़ अवश्य लगाएं • 💧 जल है तो कल है • ❤️ रक्तदान महादान
+        </marquee>
+    </div>
+</div>
+
+<!-- Lightbox Modal for Zooming Images -->
+<div id="lightbox" class="lightbox" onclick="this.style.display='none'">
+    <img id="lightboxImg" alt="Zoomed Preview">
+</div>
+
+
+<script src="../js/visitor.js""></script>
+
+    <script src="../js/manual.js"" defer></script>
+  <script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

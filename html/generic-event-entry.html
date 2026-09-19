@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sagun Entry - Event</title>
+<link rel="stylesheet" href="../css/generic-event-entry.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<script>/* Query -> active event bridge */
+(function(){try{const q=new URLSearchParams(location.search);const id=q.get("event_id")||q.get("eventId");if(id){localStorage.setItem("currentEventId",String(id));try{localStorage.setItem("sgunmsActiveEvent",JSON.stringify({id:String(id)}));}catch(e){}}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+<div class="page-loader" id="pageLoader">समारोह तैयार हो रहा है...</div>
+<main class="wrap" id="eventPage">
+  <section class="hero theme-head">
+    <div class="event-icon" id="eventIcon">🎉</div>
+    <p class="eyebrow" id="eventEyebrow">SHUBH SAGUN</p>
+    <h1 id="eventTitle">समारोह</h1>
+    <p id="eventDate">कार्यक्रम की तिथि</p>
+    <p class="welcome" id="welcomeText"></p>
+    <div class="divider"><i></i><b id="dividerIcon">✦</b><i></i></div>
+  </section>
+  <section class="people" id="people"></section>
+  <section class="entry-card">
+    <h2 id="entryHeading">🎁 शगुन / उपहार प्रविष्टि</h2>
+    <div class="form-grid">
+      <label id="guestNameLabel">नाम<input id="guestName" type="text" placeholder="व्यक्ति का नाम"></label>
+      <label>गाँव / शहर<input id="guestVillage" type="text" placeholder="गाँव / शहर"></label>
+      <label>जिला<input id="guestDist" type="text" placeholder="जिला"></label>
+      <label>राज्य<input id="guestState" type="text" placeholder="राज्य"></label>
+      <label id="amountLabel">शगुन / भेंट राशि<input id="guestAmount" type="number" min="0" placeholder="₹ राशि"></label>
+      <label>भुगतान का माध्यम<select id="paymentMode"><option value="Cash">💵 Cash</option><option value="UPI">📱 UPI</option><option value="Gift">🎁 Gift</option></select></label>
+      <label class="full" id="giftLabel">Gift / अन्य विवरण<input id="giftDescription" type="text" placeholder="उपहार या अन्य जानकारी"></label>
+    </div>
+    <button class="save-btn" id="saveBtn" onclick="saveGuest()">💾 Entry Save करें</button>
+    <p id="status" class="status"></p>
+  </section>
+  <section class="qr-card" id="qrCard" style="display:none"><h3>📱 UPI Payment QR</h3><img id="qrImage" alt="UPI QR"></section>
+</main>
+<script src="../js/generic-event-entry.js" defer></script>
+  <script src="../js/sagun-store.js"></script>
+<script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

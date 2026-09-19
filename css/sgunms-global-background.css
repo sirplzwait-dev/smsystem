@@ -1,0 +1,15 @@
+
+/* SGUNMS Global Background Theme — same as Login / Registration */
+html, body{
+  min-height:100%;
+}
+body{
+  background:linear-gradient(-45deg,#5b0000,#800000,#b8860b,#ffd700)!important;
+  background-size:400% 400%!important;
+  animation:sgunmsBgMove 14s ease infinite!important;
+}
+@keyframes sgunmsBgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}

@@ -1,0 +1,303 @@
+/* Extracted from cash-counter.html - functionality unchanged */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+html,body{
+    width:100%;
+    min-height:100vh;
+    background:#f4f6f9;
+    overflow-x: hidden;
+}
+
+/* ऊपर वाली सुंदर हेडर पट्टी */
+.header{
+    width:100%;
+    height:65px;
+    background:linear-gradient(135deg, #500000, #800000);
+    color:#fff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 20px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.25);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menuToggle {
+    background: none;
+    border: none;
+    color: #FFD700;
+    font-size: 22px;
+    cursor: pointer;
+    display: none; /* डेस्कटॉप पर छुपा रहेगा */
+}
+
+.header-title{
+    font-size:18px;
+    font-weight:700;
+    color:#FFD700;
+    letter-spacing: 0.5px;
+}
+
+.header-btns{
+    display:flex;
+    gap:8px;
+}
+
+.logoutBtn {
+    background: #FFD700;
+    color: #800000;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    transition: .3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.logoutBtn:hover {
+    background: #fff;
+    transform: translateY(-2px);
+}
+
+/* मुख्य लेआउट और साइडबार */
+.main{
+    display:flex;
+    width:100%;
+    min-height:calc(100vh - 65px);
+    position: relative;
+}
+
+.sidebar{
+    width:240px;
+    background:#1a1a1a;
+    display:flex;
+    flex-direction:column;
+    padding-top:20px;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    z-index: 999;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.sidebar a{
+    color:#ccc;
+    text-decoration:none;
+    padding:14px 22px;
+    font-size:14px;
+    font-weight:500;
+    border-left:4px solid transparent;
+    transition:.3s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar a:hover{
+    background:#800000;
+    color:#fff;
+    border-left:4px solid #FFD700;
+}
+
+.sidebar a.active{
+    background:#800000;
+    color:#fff;
+    border-left:4px solid #FFD700;
+    font-weight: 600;
+}
+
+.container{
+    flex:1;
+    padding:20px;
+    max-width:800px;
+    margin:auto;
+    width:100%;
+    overflow-y: auto;
+    padding-bottom: 60px;
+}
+
+.topCard, .summary, .counter{
+    background:#fff;
+    padding:15px;
+    border-radius:14px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.05);
+    margin-bottom:15px;
+    border: 1px solid #eaeaea;
+}
+
+.topCard h2, .counter h2{
+    color:#800000;
+    margin-bottom:6px;
+    font-size:15px;
+    font-weight:700;
+}
+
+.topCard input{
+    width:100%;
+    padding:10px;
+    font-size:20px;
+    font-weight:bold;
+    color:#800000;
+    text-align:center;
+    border:1.5px solid #d4af37;
+    border-radius:8px;
+    outline:none;
+    background:#fffcfc;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:12px;
+    padding:12px 15px;
+}
+
+.summary .card{
+    background: #fafafa;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
+
+.summary .card h3{
+    color:#666;
+    margin-bottom:4px;
+    font-size:12px;
+    text-transform: uppercase;
+}
+
+.summary .card h1{
+    font-size:20px;
+    color:#800000;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+    margin-top: 10px;
+}
+
+th{
+    background:#800000;
+    color:#FFD700;
+    padding:10px;
+    font-size:13px;
+    text-align:center;
+}
+
+td{
+    padding:8px 10px;
+    border-bottom:1px solid #f1f1f1;
+    text-align:center;
+}
+
+.qty{
+    width:45px;
+    height:28px;
+    font-size:13px;
+    text-align:center;
+    border:1px solid #ccc;
+    border-radius:4px;
+    margin:0 6px;
+    outline:none;
+}
+
+.qty:focus{
+    border-color:#800000;
+}
+
+.plus, .minus{
+    width:26px;
+    height:26px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:bold;
+    color:#fff;
+    transition:0.2s;
+}
+
+.plus{background:#198754;}
+.plus:hover{background:#157347;}
+.minus{background:#dc3545;}
+.minus:hover{background:#bb2d3b;}
+
+.amount{
+    font-size:13px;
+    font-weight:bold;
+    color:#198754;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+.buttons button{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+#resetBtn{background:#ffc107; color:#333;}
+.buttons button:last-child{background:#0d6efd; color:#fff;}
+.buttons button:hover{opacity:0.9; transform: translateY(-2px);}
+
+.footer{
+    width:100%;
+    height:38px;
+    background:#500000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:0 12px;
+    color:#fff;
+    font-size:11px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+}
+
+table tr{transition:.2s;}
+table tr:hover{background:#fff8f2;}
+
+/* केवल मोबाइल व्यू के लिए */
+@media(max-width: 768px){
+    .menuToggle { display: block; }
+    .sidebar {
+        position: fixed;
+        left: -240px;
+        top: 65px;
+        height: calc(100vh - 65px);
+    }
+    .sidebar.active {
+        left: 0;
+    }
+    .container { padding: 10px; }
+}
+

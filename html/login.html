@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagun Management System | Login</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <link rel="stylesheet" href="../css/login.css">
+<link rel="stylesheet" href="../css/guest-auth.css">
+<script src="offline-test.js"></script>
+  <link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+
+<div class="login-box">
+  <img src="../assets/images/appicon.ico" class="logo" alt="Sagun Management System Logo">
+  <h2>👋 Welcome Back</h2>
+  <p class="subtitle">Sign in to continue to<br><b>Sagun Management System</b></p>
+  
+  <div class="input-box">
+    <input type="email" id="email" placeholder="📧 Enter your Email">
+  </div>
+  
+  <div class="input-box password-box">
+    <input type="password" id="pass" placeholder="🔒 Enter Password">
+    <span id="togglePass">👁️</span>
+  </div>
+  
+  <button id="loginBtn">🔐 Login</button>
+  <button type="button" id="googleLoginBtn" class="google-login-btn">🌐 Continue with Google</button>
+  <button type="button" id="guestLoginBtn">👤 Login as Guest</button>
+  <div class="guest-note" style="font-size:11px;line-height:1.2;padding:6px 9px;margin:8px auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.86);border-radius:9px;max-width:94%;width:100%;box-sizing:border-box;text-align:center;">👤 Guest data <b>30 दिन</b> तक सुरक्षित • Register करने पर data permanent रहेगा</div>
+  
+  <div class="links">
+    <a href="register.html">📝 Register</a>
+    <a href="#" onclick="forgotPassword(); return false;">Forgot Password?</a>
+  </div>
+  
+  <div class="version">Version 1.0.0<br><br>Powered by Sagun Management System</div>
+</div>
+
+
+<script src="../js/visitor.js"></script>
+    <script src="../js/guest-auth.js"></script>
+    <script src="../js/login.js" defer></script>
+</body>
+</html>

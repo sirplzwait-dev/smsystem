@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register - Sagun Management System</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+
+    <link rel="stylesheet" href="../css/register.css">
+<script src="offline-test.js"></script>
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>📝 Create Account</h2>
+
+    <p class="subtitle">
+        Register to continue<br>
+        <b>Sagun Management System</b>
+    </p>
+
+    <div class="input">
+        <span class="icon">👤</span>
+        <input id="name" type="text" placeholder="Full Name">
+    </div>
+
+    <div class="input">
+        <span class="icon">📍</span>
+        <input id="state" type="text" placeholder="State">
+    </div>
+
+    <div class="input">
+        <span class="icon">📱</span>
+        <input id="mobile" type="text" placeholder="Mobile Number">
+    </div>
+
+    <div class="input">
+        <span class="icon">📧</span>
+        <input id="email" type="email" placeholder="Email Address">
+    </div>
+
+    <div class="input">
+        <span class="icon">🔒</span>
+        <input id="password" type="password" placeholder="Password">
+        <span class="eye" id="eye1">👁️</span>
+    </div>
+
+    <div class="input">
+        <span class="icon">🔒</span>
+        <input id="confirmPassword" type="password" placeholder="Confirm Password">
+        <span class="eye" id="eye2">👁️</span>
+    </div>
+
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAADsJ5QnV0fxq-nS0"></div>
+
+    <button id="registerBtn" type="button">
+        📝 Register
+    </button>
+
+    <div class="or-divider"><span>या</span></div>
+
+    <button id="googleBtn" class="google-btn" type="button">
+        <span class="google-icon">G</span> Sign in with Google
+    </button>
+
+    <div class="login">
+        Already have an account?<br>
+        <a href="login.html">Login</a>
+    </div>
+
+</div>
+
+
+
+    <script src="../js/register.js" defer></script>
+</body>
+</html>

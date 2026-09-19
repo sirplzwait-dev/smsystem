@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ENGAGEMENT CEREMONY | Sagun Management System</title>
+<link rel="stylesheet" href="../css/engagement-entry.css">
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<script>/* Query -> active event bridge */
+(function(){try{const q=new URLSearchParams(location.search);const id=q.get("event_id")||q.get("eventId");if(id){localStorage.setItem("currentEventId",String(id));try{localStorage.setItem("sgunmsActiveEvent",JSON.stringify({id:String(id)}));}catch(e){}}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+<main class="page">
+
+  <img class="flower left" src="../assets/floral-left.png" alt="">
+  <img class="flower right" src="../assets/floral-right.png" alt="">
+  <img class="ring-corner left-corner" src="../assets/engagement-ring-corner-left.png" alt="">
+  <img class="ring-corner right-corner" src="../assets/engagement-ring-corner-right.png" alt="">
+
+  <header class="top">
+    <div class="ganesh">॥ SHRI GANESHAYA NAMAH ॥</div>
+    <img class="ganesh-photo" src="../assets/ganesh-small.png" alt="Lord Ganesha">
+<h1><span class="love-mark">💖</span> ENGAGEMENT CEREMONY <span class="love-mark">💖</span></h1>
+    <div class="rule"><i></i><b>♥</b><i></i></div>
+    <p>A union of two hearts • A bond of two families • The beginning of a beautiful new journey</p>
+  </header>
+
+  <section class="main">
+<div class="info">
+      <div class="names animated-couple-names">
+        <div class="love-line">💕</div>
+        <div id="groomName">GROOM'S NAME</div>
+        <span class="between-heart" aria-label="love">♥</span>
+        <div id="brideName">BRIDE'S NAME</div>
+      </div>
+
+      <div class="diamond">💍</div>
+
+      <div class="boxes">
+        <div class="box date-card">
+          <small>💗 ENGAGEMENT DATE 💗</small>
+          <strong id="eventDate"><span class="calendar-icon" aria-hidden="true">▣</span><span class="date-value">__/__/____</span></strong>
+        </div>
+        <div class="box host-card">
+          <small>💞 WELCOME HOST 💞</small>
+          <strong id="welcomeName">____________</strong>
+        </div>
+      </div>
+
+      <p class="invite">💗 You are cordially invited 💗<br>
+      Join us and be a part of this beautiful celebration.</p>
+
+      <button class="entry" onclick="openEntry()">🎁 &nbsp; MAKE SAGUN ENTRY</button>
+      <div class="note">Click to record Cash or Gift</div>
+    </div>
+  </section>
+</main>
+
+<footer class="love-footer-ticker" aria-label="Engagement wishes">
+  <div class="love-ticker-track">
+    <div class="love-ticker-content">
+      <span>💍 Two hearts, one beautiful beginning… Happy Engagement!</span><b>♥</b>
+      <span>❤️ A new journey begins with love, trust, and togetherness.</span><b>♥</b>
+      <span>✨ Two hearts meet, two families unite, and a beautiful story begins.</span><b>♥</b>
+      <span>💕 One ring, one promise, a lifetime of togetherness.</span><b>♥</b>
+      <span>🌸 May this beautiful beginning be filled with love and endless happiness.</span><b>♥</b>
+      <span>💫 A promise today, a lifetime together tomorrow.</span><b>♥</b>
+      <span>💍 Engaged to be forever!</span><b>♥</b>
+      <span>❤️ Together is a beautiful place to be.</span><b>♥</b>
+      <span>🌹 May your engagement be the beginning of a lifetime filled with love and joy.</span><b>♥</b>
+      <span>✨ From this moment, a beautiful new chapter begins.</span><b>♥</b>
+      <span>🥰 Two souls, one heart, one beautiful journey.</span><b>♥</b>
+      <span>💕 Love brought you together, and forever awaits you.</span><b>♥</b>
+      <span>💍 Celebrating love, commitment, and a beautiful future together.</span><b>♥</b>
+      <span>🌸 Wishing you both a lifetime of love, laughter, and happiness.</span><b>♥</b>
+      <span>❤️ Here’s to the beginning of forever.</span><b>♥</b>
+      <span class="website-promo">🌐 Visit www.sgunms.in</span><b>♥</b>
+    </div>
+    <div class="love-ticker-content" aria-hidden="true">
+      <span>💍 Two hearts, one beautiful beginning… Happy Engagement!</span><b>♥</b>
+      <span>❤️ A new journey begins with love, trust, and togetherness.</span><b>♥</b>
+      <span>✨ Two hearts meet, two families unite, and a beautiful story begins.</span><b>♥</b>
+      <span>💕 One ring, one promise, a lifetime of togetherness.</span><b>♥</b>
+      <span>🌸 May this beautiful beginning be filled with love and endless happiness.</span><b>♥</b>
+      <span>💫 A promise today, a lifetime together tomorrow.</span><b>♥</b>
+      <span>💍 Engaged to be forever!</span><b>♥</b>
+      <span>❤️ Together is a beautiful place to be.</span><b>♥</b>
+      <span>🌹 May your engagement be the beginning of a lifetime filled with love and joy.</span><b>♥</b>
+      <span>✨ From this moment, a beautiful new chapter begins.</span><b>♥</b>
+      <span>🥰 Two souls, one heart, one beautiful journey.</span><b>♥</b>
+      <span>💕 Love brought you together, and forever awaits you.</span><b>♥</b>
+      <span>💍 Celebrating love, commitment, and a beautiful future together.</span><b>♥</b>
+      <span>🌸 Wishing you both a lifetime of love, laughter, and happiness.</span><b>♥</b>
+      <span>❤️ Here’s to the beginning of forever.</span><b>♥</b>
+      <span class="website-promo">🌐 Visit www.sgunms.in</span><b>♥</b>
+    </div>
+  </div>
+</footer>
+
+<div id="modal" class="modal">
+  <div class="dialog">
+    <button class="close" onclick="closeEntry()">×</button>
+    <h2>SAGUN ENTRY</h2>
+
+    <label>NAME</label>
+    <input id="guestName" placeholder="Enter name">
+
+    <label>VILLAGE</label>
+    <input id="village" placeholder="Enter village">
+
+    <label>TYPE</label>
+    <div class="types">
+      <button id="cashBtn" class="type active" onclick="setType('cash')">💵 Cash</button>
+      <button id="giftBtn" class="type" onclick="setType('gift')">🎁 Gift</button>
+    </div>
+
+    <div id="cashBox">
+      <label>AMOUNT</label>
+      <input id="amount" type="number" min="0" placeholder="Enter amount">
+    </div>
+
+    <div id="giftBox" class="hide">
+      <label>GIFT DESCRIPTION</label>
+      <textarea id="gift" placeholder="e.g. Saree, Utensils, Watch, etc."></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button onclick="closeEntry()">CLOSE</button>
+      <button class="save" onclick="saveEntry()">SAVE</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/sagun-store.js"></script>
+<script src="../js/engagement-entry.js"></script>
+  <script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

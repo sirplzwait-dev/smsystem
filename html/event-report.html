@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Event Report | Sagun Management System</title>
+<link rel="stylesheet" href="../css/topbar.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="../js/sagun-store.js"></script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Segoe UI,Arial,sans-serif}
+body{
+  background:linear-gradient(135deg,#8b0000 0%,#b91c2c 34%,#e28a00 70%,#ffd21c 100%) fixed!important;
+  color:#25202a;
+}
+.page{width:min(1380px,calc(100% - 28px));margin:18px auto 35px}
+.report-nav{
+  min-height:70px;background:#fff;border:1px solid #eadfe2;border-radius:20px;
+  display:flex;align-items:center;justify-content:space-between;padding:12px 18px;
+  box-shadow:0 10px 28px rgba(67,10,25,.12);margin-bottom:14px
+}
+.report-brand{font-size:22px;font-weight:900;color:#8b1231;letter-spacing:.3px}
+.report-nav-actions{display:flex;gap:9px}
+.report-nav-actions button,.actions button{
+  border:1px solid #eadfe2;background:#fff;color:#77152d;border-radius:13px;
+  padding:11px 18px;font-weight:800;font-size:14px;cursor:pointer;
+  transition:.18s ease
+}
+.report-nav-actions button:hover,.actions button:hover{transform:translateY(-1px)}
+.top{
+  background:linear-gradient(110deg,#8b002d,#a90035 62%,#9b1435);
+  color:#fff;border-radius:22px;padding:18px 22px;display:flex;
+  align-items:center;justify-content:space-between;gap:18px;box-shadow:0 12px 28px rgba(70,0,25,.22);
+  margin-bottom:18px
+}
+.title{display:flex;align-items:center;gap:15px;min-width:0}
+.icon{
+  width:62px;height:62px;border-radius:18px;background:rgba(255,255,255,.13);
+  display:grid;place-items:center;font-size:30px;flex:none
+}
+.title h1{margin:0;font-size:29px;line-height:1.12;color:#fff}
+.title p{margin:5px 0 0;color:#ffe8ee;font-size:14px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.actions .btn{background:#fff;color:#7b122e}
+.actions .secondary{background:#fff7d8;color:#7b122e}
+.actions .danger{background:#e62d3e;color:#fff;border-color:#e62d3e}
+.details{
+  background:#fff;border-radius:22px;padding:22px;
+  box-shadow:0 12px 32px rgba(67,10,25,.12)
+}
+.section-title{font-size:20px;font-weight:900;color:#7b122e;margin:0 0 14px}
+.info{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px
+}
+.info .box{
+  min-height:72px;border:1px solid #eadfe2;border-radius:16px;
+  padding:12px 15px;background:linear-gradient(180deg,#fff,#fffdfb)
+}
+.info .box small{display:block;color:#60718a;font-weight:700;font-size:12px;margin-bottom:6px}
+.info .box b{display:block;color:#8b1231;font-size:16px}
+.stats{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:12px
+}
+.stat{
+  min-height:82px;border:1px solid #eee2d6;border-radius:16px;padding:13px 15px;
+  background:#fffdf9;position:relative;overflow:hidden
+}
+.stat:after{
+  content:"";position:absolute;right:-15px;top:-20px;width:55px;height:55px;
+  border-radius:50%;background:#f7edd1
+}
+.stat span{display:block;color:#60718a;font-size:12px;font-weight:700}
+.stat strong{display:block;color:#8b1231;font-size:22px;margin-top:5px}
+.delete-note{
+  margin-top:15px;padding:11px 14px;border:1px solid #f1d79e;border-radius:14px;
+  background:#fff8e6;color:#79551c;font-size:13px
+}
+.bar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin:22px 0 10px
+}
+.bar h2{margin:0;color:#7b122e;font-size:21px}
+#loadStatus{
+  padding:7px 12px;border-radius:999px;background:#edf2f7;color:#60718a;font-weight:800;font-size:12px
+}
+.table-wrap{overflow:auto;border:1px solid #eadfe2;border-radius:16px}
+.entries{width:100%;border-collapse:collapse;min-width:760px}
+.entries th{
+  background:#faf3e5;color:#7b122e;font-size:12px;text-align:left;
+  padding:12px 13px;white-space:nowrap
+}
+.entries td{padding:11px 13px;border-top:1px solid #eee7e2;font-size:13px}
+.entries tr:hover td{background:#fffaf5}
+.empty{text-align:center!important;color:#777;padding:25px!important}
+.modal{display:none;position:fixed;inset:0;background:rgba(30,10,18,.55);z-index:9999;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-card{width:min(440px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+.modal-card h3{margin:0 0 9px;color:#8b1231}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.modal-actions button{padding:10px 16px;border-radius:11px;border:1px solid #ddd;background:#fff;font-weight:800}
+.modal-actions .confirm{background:#8b1231;color:#fff;border-color:#8b1231}
+@media(max-width:1050px){
+  .top{align-items:flex-start;flex-direction:column}
+  .actions{justify-content:flex-start}
+  .info{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:650px){
+  .page{width:min(100% - 14px,1380px);margin:8px auto 20px}
+  .report-nav{border-radius:15px;padding:10px 12px;min-height:58px}
+  .report-brand{font-size:17px}
+  .report-nav-actions button{padding:8px 10px;font-size:12px}
+  .top{padding:14px;border-radius:17px}
+  .icon{width:50px;height:50px;font-size:24px;border-radius:14px}
+  .title h1{font-size:23px}
+  .details{padding:14px;border-radius:17px}
+  .info{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat strong{font-size:19px}
+  .actions{width:100%}
+  .actions button{flex:1;min-width:110px;padding:9px 10px;font-size:12px}
+}
+
+/* Delete confirmation modal */
+.modal-box{
+  width:min(500px,calc(100vw - 30px));
+  background:#fff;
+  border-radius:22px;
+  padding:24px;
+  box-shadow:0 24px 70px rgba(0,0,0,.35);
+  border:1px solid #eadfe2;
+}
+.modal-box .warn{
+  display:inline-flex;
+  align-items:center;
+  padding:6px 11px;
+  border-radius:999px;
+  background:#fff2d5;
+  color:#9a5b00;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+.modal-box h2{
+  margin:0 0 9px;
+  color:#7b122e;
+  font-size:23px;
+}
+.modal-box #deleteText{
+  margin:0;
+  color:#5f5960;
+  font-size:14px;
+  line-height:1.6;
+}
+.modal-box .backup{
+  display:flex;
+  gap:9px;
+  margin-top:18px;
+}
+.modal-box .backup button,
+.modal-box .confirm-row button{
+  border:1px solid #e5dadd;
+  border-radius:11px;
+  padding:10px 15px;
+  background:#fff;
+  color:#7b122e;
+  font-weight:800;
+  cursor:pointer;
+}
+.modal-box .backup button:hover,
+.modal-box .confirm-row button:hover{
+  background:#fff7f9;
+}
+.modal-box .confirm-row{
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+  margin-top:16px;
+}
+.modal-box .confirm-row .cancel{
+  background:#f3eef0;
+  color:#604e55;
+}
+.modal-box .confirm-row .delete{
+  background:#8b1231;
+  color:#fff;
+  border-color:#8b1231;
+}
+.modal-box .confirm-row .delete:hover{
+  background:#721027;
+}
+@media(max-width:520px){
+  .modal-box{padding:18px;border-radius:18px}
+  .modal-box .backup{flex-direction:column}
+  .modal-box .backup button,
+  .modal-box .confirm-row button{width:100%}
+  .modal-box .confirm-row{flex-direction:column}
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="report-nav"><div class="report-brand">🎉 SAGUN SYSTEM</div><div class="report-nav-actions"><button type="button" onclick="location.href='home.html'">🏠 Home</button><button type="button" onclick="history.length>1?history.back():location.href='home.html'">↩ Back</button><button type="button" id="reportLogout">🚪 Logout</button></div></div>
+
+  <div class="top">
+    <div class="title"><div class="icon" id="eventIcon">Event</div><div><h1 id="eventTitle">Event Details</h1><p id="eventSubtitle">Loading...</p></div></div>
+    <div class="actions">
+      <button class="btn" id="continueBtn">Continue Entry</button>
+      <button class="btn secondary" id="pdfBtn">PDF Report</button>
+      <button class="btn secondary" id="excelBtn">Excel</button>
+      <button class="btn danger" id="deleteBtn">Delete Event</button>
+    </div>
+  </div>
+  <section class="details">
+    <div class="section-title">Event Information</div>
+    <div class="info" id="eventInfo"></div>
+    <div class="stats">
+      <div class="stat"><span>Total Entries</span><strong id="totalEntries">0</strong></div>
+      <div class="stat"><span>Cash</span><strong id="cashTotal">₹0</strong></div>
+      <div class="stat"><span>UPI</span><strong id="upiTotal">₹0</strong></div>
+      <div class="stat"><span>Cash + UPI</span><strong id="moneyTotal">₹0</strong></div>
+      <div class="stat"><span>Gifts</span><strong id="giftTotal">0</strong></div>
+    </div>
+<div class="bar"><h2>इस Event की सभी Entries</h2><span id="loadStatus">Loading...</span></div>
+    <div class="table-wrap"><table class="entries"><thead><tr><th>#</th><th>नाम</th><th>गाँव / शहर</th><th>Payment</th><th>Amount</th><th>Gift</th><th>Date / Time</th></tr></thead><tbody id="entryBody"><tr><td colspan="7" class="empty">Entries loading...</td></tr></tbody></table></div>
+  </section>
+</div>
+<div class="modal" id="deleteModal">
+  <div class="modal-box">
+    <div class="warn">Warning</div><h2>Event Delete करें?</h2>
+    <p id="deleteText">इस Event को delete करने पर इससे जुड़ी सभी entries, collection और event details हट जाएँगी। यह action वापस नहीं किया जा सकेगा।</p>
+    <div class="backup"><button id="modalPdf">PDF Backup</button><button id="modalExcel">Excel Backup</button></div>
+    <div class="confirm-row"><button class="cancel" id="cancelDelete">Cancel</button><button class="delete" id="confirmDelete">हाँ, Delete करें</button></div>
+  </div>
+</div>
+<script>
+const SB_URL='https://rdlliurzgwwfjscgwssa.supabase.co',SB_KEY='sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc';
+const sb=window.supabase.createClient(SB_URL,SB_KEY);
+let eventData=null,entries=[];
+const icons={tilak:'🪔',barat:'🥁',reception:'🎉',birthday:'🎂',anniversary:'💐',engagement:'💍',mundan:'👶',griha_pravesh:'🏠','griha pravesh':'🏠',marriage:'💍',other:'🎉'};
+const pages={tilak:'tilak-entry.html',barat:'barat-entry.html',reception:'reception-entry.html',birthday:'birthday-entry.html',anniversary:'anniversary-entry.html',engagement:'engagement-entry.html',mundan:'generic-event-entry.html?type=Mundan',griha_pravesh:'griha-pravesh-entry.html','griha pravesh':'griha-pravesh-entry.html',marriage:'barat-entry.html',other:'generic-event-entry.html'};
+function read(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}
+function typeOf(e){const v=[e?.sub_event_type,e?.subEventType,e?.event_type,e?.eventType,e?.type,e?.event_group,e?.event_name,e?.eventName,e?.name,e?.title,e?.wedding_type].filter(Boolean).join(' ').toLowerCase();if(v.includes('tilak')||v.includes('तिलक'))return'tilak';if(v.includes('barat')||v.includes('baraat')||v.includes('बरात'))return'barat';if(v.includes('reception')||v.includes('रिसेप्शन'))return'reception';if(v.includes('birthday')||v.includes('जन्मदिन'))return'birthday';if(v.includes('anniversary')||v.includes('वर्षगांठ'))return'anniversary';if(v.includes('engagement')||v.includes('सगाई'))return'engagement';if(v.includes('mundan')||v.includes('मुंडन'))return'mundan';if(v.includes('griha')||v.includes('pravesh')||v.includes('गृह प्रवेश'))return'griha_pravesh';if(v.includes('marriage')||v.includes('शादी')||v.includes('विवाह'))return'marriage';return'other'}
+async function allEvents(){try{if(window.SagunStore){await window.SagunStore.migrate();return await window.SagunStore.getEvents();}}catch(_){}return []}
+async function getActive(){
+  const q=new URLSearchParams(location.search);
+  const id=String(q.get('event_id')||q.get('eventId')||localStorage.getItem('currentEventId')||'').trim();
+  let e=null;
+  try{const list=await allEvents();if(id)e=list.find(x=>String(x?.id||x?.eventId||x?.event_id||x?.key||'').trim()===id)||null;}catch(_){}
+  if(!e && id){
+    const cached=read('sagunActiveEventData')||read('sagunActiveEvent');
+    if(cached && String(cached.id||cached.eventId||cached.event_id||cached.key||'').trim()===id)e=cached;
+  }
+  // Some event types keep their detailed setup separately. Merge it so the
+  // report always shows the names saved during Event Setup.
+  if(e){
+    const setup=read('eventSetupData')||read('offlineSetupData')||read('sagunSetup');
+    if(setup){
+      const sid=String(setup.event_id||setup.eventId||setup.id||'').trim();
+      if(!sid || sid===id){
+        e={...setup,...e};
+        if(!e.groom_name)e.groom_name=setup.groom_name||setup.groomName||setup.dulha_name||setup.dulhaName||setup.person1||'';
+        if(!e.bride_name)e.bride_name=setup.bride_name||setup.brideName||setup.dulhan_name||setup.dulhanName||setup.person2||'';
+        if(!e.person1)e.person1=setup.person1||'';
+        if(!e.person2)e.person2=setup.person2||'';
+      }
+    }
+  }
+  if(!e && id){
+    try{const {data:{user}}=await sb.auth.getUser();if(user){const r=await sb.from('events').select('*').eq('user_id',user.id).eq('id',id).maybeSingle();if(!r.error&&r.data)e=r.data}}catch(_){}
+  }
+  return e||null;
+}
+function norm(v){return String(v||'').trim().toLowerCase()}
+function eventPerson(e){return [e?.person1,e?.mainPerson,e?.personName,e?.name,e?.groom_name,e?.bride_name].filter(Boolean).map(String)}
+function eventDate(e){return String(e?.event_date||e?.eventDate||e?.date||e?.startDate||'')}
+function normDate(v){const s=String(v||'').trim();if(!s)return '';let m=s.match(/^(\d{2})[-\/.](\d{2})[-\/.](\d{4})$/);if(m)return `${m[3]}-${m[2]}-${m[1]}`;return s.slice(0,10)}
+function entryMatches(x,e){if(!x)return false;const eid=String(x.event_id||x.eventId||x.eventID||'').trim();const id=String(e?.id||e?.eventId||e?.event_id||'').trim();if(eid&&id&&eid===id)return true;const et=typeOf(x);const ty=typeOf(e);if(et!==ty && !(ty==='marriage'&&(et==='tilak'||et==='barat'||et==='reception')))return false;const ed=normDate(eventDate(e)),xd=normDate(x.event_date||x.eventDate||x.date);if(ed&&xd&&ed!==xd)return false;const ep=eventPerson(e).map(norm);const xp=[x.event_person,x.eventPerson,x.event_person_2,x.person1,x.person2,x.groom_name,x.bride_name,x.birthday_name,x.personName].filter(Boolean).map(norm);if(ep.length&&xp.length&&!ep.some(a=>xp.some(b=>a===b||a.includes(b)||b.includes(a))))return false;return true}
+async function localEntries(e){
+  let out=[];
+  try{if(window.SagunStore)out=await window.SagunStore.getEntries()}catch(_){}
+  const id=String(e?.id||e?.eventId||e?.event_id||'').trim();
+  if(!Array.isArray(out)||!out.length)return [];
+  const exact=out.filter(x=>String(x?.event_id||x?.eventId||x?.eventID||'').trim()===id);
+  if(exact.length)return exact;
+  // Compatibility with older locally saved entries that did not store event_id.
+  return out.filter(x=>entryMatches(x,e));
+}
+async function cloudEntries(e){try{const {data:{user}}=await sb.auth.getUser();if(!user)return[];const id=String(e?.id||e?.eventId||e?.event_id||'');if(!id)return[];const {data,error}=await sb.from('guests').select('*').eq('user_id',user.id).eq('event_id',id).order('created_at',{ascending:false});if(error||!Array.isArray(data))return[];return data}catch(_){return[]}}
+function mergeEntries(local,cloud){const all=local.concat(cloud),seen=new Set();return all.filter(x=>{const k=String(x.id||x.timestamp||x.created_at||x.createdAt||'')+'|'+norm(x.name)+'|'+String(x.amount||0)+'|'+norm(x.village);if(seen.has(k))return false;seen.add(k);return true}).sort((a,b)=>new Date(b.created_at||b.createdAt||b.timestamp||0)-new Date(a.created_at||a.createdAt||a.timestamp||0))}
+function money(n){return '₹'+Number(n||0).toLocaleString('en-IN')}
+function render(){const e=eventData,t=typeOf(e);document.getElementById('eventIcon').textContent=icons[t]||'Event';const title=({tilak:'तिलक समारोह / Tilak',barat:'बरात समारोह / Barat',reception:'रिसेप्शन / Reception',birthday:'जन्मदिन समारोह / Birthday',anniversary:'सालगिरह / Anniversary',engagement:'सगाई समारोह / Engagement',griha_pravesh:'गृह प्रवेश समारोह / Griha Pravesh',mundan:'मुंडन समारोह / Mundan',naming:'नामकरण समारोह / Naming'}[t]||e.event_name||e.eventName||'समारोह');document.getElementById('eventTitle').textContent=title;document.getElementById('eventSubtitle').textContent='Event की पूरी जानकारी और collection report';let details=[];const groom=e.groom_name||e.groomName||e.dulha_name||e.dulhaName||((t==='tilak'||t==='reception')?e.person1:'')||'';const bride=e.bride_name||e.brideName||e.dulhan_name||e.dulhanName||((t==='barat')?e.person1:'')||e.person2||'';const cashInfo=entries.filter(x=>norm(x.payment_mode||x.paymentMode)==='cash').reduce((s,x)=>s+Number(x.amount||0),0);const upiInfo=entries.filter(x=>norm(x.payment_mode||x.paymentMode)==='upi').reduce((s,x)=>s+Number(x.amount||0),0);if(t==='tilak'||t==='barat'||t==='reception'||t==='marriage'){details=[['कार्यक्रम',t==='tilak'?'तिलक':t==='barat'?'बरात':t==='reception'?'Reception':'Marriage'],['दिनांक',eventDate(e)||'—'],['दूल्हा',groom||'—'],['दुल्हन',bride||'—'],['Cash Collection',money(cashInfo)],['UPI Collection',money(upiInfo)],['Cash + UPI',money(cashInfo+upiInfo)],['स्वागतकर्ता',e.welcome_name||'—']]}else if(t==='birthday'){details=[['समारोह','Birthday'],['नाम',e.birthday_name||e.name||e.person1||'—'],['जन्मदिन',eventDate(e)||'—'],['Cash Collection',money(cashInfo)],['UPI Collection',money(upiInfo)],['स्वागतकर्ता',e.welcome_name||'—']]}else if(t==='anniversary'){details=[['समारोह','Anniversary'],['पति',e.husband_name||e.groom_name||e.person1||'—'],['पत्नी',e.wife_name||e.bride_name||e.person2||'—'],['तारीख',eventDate(e)||'—'],['Cash Collection',money(cashInfo)],['UPI Collection',money(upiInfo)],['स्वागतकर्ता',e.welcome_name||'—']]}else{details=[['समारोह',title],['मुख्य नाम',e.name||e.person1||'—'],['दिनांक',eventDate(e)||'—'],['Cash Collection',money(cash)],['UPI Collection',money(upi)],['स्वागतकर्ता',e.welcome_name||'—']]};document.getElementById('eventInfo').innerHTML=details.map(x=>`<div class="box"><small>${x[0]}</small><b>${esc(x[1])}</b></div>`).join('');document.getElementById('continueBtn').textContent='Continue Entry';document.getElementById('entryBody').innerHTML=entries.length?entries.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name||'—')}</td><td>${esc(x.village||x.city||'—')}</td><td>${esc(x.payment_mode||x.paymentMode||x.type||'—')}</td><td>${money(x.amount)}</td><td>${esc(x.gift_description||x.giftDescription||'')}</td><td>${esc(new Date(x.created_at||x.createdAt||x.timestamp||Date.now()).toLocaleString('en-IN'))}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">इस Event में अभी कोई Entry नहीं है।</td></tr>';const cash=entries.filter(x=>norm(x.payment_mode||x.paymentMode)==='cash').reduce((s,x)=>s+Number(x.amount||0),0);const upi=entries.filter(x=>norm(x.payment_mode||x.paymentMode)==='upi').reduce((s,x)=>s+Number(x.amount||0),0);const gifts=entries.filter(x=>norm(x.payment_mode||x.paymentMode)==='gift'||norm(x.gift_type||x.giftType)==='gift').length;document.getElementById('totalEntries').textContent=entries.length;document.getElementById('cashTotal').textContent=money(cash);document.getElementById('upiTotal').textContent=money(upi);document.getElementById('moneyTotal').textContent=money(cash+upi);document.getElementById('giftTotal').textContent=gifts;document.getElementById('loadStatus').textContent=entries.length+' entries'}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function reportRows(){return entries.map((x,i)=>[i+1,x.name||'',x.village||x.city||'',x.payment_mode||x.paymentMode||x.type||'',Number(x.amount||0),x.gift_description||x.giftDescription||'',new Date(x.created_at||x.createdAt||x.timestamp||Date.now()).toLocaleString('en-IN')])}
+function eventReportMeta(){const e=eventData||{};const t=typeOf(e);return {name:e.event_name||e.eventName||e.name||'Event',type:t,date:eventDate(e)||'',groom:e.groom_name||'',bride:e.bride_name||'',person1:e.person1||'',person2:e.person2||''}}
+function calcTotals(){let cash=0,upi=0,gifts=0;entries.forEach(x=>{const mode=norm(x.payment_mode||x.paymentMode||x.type);const amt=Number(x.amount||0)||0;if(mode==='cash')cash+=amt;else if(mode==='upi')upi+=amt;if(mode==='gift'||norm(x.gift_type||x.giftType)==='gift')gifts++});return {cash,upi,total:cash+upi,gifts}}
+function exportExcel(){if(!window.XLSX){alert('Excel library load नहीं हुई।');return}const m=eventReportMeta(),t=calcTotals();const rows=[['SAGUN MANAGEMENT SYSTEM'],['EVENT REPORT'],[],['Event Name',m.name],['Event Type',m.type],['Event Date',m.date],['Groom',m.groom],['Bride',m.bride],[],['SUMMARY'],['Total Entries',entries.length],['Cash',t.cash],['UPI',t.upi],['Cash + UPI',t.total],['Gifts',t.gifts],[],['ENTRIES'],['#','Name','Village / City','Payment','Amount','Gift / Description','Date / Time'],...reportRows()];const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:7},{wch:26},{wch:24},{wch:13},{wch:14},{wch:28},{wch:23}];ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:6}},{s:{r:1,c:0},e:{r:1,c:6}}];['A1','A2'].forEach(c=>{if(ws[c])ws[c].s={font:{bold:true,sz:c==='A1'?16:13},alignment:{horizontal:'center'}}});for(let r=18;r<=18+entries.length;r++){if(ws['E'+r])ws['E'+r].z='₹#,##0'}const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Event Report');XLSX.writeFile(wb,'Sagun_Event_Report_'+m.name.replace(/[^a-zA-Z0-9_-]+/g,'_').slice(0,30)+'.xlsx')}
+function pdfMoney(n){return 'Rs. '+Number(n||0).toLocaleString('en-IN')}
+function exportPdf(){if(!window.jspdf?.jsPDF){alert('PDF library load नहीं हुई।');return}const m=eventReportMeta(),t=calcTotals();const doc=new jspdf.jsPDF({unit:'mm',format:'a4'});const W=210;let y=18;doc.setFillColor(105,0,27);doc.rect(0,0,W,34,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(19);doc.text('SAGUN MANAGEMENT SYSTEM',14,13);doc.setFontSize(13);doc.text('EVENT REPORT',14,22);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('Event-wise collection and guest entries',14,28);y=43;doc.setTextColor(45,50,60);doc.setFont('helvetica','bold');doc.setFontSize(14);doc.text(String(m.name).slice(0,65),14,y);y+=7;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text('Type: '+String(m.type).replace('_',' ')+'   |   Date: '+(m.date||'-'),14,y);y+=10;const info=[['Total Entries',String(entries.length)],['Cash',pdfMoney(t.cash)],['UPI',pdfMoney(t.upi)],['Cash + UPI',pdfMoney(t.total)],['Gifts',String(t.gifts)]];let x=14;info.forEach((it,i)=>{doc.setFillColor(247,243,234);doc.roundedRect(x,y,34,20,3,3,'F');doc.setTextColor(105,11,38);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text(it[0],x+3,y+7);doc.setFontSize(10);doc.text(it[1],x+3,y+15);x+=37});y+=29;doc.setTextColor(105,11,38);doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('EVENT INFORMATION',14,y);y+=7;doc.setTextColor(55,61,72);doc.setFont('helvetica','normal');doc.setFontSize(9);const details=[['Event Type',m.type],['Event Date',m.date],['Groom',m.groom||'-'],['Bride',m.bride||'-']];details.forEach((d,i)=>{const col=i%2,row=Math.floor(i/2),xx=14+col*92,yy=y+row*9;doc.text(d[0]+': '+String(d[1]).slice(0,48),xx,yy)});y+=25;doc.setTextColor(105,11,38);doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('GUEST ENTRIES',14,y);y+=7;function header(){doc.setFillColor(105,0,27);doc.rect(14,y-5,182,7,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(7);doc.text('#',16,y);doc.text('Name',23,y);doc.text('Village / City',68,y);doc.text('Payment',111,y);doc.text('Amount',139,y);doc.text('Gift',166,y);y+=7;doc.setTextColor(45,50,60);doc.setFont('helvetica','normal');doc.setFontSize(7)}header();reportRows().forEach(r=>{if(y>280){doc.addPage();y=18;doc.setFillColor(105,0,27);doc.rect(0,0,W,10,'F');doc.setTextColor(255,255,255);doc.setFontSize(8);doc.text('SAGUN MANAGEMENT SYSTEM — EVENT REPORT',14,7);y=22;header()}const vals=[String(r[0]),String(r[1]).slice(0,25),String(r[2]).slice(0,24),String(r[3]).slice(0,10),pdfMoney(r[4]),String(r[5]).slice(0,15)];doc.text(vals[0],16,y);doc.text(vals[1],23,y);doc.text(vals[2],68,y);doc.text(vals[3],111,y);doc.text(vals[4],139,y);doc.text(vals[5],166,y);doc.setDrawColor(225,228,233);doc.line(14,y+2,196,y+2);y+=6});doc.setTextColor(120,126,136);doc.setFontSize(7);doc.text('Generated by Sagun Management System',14,291);doc.text('Page '+doc.internal.getNumberOfPages(),178,291);doc.save('Sagun_Event_Report_'+m.name.replace(/[^a-zA-Z0-9_-]+/g,'_').slice(0,30)+'.pdf')}
+async function doDelete(){const id=String(eventData.id||eventData.eventId||eventData.event_id||'');try{if(window.SagunStore)await window.SagunStore.deleteEvent(id)}catch(_){}try{const {data:{user}}=await sb.auth.getUser();if(user&&id){await sb.from('guests').delete().eq('user_id',user.id).eq('event_id',id);await sb.from('events').delete().eq('user_id',user.id).eq('id',id)}}catch(e){console.warn('Delete cloud:',e)}localStorage.removeItem('currentEventId');localStorage.removeItem('sgunmsActiveEvent');location.replace('home.html')}
+async function load(){eventData=await getActive();if(!eventData){location.replace('home.html');return}const id=String(eventData.id||eventData.eventId||eventData.event_id||'');localStorage.setItem('currentEventId',id);localStorage.setItem('sgunmsActiveEvent',JSON.stringify({id,type:typeOf(eventData)}));const local=await localEntries(eventData);const cloud=await cloudEntries(eventData);entries=mergeEntries(local,cloud);render()}
+function setupForEntry(e){const t=typeOf(e);const d={...e,event_group:e.event_group||t,event_type:t,event_date:eventDate(e),welcome_name:e.welcome_name||''};if(t==='tilak'||t==='reception'){d.groom_name=e.groom_name||e.person1||'';d.bride_name=e.bride_name||e.person2||''}else if(t==='barat'){d.bride_name=e.bride_name||e.person1||'';d.groom_name=e.groom_name||e.person2||''}else if(t==='birthday'){d.name=e.name||e.birthday_name||e.person1||'';d.birthday_name=d.name;d.groom_name=d.name}else if(t==='anniversary'){d.husband_name=e.husband_name||e.groom_name||e.person1||'';d.wife_name=e.wife_name||e.bride_name||e.person2||'';d.groom_name=d.husband_name;d.bride_name=d.wife_name}else{d.name=e.name||e.person1||'';d.groom_name=d.name}return d}
+document.getElementById('continueBtn').onclick=()=>{const id=String(eventData.id||eventData.eventId||eventData.event_id||'');const setup=setupForEntry(eventData);localStorage.setItem('eventSetupData',JSON.stringify(setup));localStorage.setItem('offlineSetupData',JSON.stringify(setup));localStorage.setItem('sagunSetup',JSON.stringify(setup));localStorage.setItem('currentEventId',id);localStorage.setItem('currentEventType',typeOf(eventData));localStorage.setItem('currentMarriageEvent',typeOf(eventData));location.href=(pages[typeOf(eventData)]||'generic-event-entry.html')+'?event_id='+encodeURIComponent(id)};document.getElementById('pdfBtn').onclick=exportPdf;document.getElementById('excelBtn').onclick=exportExcel;document.getElementById('deleteBtn').onclick=()=>document.getElementById('deleteModal').classList.add('show');document.getElementById('modalPdf').onclick=exportPdf;document.getElementById('modalExcel').onclick=exportExcel;document.getElementById('cancelDelete').onclick=()=>document.getElementById('deleteModal').classList.remove('show');document.getElementById('confirmDelete').onclick=doDelete;window.addEventListener('DOMContentLoaded',load);
+
+const reportLogout=document.getElementById('reportLogout');if(reportLogout)reportLogout.onclick=async()=>{reportLogout.disabled=true;try{await sb.auth.signOut()}catch(e){}location.href='login.html'};
+</script>
+</body></html>

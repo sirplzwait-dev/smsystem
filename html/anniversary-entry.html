@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Anniversary | Sagun</title>
+<link rel="stylesheet" href="../css/anniversary-entry.css">
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<script>/* Query -> active event bridge */
+(function(){try{const q=new URLSearchParams(location.search);const id=q.get("event_id")||q.get("eventId");if(id){localStorage.setItem("currentEventId",String(id));try{localStorage.setItem("sgunmsActiveEvent",JSON.stringify({id:String(id)}));}catch(e){}}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+<main class="anniversary-page">
+  <div class="page-glow"></div>
+  <div class="top-ornament" aria-hidden="true">♥</div>
+
+  <section class="content">
+    <div class="happy-title"><span>Happy</span><strong>Anniversary</strong></div>
+
+    <div class="quote">A successful marriage is a building of two people<br>who love, respect and never give up on each other.</div>
+
+    <div class="couple-row">
+      <div class="side-card husband-card">
+        <span class="tiny-heart">♥</span>
+        <div id="husbandName" class="person-name">पति का नाम</div>
+      </div>
+
+      <div class="anniversary-badge">
+        <div class="badge-heart"><span id="anniversaryCount">1st</span></div>
+        <div class="badge-ribbon">Anniversary</div>
+      </div>
+
+      <div class="side-card wife-card">
+        <span class="tiny-heart">♥</span>
+        <div id="wifeName" class="person-name">पत्नी का नाम</div>
+      </div>
+    </div>
+
+    <div class="wish-decoration">♥</div>
+    <h1>हार्दिक शुभकामनाएँ</h1>
+    <p class="wish">आप दोनों का साथ हमेशा ऐसे ही बना रहे...<br>सुख, समृद्धि और प्रेम से भरा रहे आपका जीवन...</p>
+
+    <button class="guest-btn" type="button" onclick="openGuestEntry()">ENTRY GUEST <span>›</span></button>
+
+    <div class="bottom-message">Celebrating Love...<br><small>Today, Tomorrow and Always...</small></div>
+  </section>
+</main>
+
+<div class="modal" id="guestModal" aria-hidden="true">
+  <div class="dialog">
+    <button class="close" type="button" onclick="closeGuestEntry()">×</button>
+    <div class="dialog-title">♥ ENTRY GUEST ♥</div>
+    <div class="dialog-sub">शुभकामना / उपहार प्रविष्टि</div>
+
+    <label for="guestName">नाम *</label>
+    <input id="guestName" type="text" placeholder="अतिथि का नाम लिखें">
+
+    <label for="guestVillage">गाँव / शहर *</label>
+    <input id="guestVillage" type="text" placeholder="गाँव / शहर लिखें">
+
+    <div class="entry-type-label">उपहार / Cash *</div>
+    <div class="entry-types">
+      <button id="cashType" class="type-btn active" type="button" onclick="setEntryType('cash')">Cash</button>
+      <button id="giftType" class="type-btn" type="button" onclick="setEntryType('gift')">Gift</button>
+    </div>
+
+    <div id="cashFields">
+      <label for="cashAmount">राशि ₹</label>
+      <input id="cashAmount" type="number" min="1" placeholder="राशि दर्ज करें">
+    </div>
+    <div id="giftFields" class="hidden">
+      <label for="giftDescription">Gift का विवरण</label>
+      <input id="giftDescription" type="text" placeholder="जैसे साड़ी, बर्तन, घड़ी आदि">
+    </div>
+
+    <button class="save-entry" type="button" onclick="saveGuestEntry()">जमा करें</button>
+    <div id="entryMessage" class="entry-message"></div>
+  </div>
+</div>
+<script src="../js/sagun-store.js"></script>
+<script src="../js/anniversary-entry.js"></script>
+  <script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

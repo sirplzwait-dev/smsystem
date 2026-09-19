@@ -1,0 +1,1748 @@
+
+/* Elegant Royal Typography */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap');
+
+.box.date-card strong,
+.box.host-card strong{
+  font-family:"Playfair Display","Cormorant Garamond",Georgia,serif !important;
+  font-size:30px !important;
+  line-height:1.12 !important;
+  font-weight:700 !important;
+  font-style:italic !important;
+  letter-spacing:.3px !important;
+  color:#741c3b !important;
+}
+
+.box.date-card small,
+.box.host-card small{
+  font-family:"Montserrat",Arial,sans-serif !important;
+  font-size:12px !important;
+  font-weight:600 !important;
+  letter-spacing:1.8px !important;
+  text-transform:uppercase !important;
+  color:#8b6332 !important;
+}
+
+@media(max-width:760px){
+  .box.date-card strong,
+  .box.host-card strong{
+    font-size:22px !important;
+  }
+  .box.date-card small,
+  .box.host-card small{
+    font-size:9px !important;
+    letter-spacing:1.1px !important;
+  }
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Great+Vibes&family=Montserrat:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap");
+500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap");
+*{box-sizing:border-box}
+:root{--maroon:#780d29;--gold:#c99835;--cream:#fff9ed}
+html,body{margin:0;min-height:100%;font-family:"Noto Serif Devanagari","Noto Sans Devanagari","Mangal",serif}
+body{background:var(--cream);color:var(--maroon);overflow-x:hidden}
+.page{position:relative;height:100vh;min-height:680px;max-width:1600px;margin:auto;
+background:var(--cream);overflow:hidden;padding:16px 55px 18px}
+.page::before,.page::after{content:"";position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.30;transition:opacity 1.5s ease;z-index:0;pointer-events:none}
+.page::before{background-image:url("../assets/sagai-pink-background.png")}
+.page::after{background-image:url("../assets/sagai-engagement-background-2.png");opacity:0}
+.page.bg-two::before{opacity:0}
+.page.bg-two::after{opacity:.30}
+.flower{position:absolute;top:0;width:275px;z-index:2;pointer-events:none}
+.flower.left{left:0;transform:none}
+.flower.right{right:0;transform:scaleX(-1)}
+.top{position:relative;z-index:3;text-align:center;padding:0 260px;text-shadow:0 1px 2px rgba(255,250,242,.75)}
+.ganesh{font-weight:800;font-size:15px;margin-top:0}
+.ganesh-photo{display:block;width:42px;height:42px;object-fit:contain;margin:2px auto 3px}
+.om{display:none}
+h1{font-family:"Noto Serif Devanagari","Mangal",serif;font-size:clamp(46px,5vw,72px);line-height:1.05;margin:0;font-weight:900;letter-spacing:.5px;text-shadow:0 2px 1px #8b4b5a22}
+.rule{display:flex;align-items:center;justify-content:center;gap:14px;margin:5px 0 14px}
+.rule i{display:block;width:135px;height:2px;background:linear-gradient(90deg,transparent,var(--gold))}
+.rule i:last-child{background:linear-gradient(90deg,var(--gold),transparent)}
+.rule b{font-size:18px}
+.top p{font-size:17px;font-weight:700;letter-spacing:.4px;margin:0}
+.main{position:relative;z-index:3;display:flex;justify-content:center;align-items:center;padding:22px 80px 4px 95px}
+.info{text-align:center;width:min(980px,100%);margin:auto;background:transparent !important;border:0 !important;border-radius:0 !important;padding:8px 20px !important;box-shadow:none !important}
+.names{font-family:"Noto Serif Devanagari","Mangal",serif;font-size:clamp(44px,4vw,66px);font-weight:900;line-height:1.12;letter-spacing:.3px;text-shadow:0 2px 1px #8b4b5a18}
+.names div{white-space:nowrap}
+.names span{display:block;font-family:Georgia,serif;font-size:30px;color:var(--gold);line-height:1;margin:4px}
+.diamond{color:var(--gold);margin:7px 0;font-size:12px}
+.boxes{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.box{border:0 !important;border-radius:0 !important;padding:8px 18px !important;background:transparent !important;box-shadow:none !important}
+.box small{display:block;font-size:16px;font-weight:700;letter-spacing:.3px;margin-bottom:7px}
+.box strong{display:block;font-size:20px}
+.invite{font-size:16px;font-weight:700;line-height:1.45;margin:8px 0}
+.entry{height:52px;width:min(410px,100%);border:0;border-radius:10px;font-family:"Noto Sans Devanagari","Mangal",sans-serif;background:linear-gradient(#a31439,#720a25);color:white;font-size:20px;font-weight:900;cursor:pointer;box-shadow:0 8px 18px #5b071c44;border-bottom:3px solid var(--gold)}
+.note{font-size:12px;font-weight:600;letter-spacing:.2px;margin-top:4px}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#25000db8;backdrop-filter:blur(5px);z-index:20;padding:20px}
+.modal.show{display:flex}
+.dialog{position:relative;width:min(480px,100%);background:#fffaf0;border:2px solid var(--gold);border-radius:16px;padding:28px;box-shadow:0 25px 70px #0006}
+.dialog h2{text-align:center;margin:0 0 18px}
+.close{position:absolute;right:10px;top:6px;border:0;background:none;font-size:30px;color:var(--maroon);cursor:pointer}
+.dialog label{display:block;font-weight:800;margin:10px 0 6px}
+.dialog input,.dialog textarea{width:100%;border:1px solid #d6b264;border-radius:8px;padding:11px;font:inherit}
+.dialog textarea{min-height:90px}
+.types{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.type{height:44px;border:1px solid #cfa14d;border-radius:8px;background:#fff;font-weight:800}
+.type.active{background:var(--maroon);color:white}
+.hide{display:none}
+.modal-actions{display:flex;gap:10px;margin-top:18px}
+.modal-actions button{flex:1;height:46px;border:0;border-radius:8px;font-weight:800;cursor:pointer}
+.save{background:var(--maroon);color:#fff}
+@media(max-width:1050px){.page{padding:30px 25px}.flower{width:210px}.top{padding:0 190px}.main{padding:50px 50px 20px 65px;gap:30px}.ring-art{height:330px}.top p{font-size:16px}.names{font-size:clamp(44px,5vw,64px)}}
+@media(max-width:760px){.page{padding:22px 15px}.flower{width:135px}.top{padding:0 25px}.top p{font-size:13px}.main{padding:35px 15px}.ring-art{height:260px}.names{font-size:40px}.boxes{gap:8px}.box{padding:12px 5px}.box small{font-size:13px}.box strong{font-size:18px}.entry{height:56px;font-size:19px}}
+
+@media(min-width:761px){
+  html,body{height:100%;overflow:hidden}
+  .main{min-height:0}
+}
+
+
+/* FINAL WEDDING TYPOGRAPHY */
+body, button, input, select, textarea {
+  font-family: "Noto Sans Devanagari", "Mangal", sans-serif !important;
+}
+h1, h2, h3, .title, .names, .ganesh, .top, .box strong, .entry {
+  font-family: "Noto Serif Devanagari", "Mangal", serif !important;
+}
+h1 {
+  font-weight: 900 !important;
+  letter-spacing: .5px !important;
+}
+.names {
+  font-weight: 800 !important;
+  letter-spacing: .2px !important;
+}
+.top p, .invite, .note, .box small {
+  font-family: "Noto Sans Devanagari", "Mangal", sans-serif !important;
+  font-weight: 600 !important;
+}
+.entry {
+  font-weight: 800 !important;
+  letter-spacing: .2px !important;
+}
+
+/* FINAL ENGLISH WEDDING TYPOGRAPHY */
+body, button, input, select, textarea {
+  font-family: "Montserrat", Arial, sans-serif !important;
+}
+h1, h2, h3, .title, .names {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+}
+.ganesh {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-weight: 700 !important;
+  letter-spacing: .7px !important;
+}
+.top p, .invite, .note, .box small {
+  font-family: "Montserrat", Arial, sans-serif !important;
+  letter-spacing: .35px !important;
+}
+.names {
+  font-size: clamp(42px, 4.2vw, 68px) !important;
+  line-height: 1.05 !important;
+  text-transform: uppercase;
+}
+.entry {
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: .8px !important;
+  text-transform: uppercase;
+}
+.box strong {
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: .5px !important;
+}
+
+
+/* ===== ROYAL ENGAGEMENT CEREMONY THEME ===== */
+:root{
+  --royal-wine:#64152a;
+  --royal-burgundy:#7d1731;
+  --royal-gold:#c89b3c;
+  --royal-gold-light:#e8c979;
+  --ivory:#fff9ed;
+}
+body{
+  color:var(--royal-wine) !important;
+  background:#f8ead7 !important;
+}
+.page, .card, .shell, .container, main{
+  position:relative;
+}
+h1{
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-weight:700 !important;
+  font-size:clamp(48px,5.2vw,78px) !important;
+  letter-spacing:2px !important;
+  color:var(--royal-wine) !important;
+  text-transform:uppercase;
+  text-shadow:0 2px 0 #fff8e8, 0 4px 10px #64152a22 !important;
+}
+.names{
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-weight:700 !important;
+  color:var(--royal-wine) !important;
+  letter-spacing:1.2px !important;
+  text-transform:uppercase;
+  text-shadow:0 2px 0 #fff8e8, 0 3px 8px #64152a1c !important;
+}
+.ganesh{
+  color:var(--royal-wine) !important;
+  letter-spacing:1px !important;
+}
+.top p{
+  color:#6e2938 !important;
+  font-weight:600 !important;
+}
+.info{
+  background:linear-gradient(180deg,#fffdf8cc,#fff7e9b8);
+  border:1px solid #c89b3c66;
+  border-radius:22px;
+  padding:18px 24px !important;
+  box-shadow:0 14px 40px #6b183020, inset 0 0 0 1px #fff8e8aa;
+}
+.box{
+  background:linear-gradient(145deg,#fffdf8e8,#fff5e5e8) !important;
+  border:1.5px solid #c89b3c88 !important;
+  box-shadow:0 8px 22px #6b183018, inset 0 1px 0 #fff !important;
+}
+.box small{
+  color:#7a3343 !important;
+  text-transform:uppercase;
+  letter-spacing:1px !important;
+}
+.box strong{
+  color:var(--royal-wine) !important;
+  text-transform:uppercase;
+}
+.entry{
+  background:linear-gradient(135deg,#65152b,#8c1f3b 55%,#64152a) !important;
+  border:1px solid var(--royal-gold-light) !important;
+  box-shadow:0 8px 20px #5b112633, inset 0 1px 0 #ffffff44 !important;
+  color:#fff8e8 !important;
+  font-weight:800 !important;
+  letter-spacing:1px !important;
+  text-transform:uppercase;
+}
+.entry:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 26px #5b112644, inset 0 1px 0 #ffffff55 !important;
+}
+.invite{
+  color:#6d2939 !important;
+  font-weight:600 !important;
+}
+.note{
+  color:#8b5a2b !important;
+}
+.top:after, .info:after{
+  content:"";
+  display:block;
+  width:90px;
+  height:2px;
+  margin:10px auto 0;
+  background:linear-gradient(90deg,transparent,var(--royal-gold),transparent);
+  opacity:.8;
+}
+
+/* ===== FINAL CURSIVE & COLORFUL ROYAL TYPOGRAPHY ===== */
+body, button, input, select, textarea {
+  font-family:"Montserrat",Arial,sans-serif !important;
+}
+.ganesh, h1, .names, .names span, .dialog h2 {
+  font-family:"Dancing Script","Great Vibes",cursive !important;
+}
+.ganesh {
+  font-size:18px !important;
+  font-weight:700 !important;
+  color:#8a1838 !important;
+}
+h1 {
+  font-family:"Great Vibes","Dancing Script",cursive !important;
+  font-size:clamp(58px,6vw,92px) !important;
+  line-height:.95 !important;
+  font-weight:500 !important;
+  letter-spacing:1px !important;
+  color:#8b1838 !important;
+  text-transform:none !important;
+  text-shadow:0 2px 0 #fff8e8,0 4px 12px #8b183833 !important;
+}
+.names {
+  font-family:"Dancing Script","Great Vibes",cursive !important;
+  font-size:clamp(52px,5vw,82px) !important;
+  font-weight:700 !important;
+  line-height:1.05 !important;
+  letter-spacing:1px !important;
+  text-transform:none !important;
+  background:linear-gradient(90deg,#7b1633 0%,#b22d5b 45%,#c38a25 72%,#7b1633 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent !important;
+  -webkit-text-fill-color:transparent;
+  text-shadow:none !important;
+}
+.names span {
+  font-family:"Great Vibes",cursive !important;
+  font-size:38px !important;
+  color:#c8942f !important;
+  -webkit-text-fill-color:#c8942f !important;
+}
+.top p {
+  font-family:"Montserrat",Arial,sans-serif !important;
+  color:#7d2942 !important;
+  font-weight:600 !important;
+}
+.box small {
+  font-family:"Montserrat",Arial,sans-serif !important;
+  color:#8d5a2c !important;
+  font-size:13px !important;
+  letter-spacing:1.5px !important;
+}
+.box strong {
+  font-family:"Dancing Script",cursive !important;
+  color:#7d1835 !important;
+  font-size:27px !important;
+  font-weight:700 !important;
+}
+.invite {
+  font-family:"Dancing Script",cursive !important;
+  color:#8a2945 !important;
+  font-size:22px !important;
+  font-weight:600 !important;
+  line-height:1.25 !important;
+}
+.entry {
+  font-family:"Montserrat",Arial,sans-serif !important;
+  font-weight:800 !important;
+  letter-spacing:1px !important;
+  border-radius:30px !important;
+}
+.note {
+  font-family:"Montserrat",Arial,sans-serif !important;
+  color:#8b5b2b !important;
+}
+
+/* ===== READABLE ROYAL TYPOGRAPHY — FINAL ===== */
+body, button, input, select, textarea {
+  font-family: "Montserrat", Arial, sans-serif !important;
+}
+
+/* Main title: elegant but clearly readable, NOT cursive */
+h1 {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: clamp(44px, 5vw, 70px) !important;
+  line-height: 1 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  color: #721b35 !important;
+}
+
+/* Couple names: graceful cursive, but smaller and readable */
+.names {
+  font-family: "Allura", "Brush Script MT", cursive !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: clamp(44px, 4.6vw, 68px) !important;
+  line-height: 1.05 !important;
+  letter-spacing: 1px !important;
+  text-transform: none !important;
+  color: #8a2346 !important;
+  text-shadow: none !important;
+}
+
+/* Gold ampersand */
+.names span {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  color: #c79a3b !important;
+  font-size: 30px !important;
+}
+
+/* Supporting text: clean, readable */
+.ganesh,
+.top p,
+.invite,
+.note,
+.box small,
+.box strong,
+.entry {
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-style: normal !important;
+}
+
+.ganesh {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  letter-spacing: .8px !important;
+}
+
+.top p {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  letter-spacing: .25px !important;
+}
+
+.invite {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+}
+
+.box small {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+}
+
+.box strong {
+  font-size: 19px !important;
+  font-weight: 700 !important;
+}
+
+.entry {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+}
+
+/* Keep the background subtle behind the content */
+body::before {
+  opacity: .28 !important;
+}
+
+/* ===== REFERENCE-INSPIRED WEDDING SCRIPT FONT ===== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap');
+
+body, button, input, textarea, select {
+  font-family: 'Montserrat', Arial, sans-serif !important;
+}
+
+/* The reference image uses a grand serif title, not an unreadable script. */
+h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: clamp(48px, 5.2vw, 76px) !important;
+  line-height: .98 !important;
+  letter-spacing: 1.5px !important;
+  color: #7a1734 !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 2px 0 rgba(255,250,238,.9) !important;
+}
+
+/* Names use the flowing handwritten/script look from the supplied card. */
+.names {
+  font-family: 'Great Vibes', 'Brush Script MT', cursive !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: clamp(58px, 5.5vw, 86px) !important;
+  line-height: .95 !important;
+  letter-spacing: .5px !important;
+  text-transform: none !important;
+  color: #8c2347 !important;
+  text-shadow: 0 2px 0 rgba(255,248,232,.85) !important;
+}
+
+.names > div {
+  background: linear-gradient(90deg, #8b173c 0%, #b12655 38%, #c28b2c 72%, #8b173c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.names span {
+  display: block;
+  margin: 2px 0 3px;
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-style: italic !important;
+  font-weight: 600 !important;
+  font-size: clamp(28px, 2.3vw, 38px) !important;
+  color: #c39a3b !important;
+  -webkit-text-fill-color: #c39a3b !important;
+}
+
+.top p {
+  font-family: 'Montserrat', Arial, sans-serif !important;
+  font-size: clamp(14px, 1.35vw, 18px) !important;
+  font-weight: 500 !important;
+  letter-spacing: .15px !important;
+  color: #6e293d !important;
+}
+
+.ganesh {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-weight: 600 !important;
+  font-style: italic !important;
+  color: #742039 !important;
+}
+
+.box small, .box strong, .invite, .note, .entry {
+  font-family: 'Montserrat', Arial, sans-serif !important;
+}
+
+.box small {
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+}
+
+.box strong {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: 25px !important;
+  font-weight: 700 !important;
+  color: #7a1734 !important;
+}
+
+.invite {
+  font-size: 15px !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+}
+
+/* ===== FINAL READABLE ENGAGEMENT TYPOGRAPHY ===== */
+h1{
+  white-space:nowrap !important;
+  font-family:"Cormorant Garamond", Georgia, serif !important;
+  font-style:normal !important;
+  font-weight:700 !important;
+  font-size:clamp(42px,4.4vw,66px) !important;
+  line-height:1 !important;
+  letter-spacing:1.5px !important;
+  text-transform:uppercase !important;
+  color:#741b35 !important;
+  text-shadow:0 1px 0 #fff8ed !important;
+  margin-bottom:18px !important;
+}
+
+.names{
+  font-family:"Allura","Brush Script MT",cursive !important;
+  font-style:normal !important;
+  font-weight:400 !important;
+  font-size:clamp(42px,4.2vw,62px) !important;
+  line-height:1.08 !important;
+  letter-spacing:.5px !important;
+  text-transform:none !important;
+  color:#8b2347 !important;
+  text-shadow:none !important;
+}
+
+.names span{
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-style:normal !important;
+  font-weight:600 !important;
+  color:#c89b3c !important;
+  font-size:28px !important;
+}
+
+.ganesh,
+.top p,
+.invite,
+.note,
+.box small,
+.box strong,
+.entry{
+  font-family:"Montserrat",Arial,sans-serif !important;
+  font-style:normal !important;
+}
+
+.ganesh{font-size:14px !important;font-weight:600 !important;}
+.top p{font-size:15px !important;font-weight:500 !important;}
+.invite{font-size:15px !important;line-height:1.45 !important;}
+.box small{font-size:13px !important;letter-spacing:.8px !important;}
+.box strong{font-size:18px !important;}
+.entry{font-size:16px !important;font-weight:800 !important;}
+
+/* Keep all text safely inside the viewport */
+@media (max-width:900px){
+  h1{font-size:clamp(34px,7vw,54px) !important;}
+  .names{font-size:clamp(34px,7vw,50px) !important;}
+}
+
+
+/* ===== SAGUN ENTRY — SMALL & SUBTLE ===== */
+.entry{
+  width:190px !important;
+  height:30px !important;
+  min-height:30px !important;
+  padding:0 14px !important;
+  border-radius:15px !important;
+  border:1px solid #d6ae58 !important;
+  border-bottom:1px solid #d6ae58 !important;
+  background:linear-gradient(135deg,#74152e,#8e2342) !important;
+  box-shadow:0 3px 8px rgba(91,7,28,.20) !important;
+  font-family:'Montserrat',Arial,sans-serif !important;
+  font-size:11px !important;
+  line-height:28px !important;
+  font-weight:700 !important;
+  letter-spacing:.7px !important;
+  text-transform:uppercase !important;
+  color:#fff8ed !important;
+  opacity:.94;
+  cursor:pointer;
+}
+.entry:hover{
+  transform:translateY(-1px) !important;
+  box-shadow:0 5px 12px rgba(91,7,28,.25) !important;
+}
+.note{
+  font-size:10px !important;
+  margin-top:5px !important;
+  opacity:.72;
+}
+
+/* ===== ENGAGEMENT DATE / HOST — PREMIUM CARD ===== */
+.boxes{
+  gap:18px !important;
+  margin-top:12px !important;
+}
+.box{
+  position:relative !important;
+  min-height:64px !important;
+  padding:12px 20px !important;
+  border:1px solid rgba(194,148,55,.65) !important;
+  border-radius:16px !important;
+  background:linear-gradient(145deg,rgba(255,253,247,.92),rgba(255,244,224,.76)) !important;
+  box-shadow:0 6px 18px rgba(105,35,55,.10), inset 0 1px 0 rgba(255,255,255,.9) !important;
+  overflow:hidden;
+}
+.box::before{
+  content:'';
+  position:absolute;
+  top:0;left:18%;right:18%;
+  height:2px;
+  background:linear-gradient(90deg,transparent,#c89b3c,transparent);
+}
+.box::after{
+  content:'◆';
+  position:absolute;
+  top:7px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:7px;
+  color:#c89b3c;
+  background:#fff8ec;
+  padding:0 5px;
+}
+.box small{
+  display:block !important;
+  margin:6px 0 3px !important;
+  font-family:'Montserrat',Arial,sans-serif !important;
+  font-size:11px !important;
+  font-weight:700 !important;
+  letter-spacing:1.2px !important;
+  color:#8a5b2d !important;
+  text-transform:uppercase !important;
+}
+.box strong{
+  display:block !important;
+  font-family:'Cormorant Garamond',Georgia,serif !important;
+  font-size:23px !important;
+  line-height:1.05 !important;
+  font-weight:700 !important;
+  letter-spacing:.4px !important;
+  color:#741b35 !important;
+}
+
+
+/* ===== SUBTLE LOVE THEME ACCENTS ===== */
+.love-mark{
+  display:inline-block;
+  font-size:.34em !important;
+  vertical-align:middle;
+  margin:0 12px;
+  filter:drop-shadow(0 1px 2px rgba(122,23,52,.18));
+}
+.love-line{
+  font-family:Arial,sans-serif !important;
+  font-size:17px !important;
+  line-height:1 !important;
+  margin:-3px 0 4px !important;
+  opacity:.92;
+}
+.diamond{
+  font-size:14px !important;
+  color:#b77d24 !important;
+  text-shadow:0 1px 3px rgba(183,125,36,.22);
+}
+.box small{ white-space:nowrap !important; }
+.invite{ color:#76223a !important; }
+
+
+/* ===== PREMIUM ROYAL ENGAGEMENT DATE CARD ===== */
+.date-box,
+.engagement-date,
+.date-card,
+.box.date-box {
+  position: relative !important;
+  background:
+    linear-gradient(135deg,
+      rgba(255,255,255,.92) 0%,
+      rgba(255,248,235,.96) 48%,
+      rgba(255,255,255,.92) 100%) !important;
+  border: 1px solid rgba(191,145,53,.75) !important;
+  border-radius: 18px !important;
+  box-shadow:
+    0 10px 28px rgba(105,35,54,.12),
+    inset 0 0 0 1px rgba(255,255,255,.75) !important;
+  padding: 18px 24px 20px !important;
+  overflow: hidden !important;
+}
+
+.date-box::before,
+.engagement-date::before,
+.date-card::before,
+.box.date-box::before {
+  content: "♥" !important;
+  position: absolute !important;
+  top: 8px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  color: #b58a35 !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+}
+
+.date-box::after,
+.engagement-date::after,
+.date-card::after,
+.box.date-box::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 22px !important;
+  right: 22px !important;
+  top: 34px !important;
+  height: 1px !important;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(181,138,53,.55),
+    transparent
+  ) !important;
+}
+
+.date-box small,
+.engagement-date small,
+.date-card small,
+.box.date-box small {
+  display: block !important;
+  margin-top: 12px !important;
+  color: #795b35 !important;
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.8px !important;
+  text-transform: uppercase !important;
+}
+
+.date-box strong,
+.engagement-date strong,
+.date-card strong,
+.box.date-box strong {
+  display: block !important;
+  margin-top: 7px !important;
+  color: #7a1837 !important;
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-size: clamp(25px, 2.5vw, 34px) !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  line-height: 1.05 !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.9) !important;
+}
+
+.date-box strong::before,
+.engagement-date strong::before,
+.date-card strong::before,
+.box.date-box strong::before {
+  content: "✦  " !important;
+  color: #c89b3c !important;
+  font-size: .55em !important;
+  vertical-align: middle !important;
+}
+
+.date-box strong::after,
+.engagement-date strong::after,
+.date-card strong::after,
+.box.date-box strong::after {
+  content: "  ✦" !important;
+  color: #c89b3c !important;
+  font-size: .55em !important;
+  vertical-align: middle !important;
+}
+
+/* ===== ROMANTIC PHOTO BACKGROUND SLIDESHOW ===== */
+.page::before{
+  background-image:var(--engagement-bg, url("../assets/bg-love-01.png")) !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  opacity:.22 !important;
+  transition:opacity 1.8s ease, background-image 1.8s ease !important;
+}
+.page::after{
+  background-image:none !important;
+  opacity:0 !important;
+}
+
+
+/* =========================================================
+   FINAL ROYAL DATE + HOST CARDS
+   Clean, readable, elegant — not oversized.
+   ========================================================= */
+
+.boxes{
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 22px !important;
+  width: min(900px, 94%) !important;
+  margin: 18px auto 12px !important;
+}
+
+.box.date-card,
+.box.host-card{
+  position: relative !important;
+  min-height: 104px !important;
+  padding: 18px 24px 16px !important;
+  border: 1px solid rgba(187,142,52,.72) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(145deg,
+      rgba(255,252,245,.96) 0%,
+      rgba(255,247,231,.91) 50%,
+      rgba(255,255,250,.95) 100%) !important;
+  box-shadow:
+    0 9px 24px rgba(91,18,44,.12),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 0 0 1px rgba(255,255,255,.35) !important;
+  overflow: hidden !important;
+  text-align: center !important;
+}
+
+.box.date-card::before,
+.box.host-card::before{
+  content:"" !important;
+  position:absolute !important;
+  top:0 !important;
+  left:18% !important;
+  right:18% !important;
+  height:2px !important;
+  background:linear-gradient(90deg,transparent,#c99a3d,#ead6a1,#c99a3d,transparent) !important;
+}
+
+.box.date-card::after,
+.box.host-card::after{
+  content:"♥" !important;
+  position:absolute !important;
+  top:7px !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  padding:0 8px !important;
+  background:#fff9ef !important;
+  color:#b7832f !important;
+  font-size:10px !important;
+  line-height:1 !important;
+}
+
+.box.date-card small,
+.box.host-card small{
+  display:block !important;
+  margin:10px 0 6px !important;
+  font-family:"Montserrat", Arial, sans-serif !important;
+  font-size:11px !important;
+  font-weight:700 !important;
+  letter-spacing:1.6px !important;
+  color:#8b6332 !important;
+  text-transform:uppercase !important;
+}
+
+.box.date-card strong,
+.box.host-card strong{
+  display:block !important;
+  margin:0 !important;
+  font-family:"Cormorant Garamond", Georgia, serif !important;
+  font-size:26px !important;
+  line-height:1.05 !important;
+  font-weight:700 !important;
+  letter-spacing:.5px !important;
+  color:#761b38 !important;
+  text-shadow:0 1px 0 rgba(255,255,255,.95) !important;
+}
+
+/* Date gets a small calendar-style accent. */
+.box.date-card strong::before{
+  content:"✦" !important;
+  color:#c39438 !important;
+  font-size:.48em !important;
+  vertical-align:middle !important;
+  margin-right:9px !important;
+}
+
+.box.date-card strong::after{
+  content:"✦" !important;
+  color:#c39438 !important;
+  font-size:.48em !important;
+  vertical-align:middle !important;
+  margin-left:9px !important;
+}
+
+/* Host gets a restrained heart accent instead of a bulky icon. */
+.box.host-card strong::before{
+  content:"♡" !important;
+  color:#c39438 !important;
+  font-size:.55em !important;
+  vertical-align:middle !important;
+  margin-right:8px !important;
+}
+
+.box.host-card strong::after{
+  content:"♡" !important;
+  color:#c39438 !important;
+  font-size:.55em !important;
+  vertical-align:middle !important;
+  margin-left:8px !important;
+}
+
+.box.date-card:hover,
+.box.host-card:hover{
+  transform:translateY(-2px) !important;
+  box-shadow:
+    0 13px 28px rgba(91,18,44,.16),
+    inset 0 1px 0 rgba(255,255,255,.98) !important;
+  transition:all .25s ease !important;
+}
+
+@media(max-width:760px){
+  .boxes{
+    width:100% !important;
+    gap:10px !important;
+  }
+  .box.date-card,
+  .box.host-card{
+    min-height:92px !important;
+    padding:16px 8px 13px !important;
+    border-radius:14px !important;
+  }
+  .box.date-card small,
+  .box.host-card small{
+    font-size:9px !important;
+    letter-spacing:1px !important;
+  }
+  .box.date-card strong,
+  .box.host-card strong{
+    font-size:19px !important;
+  }
+}
+
+
+/* ===== FINAL DATE / HOST BOX — THIN ROYAL STYLE ===== */
+.boxes{
+  grid-template-columns:1fr 1fr !important;
+  gap:14px !important;
+  margin-top:2px !important;
+}
+.box.date-card,.box.host-card{
+  min-height:64px !important;
+  height:64px !important;
+  padding:7px 16px !important;
+  border:1px solid rgba(186,139,48,.62) !important;
+  border-radius:16px !important;
+  background:rgba(255,251,241,.88) !important;
+  box-shadow:0 5px 14px rgba(112,61,27,.10), inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+.box.date-card small,.box.host-card small{
+  margin:0 0 2px !important;
+  font-family:"Montserrat",Arial,sans-serif !important;
+  font-size:10px !important;
+  line-height:1.1 !important;
+  font-weight:700 !important;
+  letter-spacing:1.3px !important;
+  color:#9a6a2d !important;
+}
+.box.date-card strong,.box.host-card strong{
+  margin:0 !important;
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-size:23px !important;
+  line-height:1.05 !important;
+  font-weight:700 !important;
+  font-style:italic !important;
+  letter-spacing:.3px !important;
+  color:#7b1737 !important;
+}
+.invite{margin:5px 0 4px !important;font-size:14px !important;line-height:1.25 !important}
+.main{padding-top:10px !important;padding-bottom:0 !important}
+.names{font-size:clamp(40px,4vw,58px) !important;line-height:1.02 !important}
+.diamond{margin:3px 0 !important}
+.entry{margin-top:0 !important}
+.note{margin-top:2px !important}
+@media(max-width:760px){
+  .boxes{gap:8px !important}
+  .box.date-card,.box.host-card{height:56px !important;min-height:56px !important;padding:5px 8px !important;border-radius:12px !important}
+  .box.date-card small,.box.host-card small{font-size:8px !important;letter-spacing:.7px !important}
+  .box.date-card strong,.box.host-card strong{font-size:18px !important}
+}
+
+
+/* ===== ROMANTIC FOOTER MESSAGE TICKER ===== */
+.love-footer-ticker{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:34px;
+  z-index:7;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  background:rgba(255,249,237,.90);
+  border-top:1px solid rgba(200,155,60,.55);
+  box-shadow:0 -5px 18px rgba(100,21,42,.08);
+  backdrop-filter:blur(4px);
+}
+.love-ticker-track{
+  display:flex;
+  width:max-content;
+  min-width:100%;
+  animation:loveTicker 85s linear infinite;
+  will-change:transform;
+}
+.love-ticker-content{
+  display:flex;
+  align-items:center;
+  flex-shrink:0;
+  white-space:nowrap;
+}
+.love-ticker-content span{
+  font-family:"Cormorant Garamond",Georgia,serif;
+  font-size:16px;
+  font-weight:600;
+  letter-spacing:.25px;
+  color:#6f1733;
+  padding:0 13px;
+}
+.love-ticker-content b{
+  color:#c89b3c;
+  font-size:11px;
+  font-weight:700;
+}
+@keyframes loveTicker{
+  from{transform:translateX(-50%)}
+  to{transform:translateX(0)}
+}
+.love-footer-ticker:hover .love-ticker-track{animation-play-state:paused}
+@media(max-width:760px){
+  .love-footer-ticker{height:30px}
+  .love-ticker-track{animation-duration:70s}
+  .love-ticker-content span{font-size:13px;padding:0 9px}
+  .love-ticker-content b{font-size:9px}
+}
+
+/* ===== FINAL COUPLE NAMES — LARGE, ROYAL & READABLE ===== */
+.names {
+  font-family: "Great Vibes", "Allura", "Brush Script MT", cursive !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: clamp(58px, 6vw, 88px) !important;
+  line-height: 1.02 !important;
+  letter-spacing: .8px !important;
+  text-transform: none !important;
+  color: #8a1f45 !important;
+  text-shadow: 0 2px 0 rgba(255,248,235,.9), 0 3px 8px rgba(112,25,53,.12) !important;
+  margin-top: 8px !important;
+}
+
+.names > div {
+  white-space: nowrap !important;
+  background: linear-gradient(90deg, #74152f 0%, #a51f4b 45%, #c58b2d 72%, #7d1738 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.names span {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-size: clamp(30px, 2.8vw, 42px) !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  color: #c39232 !important;
+  -webkit-text-fill-color: #c39232 !important;
+  margin: 0 0 4px !important;
+}
+
+@media (max-width: 900px) {
+  .names { font-size: clamp(48px, 9vw, 68px) !important; }
+  .names span { font-size: 30px !important; }
+}
+
+/* =========================================================
+   FINAL WEB PAGE LOOK — MATCH THE ROYAL REFERENCE
+   ========================================================= */
+
+/* Keep the complete page inside one screen on desktop. */
+html, body {
+  width:100%;
+  height:100%;
+  margin:0;
+  overflow:hidden !important;
+}
+
+.page {
+  height:100vh !important;
+  min-height:0 !important;
+  padding:12px 50px 34px !important;
+}
+
+/* Smaller, elegant one-line ceremony heading. */
+h1 {
+  white-space:nowrap !important;
+  font-family:"Cormorant Garamond", Georgia, serif !important;
+  font-size:clamp(38px,4vw,60px) !important;
+  line-height:1 !important;
+  letter-spacing:1.2px !important;
+  font-weight:700 !important;
+  margin:0 0 10px !important;
+  color:#74152f !important;
+}
+
+.love-mark {
+  font-size:.28em !important;
+  margin:0 8px !important;
+}
+
+.top {
+  padding:0 210px !important;
+}
+
+.ganesh {
+  font-size:14px !important;
+  margin-top:0 !important;
+}
+
+.ganesh-photo {
+  width:34px !important;
+  height:34px !important;
+  margin:1px auto 2px !important;
+}
+
+.rule {
+  margin:3px 0 8px !important;
+}
+
+.rule i {
+  width:105px !important;
+  height:1px !important;
+}
+
+.top p {
+  font-size:14px !important;
+  margin:0 !important;
+}
+
+.main {
+  padding:4px 60px 0 !important;
+  align-items:center !important;
+}
+
+.info {
+  width:min(1000px,100%) !important;
+  padding:0 10px !important;
+  margin:auto !important;
+}
+
+/* Large, attractive but readable couple names. */
+.names {
+  font-family:"Great Vibes","Allura","Brush Script MT",cursive !important;
+  font-size:clamp(58px,5.7vw,84px) !important;
+  line-height:.96 !important;
+  font-weight:400 !important;
+  letter-spacing:.5px !important;
+  margin:4px 0 0 !important;
+  color:#841c3d !important;
+  text-shadow:0 2px 0 rgba(255,250,238,.95), 0 3px 7px rgba(90,20,40,.14) !important;
+}
+
+.names > div {
+  white-space:nowrap !important;
+  background:none !important;
+  -webkit-text-fill-color:#841c3d !important;
+  color:#841c3d !important;
+}
+
+.names span {
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-size:clamp(28px,2.5vw,38px) !important;
+  font-style:italic !important;
+  font-weight:600 !important;
+  color:#c59432 !important;
+  -webkit-text-fill-color:#c59432 !important;
+  margin:0 0 2px !important;
+}
+
+.love-line {
+  font-size:13px !important;
+  margin:-2px 0 2px !important;
+}
+
+.diamond {
+  font-size:11px !important;
+  margin:2px 0 !important;
+}
+
+/* Thin premium date/host cards. */
+.boxes {
+  width:min(820px,92%) !important;
+  gap:14px !important;
+  margin:5px auto 4px !important;
+}
+
+.box.date-card,
+.box.host-card {
+  height:60px !important;
+  min-height:60px !important;
+  padding:6px 14px !important;
+  border:1px solid rgba(194,148,55,.72) !important;
+  border-radius:14px !important;
+  background:rgba(255,251,241,.82) !important;
+  box-shadow:0 5px 15px rgba(91,18,44,.09), inset 0 1px 0 rgba(255,255,255,.95) !important;
+}
+
+.box.date-card::before,
+.box.host-card::before {
+  height:1px !important;
+  left:20% !important;
+  right:20% !important;
+}
+
+.box.date-card::after,
+.box.host-card::after {
+  top:5px !important;
+  font-size:8px !important;
+  padding:0 5px !important;
+}
+
+.box.date-card small,
+.box.host-card small {
+  margin:4px 0 1px !important;
+  font-size:9px !important;
+  letter-spacing:1.2px !important;
+}
+
+.box.date-card strong,
+.box.host-card strong {
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-size:22px !important;
+  line-height:1 !important;
+  font-style:italic !important;
+  color:#751a37 !important;
+}
+
+.invite {
+  margin:3px 0 3px !important;
+  font-size:13px !important;
+  line-height:1.25 !important;
+}
+
+.entry {
+  width:190px !important;
+  height:29px !important;
+  min-height:29px !important;
+  font-size:10px !important;
+  line-height:27px !important;
+  margin:0 !important;
+}
+
+.note {
+  font-size:9px !important;
+  margin-top:1px !important;
+}
+
+/* Footer: NO BOX/BACKGROUND — only one clean moving line. */
+.love-footer-ticker {
+  position:absolute !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  height:27px !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  overflow:hidden !important;
+}
+
+.love-ticker-track {
+  width:max-content !important;
+  min-width:max-content !important;
+  animation:loveTickerLTR 75s linear infinite !important;
+}
+
+.love-ticker-content {
+  display:flex !important;
+  align-items:center !important;
+  flex-shrink:0 !important;
+  white-space:nowrap !important;
+  height:27px !important;
+}
+
+.love-ticker-content span {
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-size:14px !important;
+  line-height:27px !important;
+  font-weight:600 !important;
+  white-space:nowrap !important;
+  padding:0 10px !important;
+  color:#711832 !important;
+}
+
+.love-ticker-content b {
+  flex:0 0 auto !important;
+  color:#c89b3c !important;
+  font-size:9px !important;
+}
+
+@keyframes loveTickerLTR {
+  from { transform:translateX(-50%); }
+  to   { transform:translateX(0); }
+}
+
+@media(max-width:900px){
+  .page{padding:10px 18px 30px !important}
+  .top{padding:0 90px !important}
+  h1{font-size:clamp(32px,6vw,48px) !important}
+  .names{font-size:clamp(48px,9vw,68px) !important}
+  .main{padding:3px 10px 0 !important}
+}
+
+@media(max-width:600px){
+  .page{padding:8px 10px 28px !important}
+  .flower{width:120px !important}
+  .top{padding:0 25px !important}
+  .ganesh{font-size:11px !important}
+  .ganesh-photo{width:28px !important;height:28px !important}
+  h1{font-size:clamp(27px,7.5vw,39px) !important;letter-spacing:.5px !important}
+  .top p{font-size:10px !important}
+  .names{font-size:clamp(40px,12vw,58px) !important}
+  .names span{font-size:25px !important}
+  .boxes{width:100% !important;gap:7px !important}
+  .box.date-card,.box.host-card{height:53px !important;min-height:53px !important;padding:5px 5px !important}
+  .box.date-card small,.box.host-card small{font-size:7px !important;letter-spacing:.5px !important}
+  .box.date-card strong,.box.host-card strong{font-size:17px !important}
+  .invite{font-size:11px !important}
+  .love-ticker-content span{font-size:11px !important;padding:0 7px !important}
+}
+
+
+/* ===== FINAL NAME + DATE POLISH ===== */
+.names {
+  font-family:"Dancing Script","Allura",cursive !important;
+  font-size:clamp(72px,7vw,108px) !important;
+  line-height:.92 !important;
+  font-weight:700 !important;
+  letter-spacing:.2px !important;
+  margin:8px 0 4px !important;
+  color:#7b1735 !important;
+  text-shadow:0 2px 0 #fff9ee, 0 4px 10px rgba(85,18,42,.18) !important;
+}
+.names > div {
+  font-family:"Dancing Script","Allura",cursive !important;
+  font-weight:700 !important;
+  text-transform:none !important;
+}
+.names span:not(.calendar-icon):not(.date-value) {
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-size:clamp(34px,3vw,46px) !important;
+  font-style:italic !important;
+  font-weight:700 !important;
+}
+
+.box.date-card,.box.host-card {
+  height:70px !important;
+  min-height:70px !important;
+  padding:7px 18px !important;
+  border:1.5px solid #c99835 !important;
+  border-radius:16px !important;
+  background:linear-gradient(135deg,rgba(255,252,244,.94),rgba(255,245,225,.88)) !important;
+  box-shadow:0 7px 18px rgba(100,21,42,.12), inset 0 1px 0 #fff !important;
+}
+.box.date-card small,.box.host-card small {
+  font-family:"Montserrat",Arial,sans-serif !important;
+  font-size:10px !important;
+  font-weight:700 !important;
+  letter-spacing:1.4px !important;
+  margin:3px 0 2px !important;
+}
+.box.date-card strong,.box.host-card strong {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:9px !important;
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-size:27px !important;
+  line-height:1 !important;
+  font-style:italic !important;
+  font-weight:700 !important;
+  color:#741a38 !important;
+}
+.calendar-icon {
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:29px !important;
+  height:29px !important;
+  border:2px solid #8b183b !important;
+  border-radius:6px !important;
+  font-family:Arial,sans-serif !important;
+  font-size:17px !important;
+  font-style:normal !important;
+  line-height:1 !important;
+  color:#8b183b !important;
+  background:#fff8ed !important;
+  box-shadow:inset 0 0 0 2px #fff8ed !important;
+}
+.date-value {
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-size:30px !important;
+  font-style:italic !important;
+  font-weight:700 !important;
+  color:#741a38 !important;
+}
+@media(max-width:900px){
+  .names{font-size:clamp(62px,10vw,88px) !important}
+}
+@media(max-width:600px){
+  .names{font-size:clamp(48px,14vw,70px) !important}
+  .names span:not(.calendar-icon):not(.date-value){font-size:28px !important}
+  .box.date-card,.box.host-card{height:62px !important;min-height:62px !important;padding:5px 6px !important}
+  .box.date-card small,.box.host-card small{font-size:7.5px !important;letter-spacing:.8px !important}
+  .box.date-card strong,.box.host-card strong{font-size:21px !important;gap:5px !important}
+  .calendar-icon{width:23px !important;height:23px !important;font-size:13px !important}
+  .date-value{font-size:24px !important}
+}
+
+/* ===== SUBTLE ROYAL COUPLE NAME ANIMATION ===== */
+.animated-couple-names{perspective:900px;overflow:visible!important;text-align:center}
+.animated-couple-names #groomName,.animated-couple-names #brideName{display:block;will-change:transform,opacity;opacity:0}
+.animated-couple-names #groomName{animation:groomEntrance 16s ease-in-out infinite}
+.animated-couple-names #brideName{animation:brideEntrance 16s ease-in-out infinite}
+.animated-couple-names>span{display:inline-block;animation:ampersandRoyal 16s ease-in-out infinite;will-change:transform,opacity}
+@keyframes groomEntrance{
+  0%,4%{opacity:0;transform:translateX(-75px) scale(.96)}
+  10%,25%{opacity:1;transform:translateX(0) scale(1)}
+  31%,35%{opacity:0;transform:translateY(38px) scale(.98)}
+  41%,56%{opacity:1;transform:translateY(0) scale(1)}
+  62%,66%{opacity:0;transform:translateX(65px) scale(.97)}
+  72%,88%{opacity:1;transform:translateX(0) scale(1)}
+  94%,100%{opacity:0;transform:scale(1.08)}
+}
+@keyframes brideEntrance{
+  0%,8%{opacity:0;transform:translateX(75px) scale(.96)}
+  14%,28%{opacity:1;transform:translateX(0) scale(1)}
+  34%,38%{opacity:0;transform:translateY(-38px) scale(.98)}
+  44%,59%{opacity:1;transform:translateY(0) scale(1)}
+  65%,69%{opacity:0;transform:translateX(-65px) scale(.97)}
+  75%,90%{opacity:1;transform:translateX(0) scale(1)}
+  96%,100%{opacity:0;transform:scale(1.08)}
+}
+@keyframes ampersandRoyal{
+  0%,12%{opacity:0;transform:scale(.7) rotate(-8deg)}
+  17%,30%{opacity:1;transform:scale(1) rotate(0)}
+  35%,40%{opacity:0;transform:translateY(-8px) scale(.85)}
+  46%,62%{opacity:1;transform:scale(1.08)}
+  68%,72%{opacity:0;transform:translateY(8px) scale(.85)}
+  78%,92%{opacity:1;transform:scale(1)}
+  96%,100%{opacity:0;transform:scale(1.12)}
+}
+@media(prefers-reduced-motion:reduce){
+ .animated-couple-names #groomName,.animated-couple-names #brideName,.animated-couple-names>span{animation:none!important;opacity:1!important;transform:none!important}
+}
+
+/* ===== TARGET LOOK: ROYAL SIDE-BY-SIDE COUPLE ===== */
+.top{padding:0 170px !important}
+h1{
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-size:clamp(42px,4.2vw,66px) !important;
+  font-weight:700 !important;
+  letter-spacing:1.5px !important;
+  margin:0 !important;
+}
+.top p{
+  font-family:"Montserrat",Arial,sans-serif !important;
+  font-size:16px !important;
+  font-weight:500 !important;
+  letter-spacing:.25px !important;
+  margin:0 !important;
+}
+.main{padding:10px 45px 0 !important;align-items:center !important}
+.info{width:min(1320px,100%) !important;padding:0 10px !important}
+.names{
+  display:grid !important;
+  grid-template-columns:1fr auto 1fr !important;
+  align-items:center !important;
+  justify-items:center !important;
+  column-gap:28px !important;
+  width:100% !important;
+  margin:18px auto 8px !important;
+  font-family:"Dancing Script","Allura",cursive !important;
+  font-size:clamp(74px,7vw,118px) !important;
+  line-height:.88 !important;
+  font-weight:700 !important;
+  text-transform:none !important;
+  letter-spacing:0 !important;
+}
+.names .love-line{display:none !important}
+.names #groomName,.names #brideName{
+  width:100% !important;
+  white-space:normal !important;
+  text-align:center !important;
+  font-family:"Dancing Script","Allura",cursive !important;
+  color:#7b1735 !important;
+  -webkit-text-fill-color:#7b1735 !important;
+  text-shadow:0 2px 0 #fff9ee,0 4px 9px rgba(80,15,38,.18) !important;
+}
+.names #groomName{animation:groomEntrance 16s ease-in-out infinite !important}
+.names #brideName{animation:brideEntrance 16s ease-in-out infinite !important}
+.names>span{
+  display:block !important;
+  margin:0 !important;
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-size:clamp(70px,6vw,105px) !important;
+  line-height:1 !important;
+  font-style:normal !important;
+  font-weight:600 !important;
+  color:#c9952f !important;
+  -webkit-text-fill-color:#c9952f !important;
+  text-shadow:0 2px 0 #fff9ee,0 4px 8px rgba(100,60,15,.18) !important;
+}
+.diamond{display:none !important}
+.boxes{
+  width:min(850px,88%) !important;
+  margin:8px auto 5px !important;
+  gap:18px !important;
+}
+.box.date-card,.box.host-card{
+  height:72px !important;
+  min-height:72px !important;
+  padding:7px 18px !important;
+  border:1.5px solid #c89538 !important;
+  border-radius:13px !important;
+  background:rgba(255,250,240,.84) !important;
+  box-shadow:0 7px 18px rgba(92,19,43,.10),inset 0 1px 0 #fff !important;
+}
+.box.date-card small,.box.host-card small{
+  font-family:"Montserrat",Arial,sans-serif !important;
+  font-size:10px !important;
+  letter-spacing:1.5px !important;
+  margin:2px 0 2px !important;
+  color:#7b1735 !important;
+}
+.box.date-card strong,.box.host-card strong{
+  font-family:"Cormorant Garamond",Georgia,serif !important;
+  font-size:28px !important;
+  font-style:italic !important;
+  font-weight:700 !important;
+  color:#741a38 !important;
+}
+.calendar-icon{width:28px !important;height:28px !important}
+.date-value{font-size:30px !important}
+.invite{font-size:14px !important;margin:4px 0 4px !important}
+.entry{height:34px !important;width:230px !important;font-size:12px !important;border-radius:9px !important}
+.note{font-size:9px !important}
+.love-footer-ticker{height:28px !important}
+.love-ticker-content{height:28px !important}
+.love-ticker-content span{font-size:14px !important;line-height:28px !important}
+
+@media(max-width:900px){
+  .top{padding:0 90px !important}
+  .names{grid-template-columns:1fr !important;row-gap:2px !important;font-size:clamp(58px,10vw,88px) !important}
+  .names>span{font-size:48px !important;line-height:.8 !important}
+  .boxes{width:96% !important}
+}
+@media(max-width:600px){
+  .top{padding:0 25px !important}
+  h1{font-size:32px !important}
+  .top p{font-size:10px !important}
+  .names{font-size:58px !important;margin-top:10px !important}
+  .names>span{font-size:38px !important}
+  .boxes{grid-template-columns:1fr 1fr !important;width:100% !important;gap:7px !important}
+  .box.date-card,.box.host-card{height:60px !important;min-height:60px !important;padding:5px !important}
+  .box.date-card strong,.box.host-card strong{font-size:21px !important}
+  .date-value{font-size:23px !important}
+}
+
+/* ===== ENGAGEMENT RING CORNER DECORATION — RIGHT ===== */
+.ring-corner{
+  position:absolute;
+  right:2px;
+  left:auto;
+  bottom:18px;
+  width:285px;
+  height:auto;
+  z-index:2;
+  pointer-events:none;
+  user-select:none;
+  filter:drop-shadow(0 8px 14px rgba(90,10,35,.16));
+}
+@media(max-width:900px){
+  .ring-corner{width:220px;bottom:28px;right:-8px;left:auto}
+}
+@media(max-width:600px){
+  .ring-corner{width:155px;bottom:32px;right:-10px;left:auto;opacity:.92}
+}
+
+/* ===== RING CORNER DECORATIONS — BOTH SIDES ===== */
+.ring-corner{
+  position:absolute !important;
+  width:330px !important;
+  height:auto !important;
+  bottom:45px !important;
+  z-index:5 !important;
+  pointer-events:none !important;
+  user-select:none !important;
+  filter:drop-shadow(0 8px 14px rgba(90,10,35,.16));
+}
+.ring-corner.left-corner{
+  left:0 !important;
+  right:auto !important;
+}
+.ring-corner.right-corner{
+  right:0 !important;
+  left:auto !important;
+  bottom:60px !important;
+}
+@media(max-width:900px){
+  .ring-corner{width:255px !important;bottom:35px !important}
+  .ring-corner.left-corner{left:-8px !important}
+  .ring-corner.right-corner{right:-8px !important;bottom:50px !important}
+}
+@media(max-width:600px){
+  .ring-corner{width:185px !important;opacity:.94}
+  .ring-corner.left-corner{left:-10px !important;bottom:25px !important}
+  .ring-corner.right-corner{right:-10px !important;bottom:40px !important}
+}
+
+
+/* ===== FINAL POLISH: RING POSITION + LOVE HEART + DATE CARD ===== */
+.ring-corner.left-corner,
+.ring-corner.right-corner{
+  bottom:25px !important;
+}
+.ring-corner.left-corner{left:0 !important;right:auto !important;}
+.ring-corner.right-corner{right:0 !important;left:auto !important;}
+
+/* Heart between bride & groom names */
+.names > .between-heart{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:64px !important;
+  height:64px !important;
+  margin:0 !important;
+  font-family:Georgia,serif !important;
+  font-size:54px !important;
+  line-height:1 !important;
+  font-style:normal !important;
+  font-weight:400 !important;
+  color:#c51f54 !important;
+  -webkit-text-fill-color:#c51f54 !important;
+  text-shadow:0 2px 0 #fff9ed,0 5px 12px rgba(120,13,41,.22) !important;
+  animation:heartZoom 1.8s ease-in-out infinite !important;
+  transform-origin:center !important;
+}
+@keyframes heartZoom{
+  0%,100%{transform:scale(.82);opacity:.88}
+  50%{transform:scale(1.18);opacity:1}
+}
+
+/* Premium engagement date card */
+.box.date-card{
+  position:relative !important;
+  overflow:hidden !important;
+  border:1.5px solid #d1a044 !important;
+  border-radius:18px !important;
+  background:linear-gradient(135deg,rgba(255,252,245,.96),rgba(255,244,222,.92)) !important;
+  box-shadow:0 8px 22px rgba(94,18,43,.14),inset 0 1px 0 rgba(255,255,255,.95) !important;
+}
+.box.date-card::before{
+  content:"";
+  position:absolute;
+  inset:6px;
+  border:1px solid rgba(209,160,68,.38);
+  border-radius:13px;
+  pointer-events:none;
+}
+.box.date-card::after{
+  content:"♥";
+  position:absolute;
+  top:5px;
+  right:12px;
+  color:#c51f54;
+  font-size:12px;
+  opacity:.8;
+}
+.box.date-card small{
+  position:relative;
+  z-index:1;
+  color:#8b5a2b !important;
+  font-family:"Montserrat",Arial,sans-serif !important;
+  font-size:11px !important;
+  font-weight:700 !important;
+  letter-spacing:1.6px !important;
+}
+.box.date-card strong{
+  position:relative;
+  z-index:1;
+  color:#741a38 !important;
+  font-family:"Playfair Display","Cormorant Garamond",Georgia,serif !important;
+  font-size:29px !important;
+  font-style:italic !important;
+  font-weight:700 !important;
+  letter-spacing:.4px !important;
+}
+.calendar-icon{
+  width:31px !important;
+  height:31px !important;
+  border:0 !important;
+  border-radius:9px !important;
+  background:linear-gradient(145deg,#8b183b,#c51f54) !important;
+  color:#fff !important;
+  box-shadow:0 4px 9px rgba(123,23,53,.22) !important;
+  font-size:17px !important;
+}
+.date-value{font-size:30px !important;color:#741a38 !important;}
+
+@media(max-width:900px){
+  .ring-corner.left-corner,.ring-corner.right-corner{bottom:20px !important;}
+  .names > .between-heart{width:54px !important;height:54px !important;font-size:44px !important;}
+}
+@media(max-width:600px){
+  .ring-corner.left-corner,.ring-corner.right-corner{bottom:15px !important;}
+  .names > .between-heart{width:44px !important;height:44px !important;font-size:36px !important;}
+  .box.date-card strong{font-size:21px !important;}
+  .calendar-icon{width:24px !important;height:24px !important;font-size:13px !important;}
+  .date-value{font-size:23px !important;}
+}
+
+
+/* ===== SGUNMS WEBSITE PROMO — BLINKING IN FOOTER TICKER ===== */
+.love-ticker-content .website-promo {
+  font-family:"Cormorant Garamond", Georgia, serif !important;
+  font-weight:800 !important;
+  color:#a50f45 !important;
+  text-shadow:0 0 8px rgba(255, 105, 160, .35) !important;
+  animation:sgunmsBlink 1.25s ease-in-out infinite !important;
+}
+
+@keyframes sgunmsBlink {
+  0%, 100% { opacity:1; transform:scale(1); }
+  50% { opacity:.22; transform:scale(1.06); }
+}
+
+/* ===== HERO INVITATION POSITION ===== */
+.invite{margin-top:12px !important;margin-bottom:8px !important;text-align:center !important;font-size:16px !important;line-height:1.45 !important;}
+.entry{margin-top:8px !important;margin-bottom:4px !important;}
+.note{margin-top:4px !important;font-size:12px !important;line-height:1.3 !important;}
+@media (min-width:769px){.invite,.entry,.note{position:relative;top:8px;}}
+@media (max-width:768px){.invite{font-size:14px !important;}.note{font-size:10px !important;}}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Counter | Sagum Management System</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <link rel="stylesheet" href="../css/cash-counter.css"">
+<script src="offline-test.js"></script>
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+<body>
+<div class="header">
+    <div class="headerLeft">
+        <button class="menuToggle" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="header-title">💵 Cash Counter</div>
+    </div>
+    <div class="header-btns">
+        <button class="logoutBtn" id="logoutBtn">🚪 Logout</button>
+    </div>
+</div>
+
+<div class="main">
+    <!-- साइडबार -->
+    <div class="sidebar" id="sidebar">
+        <a href="home.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="entry.html"><i class="fa-solid fa-user-plus"></i> Shagun Entry</a>
+        <a href="cash-counter.html" class="active"><i class="fa-solid fa-calculator"></i> Cash Counter</a>
+        <a href="cashbook.html"><i class="fa-solid fa-book-open"></i> Cash In / Cash Out</a>
+        <a href="report.html"><i class="fa-solid fa-chart-pie"></i> Report</a>
+        <a href="admin.html"><i class="fa-solid fa-crown"></i> Super Admin</a>
+    </div>
+
+    <div class="container">
+        <div class="topCard">
+            <h2>Total System Amount</h2>
+            <input type="text" id="targetAmount" readonly>
+        </div>
+
+        <div class="summary">
+            <div class="card">
+                <h3>Counted Cash</h3>
+                <h1 id="totalCash">₹0</h1>
+            </div>
+            <div class="card">
+                <h3>Difference</h3>
+                <h1 id="difference">₹0</h1>
+            </div>
+        </div>
+
+        <div class="counter">
+            <h2>💰 Note Denomination</h2>
+            <table>
+                <tr><th>Note</th><th>Qty</th><th>Amount</th></tr>
+                <tr><td>₹500</td><td><button class="minus">−</button><input class="qty" data-note="500" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹200</td><td><button class="minus">−</button><input class="qty" data-note="200" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹100</td><td><button class="minus">−</button><input class="qty" data-note="100" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹50</td><td><button class="minus">−</button><input class="qty" data-note="50" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹20</td><td><button class="minus">−</button><input class="qty" data-note="20" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹10</td><td><button class="minus">−</button><input class="qty" data-note="10" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹5</td><td><button class="minus">−</button><input class="qty" data-note="5" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹2</td><td><button class="minus">−</button><input class="qty" data-note="2" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+                <tr><td>₹1</td><td><button class="minus">−</button><input class="qty" data-note="1" value="0"><button class="plus">+</button></td><td class="amount">₹0</td></tr>
+            </table>
+
+            <div class="buttons">
+                <button id="resetBtn">🔄 Reset</button>
+                <button onclick="window.print()">🖨 Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div>🌐 Visit us at <strong>www.sgunms.in</strong></div>
+</div>
+
+
+<script src="../js/visitor.js""></script>
+    <script src="../js/guest-auth.js"></script>
+<script src="../js/cash-counter.js"" defer></script>
+  <script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

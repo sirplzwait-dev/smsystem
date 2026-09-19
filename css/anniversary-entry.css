@@ -1,0 +1,268 @@
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;min-height:100%;font-family:'Nirmala UI','Mangal','Segoe UI',Arial,sans-serif;color:#721323}
+body{background:#f7e8df}
+.anniversary-page{position:relative;width:100vw;min-height:100vh;overflow:hidden;background:url('../assets/anniversary-background.png') center/cover no-repeat}
+.page-glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.18),transparent 52%);pointer-events:none}
+.content{position:relative;z-index:2;width:min(1120px,94vw);min-height:100vh;margin:auto;display:flex;flex-direction:column;align-items:center;text-align:center;padding:clamp(28px,5vh,65px) 0 25px}
+.top-ornament{position:absolute;z-index:3;top:6%;left:50%;transform:translateX(-50%);font-size:34px;color:#c21b32;text-shadow:0 3px 12px rgba(120,10,25,.2);animation:float 3s ease-in-out infinite;display:none}
+.happy-title{font-family:Georgia,'Times New Roman',serif;color:#8c1627;line-height:.9;text-shadow:0 2px 0 #fff7ef,0 7px 15px rgba(95,10,20,.15);margin-bottom:20px}
+.happy-title span{display:block;font-size:clamp(40px,4.2vw,66px);font-style:italic;font-weight:700}
+.happy-title strong{display:block;font-size:clamp(54px,6.4vw,94px);font-weight:800;font-style:italic;letter-spacing:-2px}
+.happy-title:before,.happy-title:after{content:'♥';font-family:Arial;color:#b81b30;font-size:24px;margin:0 14px;vertical-align:middle}
+.quote{font-family:Georgia,'Times New Roman',serif;font-style:italic;color:#6b252d;font-size:clamp(14px,1.55vw,20px);line-height:1.45;margin:0 0 22px;text-shadow:0 1px 2px #fff}
+.couple-row{width:min(1000px,94vw);display:grid;grid-template-columns:1fr 190px 1fr;gap:22px;align-items:center}
+.side-card{min-height:112px;padding:16px 25px 12px;border:2px solid #d6a74f;border-radius:8px;background:linear-gradient(180deg,rgba(255,252,246,.96),rgba(255,242,226,.9));box-shadow:0 8px 22px rgba(104,34,28,.13),inset 0 0 0 1px rgba(255,255,255,.8);position:relative;display:flex;flex-direction:column;justify-content:center}
+.side-card:after{content:'❧';position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);color:#b9872d;font-size:20px;background:#fff3e7;padding:0 8px}
+.tiny-heart{position:absolute;top:7px;left:10px;color:#bd1d31;font-family:Arial;font-size:16px}.wife-card .tiny-heart{left:auto;right:10px}
+.person-name{font-family:'Nirmala UI','Mangal','Segoe UI',Arial,sans-serif;font-size:clamp(26px,3vw,43px);font-weight:900;line-height:1.1;color:#861626;text-shadow:0 1px 0 #fff;word-break:break-word}
+.role{margin-top:9px;font:800 13px 'Segoe UI',Arial,sans-serif;letter-spacing:3px;color:#875d39}
+.anniversary-badge{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;min-height:155px}
+.badge-heart{width:150px;height:135px;position:relative;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 9px 7px rgba(92,10,22,.22));animation:float 3.2s ease-in-out infinite}
+.badge-heart:before{content:'♥';position:absolute;font-family:Arial;font-size:150px;line-height:1;color:#b5152c;text-shadow:0 4px 0 #7d0c1b,0 0 18px rgba(255,80,80,.2)}
+.badge-heart:after{content:'';position:absolute;top:31px;left:42px;width:72px;height:27px;border-radius:50%;background:rgba(255,255,255,.25);filter:blur(5px);transform:rotate(-18deg)}
+.badge-heart span{position:relative;z-index:2;color:#ffe8a4;font:bold clamp(25px,2.4vw,36px) 'Segoe UI',Arial,sans-serif;text-shadow:0 2px 4px #6f0713;margin-top:-5px}
+.badge-ribbon{margin-top:-6px;padding:6px 27px;background:linear-gradient(180deg,#bd1b2d,#84101b);border:1.5px solid #e4b451;border-radius:3px;color:#fff0c7;font:700 17px Georgia,serif;box-shadow:0 5px 12px rgba(87,10,18,.22)}
+.wish-decoration{font-family:Arial;color:#bd1c31;font-size:28px;margin-top:14px;line-height:1}.wish-decoration:before,.wish-decoration:after{content:'────';color:#b98a34;font-size:17px;vertical-align:middle;margin:0 10px}
+h1{margin:3px 0 2px;font-size:clamp(36px,4.5vw,58px);font-weight:900;color:#8e1427;text-shadow:0 2px 0 #fff7f0,0 4px 10px rgba(105,12,25,.14)}
+.wish{margin:0;color:#54262a;font-size:clamp(14px,1.45vw,18px);line-height:1.55;font-weight:600;text-shadow:0 1px 2px #fff8f2}.wish:before{content:'❦';color:#b98930;margin-right:12px}.wish:after{content:'❦';color:#b98930;margin-left:12px}
+.guest-btn{margin-top:22px;height:43px;min-width:235px;padding:0 25px;border:2px solid #e1b24e;border-radius:24px;background:linear-gradient(180deg,#b2192d,#7f0e19);color:#fff3ca;font-size:17px;font-weight:900;letter-spacing:1.5px;cursor:pointer;box-shadow:0 8px 18px rgba(89,10,19,.28),inset 0 1px rgba(255,255,255,.3);transition:.25s;position:relative;z-index:5}.guest-btn span{font-size:27px;line-height:0;vertical-align:-2px;margin-left:7px}.guest-btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(89,10,19,.34)}
+.bottom-message{margin-top:auto;padding-top:20px;color:#fff0dc;font-family:Georgia,serif;font-style:italic;font-size:22px;text-shadow:0 2px 5px #64101a}.bottom-message small{font-size:16px}
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(54,6,13,.45);backdrop-filter:blur(7px)}.modal.open{display:flex}
+.dialog{position:relative;width:min(440px,94vw);padding:25px;border:2px solid #d4a44b;border-radius:18px;background:linear-gradient(145deg,#fffdf9,#fff0ee);box-shadow:0 28px 80px rgba(45,8,12,.4);animation:pop .22s ease-out}.close{position:absolute;right:10px;top:10px;width:32px;height:32px;border:0;border-radius:50%;background:#8d1420;color:#fff;font-size:22px;cursor:pointer}.dialog-title{text-align:center;color:#8e1526;font:bold 22px Georgia,serif}.dialog-sub{text-align:center;margin:4px 0 16px;color:#9b6b3b;font-weight:700}.dialog label,.entry-type-label{display:block;text-align:left;margin:10px 0 5px;color:#68242c;font-weight:800;font-size:13px}.dialog input{width:100%;height:43px;border:1.5px solid #d4ad5b;border-radius:10px;padding:0 13px;outline:0;background:#fff;font:600 14px 'Nirmala UI','Mangal','Segoe UI',Arial,sans-serif}.dialog input:focus{border-color:#a71829;box-shadow:0 0 0 4px rgba(167,24,41,.08)}.entry-types{display:grid;grid-template-columns:1fr 1fr;gap:8px}.type-btn{height:40px;border:1.5px solid #d4ad5b;border-radius:10px;background:#fff;color:#76202a;font-weight:800;cursor:pointer}.type-btn.active{background:#8f1421;color:#fff4d1;border-color:#8f1421}.hidden{display:none}.save-entry{width:100%;height:44px;margin-top:17px;border:0;border-radius:11px;background:linear-gradient(135deg,#8b1220,#bb2638);color:#fff4d1;font-weight:900;cursor:pointer;box-shadow:0 7px 16px rgba(139,18,32,.2)}.entry-message{min-height:20px;margin-top:9px;font-size:12px;font-weight:800;text-align:center}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes pop{from{opacity:0;transform:scale(.95) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@media(max-width:800px){body{overflow:auto}.anniversary-page{min-height:100vh}.content{min-height:100vh;padding:30px 0 22px}.happy-title span{font-size:43px}.happy-title strong{font-size:58px;letter-spacing:-1px}.quote{font-size:13px}.couple-row{grid-template-columns:1fr;gap:8px}.side-card{min-height:78px;padding:10px 15px}.person-name{font-size:28px}.role{font-size:11px;margin-top:4px}.anniversary-badge{order:2;min-height:120px}.husband-card{order:1}.wife-card{order:3}.badge-heart{width:120px;height:105px}.badge-heart:before{font-size:118px}.badge-heart:after{top:28px;left:35px;width:60px}.badge-ribbon{font-size:14px;padding:5px 22px}.wish-decoration{margin-top:4px}h1{font-size:35px}.wish{font-size:12px;padding:0 12px}.guest-btn{margin-top:16px;min-width:205px;height:40px;font-size:15px}.bottom-message{font-size:18px;padding-top:18px}.bottom-message small{font-size:13px}}
+
+/* One-screen layout: no page scrolling */
+html, body { width:100%; height:100%; overflow:hidden !important; }
+body { min-height:0; }
+.anniversary-page { width:100vw; height:100vh; min-height:0; overflow:hidden; }
+.content { width:min(1120px,94vw); height:100vh; min-height:0; padding:clamp(18px,3.2vh,34px) 0 clamp(10px,1.5vh,18px); justify-content:flex-start; }
+.happy-title { margin-bottom:clamp(8px,1.3vh,16px); }
+.happy-title span { font-size:clamp(32px,5.1vh,52px); }
+.happy-title strong { font-size:clamp(44px,7.8vh,76px); }
+.quote { font-size:clamp(12px,1.9vh,17px); margin-bottom:clamp(10px,1.7vh,16px); }
+.couple-row { width:min(1000px,94vw); grid-template-columns:1fr 160px 1fr; gap:16px; }
+.side-card { min-height:clamp(78px,12vh,100px); padding:12px 20px 10px; }
+.person-name { font-size:clamp(22px,3.4vh,34px); }
+.role { margin-top:6px; font-size:11px; }
+.anniversary-badge { min-height:clamp(100px,15vh,125px); }
+.badge-heart { width:125px; height:112px; }
+.badge-heart:before { font-size:125px; }
+.badge-heart:after { top:27px; left:35px; width:60px; }
+.badge-heart span { font-size:clamp(22px,3vh,31px); }
+.badge-ribbon { font-size:14px; padding:5px 23px; }
+.wish-decoration { margin-top:clamp(4px,1vh,10px); font-size:24px; }
+h1 { margin:1px 0 1px; font-size:clamp(30px,5.3vh,48px); }
+.wish { font-size:clamp(12px,1.8vh,16px); line-height:1.35; }
+.guest-btn { margin-top:clamp(10px,1.8vh,17px); height:38px; min-width:210px; padding:0 22px; font-size:15px; }
+.bottom-message { margin-top:auto; padding-top:8px; font-size:18px; }
+.bottom-message small { font-size:13px; }
+
+@media (max-width:800px) {
+  html, body { overflow:hidden !important; }
+  .content { height:100vh; min-height:0; padding:14px 0 10px; overflow:hidden; }
+  .happy-title { margin-bottom:7px; }
+  .happy-title span { font-size:30px; }
+  .happy-title strong { font-size:43px; }
+  .quote { font-size:11px; margin-bottom:7px; }
+  .couple-row { grid-template-columns:1fr 105px 1fr; gap:6px; width:96vw; }
+  .side-card { min-height:68px; padding:8px 7px; }
+  .person-name { font-size:18px; }
+  .role { font-size:8px; letter-spacing:2px; margin-top:3px; }
+  .anniversary-badge { min-height:86px; }
+  .badge-heart { width:86px; height:78px; }
+  .badge-heart:before { font-size:88px; }
+  .badge-heart:after { top:20px; left:25px; width:42px; height:18px; }
+  .badge-heart span { font-size:19px; }
+  .badge-ribbon { font-size:10px; padding:3px 12px; }
+  .wish-decoration { margin-top:2px; font-size:19px; }
+  h1 { font-size:30px; }
+  .wish { font-size:10px; line-height:1.25; }
+  .guest-btn { margin-top:8px; min-width:170px; height:34px; font-size:13px; }
+  .bottom-message { padding-top:5px; font-size:14px; }
+  .bottom-message small { font-size:10px; }
+}
+
+
+/* Clean couple names: no boxes/role labels, larger attractive typography */
+.side-card {
+  min-height: auto !important;
+  padding: 8px 18px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.side-card:after, .tiny-heart, .role { display:none !important; }
+.person-name {
+  font-family: 'Nirmala UI','Mangal','Segoe UI',Arial,sans-serif !important;
+  font-size: clamp(30px, 4.3vh, 46px) !important;
+  font-weight: 900 !important;
+  color: #7d1223 !important;
+  letter-spacing: .2px;
+  text-shadow: 0 2px 0 #fff9f1, 0 4px 10px rgba(90,12,25,.18) !important;
+}
+.husband-card .person-name:before { content:'♥'; color:#b71c31; font-size:.42em; vertical-align:middle; margin-right:10px; }
+.wife-card .person-name:after { content:'♥'; color:#b71c31; font-size:.42em; vertical-align:middle; margin-left:10px; }
+.couple-row { grid-template-columns: 1fr 190px 1fr !important; gap: 10px !important; }
+.badge-heart { transform: scale(1.05); }
+@media(max-width:800px){
+  .couple-row { grid-template-columns: 1fr 92px 1fr !important; gap: 4px !important; }
+  .person-name { font-size: clamp(20px, 4.8vw, 30px) !important; }
+  .side-card { padding: 5px 3px !important; }
+  .husband-card .person-name:before, .wife-card .person-name:after { margin:0 4px; }
+}
+
+
+/* Animated large couple names */
+.person-name {
+  position: relative;
+  display: inline-block;
+  font-size: clamp(36px, 5.2vh, 58px) !important;
+  font-weight: 900 !important;
+  color: #8b1224 !important;
+  letter-spacing: .4px;
+  animation: coupleNameFloat 2.8s ease-in-out infinite;
+}
+.husband-card .person-name { animation-delay: 0s; }
+.wife-card .person-name { animation-delay: .35s; }
+.person-name::after {
+  content: '';
+  position: absolute;
+  left: 8%; right: 8%; bottom: -5px;
+  height: 3px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, transparent, #d4a33f, #fff1ad, #d4a33f, transparent);
+  transform: scaleX(.55);
+  animation: nameLineGlow 2.4s ease-in-out infinite;
+}
+@keyframes coupleNameFloat {
+  0%,100% { transform: translateY(0) scale(1); text-shadow: 0 2px 0 #fff9f1, 0 4px 12px rgba(90,12,25,.18); }
+  50% { transform: translateY(-4px) scale(1.025); text-shadow: 0 2px 0 #fff9f1, 0 7px 18px rgba(139,18,36,.28); }
+}
+@keyframes nameLineGlow {
+  0%,100% { opacity:.35; transform:scaleX(.55); }
+  50% { opacity:1; transform:scaleX(1); }
+}
+@media(max-width:800px){
+  .person-name { font-size: clamp(23px, 5.8vw, 35px) !important; }
+}
+
+
+/* Romantic cursive typography - matches the anniversary invitation style */
+.happy-title,
+.happy-title span,
+.happy-title strong,
+.person-name {
+  font-family: "Edwardian Script ITC", "Monotype Corsiva", "Brush Script MT", "Segoe Script", "Lucida Handwriting", cursive !important;
+}
+.happy-title span {
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+}
+.happy-title strong {
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+.person-name {
+  font-size: clamp(42px, 6.2vh, 68px) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.05 !important;
+  color: #8b1224 !important;
+  text-shadow: 0 2px 0 #fffaf2, 0 5px 14px rgba(100,15,25,.2) !important;
+}
+@media(max-width:800px){
+  .person-name { font-size: clamp(27px, 7vw, 40px) !important; }
+}
+
+/* Shine Bravely font for husband/wife names */
+@font-face {
+  font-family: "Shine Bravely";
+  src: url("../assets/Shine Bravely.otf") format("opentype");
+  font-display: swap;
+}
+.person-name {
+  font-family: "Shine Bravely", cursive !important;
+  text-transform: capitalize !important;
+  font-size: clamp(44px, 6.4vh, 72px) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.05 !important;
+}
+@media(max-width:800px){
+  .person-name { font-size: clamp(28px, 7vw, 42px) !important; }
+}
+
+
+/* Appear In Style font for Happy Anniversary title */
+@font-face {
+  font-family: "Appear In Style";
+  src: url("../assets/Appear In Style.otf") format("opentype");
+  font-display: swap;
+}
+.happy-title,
+.happy-title span,
+.happy-title strong {
+  font-family: "Appear In Style", cursive !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Happy Anniversary — single line and larger */
+.happy-title {
+  white-space: nowrap !important;
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+  gap: 18px !important;
+  margin-bottom: 18px !important;
+}
+.happy-title span,
+.happy-title strong {
+  display: inline !important;
+  white-space: nowrap !important;
+  font-size: clamp(58px, 9vh, 112px) !important;
+  line-height: .9 !important;
+}
+@media (max-width: 800px) {
+  .happy-title {
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+  }
+  .happy-title span,
+  .happy-title strong {
+    font-size: clamp(42px, 11vw, 68px) !important;
+  }
+}
+
+/* Ams Ganesh font for Hindi शुभकामनाएँ heading */
+@font-face {
+  font-family: "Ams Ganesh";
+  src: url("../assets/Ams Ganesh.ttf") format("truetype");
+  font-display: swap;
+}
+.anniversary-page h1 {
+  font-family: "Ams Ganesh", "Nirmala UI", "Mangal", sans-serif !important;
+  font-weight: 400 !important;
+}
+
+/* Ams Pankaj font — bold Hindi शुभकामनाएँ */
+@font-face {
+  font-family: "Ams Pankaj";
+  src: url("../assets/Ams Pankaj (1).ttf") format("truetype");
+  font-display: swap;
+}
+.anniversary-page h1 {
+  font-family: "Ams Pankaj", "Nirmala UI", "Mangal", sans-serif !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+  letter-spacing: .5px !important;
+  text-shadow: 0 2px 0 #fff8ef, 0 4px 10px rgba(90,12,25,.22) !important;
+}
+
+
+/* Final position adjustment: move the anniversary wishes section lower */
+.wish-decoration { margin-top: 42px !important; }
+@media (max-width:800px) { .wish-decoration { margin-top: 16px !important; } }

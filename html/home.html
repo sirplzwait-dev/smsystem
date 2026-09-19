@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | Sagum Management System</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <link rel="stylesheet" href="../css/home.css">
+<script src="offline-test.js"></script>
+  <link rel="stylesheet" href="../css/topbar.css">
+<style>
+:root{--maroon:#72001f;--gold:#c78b00;--bg:#f4f6fa;--text:#263044;--muted:#718096}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Sans','Noto Sans Devanagari',sans-serif}.header{height:68px;background:#fff;border-bottom:1px solid #e7eaf0;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(20,25,40,.05)}.headerLeft,.headerRight{display:flex;align-items:center;gap:14px}.menuToggle{border:0;background:#f5f6f9;width:40px;height:40px;border-radius:11px;cursor:pointer;color:var(--maroon)}.logo{font-size:20px;font-weight:800;color:var(--maroon)}.userName{font-weight:700;color:#4a5568}.logoutBtn{border:0;background:#fff1f2;color:#8b102c;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}.main{display:flex;min-height:calc(100vh - 68px)}.sidebar{width:250px;flex:none;background:linear-gradient(180deg,#72001f,#8d0624 55%,#c38a00);padding:24px 18px;box-shadow:5px 0 22px rgba(40,20,30,.08)}.sidebar:before{content:'SM System';display:block;color:#fff;font-size:27px;font-weight:800;margin:5px 18px 4px}.sidebar:after{content:'Sagun Management System';display:block;color:#f8dfe6;font-size:13px;margin:0 18px 30px}.sidebar a{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;padding:14px 16px;border-radius:15px;font-size:16px;font-weight:700;margin:7px 8px}.sidebar a.active{background:#fff;color:var(--maroon);box-shadow:0 7px 18px rgba(0,0,0,.1)}.content{flex:1;min-width:0;padding:24px 28px 40px}.home-top{background:#fff;border-radius:24px;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 8px 24px rgba(30,35,50,.06);margin-bottom:20px}.welcome h1{margin:0;color:var(--maroon);font-size:28px}.welcome p{margin:5px 0 0;color:var(--muted);font-size:15px}.home-actions{display:flex;gap:10px;align-items:center}.search{width:240px;background:#f4f5f7;border:0;border-radius:24px;padding:13px 18px;font-size:14px;outline:none}.action-btn{border:0;width:44px;height:44px;border-radius:50%;background:#7b0826;color:#fff;font-size:18px;cursor:pointer}.action-btn.gold{background:#b98500}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}.card{background:#fff;border-radius:18px;padding:18px 20px;min-height:132px;box-shadow:0 7px 20px rgba(30,35,50,.06);border-top:4px solid var(--gold)}.card:before{content:'📌';display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#fff6e6;font-size:17px;margin-bottom:12px}.card:nth-child(2):before{content:'🎉'}.card:nth-child(3):before{content:'💰'}.card:nth-child(4):before{content:'📅'}.card:nth-child(5):before{content:'💵'}.card:nth-child(6):before{content:'📱'}.card:nth-child(7):before{content:'🟢'}.card:nth-child(8):before{content:'🎁'}.card h3{margin:0;color:#687386;font-size:14px;font-weight:600}.card h1{margin:8px 0 0;color:var(--maroon);font-size:29px;line-height:1;font-weight:800}.section{background:#fff;border-radius:22px;padding:20px;box-shadow:0 7px 22px rgba(30,35,50,.06);margin-bottom:20px}.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.section-head h2{margin:0;color:var(--maroon);font-size:21px}.section-head p{margin:3px 0 0;color:var(--muted);font-size:12px}.event-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.event-tile{min-height:78px;border-radius:15px;padding:12px 13px;display:flex;align-items:center;gap:10px;border:1px solid transparent;cursor:pointer;transition:.18s;box-shadow:0 3px 10px rgba(20,25,40,.03)}.event-tile:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(20,25,40,.09)}.event-tile .ico{width:39px;height:39px;border-radius:11px;background:rgba(255,255,255,.82);display:grid;place-items:center;font-size:21px;flex:none}.event-tile strong{display:block;font-size:15px;color:#273043}.event-tile small{display:block;margin-top:3px;font-size:11px;color:#697586}.e1{background:#fff4e8;border-color:#ffd9ad}.e2{background:#eef6ff;border-color:#cfe2ff}.e3{background:#fff0f6;border-color:#ffd1e4}.e4{background:#fffbe8;border-color:#f7e59b}.e5{background:#f8efff;border-color:#e5d0ff}.e6{background:#ebfbf8;border-color:#bceee4}.e7{background:#effbf1;border-color:#c8efce}.e8{background:#fff0f0;border-color:#ffd0d0}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.quick a{background:#fff;border-radius:15px;padding:15px;text-decoration:none;color:#303849;font-weight:700;border:1px solid #e8ebf0;box-shadow:0 4px 12px rgba(20,25,40,.04)}.quick a span{font-size:21px;margin-right:8px}.quick a small{display:block;color:#7b8798;margin-top:4px;font-weight:500;font-size:11px}.hidden-data{display:none!important}@media(max-width:1050px){.sidebar{width:220px}.cards{grid-template-columns:repeat(2,1fr)}.event-grid{grid-template-columns:repeat(2,1fr)}.search{width:180px}}@media(max-width:700px){.sidebar{position:fixed;left:-270px;top:68px;bottom:0;z-index:90;transition:.2s}.sidebar.active{left:0}.content{padding:14px}.home-top{padding:16px;border-radius:18px}.welcome h1{font-size:22px}.search{display:none}.cards{grid-template-columns:repeat(2,1fr);gap:9px}.card{min-height:120px;padding:14px}.card h1{font-size:24px}.card h3{font-size:12px}.event-grid{grid-template-columns:repeat(2,1fr);gap:7px}.event-tile{min-height:70px;padding:9px}.event-tile strong{font-size:13px}.event-tile small{font-size:10px}.quick{grid-template-columns:repeat(2,1fr)}}
+
+/* Guaranteed visible New Event card */
+.new-event-area{display:block!important;visibility:visible!important;opacity:1!important}
+.new-event-card{
+ min-height:155px;
+ border-radius:22px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+ cursor:pointer;
+ padding:18px;
+ box-sizing:border-box;
+ background:linear-gradient(135deg,#fff7df 0%,#fff0f5 50%,#eef1ff 100%);
+ border:2px dashed #c89a35;
+ box-shadow:0 8px 24px rgba(60,35,15,.12);
+ transition:transform .2s,box-shadow .2s;
+ animation:newEventPulse 2.5s ease-in-out infinite;
+}
+.new-event-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(60,35,15,.18)}
+.new-event-icon{
+ width:52px;height:52px;border-radius:16px;
+ display:grid;place-items:center;
+ color:#fff;font-size:31px;font-weight:800;
+ background:linear-gradient(135deg,#7b0826,#bd8500);
+ box-shadow:0 7px 17px rgba(123,8,38,.25)
+}
+.new-event-title{margin-top:9px;font-size:20px;font-weight:800;color:#7b0826}
+.new-event-text{margin-top:4px;font-size:12px;color:#687386}
+.new-event-pill{margin-top:9px;padding:5px 12px;border-radius:999px;background:#fff;border:1px solid #e5cf9a;color:#7b0826;font-size:11px;font-weight:800}
+@keyframes newEventPulse{
+ 0%,100%{box-shadow:0 8px 24px rgba(60,35,15,.12),0 0 0 0 rgba(200,154,53,.2)}
+ 50%{box-shadow:0 10px 28px rgba(60,35,15,.15),0 0 0 7px rgba(200,154,53,.05)}
+}
+
+
+/* Clean event cards */
+#dynamicHomeEvents{display:grid;grid-template-columns:repeat(4,minmax(250px,1fr));gap:12px;align-items:stretch}
+.event-card-premium{
+ min-height:190px;border-radius:18px;padding:18px;cursor:pointer;position:relative;overflow:hidden;
+ border:1px solid #eadfd5;box-shadow:0 6px 18px rgba(35,25,20,.07);
+ transition:transform .18s,box-shadow .18s,border-color .18s;background:#fff;
+}
+.event-card-premium:before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:#8a0a2d}
+.event-card-premium:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(35,25,20,.12);border-color:#d9c5b8}
+.type-tilak{background:linear-gradient(145deg,#fffaf4,#fff)}
+.type-barat{background:linear-gradient(145deg,#f6fbff,#fff)}
+.type-reception{background:linear-gradient(145deg,#fff7fa,#fff)}
+.type-birthday{background:linear-gradient(145deg,#fffdf3,#fff)}
+.type-anniversary{background:linear-gradient(145deg,#fbf7ff,#fff)}
+.type-engagement{background:linear-gradient(145deg,#f5fffd,#fff)}
+.type-mundan{background:linear-gradient(145deg,#f7fff8,#fff)}
+.type-griha-pravesh{background:linear-gradient(145deg,#fff8f8,#fff)}
+.event-card-top{display:flex;justify-content:flex-end;align-items:center;min-height:12px}
+.event-big-icon{display:none}
+.event-open{font-size:25px;line-height:1;color:#8a0a2d;font-weight:500}
+.event-card-title{margin-top:8px;font-size:18px;font-weight:800;color:#5f0922;line-height:1.25;padding-right:12px}
+.event-card-date,.event-card-person{margin-top:9px;font-size:12px;color:#667085;line-height:1.3}
+.event-card-footer{position:absolute;left:18px;right:18px;bottom:14px;padding-top:10px;border-top:1px solid #eadfd5;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;color:#5f0922}
+.event-card-footer>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.home-entry-amount{margin-left:auto;white-space:nowrap}
+.home-event-report-btn,.home-event-delete-btn{border:1px solid #e4d5c9;background:#fff;color:#6b1029;border-radius:8px;padding:5px 8px;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap}
+.home-event-report-btn:hover,.home-event-delete-btn:hover{background:#fff6ec;transform:translateY(-1px)}
+
+.new-event-area .event-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.new-event-area .new-event-card{min-height:190px}
+
+/* Event details modal */
+#eventDetailModal{display:none!important;position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;z-index:2147483647!important;pointer-events:none!important}#eventDetailModal.eventDetailModalOpen{display:block!important;pointer-events:auto!important}
+.event-modal-backdrop{position:absolute;inset:0;background:rgba(20,25,35,.48);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px}
+.event-modal{width:min(520px,96vw);background:#fff;border-radius:24px;box-shadow:0 25px 70px rgba(0,0,0,.25);overflow:hidden}
+.event-modal-head{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#fff8ee,#f8f4ff);border-bottom:1px solid #eee}
+.event-modal-head>div{display:flex;align-items:center;gap:12px}
+.event-modal-icon{width:48px;height:48px;border-radius:15px;background:#fff;display:grid;place-items:center;font-size:25px}
+.event-modal-head h3{margin:0;color:#72001f;font-size:20px}
+.event-modal-head p{margin:3px 0 0;color:#7b8798;font-size:12px}
+.event-modal-head button{border:0;background:#f3f4f6;border-radius:50%;width:34px;height:34px;font-size:24px;cursor:pointer}
+.event-modal-main{padding:20px}
+.detail-row{display:flex;justify-content:space-between;gap:15px;padding:11px 0;border-bottom:1px solid #eef0f3;font-size:13px}
+.detail-row span{color:#687386}.detail-row b{color:#273043;text-align:right}
+.detail-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:15px}
+.detail-stats div{padding:12px 8px;border-radius:14px;background:#f7f8fa;text-align:center}
+.detail-stats small{display:block;font-size:10px;color:#687386}.detail-stats strong{display:block;margin-top:5px;font-size:15px;color:#72001f}
+.event-modal-actions{padding:15px 20px;background:#fafafa;border-top:1px solid #eee;display:flex;justify-content:flex-end;gap:10px}
+.modal-close-btn,.continue-entry-btn{border:0;border-radius:11px;padding:11px 16px;font-weight:800;cursor:pointer}
+.modal-close-btn{background:#eef0f3;color:#4b5563}.continue-entry-btn{background:linear-gradient(135deg,#72001f,#a70c35);color:#fff;box-shadow:0 6px 14px rgba(114,0,31,.2)}
+@media(max-width:900px){.new-event-area .event-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.new-event-area .event-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.event-card-premium{min-height:175px;padding:13px}.event-card-title{font-size:16px}.detail-stats{grid-template-columns:repeat(2,1fr)}.event-modal-actions{flex-direction:column-reverse}.modal-close-btn,.continue-entry-btn{width:100%}}
+
+
+.delete-event-btn{border:1px solid #e6b8b8;border-radius:11px;padding:11px 14px;font-weight:800;cursor:pointer;background:#fff0f0;color:#a40022;margin-right:auto}
+.delete-event-btn:hover{background:#ffe0e0}
+@media(max-width:700px){.delete-event-btn{margin-right:0;width:100%}}
+
+
+/* Beautiful Delete Warning Popup */
+.delete-confirm-modal{
+ position:fixed;inset:0;z-index:10050;
+ align-items:center;justify-content:center;
+ padding:18px;background:rgba(20,22,30,.55);
+ backdrop-filter:blur(5px);
+}
+.delete-confirm-box{
+ width:min(430px,94vw);background:#fff;border-radius:24px;
+ padding:25px 24px 21px;text-align:center;
+ box-shadow:0 25px 80px rgba(0,0,0,.28);
+ border:1px solid rgba(160,20,50,.10);
+ animation:deletePopupIn .2s ease-out;
+}
+@keyframes deletePopupIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.delete-warning-icon{
+ width:68px;height:68px;border-radius:22px;margin:0 auto 13px;
+ display:grid;place-items:center;font-size:34px;
+ background:#fff3d6;box-shadow:0 7px 18px rgba(180,120,0,.12);
+}
+.delete-confirm-title{font-size:22px;font-weight:900;color:#7b0826}
+.delete-event-name{
+ margin:9px auto 13px;width:fit-content;max-width:100%;
+ padding:7px 14px;border-radius:999px;
+ background:#fff4f6;color:#8b1231;font-weight:800;font-size:13px;
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.delete-confirm-text{font-size:13px;line-height:1.55;color:#667085}
+.delete-confirm-text b{color:#8b1231}
+.delete-confirm-actions{display:flex;gap:10px;margin-top:21px}
+.delete-confirm-actions button{
+ flex:1;border:0;border-radius:12px;padding:12px 10px;
+ font-size:13px;font-weight:800;cursor:pointer;
+}
+.delete-cancel-btn{background:#f1f3f5;color:#4b5563}
+.delete-cancel-btn:hover{background:#e5e7eb}
+.delete-ok-btn{
+ background:linear-gradient(135deg,#a40022,#d12b4e);color:#fff;
+ box-shadow:0 7px 16px rgba(164,0,34,.22)
+}
+.delete-ok-btn:hover{filter:brightness(.96)}
+.delete-success-toast{
+ position:fixed;left:50%;bottom:25px;z-index:10100;
+ transform:translate(-50%,15px);opacity:0;pointer-events:none;
+ background:#166534;color:#fff;padding:11px 18px;border-radius:12px;
+ box-shadow:0 10px 25px rgba(0,0,0,.18);font-size:13px;font-weight:800;
+ transition:.25s ease;
+}
+.delete-success-toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:520px){
+ .delete-confirm-box{padding:22px 17px 17px;border-radius:21px}
+ .delete-confirm-actions{flex-direction:column-reverse}
+ .delete-confirm-actions button{width:100%}
+}
+
+
+.event-full-modal{max-height:92vh;display:flex;flex-direction:column}
+.event-detail-scroll{padding:18px 20px;overflow:auto}
+.event-info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.event-info-box{padding:12px;border-radius:14px;background:#f7f8fa;border:1px solid #eef0f3}
+.event-info-box small{display:block;color:#687386;font-size:10px}.event-info-box b{display:block;margin-top:5px;color:#273043;font-size:13px}
+.event-report-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:13px 0}
+.event-report-summary>div{padding:13px 9px;text-align:center;border-radius:14px;background:linear-gradient(135deg,#fff8ee,#faf5ff)}
+.event-report-summary span{display:block;color:#687386;font-size:10px}.event-report-summary strong{display:block;margin-top:5px;color:#7b0826;font-size:15px}
+.event-extra-details{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:15px}
+.event-extra-details>div{display:flex;justify-content:space-between;gap:10px;padding:9px 11px;border-radius:11px;background:#fafafa;border:1px solid #eee;font-size:11px}
+.event-extra-details span{color:#687386}.event-extra-details b{color:#273043;text-align:right}
+.report-section-title{font-size:14px;font-weight:900;color:#7b0826;margin:10px 0}
+.event-export-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.event-export-grid button{border:1px solid #ead7a4;background:#fffaf0;color:#7b0826;border-radius:11px;padding:10px 7px;font-size:11px;font-weight:800;cursor:pointer}
+.event-export-grid button:hover{background:#fff1cf;transform:translateY(-1px)}
+@media(max-width:700px){.event-info-grid,.event-report-summary{grid-template-columns:repeat(2,1fr)}.event-extra-details{grid-template-columns:1fr}.event-export-grid{grid-template-columns:repeat(2,1fr)}.event-detail-scroll{padding:14px}.event-full-modal{max-height:94vh}}
+
+
+/* Other Tools cards - visual enhancement only */
+.other-tools-section .quick{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.other-tools-section .quick a{min-height:116px;padding:18px 20px;border-radius:20px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
+.other-tools-section .quick a:after{content:'›';position:absolute;right:18px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;font-size:28px;line-height:1;color:currentColor;box-shadow:0 3px 10px rgba(20,25,40,.08)}
+.other-tools-section .quick a:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(30,35,50,.12)}
+.other-tools-section .quick a:nth-child(1){background:linear-gradient(135deg,#eaf4ff,#d7eaff);border-color:#a9d0ff;color:#183b67}
+.other-tools-section .quick a:nth-child(2){background:linear-gradient(135deg,#fff4df,#ffe2b3);border-color:#ffc56d;color:#8a3000}
+.other-tools-section .quick a:nth-child(3){background:linear-gradient(135deg,#fff0f6,#ffd8e8);border-color:#ff9fc3;color:#9b1748}
+.other-tools-section .quick a span{width:58px;height:58px;border-radius:16px;background:rgba(255,255,255,.82);display:grid;place-items:center;font-size:30px;margin:0 0 10px;border:1px solid rgba(255,255,255,.8);box-shadow:0 4px 12px rgba(20,25,40,.06)}
+.other-tools-section .quick a{font-size:18px}
+.other-tools-section .quick a small{font-size:12px;margin-top:5px;color:inherit;opacity:.78}
+@media(max-width:700px){.other-tools-section .quick{grid-template-columns:repeat(1,minmax(0,1fr));gap:10px}.other-tools-section .quick a{min-height:100px;padding:15px 16px}.other-tools-section .quick a span{width:48px;height:48px;font-size:25px;margin-bottom:7px}.other-tools-section .quick a:after{right:14px}}
+</style><style>
+.home-entry-amount{font-weight:900;color:#8b102c;margin-left:8px;white-space:nowrap}
+.event-card-footer{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:wrap!important}
+</style>
+
+<style id="home-settings-card-polish">
+.home-settings-quick{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.home-settings-quick a{min-height:145px;padding:18px!important;border-radius:18px;display:flex!important;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:5px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.35);box-shadow:0 8px 22px rgba(31,41,55,.10);transition:transform .2s ease,box-shadow .2s ease}
+.home-settings-quick a:nth-child(1){background:linear-gradient(135deg,#fff7ed,#ffedd5)}
+.home-settings-quick a:nth-child(2){background:linear-gradient(135deg,#eff6ff,#dbeafe)}
+.home-settings-quick a:nth-child(3){background:linear-gradient(135deg,#f5f3ff,#ede9fe)}
+.home-settings-quick a:nth-child(4){background:linear-gradient(135deg,#ecfdf5,#d1fae5)}
+.home-settings-quick a:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(31,41,55,.16)}
+.home-settings-quick a>span{font-size:26px;line-height:1;margin-bottom:4px}
+.home-settings-quick a>b{font-size:17px;color:#1f2937;line-height:1.2}
+.home-settings-quick a>small{font-size:12px;color:#64748b;font-weight:600}
+.home-settings-quick a>em{font-style:normal;font-size:12px;line-height:1.45;color:#475569;margin-top:5px}
+@media(max-width:900px){.home-settings-quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.home-settings-quick{grid-template-columns:1fr}.home-settings-quick a{min-height:125px}}
+</style>
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+
+<body>
+<div class="header"><div class="headerLeft"><div class="logo">🎉 SAGUN SYSTEM</div></div><div class="headerRight"><span class="userName" id="headerUserName">👤 Loading...</span><button class="logoutBtn" id="pageLogoutBtn" type="button">🚪 Logout</button></div></div>
+<div class="main"><div class="sidebar" id="sidebar"><a href="home.html" class="active"><i class="fa-solid fa-house"></i> Dashboard</a></div><div class="content">
+<div class="home-top"><div class="welcome"><h1>Dashboard</h1><p>Welcome Back, <span id="homeWelcomeName">User</span> 👋</p></div><div class="home-actions"><input class="search" placeholder="Search..." oninput="homeSearch(this.value)"><button class="action-btn" onclick="location.reload()">↻</button><button class="action-btn gold" onclick="location.href='reminders.html'">🔔</button></div></div>
+
+<section class="section new-event-area">
+  <div class="section-head">
+    <div>
+      <h2>🎉 मेरे Events <span id="homeEventCountBadge" class="home-event-count-badge">0 Events</span></h2>
+      <p>नया समारोह जोड़ें और बनाए गए Events यहाँ देखें</p>
+    </div>
+  </div>
+  <div class="event-grid" id="homeEventGrid">
+    <div class="new-event-card" onclick="window.location.href='setup.html'">
+      <div class="new-event-icon">＋</div>
+      <div class="new-event-title">नया Event बनाएं</div>
+      <div class="new-event-text">नया समारोह जोड़ने के लिए क्लिक करें</div>
+      <div class="new-event-pill">⚡ Add Event</div>
+    </div>
+    <div id="dynamicHomeEvents"></div>
+  </div>
+</section>
+<div class="cards dashboard-summary"><div class="card"><h3>👥 Total Guests / Entries</h3><h1 id="totalGuests">0</h1></div><div class="card"><h3>🎉 Total Events</h3><h1 id="totalEvents">0</h1></div><div class="card"><h3>💵 Total Cash</h3><h1 id="totalCash">₹0</h1></div><div class="card"><h3>📱 Total UPI</h3><h1 id="totalUPI">₹0</h1></div><div class="card"><h3>💰 Cash + UPI</h3><h1 id="totalCashUPI">₹0</h1></div><div class="card"><h3>🎁 Total Gifts</h3><h1 id="totalGifts">0</h1></div></div><div id="cashBalance" class="hidden-data">₹0</div><div id="upiCollection" class="hidden-data">₹0</div><div id="totalShagun" class="hidden-data">₹0</div><div id="cashIn" class="hidden-data">₹0</div><div id="cashOut" class="hidden-data">₹0</div><div id="todayEntry" class="hidden-data">0</div>
+
+<section class="section tools-section other-tools-section"><div class="section-head"><div><h2>🧰 Other Tools</h2><p>Family, reminders और Shagun management</p></div></div><div class="quick"><a href="family.html"><span>👨‍👩‍👧</span>Family<small>Members & Relations</small></a><a href="reminders.html"><span>🔔</span>Reminder<small>Birthday & Anniversary</small></a><a href="shagun-given.html"><span>🎁</span>Shagun Diya<small>Outgoing entries</small></a></div></section><section class="section tools-section home-settings-section"><div class="section-head"><div><h2>⚙️ Settings</h2><p>Account और app controls</p></div></div><div class="quick home-settings-quick">
+<a href="settings.html"><span>⚙️</span><b>Settings</b><small>Account preferences</small><em>Account controls, app preferences और general settings</em></a>
+<a href="assistant.html"><span>🤖</span><b>AI Assistant</b><small>Ask about your data</small><em>अपने Events, Entries और data के बारे में पूछें</em></a>
+<a href="settings.html#profile"><span>👤</span><b>Profile</b><small>Profile details</small><em>नाम और अपनी profile information update करें</em></a>
+<a href="settings.html#data-security"><span>🔐</span><b>Data & Security</b><small>Security & PWA</small><em>Data security, backup और PWA controls</em></a>
+</div></section>
+<div class="hidden-data"><div id="sagunEventsGrid"></div><div id="eventStorageNote"></div><div id="eventWiseGrid"></div><div id="recentBody"></div></div>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+(function(){
+  async function setLoggedInUserName(){
+    try{
+      if(!window.supabase || !window.supabase.createClient) return;
+      const client=window.supabase.createClient(
+        "https://rdlliurzgwwfjscgwssa.supabase.co",
+        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+      );
+      const {data:{user}}=await client.auth.getUser();
+      if(!user) return;
+
+      const meta=user.user_metadata||{};
+      const name=meta.full_name||meta.name||meta.display_name||
+                 meta.user_name||meta.username||
+                 (user.email ? user.email.split("@")[0] : "User");
+
+      const welcome=document.getElementById("homeWelcomeName");
+      if(welcome) welcome.textContent=name;
+
+      const header=document.getElementById("headerUserName");
+      if(header) header.textContent="👤 "+name;
+    }catch(e){
+      console.log("User name load:",e);
+    }
+  }
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",setLoggedInUserName);
+  }else{
+    setLoggedInUserName();
+  }
+})();
+</script>
+
+<script src="../js/guest-auth.js"></script>
+    <script src="../js/sagun-store.js"></script>
+    <script src="../js/home.js" defer></script>
+  <script src="../js/topbar.js"></script>
+<script>
+/* Home-only topbar: Menu/Guest count removed; keep direct Logout. */
+(function(){
+  function setupHomeTopbar(){
+    const bar=document.getElementById('sagunTopbar');
+    if(!bar) return;
+    const right=bar.querySelector('.sagun-right');
+    const tools=bar.querySelector('.sagun-tools');
+    if(!right) return;
+    if(tools) tools.remove();
+    const oldGuest=right.querySelector('#homeTopbarGuest');
+    if(oldGuest) oldGuest.remove();
+    if(!right.querySelector('#homeTopbarLogout')){
+      const btn=document.createElement('button');
+      btn.id='homeTopbarLogout';
+      btn.type='button';
+      btn.className='home-topbar-logout';
+      btn.textContent='🚪 Logout';
+      btn.onclick=async function(){
+        btn.disabled=true;
+        try{
+          if(window.supabase && window.supabase.createClient){
+            const client=window.supabase.createClient('https://rdlliurzgwwfjscgwssa.supabase.co','sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc');
+            await client.auth.signOut();
+          }
+        }catch(e){console.log('Logout:',e)}
+        try{
+          localStorage.removeItem('currentEventType');
+          localStorage.removeItem('selectedEventType');
+          localStorage.removeItem('pendingEventType');
+        }catch(e){}
+        location.href='login.html';
+      };
+      right.appendChild(btn);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setupHomeTopbar);
+  else setupHomeTopbar();
+})();
+</script>
+<style>
+.home-topbar-logout{border:1px solid rgba(255,255,255,.65);background:#fff;color:#72001f;border-radius:18px;padding:7px 13px;font-weight:900;cursor:pointer;white-space:nowrap}
+.home-topbar-logout:hover{background:#ffeef2}
+@media(max-width:700px){.home-topbar-logout{font-size:11px;padding:6px 9px}.sagun-site{display:none!important}}
+</style>
+
+<style>
+#eventDetailModal{display:none!important}.event-detail-overlay{position:fixed;inset:0;background:rgba(20,10,15,.58);backdrop-filter:blur(4px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:18px}.event-detail-panel{width:min(720px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.35);position:relative}.event-detail-close{position:absolute;right:14px;top:12px;width:40px;height:40px;border:0;border-radius:50%;background:#f7eeee;color:#800000;font-size:18px;cursor:pointer}.event-detail-head{display:flex;gap:14px;align-items:center;padding-right:42px}.event-detail-icon{width:58px;height:58px;border-radius:16px;background:#fff4e0;display:flex;align-items:center;justify-content:center;font-size:30px}.event-detail-head h2{margin:0 0 5px;color:#800000;font-size:21px}.event-detail-head div{color:#666;font-size:13px;margin-top:2px}.event-detail-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:18px 0}.event-detail-stats div{padding:12px 8px;border:1px solid #eee0d0;border-radius:12px;text-align:center;background:#fffaf4}.event-detail-stats span{display:block;font-size:11px;color:#777}.event-detail-stats b{display:block;color:#800000;margin-top:4px;font-size:15px}.event-detail-title{font-weight:800;color:#800000;margin:8px 0 10px}.event-entry-list{display:flex;flex-direction:column;gap:7px}.event-entry-row{display:grid;grid-template-columns:30px minmax(0,1fr) auto auto;gap:9px;align-items:center;padding:10px;border:1px solid #eee;border-radius:11px;background:#fff}.event-entry-no{font-weight:800;color:#999;text-align:center}.event-entry-main{min-width:0}.event-entry-main b{display:block;color:#333}.event-entry-main span{display:block;color:#777;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}.event-entry-mode{font-size:11px;padding:4px 7px;border-radius:7px;background:#f2f7ff;color:#245b9c;font-weight:700}.event-entry-row>strong{color:#198754;white-space:nowrap}.event-no-entries{text-align:center;padding:25px;color:#888;border:1px dashed #ddd;border-radius:12px}.event-detail-actions{margin-top:14px;text-align:right}.event-detail-report{border:0;border-radius:10px;padding:11px 15px;background:#800000;color:#fff;font-weight:800;cursor:pointer}@media(max-width:600px){.event-detail-overlay{padding:8px}.event-detail-panel{padding:14px;border-radius:16px}.event-detail-stats{grid-template-columns:repeat(2,1fr)}.event-entry-row{grid-template-columns:26px minmax(0,1fr) auto}.event-entry-row>strong{grid-column:2;grid-row:2}.event-entry-mode{grid-column:3;grid-row:1}}
+</style>
+<script>
+function openHomeEvent(page){window.location.href=page;}</script>
+<script>
+(function(){
+ window.eventCache=window.eventCache||[]; const eventCache=window.eventCache;
+
+ function readJSON(k,fallback){
+   try{const v=JSON.parse(localStorage.getItem(k)||'null');return v??fallback}catch(e){return fallback}
+ }
+ function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+ function money(v){return "₹"+Number(v||0).toLocaleString("en-IN")}
+ function normalizeType(e){
+   // Detect the specific sub-event before the parent Marriage type.
+   // Some saved Marriage events contain "marriage" in type but "tilak"
+   // in the sub-event or displayed event name.
+   const fields=[
+     e.sub_event_type,e.subEventType,e.event_sub_type,e.eventSubType,
+     e.event_name,e.eventName,e.name,e.title,e.event_type,e.eventType,e.type
+   ].filter(v=>v!==undefined && v!==null).map(v=>String(v).toLowerCase());
+   const raw=fields.join(" | ");
+
+   let type="";
+   if(raw.includes("tilak")||raw.includes("तिलक")) type="tilak";
+   else if(raw.includes("barat")||raw.includes("baraat")||raw.includes("बरात")) type="barat";
+   else if(raw.includes("reception")||raw.includes("रिसेप्शन")) type="reception";
+   else if(raw.includes("birthday")||raw.includes("जन्मदिन")) type="birthday";
+   else if(raw.includes("anniversary")||raw.includes("वर्षगांठ")) type="anniversary";
+   else if(raw.includes("engagement")||raw.includes("सगाई")) type="engagement";
+   else if(raw.includes("mundan")||raw.includes("मुंडन")) type="mundan";
+   else if(raw.includes("griha")||raw.includes("pravesh")||raw.includes("गृह प्रवेश")) type="griha pravesh";
+
+   const pages={
+     tilak:"tilak-entry.html",
+     barat:"barat-entry.html",
+     reception:"reception-entry.html",
+     birthday:"birthday-entry.html",
+     anniversary:"anniversary-entry.html",
+     engagement:"engagement-entry.html",
+     mundan:"generic-event-entry.html?type=Mundan",
+     "griha pravesh":"griha-pravesh-entry.html"
+   };
+
+   if(!type){
+     alert("इस Event का Entry type नहीं मिला। कृपया Event Details में Event type देखें।");
+     return;
+   }
+
+   localStorage.setItem("sgunmsActiveEvent",JSON.stringify({
+     id:e.id||e.eventId||e.key||"",
+     type:type,
+     eventType:type,
+     name:e.event_name||e.eventName||e.name||e.title||type,
+     date:e.event_date||e.eventDate||e.date||e.startDate||"",
+     person:e.person1||e.mainPerson||e.personName||e.groomName||e.brideName||""
+   }));
+
+   window.location.href=pages[type];
+ };
+
+ function openHomeEventReport(id){
+   if(!id){ alert("इस Event की ID नहीं मिली।"); return; }
+   localStorage.setItem("currentEventId",String(id));
+   window.location.href="event-report.html?event_id="+encodeURIComponent(String(id));
+ }
+
+ let homeRenderSeq=0;
+ async function renderMyEvents(){
+   const seq=++homeRenderSeq, box=document.getElementById('dynamicHomeEvents'); if(!box)return;
+   box.innerHTML='<div class="sagun-event-empty">Loading Events...</div>'; eventCache.length=0;
+   const read=k=>{try{const v=JSON.parse(localStorage.getItem(k)||'[]');return Array.isArray(v)?v:(v&&Array.isArray(v.events)?v.events:[])}catch(_){return[]}};
+   const id=e=>String(e?.id||e?.eventId||e?.event_id||e?.key||'').trim();
+   const owner=e=>String(e?.user_id||e?.userId||e?.uid||e?.owner_id||e?.ownerId||'').trim();
+   const type=e=>{const r=[e?.event_type,e?.eventType,e?.sub_event_type,e?.event_name,e?.eventName,e?.name,e?.title,e?.type].filter(Boolean).join(' ').toLowerCase();if(r.includes('tilak')||r.includes('तिलक'))return'tilak';if(r.includes('barat')||r.includes('baraat')||r.includes('बरात'))return'barat';if(r.includes('reception')||r.includes('रिसेप्शन'))return'reception';if(r.includes('birthday')||r.includes('जन्मदिन'))return'birthday';if(r.includes('anniversary')||r.includes('वर्षगांठ'))return'anniversary';if(r.includes('engagement')||r.includes('सगाई'))return'engagement';if(r.includes('mundan')||r.includes('मुंडन'))return'mundan';if(r.includes('griha')||r.includes('pravesh')||r.includes('गृह प्रवेश'))return'griha_pravesh';return String(e?.event_type||e?.eventType||e?.type||'event').toLowerCase()};
+   const info=e=>{const t=type(e),g=String(e?.groom_name||e?.groomName||e?.person1||e?.mainPerson||e?.personName||'').trim(),b=String(e?.bride_name||e?.brideName||e?.person2||'').trim(),m=String(e?.birthday_name||e?.birthdayName||e?.mainPerson||e?.personName||e?.name||'').trim();if(['tilak','barat','reception','engagement'].includes(t))return{n:t[0].toUpperCase()+t.slice(1),p:[g&&'Dulha: '+g,b&&'Dulhan: '+b].filter(Boolean).join(' • ')};if(t==='birthday')return{n:'Birthday',p:m};if(t==='anniversary')return{n:'Anniversary',p:[g&&'Husband: '+g,b&&'Wife: '+b].filter(Boolean).join(' • ')};return{n:t==='griha_pravesh'?'Griha Pravesh':t==='mundan'?'Mundan':String(e?.event_name||e?.eventName||e?.name||e?.title||'Event'),p:m||[g,b].filter(Boolean).join(' • ')};};
+   let events=[];try{if(window.SagunStore?.getEvents)events=await window.SagunStore.getEvents()||[]}catch(e){console.warn(e)}
+   if(seq!==homeRenderSeq)return;
+   const seen=new Set();events=events.filter(e=>{const k=id(e);if(!k||seen.has(k))return false;seen.add(k);return true});events.sort((a,b)=>new Date(b?.created_at||b?.createdAt||0)-new Date(a?.created_at||a?.createdAt||0));
+   eventCache.push(...events); const total=document.getElementById('totalEvents');if(total)total.textContent=events.length;const badge=document.getElementById('homeEventCountBadge');if(badge)badge.textContent=events.length+' Event'+(events.length===1?'':'s');
+   if(!events.length){box.innerHTML='<div class="sagun-event-empty">अभी कोई Event नहीं है। <b>Add Event</b> से Event बनाइए।</div>';updateEventCountFromCards?.();return;}
+   box.innerHTML=''; events.forEach(e=>{const ei=info(e),eid=id(e),date=e?.event_date||e?.eventDate||e?.date||'Date not set',card=document.createElement('div');card.className='event-card-premium type-'+type(e).replace(/\s+/g,'-');card.tabIndex=0;const go=()=>{localStorage.setItem('currentEventId',eid);localStorage.setItem('sgunmsActiveEvent',JSON.stringify(e));location.href='event-report.html?event_id='+encodeURIComponent(eid)};card.onclick=go;card.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();go()}};card.innerHTML='<div class="event-card-top"><span class="event-open">›</span></div><div class="event-card-title">'+esc(ei.n)+'</div><div class="event-card-date">Date: '+esc(date)+'</div>'+(ei.p?'<div class="event-card-person">'+esc(ei.p)+'</div>':'')+'<div class="event-card-footer"><span class="home-entry-count">0 Entries</span><span class="home-entry-amount">₹0</span><button type="button" class="home-event-report-btn">Report</button><button type="button" class="home-event-delete-btn">Delete</button></div>';card.querySelector('.home-event-report-btn').onclick=ev=>{ev.stopPropagation();go()};card.querySelector('.home-event-delete-btn').onclick=ev=>{ev.stopPropagation();const i=eventCache.indexOf(e);if(window.openDeleteConfirm)window.openDeleteConfirm(i)};box.appendChild(card)});
+   let entries=[];try{if(window.SagunStore?.getEntries)entries=await window.SagunStore.getEntries()||[]}catch(e){console.warn(e)}
+   if(seq!==homeRenderSeq)return;
+   const amount=x=>Number(x?.amount??x?.cashAmount??x?.upiAmount??x?.value??0)||0,mode=x=>String(x?.payment_mode||x?.paymentMode||x?.mode||x?.type||'CASH').toUpperCase();let tg=0,tc=0,tu=0,gg=0;
+   events.forEach((e,i)=>{const eid=id(e),rows=entries.filter(g=>String(g?.event_id||g?.eventId||'').trim()===eid);let sum=0;rows.forEach(g=>{const a=amount(g),m=mode(g);tg++;sum+=a;if(m.includes('GIFT')||g?.gift_description||g?.giftDescription)gg++;else if(m.includes('UPI'))tu+=a;else tc+=a});const c=box.children[i];if(c){c.querySelector('.home-entry-count').textContent=rows.length+' Entries';c.querySelector('.home-entry-amount').textContent='₹'+sum.toLocaleString('en-IN')}});
+   const set=(x,v)=>{const el=document.getElementById(x);if(el)el.textContent=v},money=v=>'₹'+Number(v||0).toLocaleString('en-IN');set('totalGuests',tg);set('totalEvents',events.length);set('totalCash',money(tc));set('totalUPI',money(tu));set('totalCashUPI',money(tc+tu));set('totalGifts',gg);
+ }
+
+ async function showEventDetails(index){
+   const e=eventCache[index];
+   if(!e) return;
+   const eventId=String(e.id||e.eventId||e.event_id||e.key||"").trim();
+   const eventName=e.event_name||e.eventName||e.name||e.title||"Event";
+   const eventDate=String(e.event_date||e.eventDate||e.date||e.startDate||"").trim();
+   const person1=String(e.person1||e.mainPerson||e.personName||e.groom_name||e.groomName||e.bride_name||e.brideName||"").trim();
+   const person2=String(e.person2||e.bride_name||e.brideName||"").trim();
+   const person=[person1,person2].filter(Boolean).join(" • ");
+
+   function typeKey(x){
+     const raw=[x?.sub_event_type,x?.subEventType,x?.event_sub_type,x?.eventSubType,x?.event_name,x?.eventName,x?.event_type,x?.eventType,x?.type,x?.name,x?.title].filter(Boolean).join(" ").toLowerCase();
+     if(raw.includes("tilak")||raw.includes("तिलक"))return "tilak";
+     if(raw.includes("barat")||raw.includes("baraat")||raw.includes("बरात"))return "barat";
+     if(raw.includes("reception")||raw.includes("रिसेप्शन"))return "reception";
+     if(raw.includes("birthday")||raw.includes("जन्मदिन"))return "birthday";
+     if(raw.includes("anniversary")||raw.includes("वर्षगांठ"))return "anniversary";
+     if(raw.includes("engagement")||raw.includes("सगाई"))return "engagement";
+     if(raw.includes("mundan")||raw.includes("मुंडन"))return "mundan";
+     if(raw.includes("griha")||raw.includes("pravesh")||raw.includes("गृह प्रवेश"))return "griha_pravesh";
+     if(raw.includes("marriage")||raw.includes("wedding")||raw.includes("शादी")||raw.includes("विवाह"))return "marriage";
+     return raw.trim();
+   }
+   function dateKey(v){
+     const x=String(v||"").trim();
+     if(!x)return "";
+     const m=x.match(/^(\d{2})[-\/]?(\d{2})[-\/]?(\d{4})$/);
+     if(m)return `${m[3]}-${m[2]}-${m[1]}`;
+     return x.toLowerCase();
+   }
+   function personKeys(x){
+     return [x?.event_person,x?.eventPerson,x?.event_person_2,x?.person1,x?.person2,x?.groom_name,x?.bride_name,x?.birthday_name,x?.personName,x?.name]
+       .filter(Boolean).map(v=>String(v).trim().toLowerCase()).filter(Boolean);
+   }
+   function belongs(g){
+     const gid=String(g?.event_id||g?.eventId||g?.eventID||g?.event||"").trim();
+     if(eventId && gid) return gid===eventId;
+     if(eventId && !gid){
+       const gt=typeKey(g), et=typeKey(e);
+       const sameType=gt&&et&&(gt===et || ((et==="marriage"||et==="wedding")&&(gt==="marriage"||gt==="wedding")));
+       const gd=dateKey(g?.event_date||g?.eventDate||g?.date), ed=dateKey(eventDate);
+       const sameDate=!gd||!ed||gd===ed;
+       const gp=personKeys(g), ep=personKeys(e);
+       const samePerson=!gp.length||!ep.length||gp.some(a=>ep.some(b=>a===b||a.includes(b)||b.includes(a)));
+       return !!(sameType&&sameDate&&samePerson);
+     }
+     return false;
+   }
+   function recordKey(g){
+     return String(g?.id||g?.entry_id||g?.created_at||g?.createdAt||g?.timestamp||"")+"|"+String(g?.name||g?.guestName||"").trim().toLowerCase()+"|"+String(g?.amount||g?.cashAmount||g?.value||0);
+   }
+
+   localStorage.setItem("currentEventId",eventId);
+   localStorage.setItem("sgunmsActiveEvent",JSON.stringify({id:eventId,type:typeKey(e),name:eventName,date:eventDate,person}));
+
+   let entries=[];
+   const seen=new Set();
+   const addRows=list=>{
+     (Array.isArray(list)?list:[]).forEach(g=>{
+       if(!belongs(g))return;
+       const k=recordKey(g);
+       if(!seen.has(k)){seen.add(k);entries.push(g);}
+     });
+   };
+
+   // First read the local entry stores used by all existing entry pages.
+   ["offlineGuests","eventEntries","sagunEntries","birthdayEntries","birthdayGuests","guestEntries"].forEach(k=>{
+     try{addRows(JSON.parse(localStorage.getItem(k)||"[]"));}catch(_){ }
+   });
+
+   // Then read the registered user's cloud entries. Do not depend on event_id
+   // being present: older entries are matched by event type/date/person.
+   try{
+     const client=window.supabase?.createClient ? window.supabase.createClient("https://rdlliurzgwwfjscgwssa.supabase.co","sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc") : null;
+     if(client){
+       const {data:{user}}=await client.auth.getUser();
+       if(user){
+         const r=await client.from("guests").select("*").eq("user_id",user.id).order("created_at",{ascending:false});
+         if(!r.error)addRows(r.data||[]);
+       }
+     }
+   }catch(err){console.log("Event details entries:",err)}
+
+   // If an older entry has no event_id and the selected event is the only event of that type,
+   // allow a type-based fallback so legacy entries are still visible.
+   if(!entries.length){
+     try{
+       const sameTypeCount=eventCache.filter(x=>typeKey(x)===typeKey(e)).length;
+       if(sameTypeCount===1){
+         const addUnassigned=list=>{(Array.isArray(list)?list:[]).forEach(g=>{
+           const gid=String(g?.event_id||g?.eventId||g?.eventID||g?.event||"").trim();
+           if(gid)return;
+           if(typeKey(g)!==typeKey(e))return;
+           const k=recordKey(g); if(!seen.has(k)){seen.add(k);entries.push(g);}
+         });};
+         ["offlineGuests","eventEntries","sagunEntries","birthdayEntries","birthdayGuests","guestEntries"].forEach(k=>{try{addUnassigned(JSON.parse(localStorage.getItem(k)||"[]"));}catch(_) {}});
+       }
+     }catch(_){}
+   }
+
+   entries.sort((a,b)=>new Date(b.created_at||b.createdAt||b.timestamp||0)-new Date(a.created_at||a.createdAt||a.timestamp||0));
+
+   const money=v=>"₹"+Number(v||0).toLocaleString("en-IN");
+   const amount=g=>Number(g.amount||g.cashAmount||g.upiAmount||g.value||0)||0;
+   let cash=0,upi=0,gifts=0,total=0;
+   entries.forEach(g=>{
+     const a=amount(g); total+=a;
+     const m=String(g.payment_mode||g.paymentMode||g.mode||g.type||"CASH").toUpperCase();
+     if(m.includes("UPI"))upi+=a; else if(!m.includes("GIFT"))cash+=a;
+     if(m.includes("GIFT")||g.gift_item||g.giftItem||g.gift_description||g.giftDescription)gifts++;
+   });
+
+   const modal=document.getElementById("eventDetailModal");
+   if(!modal)return;
+   if(modal.parentElement!==document.body) document.body.appendChild(modal);
+   modal.innerHTML=`
+   <div class="event-detail-overlay" role="dialog" aria-modal="true" style="position:fixed;inset:0;width:100vw;height:100vh;background:rgba(20,10,15,.62);z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;">
+     <div class="event-detail-panel" style="width:min(760px,96vw);max-height:88vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-sizing:border-box;box-shadow:0 20px 60px rgba(0,0,0,.35);position:relative;color:#222;font-family:Arial,sans-serif;">
+       <button type="button" class="event-detail-close" aria-label="Close" style="position:absolute;right:14px;top:12px;width:40px;height:40px;border:0;border-radius:50%;background:#f7eeee;color:#800000;font-size:18px;cursor:pointer;">✕</button>
+       <div style="display:flex;gap:14px;align-items:center;padding-right:48px;">
+         <div style="width:58px;height:58px;border-radius:16px;background:#fff4e0;display:flex;align-items:center;justify-content:center;font-size:30px;flex:none;">🎉</div>
+         <div><h2 style="margin:0 0 5px;color:#800000;font-size:21px;">${esc(eventName)}</h2><div style="color:#666;font-size:13px;margin-top:2px;">📅 ${esc(eventDate||"तारीख नहीं")}</div>${person?`<div style="color:#666;font-size:13px;margin-top:2px;">👤 ${esc(person)}</div>`:""}</div>
+       </div>
+       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin:18px 0;">
+         <div style="padding:12px 8px;border:1px solid #eee0d0;border-radius:12px;text-align:center;background:#fffaf4;"><span style="display:block;font-size:11px;color:#777;">Entries</span><b style="display:block;color:#800000;margin-top:4px;font-size:15px;">${entries.length}</b></div>
+         <div style="padding:12px 8px;border:1px solid #eee0d0;border-radius:12px;text-align:center;background:#fffaf4;"><span style="display:block;font-size:11px;color:#777;">Total</span><b style="display:block;color:#800000;margin-top:4px;font-size:15px;">${money(total)}</b></div>
+         <div style="padding:12px 8px;border:1px solid #eee0d0;border-radius:12px;text-align:center;background:#fffaf4;"><span style="display:block;font-size:11px;color:#777;">Cash</span><b style="display:block;color:#800000;margin-top:4px;font-size:15px;">${money(cash)}</b></div>
+         <div style="padding:12px 8px;border:1px solid #eee0d0;border-radius:12px;text-align:center;background:#fffaf4;"><span style="display:block;font-size:11px;color:#777;">UPI</span><b style="display:block;color:#800000;margin-top:4px;font-size:15px;">${money(upi)}</b></div>
+         <div style="padding:12px 8px;border:1px solid #eee0d0;border-radius:12px;text-align:center;background:#fffaf4;"><span style="display:block;font-size:11px;color:#777;">Gifts</span><b style="display:block;color:#800000;margin-top:4px;font-size:15px;">${gifts}</b></div>
+       </div>
+       <div style="font-weight:800;color:#800000;margin:8px 0 10px;">📋 इस Event की Entries</div>
+       ${entries.length?`<div style="display:flex;flex-direction:column;gap:7px;">${entries.map((g,i)=>{const a=amount(g);const m=g.payment_mode||g.paymentMode||g.mode||g.type||"Cash";const village=g.village||g.city||g.guestVillage||"";const dt=g.created_at||g.timestamp||g.createdAt||"";const gift=g.gift_description||g.giftDescription||g.gift_item||g.giftItem||"";return `<div style="display:grid;grid-template-columns:30px minmax(0,1fr) auto auto;gap:9px;align-items:center;padding:10px;border:1px solid #eee;border-radius:11px;background:#fff;"><div style="font-weight:800;color:#999;text-align:center;">${i+1}</div><div style="min-width:0;"><b style="display:block;color:#333;">${esc(g.name||g.guestName||"नाम नहीं")}</b><span style="display:block;color:#777;font-size:11px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(village)}${gift?` • ${esc(gift)}`:""}${village&&dt&&!gift?" • ":(!gift&&dt?" • ":"")}${dt?esc(new Date(dt).toLocaleString("en-IN")):""}</span></div><div style="font-size:11px;padding:4px 7px;border-radius:7px;background:#f2f7ff;color:#245b9c;font-weight:700;">${esc(m)}</div><strong style="color:#198754;white-space:nowrap;">${money(a)}</strong></div>`}).join("")}</div>`:`<div style="text-align:center;padding:25px;color:#888;border:1px dashed #ddd;border-radius:12px;">इस Event में अभी कोई Entry नहीं है।<br><span style="font-size:11px;">इस Event में Entry जोड़ने के बाद यहाँ दिखाई देगी।</span></div>`}
+       <div style="margin-top:14px;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;"><button type="button" class="event-detail-continue" style="border:1px solid #ead7a4;border-radius:10px;padding:11px 15px;background:#fff8e8;color:#800000;font-weight:800;cursor:pointer;">➕ Entry करें</button><button type="button" class="event-detail-report" style="border:0;border-radius:10px;padding:11px 15px;background:#800000;color:#fff;font-weight:800;cursor:pointer;">📊 पूरा Event Report</button></div>
+     </div>
+   </div>`;
+   modal.classList.add("eventDetailModalOpen");
+   const close=()=>{modal.classList.remove("eventDetailModalOpen");modal.innerHTML=""};
+   modal.querySelector(".event-detail-close").onclick=close;
+   modal.querySelector(".event-detail-overlay").addEventListener("click",ev=>{if(ev.target.classList.contains("event-detail-overlay"))close()});
+   modal.querySelector(".event-detail-report").onclick=()=>openHomeEventReport(eventId);
+   modal.querySelector(".event-detail-continue").onclick=()=>{
+     localStorage.setItem("currentEventId",eventId);
+     const t=typeKey(e);
+     const pages={tilak:"tilak-entry.html",barat:"barat-entry.html",reception:"reception-entry.html",birthday:"birthday-entry.html",anniversary:"anniversary-entry.html",engagement:"engagement-entry.html",mundan:"generic-event-entry.html?type=Mundan",griha_pravesh:"griha-pravesh-entry.html",marriage:"barat-entry.html"};
+     if(pages[t])location.href=pages[t]+(pages[t].includes("?")?"&":"?")+"event_id="+encodeURIComponent(eventId);
+   };
+ }
+
+ async function refreshHomeEntryCounts(){
+   const cards=[...document.querySelectorAll("#dynamicHomeEvents .event-card-premium")];
+   if(!cards.length)return;
+   const idOf=e=>String(e?.id||e?.eventId||e?.event_id||e?.key||"").trim();
+   const typeOf=e=>{const raw=[e?.sub_event_type,e?.subEventType,e?.event_sub_type,e?.eventSubType,e?.event_type,e?.eventType,e?.type,e?.event_name,e?.eventName,e?.name,e?.title].filter(Boolean).join(" ").toLowerCase();if(raw.includes("tilak")||raw.includes("तिलक"))return"tilak";if(raw.includes("barat")||raw.includes("baraat")||raw.includes("बरात"))return"barat";if(raw.includes("reception")||raw.includes("रिसेप्शन"))return"reception";if(raw.includes("birthday")||raw.includes("जन्मदिन"))return"birthday";if(raw.includes("anniversary")||raw.includes("वर्षगांठ"))return"anniversary";if(raw.includes("engagement")||raw.includes("सगाई"))return"engagement";if(raw.includes("mundan")||raw.includes("मुंडन"))return"mundan";if(raw.includes("griha")||raw.includes("pravesh")||raw.includes("गृह प्रवेश"))return"griha_pravesh";if(raw.includes("marriage")||raw.includes("शादी")||raw.includes("विवाह"))return"marriage";return"other"};
+   const norm=v=>String(v??"").trim().toLowerCase().replace(/\s+/g," ");
+   const date=v=>{const x=norm(v);let m=x.match(/^(\d{2})[-\/.](\d{2})[-\/.](\d{4})$/);return m?`${m[3]}-${m[2]}-${m[1]}`:x};
+   const local=[];["offlineGuests","eventEntries","sagunEntries","birthdayEntries","birthdayGuests","guestEntries"].forEach(k=>{try{const a=JSON.parse(localStorage.getItem(k)||"[]");if(Array.isArray(a))local.push(...a)}catch(_){} });
+   let cloud=[];
+   try{const c=window.supabase?.createClient?.("https://rdlliurzgwwfjscgwssa.supabase.co","sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");if(c){const {data:{user}}=await c.auth.getUser();if(user){const r=await c.from("guests").select("*").eq("user_id",user.id).limit(5000);if(!r.error)cloud=r.data||[]}}}catch(_){}
+   const activeUid=String(localStorage.getItem("sagunActiveUserId")||"").trim();
+   const rows=local.concat(cloud).filter(g=>{
+     const owner=String(g?.user_id||g?.userId||g?.owner_id||g?.ownerId||"").trim();
+     return !activeUid || !owner || owner===activeUid;
+   });
+   const personFields=e=>[e?.person1,e?.person2,e?.groom_name,e?.bride_name,e?.event_person,e?.event_person_2,e?.birthday_name,e?.name,e?.personName,e?.groomName,e?.brideName].filter(Boolean).map(norm);
+   const match=(g,e)=>{
+     const gid=norm(g?.event_id||g?.eventId||g?.eventID||g?.event); const eid=idOf(e);
+     if(gid&&eid&&gid===norm(eid))return true;
+     const gt=typeOf(g),et=typeOf(e);
+     if(gt!==et && !((gt==="tilak"||gt==="barat"||gt==="reception")&&(et==="marriage"||et==="wedding")) && !((et==="tilak"||et==="barat"||et==="reception")&&(gt==="marriage"||gt==="wedding"))) return false;
+     const gd=date(g?.event_date||g?.eventDate||g?.date),ed=date(e?.event_date||e?.eventDate||e?.date);
+     if(gd&&ed&&gd!==ed)return false;
+     const ep=personFields(e),gp=personFields(g);
+     if(ep.length&&gp.length&&!ep.some(a=>gp.some(b=>a===b||a.includes(b)||b.includes(a))))return false;
+     return true;
+   };
+   const used=new Set();
+   let allCount=0, allCash=0, allUpi=0, allGifts=0;
+   eventCache.forEach((e,i)=>{
+     const matched=[];
+     rows.forEach(g=>{
+       if(!match(g,e))return;
+       const key=String(g?.id||g?.entry_id||g?.created_at||g?.createdAt||g?.timestamp||"")+"|"+String(g?.name||g?.guestName||"").trim().toLowerCase()+"|"+String(g?.amount||g?.cashAmount||g?.upiAmount||g?.giftAmount||g?.value||0)+"|"+String(g?.payment_mode||g?.paymentMode||g?.mode||g?.type||"").toLowerCase();
+       if(used.has(key))return;
+       used.add(key); matched.push(g);
+     });
+     let total=0;
+     matched.forEach(g=>{
+       const amount=Number(g.amount||g.cashAmount||g.upiAmount||g.giftAmount||g.value||0)||0;
+       const mode=String(g.payment_mode||g.paymentMode||g.mode||g.type||"CASH").toUpperCase();
+       total+=amount; allCount++;
+       if(mode.includes("GIFT") || g.gift_item || g.giftItem || g.gift_description || g.giftDescription) allGifts++;
+       else if(mode.includes("UPI")) allUpi+=amount;
+       else allCash+=amount;
+     });
+     const card=cards[i]; if(!card)return;
+     const countEl=card.querySelector(".home-entry-count"); if(countEl)countEl.textContent="👥 "+matched.length+" Entries";
+     const amtEl=card.querySelector(".home-entry-amount"); if(amtEl)amtEl.textContent="₹"+total.toLocaleString("en-IN");
+   });
+   const setTotal=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
+   const moneyTotal=v=>"₹"+Number(v||0).toLocaleString("en-IN");
+   setTotal("totalGuests",allCount);
+   setTotal("totalEvents",eventCache.length);
+   setTotal("totalCash",moneyTotal(allCash));
+   setTotal("totalUPI",moneyTotal(allUpi));
+   setTotal("totalCashUPI",moneyTotal(allCash+allUpi));
+   setTotal("totalGifts",allGifts);
+ }
+ window.refreshHomeEntryCounts=refreshHomeEntryCounts;
+ document.addEventListener("DOMContentLoaded",()=>setTimeout(refreshHomeEntryCounts,700));
+ document.addEventListener("DOMContentLoaded",()=>setTimeout(refreshHomeEntryCounts,1800));
+ window.eventCache=eventCache;
+ window.showEventDetails=showEventDetails;
+ window.renderMyEvents=renderMyEvents;
+ document.addEventListener("DOMContentLoaded",renderMyEvents);
+ window.addEventListener("storage",renderMyEvents);
+ window.addEventListener("pageshow",renderMyEvents);
+ window.addEventListener("load",()=>setTimeout(renderMyEvents,250));
+})();
+
+(function(){
+  let pendingEventDelete=null;
+
+  function readList(key){
+    try{
+      const v=JSON.parse(localStorage.getItem(key)||"null");
+      return Array.isArray(v)?v:(v&&Array.isArray(v.events)?v.events:(v&&Array.isArray(v.data)?v.data:[]));
+    }catch(e){return []}
+  }
+  function writeList(key,list){try{localStorage.setItem(key,JSON.stringify(list));}catch(e){}}
+  function norm(v){return String(v??"").trim().toLowerCase().replace(/\s+/g," ");}
+  function typeKey(e){
+    const raw=[e?.sub_event_type,e?.subEventType,e?.event_sub_type,e?.eventSubType,e?.event_name,e?.eventName,e?.name,e?.title,e?.event_type,e?.eventType,e?.type].filter(Boolean).join(" ").toLowerCase();
+    if(raw.includes("tilak")||raw.includes("तिलक"))return"tilak";
+    if(raw.includes("barat")||raw.includes("baraat")||raw.includes("बरात"))return"barat";
+    if(raw.includes("reception")||raw.includes("रिसेप्शन"))return"reception";
+    if(raw.includes("birthday")||raw.includes("जन्मदिन"))return"birthday";
+    if(raw.includes("anniversary")||raw.includes("वर्षगांठ"))return"anniversary";
+    if(raw.includes("engagement")||raw.includes("सगाई"))return"engagement";
+    if(raw.includes("griha")||raw.includes("pravesh")||raw.includes("गृह प्रवेश"))return"griha_pravesh";
+    if(raw.includes("mundan")||raw.includes("मुंडन"))return"mundan";
+    if(raw.includes("marriage")||raw.includes("wedding")||raw.includes("शादी")||raw.includes("विवाह"))return"marriage";
+    return norm(e?.event_type||e?.eventType||e?.type||"other").replace(/\s+/g,"_");
+  }
+  function dateKey(v){
+    const x=String(v??"").trim(),m=x.match(/^(\d{2})[-\/.](\d{2})[-\/.](\d{4})$/);
+    return m?`${m[3]}-${m[2]}-${m[1]}`:x.toLowerCase();
+  }
+  function persons(e){return [e?.person1,e?.person2,e?.groom_name,e?.bride_name,e?.event_person,e?.eventPerson,e?.personName,e?.name].filter(Boolean).map(norm);}
+  function sameEvent(a,b){
+    const ai=String(a?.id||a?.eventId||a?.event_id||"").trim(),bi=String(b?.id||b?.eventId||b?.event_id||"").trim();
+    if(ai&&bi&&ai===bi)return true;
+    const at=typeKey(a),bt=typeKey(b);
+    if(at!==bt && !((at==="marriage"||at==="wedding")&&(bt==="marriage"||bt==="wedding")))return false;
+    const ad=dateKey(a?.event_date||a?.eventDate||a?.date),bd=dateKey(b?.event_date||b?.eventDate||b?.date);
+    if(ad&&bd&&ad!==bd)return false;
+    const ap=persons(a),bp=persons(b);
+    if(ap.length&&bp.length&&!ap.some(x=>bp.some(y=>x===y||x.includes(y)||y.includes(x))))return false;
+    const an=norm(a?.event_name||a?.eventName||a?.name||a?.title||""),bn=norm(b?.event_name||b?.eventName||b?.name||b?.title||"");
+    if(an&&bn&&!(an===bn||an.includes(bn)||bn.includes(an)))return false;
+    return true;
+  }
+  function entryBelongs(g,e){
+    const gid=String(g?.event_id||g?.eventId||g?.eventID||"").trim(),eid=String(e?.id||e?.eventId||e?.event_id||"").trim();
+    if(gid&&eid)return gid===eid;
+    return sameEvent(g,e);
+  }
+
+  window.openDeleteConfirm=function(index){
+    const e=window.eventCache?.[index];
+    if(!e)return;
+    pendingEventDelete=e;
+    const m=document.getElementById("deleteEventConfirmModal");
+    if(m){
+      m.style.display="flex";
+      const n=m.querySelector(".delete-event-name"); if(n)n.textContent=e.event_name||e.eventName||e.name||"Event";
+    }
+  };
+  window.closeDeleteConfirm=function(){
+    pendingEventDelete=null;
+    const m=document.getElementById("deleteEventConfirmModal"); if(m)m.style.display="none";
+  };
+
+  window.executeDeleteEvent=async function(){
+    const e=pendingEventDelete; if(!e)return;
+    const eid=String(e.id||e.eventId||e.event_id||e.key||"").trim();
+    const uid=String(localStorage.getItem("sagunActiveUserId")||"").trim();
+    const client=(()=>{try{return window.supabase?.createClient?.("https://rdlliurzgwwfjscgwssa.supabase.co","sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc")}catch(_){return null}})();
+
+    // Mark the exact Event ID as deleted immediately. This prevents reappearance even if cloud delete is delayed.
+    try{
+      const dk=uid?"sagunDeletedEventIds_"+uid:"sagunDeletedEventIds_guest";
+      const a=JSON.parse(localStorage.getItem(dk)||"[]"); const ids=Array.isArray(a)?a.map(String):[];
+      if(eid&&!ids.includes(eid))ids.push(eid); localStorage.setItem(dk,JSON.stringify(ids));
+    }catch(_){ }
+
+    const eventKeys=["sagunEvents","sagunEventHistory","sgunmsEvents","sagunEventsData","events"];
+    const keepEvent=x=>{
+      const xid=String(x?.id||x?.eventId||x?.event_id||x?.key||"").trim();
+      if(eid)return xid ? xid!==eid : true;
+      return !sameEvent(x,e);
+    };
+    eventKeys.forEach(k=>writeList(k,readList(k).filter(keepEvent)));
+    if(uid)writeList("sagunEventHistory_"+uid,readList("sagunEventHistory_"+uid).filter(keepEvent));
+
+    const entryKeys=["offlineGuests","eventEntries","sagunEntries","birthdayEntries","birthdayGuests","guestEntries"];
+    entryKeys.forEach(k=>writeList(k,readList(k).filter(g=>{
+      const gid=String(g?.event_id||g?.eventId||g?.eventID||g?.event||"").trim();
+      if(eid)return gid ? gid!==eid : true;
+      return !entryBelongs(g,e);
+    })));
+
+    try{
+      if(client){
+        const {data:{user}}=await client.auth.getUser();
+        if(user&&eid){
+          await client.from("guests").delete().eq("user_id",user.id).eq("event_id",eid);
+          await client.from("events").delete().eq("user_id",user.id).eq("id",eid);
+        }
+      }
+    }catch(err){console.log("Cloud event delete:",err)}
+
+    if(eid)localStorage.removeItem("currentEventId");
+    localStorage.removeItem("sgunmsActiveEvent");
+    window.closeDeleteConfirm();
+    if(typeof window.renderMyEvents==="function")await window.renderMyEvents();
+    if(typeof window.refreshHomeEntryCounts==="function")await window.refreshHomeEntryCounts();
+  };
+})();
+</script>
+<div id="eventDetailModal"></div>
+
+<div id="deleteEventConfirmModal" class="delete-confirm-modal" style="display:none">
+  <div class="delete-confirm-box" role="dialog" aria-modal="true">
+    <div class="delete-warning-icon">⚠️</div>
+    <div class="delete-confirm-title">Event Delete करें?</div>
+    <div class="delete-event-name"></div>
+    <div class="delete-confirm-text">
+      इस Event को delete करने पर इससे जुड़ी <b>Entries, Collection और Event details</b> भी हट सकती हैं।
+      <br><br><b>यह action वापस नहीं किया जा सकेगा।</b>
+    </div>
+    <div class="delete-confirm-actions">
+      <button class="delete-cancel-btn" onclick="closeDeleteConfirm()">✕ Cancel</button>
+      <button class="delete-ok-btn" onclick="executeDeleteEvent()">🗑️ हाँ, Delete करें</button>
+    </div>
+  </div>
+</div>
+<div id="deleteSuccessToast" class="delete-success-toast">✅ Event successfully deleted</div>
+
+<script>
+(function(){
+ const b=document.getElementById('pageLogoutBtn');
+ if(!b)return;
+ b.onclick=async()=>{
+  try{if(window.supabase&&window.supabase.createClient){const c=window.supabase.createClient('https://rdlliurzgwwfjscgwssa.supabase.co','sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc');await c.auth.signOut();}}catch(e){}
+  location.href='login.html';
+ };
+})();
+</script>
+
+<!-- HOME FINAL FIX: no Menu/Guest in topbar; Event count on New Event card -->
+<script>
+(function(){
+  function updateEventCountFromCards(){
+    const cards=document.querySelectorAll("#dynamicHomeEvents .event-card-premium");
+    const n=cards.length;
+    const badge=document.getElementById("newEventCountBadge");
+    if(badge) badge.textContent=n+" Event"+(n===1?"":"s");
+    const total=document.getElementById("totalEvents");
+    if(total) total.textContent=n;
+  }
+  document.addEventListener("DOMContentLoaded",()=>setTimeout(updateEventCountFromCards,500));
+  window.addEventListener("pageshow",()=>setTimeout(updateEventCountFromCards,200));
+})();
+</script>
+<style>
+.home-topbar-logout{border:1px solid rgba(255,255,255,.65)!important;background:#fff!important;color:#72001f!important;border-radius:18px!important;padding:7px 13px!important;font-weight:900!important;cursor:pointer!important;white-space:nowrap!important}
+.home-topbar-logout:hover{background:#ffeef2!important}
+
+@media(max-width:700px){.home-topbar-logout{font-size:11px!important;padding:6px 9px!important}}
+</style>
+
+
+<script>
+(function(){
+  const SUPA_URL="https://rdlliurzgwwfjscgwssa.supabase.co";
+  const SUPA_KEY="sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc";
+  function money(n){return "₹"+Number(n||0).toLocaleString("en-IN");}
+  function hideGuestNotice(){
+    const selectors=['#guestBanner','.guest-banner','.guest-mode-banner','.guest-notice','.guest-info','.guest-mode','[data-guest-banner]'];
+    document.querySelectorAll(selectors.join(',')).forEach(el=>el.style.display='none');
+    document.querySelectorAll('body *').forEach(el=>{
+      const t=(el.textContent||'').trim();
+      if(t.includes('Guest Mode') && t.length<180 && el.children.length<4) el.style.display='none';
+    });
+  }
+  async function loadCombined(){
+    try{
+      const c=window.supabase?.createClient ? window.supabase.createClient(SUPA_URL,SUPA_KEY) : null;
+      if(!c)return;
+      const {data:{user}}=await c.auth.getUser();
+      if(user) hideGuestNotice();
+      if(!user)return;
+      const {data:guests,error}=await c.from('guests').select('*').eq('user_id',user.id);
+      if(error){console.log('Dashboard stats:',error);return;}
+
+      // Dashboard totals must only include entries belonging to ACTIVE events.
+      // Deleted events must not leave their old entries/amounts in the totals.
+      let activeEvents=[];
+      try{
+        const er=await c.from('events').select('id,event_id,event_name,event_type,event_date,person1,person2').eq('user_id',user.id).limit(1000);
+        if(!er.error && Array.isArray(er.data)) activeEvents=er.data;
+      }catch(_){ }
+      const activeIds=new Set(activeEvents.map(e=>String(e.id||e.event_id||e.eventId||'').trim()).filter(Boolean));
+      // The visible Home event cards may be backed by the offline user-scoped history.
+      // Include those IDs as active too, so locally saved entries are counted immediately.
+      try{ (window.eventCache||[]).forEach(e=>{const id=String(e?.id||e?.eventId||e?.event_id||'').trim();if(id)activeIds.add(id);}); }catch(_){ }
+      const localSources=['offlineGuests','eventEntries','sagunEntries','birthdayEntries','birthdayGuests','guestEntries'];
+      const local=[];
+      localSources.forEach(k=>{try{const a=JSON.parse(localStorage.getItem(k)||'[]');if(Array.isArray(a))local.push(...a)}catch(e){}});
+      const entryId=g=>String(g?.event_id||g?.eventId||g?.eventID||g?.event||'').trim();
+      const currentUid=String(localStorage.getItem('sagunActiveUserId')||'').trim();
+      const cloudActive=(guests||[]).filter(g=>{const id=entryId(g);return id ? activeIds.has(id) : false;});
+      const localActive=local.filter(g=>{
+        const id=entryId(g);
+        const owner=String(g?.user_id||g?.userId||g?.owner_id||g?.ownerId||'').trim();
+        if(currentUid && owner && owner!==currentUid)return false;
+        return id ? activeIds.has(id) : false;
+      });
+      const all=[...cloudActive,...localActive];
+      const seen=new Set(), rows=[];
+      all.forEach(g=>{const k=g.id ? String(g.id) : [g.name,g.amount,g.payment_mode||g.paymentMode,g.created_at||g.createdAt||g.timestamp].join('|');if(!seen.has(k)){seen.add(k);rows.push(g)}});
+      let total=0,cash=0,upi=0,gifts=0;
+      rows.forEach(g=>{
+        total++;
+        const amount=Number(g.amount||g.cashAmount||g.giftAmount||0);
+        const mode=String(g.payment_mode||g.paymentMode||g.mode||g.type||'').toLowerCase();
+        if(mode.includes('upi')) upi+=amount;
+        else if(mode.includes('cash')) cash+=amount;
+        if(mode.includes('gift') || g.gift_item || g.giftItem || g.gift_description || g.giftDescription) gifts++;
+      });
+      const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+      set('totalGuests',total); set('totalCash',money(cash)); set('totalUPI',money(upi)); set('totalCashUPI',money(cash+upi)); set('totalGifts',gifts);
+      set('totalShagun',money(cash+upi)); set('upiCollection',money(upi));
+    }catch(e){console.log('Combined dashboard error',e);}
+  }
+  function cleanHomeTopbar(){
+    const bar=document.getElementById('sagunTopbar'); if(!bar)return;
+    bar.querySelectorAll('.sagun-tools,.sagun-menu,#homeTopbarGuest,#homeTopbarGuestCount,[id*="Guest"],[class*="guest"]').forEach(el=>el.remove());
+    const right=bar.querySelector('.sagun-right'); if(!right)return;
+    right.querySelectorAll('button').forEach(btn=>{const t=(btn.textContent||'').toLowerCase();if(t.includes('menu')||t.includes('guest')||t.includes('☰'))btn.remove();});
+    if(!right.querySelector('#homeTopbarLogout')){
+      const b=document.createElement('button');b.id='homeTopbarLogout';b.className='home-topbar-logout';b.type='button';b.textContent='🚪 Logout';
+      b.onclick=async()=>{try{const c=window.supabase.createClient(SUPA_URL,SUPA_KEY);await c.auth.signOut();}catch(e){} location.href='login.html';};
+      right.appendChild(b);
+    }
+  }
+  function run(){cleanHomeTopbar();hideGuestNotice();}
+  document.addEventListener('DOMContentLoaded',run);
+  window.addEventListener('pageshow',run);
+  setTimeout(run,500);setTimeout(run,1500);
+})();
+</script>
+<style>
+.dashboard-summary{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+.dashboard-summary .card{min-height:125px;padding:16px}
+.dashboard-summary .card h1{font-size:25px}
+.tools-section .quick{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:1100px){.dashboard-summary{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:700px){.dashboard-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}.tools-section .quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</body>
+</html><style>
+/* New Event + created Events: keep them together in one row on desktop */
+.home-event-count-badge{display:inline-flex;align-items:center;justify-content:center;margin-left:8px;padding:4px 10px;border-radius:999px;background:linear-gradient(135deg,#7b0826,#b98500);color:#fff;font-size:11px;font-weight:800;vertical-align:middle;box-shadow:0 4px 10px rgba(123,8,38,.14)}
+.new-event-area .event-grid{grid-template-columns:repeat(5,minmax(0,1fr));}
+@media(max-width:1100px){.new-event-area .event-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:700px){.home-event-count-badge{font-size:10px;padding:3px 8px;margin-left:5px;}}
+@media(max-width:700px){.new-event-area .event-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+</style>

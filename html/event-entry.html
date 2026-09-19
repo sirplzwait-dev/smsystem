@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Event Entry | Sagun Management System</title>
+<link rel="stylesheet" href="../css/event-entry.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="offline-test.js"></script>
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="logo">🎉 SAGUN SYSTEM</div>
+  <div class="top-actions">
+    <button onclick="location.href='home.html'">🏠 Home</button>
+    <button id="logoutBtn">🚪 Logout</button>
+  </div>
+</header>
+
+<main class="page">
+  <section class="hero-card">
+    <div class="event-icon" id="eventIcon">🎉</div>
+    <div class="event-title" id="eventTitle">समारोह</div>
+    <div class="event-date" id="eventDate">दिनांक</div>
+    <div class="person-wrap" id="personWrap">
+      <img id="personPhoto" src="../assets/images/groom.jpg" alt="Event Photo">
+    </div>
+    <h1 id="personName">नाम</h1>
+    <div id="personSecond" class="person-second"></div>
+    <p id="welcomeText">आपकी उपस्थिति हमारे लिए सौभाग्य है।</p>
+  </section>
+
+  <section class="entry-card">
+    <h2>🎁 Entry दर्ज करें</h2>
+
+    <div class="form-grid">
+      <input id="guestName" type="text" placeholder="नाम (Name)" oninput="this.value=this.value.toUpperCase()">
+      <input id="guestVillage" type="text" placeholder="गाँव / Village" oninput="this.value=this.value.toUpperCase()">
+
+      <select id="giftType">
+        <option value="Cash Gift">💵 Cash Gift</option>
+        <option value="Gift">🎁 Gift</option>
+      </select>
+
+      <select id="paymentMode">
+        <option value="Cash">💵 Cash</option>
+        <option value="UPI">📱 UPI</option>
+      </select>
+
+      <input id="giftDescription" type="text" placeholder="Gift / Cash Gift का विवरण">
+      <input id="giftAmount" type="number" min="0" placeholder="राशि ₹">
+    </div>
+
+    <button id="submitBtn">✅ Entry दर्ज करें</button>
+    <div id="message"></div>
+  </section>
+</main>
+
+<div id="upiPopup" class="popup">
+  <div class="popup-content">
+    <button id="closePopup" class="close-btn">✖</button>
+    <h3>📱 Payment QR</h3>
+    <img id="upiQrImage" src="" alt="UPI QR">
+  </div>
+</div>
+
+<script src="../js/guest-auth.js"></script>
+<script src="../js/event-entry.js" defer></script>
+  <script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

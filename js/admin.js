@@ -1,0 +1,180 @@
+/* Extracted from admin.html - functionality unchanged */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-PSQRN0SV09');
+    
+
+
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+
+const sb = window.supabase.createClient(
+    "https://rdlliurzgwwfjscgwssa.supabase.co",
+    "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+);
+
+let currentUserId = null;
+
+window.onload = async () => {
+    const { data: { user } } = await sb.auth.getUser();
+    if (false && !user) { 
+        // login disabled 
+        return; 
+    }
+    currentUserId = user.id;
+
+    let isAuthenticated = false;
+
+    while (!isAuthenticated) {
+        const { value: password, dismiss } = await Swal.fire({
+            title: '🔒 एडमिन पासवर्ड दर्ज करें',
+            html: `
+                <div style="position: relative; width: 100%; margin-top: 10px;">
+                    <input type="password" id="swal-input-password" class="swal2-input" placeholder="अपना एडमिन पासवर्ड लिखें" style="margin: 0; width: 100%; padding-right: 45px; box-sizing: border-box;">
+                    <span id="toggle-swal-password" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 18px; user-select: none;">👁️</span>
+                </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'लॉगिन करें',
+            cancelButtonText: '❌ रद्द करें (मुख्य पेज पर जाएं)',
+            buttonsStyling: true,
+            customClass: {
+                confirmButton: 'swal2-confirm',
+                cancelButton: 'swal2-cancel'
+            },
+            confirmButtonColor: '#800000',
+            cancelButtonColor: '#6c757d',
+            didOpen: () => {
+                const pwdInput = document.getElementById('swal-input-password');
+                const toggleBtn = document.getElementById('toggle-swal-password');
+                
+                toggleBtn.onclick = () => {
+                    if (pwdInput.type === 'password') {
+                        pwdInput.type = 'text';
+                        toggleBtn.textContent = '🙈';
+                    } else {
+                        pwdInput.type = 'password';
+                        toggleBtn.textContent = '👁️';
+                    }
+                };
+            },
+            preConfirm: () => {
+                const pwd = document.getElementById('swal-input-password').value;
+                if (!pwd) {
+                    Swal.showValidationMessage('पासवर्ड डालना अनिवार्य है!');
+                }
+                return pwd;
+            }
+        });
+
+        if (dismiss === Swal.DismissReason.cancel || dismiss === Swal.DismissReason.backdrop || dismiss === Swal.DismissReason.close) {
+            window.location.href = '../html/home.html';
+            return;
+        }
+
+        if (password) {
+            const { error: authError } = await sb.auth.signInWithPassword({
+                email: user.email,
+                password
+            });
+            if (authError) {
+                await Swal.fire({
+                    title:'गलत पासवर्ड!',
+                    text:'आपका Login Password सही नहीं है।',
+                    icon:'error',
+                    confirmButtonColor:'#800000'
+                });
+            } else {
+                isAuthenticated = true;
+            }
+        }
+    }
+
+    loadData();
+};
+
+async function loadData() {
+    if (!currentUserId) return;
+
+    const { data, error } = await sb.from("guests").select("*").eq("user_id", currentUserId).order('created_at', { ascending: false });
+    if(error) { console.error("Error:", error); return; }
+
+    let tbody = document.getElementById('tableBody');
+    tbody.innerHTML = "";
+    let total = 0;
+
+    if(!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #888; padding: 20px;">कोई रिकॉर्ड नहीं मिला।</td></tr>`;
+        document.getElementById('totalGuests').innerText = 0;
+        document.getElementById('rawAmount').innerText = '₹0';
+        return;
+    }
+
+    data.forEach(g => {
+        total += Number(g.amount || 0);
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td><b>${g.name || ''}</b></td>
+            <td>${g.state || ''}</td>
+            <td>${g.district || ''}</td>
+            <td>${g.village || ''}</td>
+            <td style="color: #27ae60; font-weight: 600;">₹${Number(g.amount || 0).toLocaleString('en-IN')}</td>
+            <td style="text-align: center;"><button class="delete-btn" onclick="deleteEntry('${g.id}')">🗑️ Delete</button></td>
+        `;
+        tbody.appendChild(row);
+    });
+    
+    document.getElementById('totalGuests').innerText = data.length;
+    document.getElementById('rawAmount').innerText = '₹' + total.toLocaleString('en-IN');
+}
+
+async function deleteEntry(id) {
+    Swal.fire({
+        title: 'क्या आप वाकई डिलीट करना चाहते हैं?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'हाँ, डिलीट करें',
+        cancelButtonText: 'रद्द करें'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const { error } = await sb.from("guests").delete().eq("id", id);
+            if(error) { Swal.fire("त्रुटि", error.message, "error"); }
+            else { 
+                Swal.fire({ title: 'डिलीट हो गया!', icon: 'success', timer: 1200, showConfirmButton: false });
+                loadData(); 
+            }
+        }
+    });
+}
+
+async function deleteAllData() {
+    if (!currentUserId) return;
+
+    Swal.fire({
+        title: 'चेतावनी!',
+        text: 'आपका पूरा डेटा डिलीट हो जाएगा!',
+        icon: 'error',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'हाँ, सब डिलीट करें',
+        cancelButtonText: 'रद्द करें'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const { error } = await sb.from("guests").delete().eq("user_id", currentUserId);
+            if(error) { Swal.fire("त्रुटि", error.message, "error"); }
+            else { 
+                Swal.fire({ title: 'सफल!', text: 'सारा डेटा साफ़ कर दिया गया है।', icon: 'success', timer: 1500, showConfirmButton: false });
+                loadData(); 
+            }
+        }
+    });
+}
+

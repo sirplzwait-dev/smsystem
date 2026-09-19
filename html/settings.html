@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Settings | SGUNMS</title>
+<link rel="stylesheet" href="../css/modules.css">
+<link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/settings.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+
+<style>
+.danger-card{border-color:#f1b8bf!important;background:#fff8f8!important}.danger-card .card-icon{background:#ffe9ec!important}.danger-panel{border:1px solid #f0c0c6}.guest-delete-warning{background:#fff4f4;border:1px solid #f2c5ca;color:#7b1e2b;border-radius:14px;padding:14px 16px;margin:12px 0 16px;line-height:1.55}
+.account-delete-box{margin-top:22px;padding:16px;border:1px solid #efb8bf;border-radius:14px;background:#fff7f8;display:flex;align-items:center;justify-content:space-between;gap:16px}.account-delete-box b{display:block;color:#7b1e2b;font-size:15px}.account-delete-box small{display:block;color:#765e63;margin-top:4px;line-height:1.45}.account-delete-box .sg-btn{flex:0 0 auto}@media(max-width:700px){.account-delete-box{flex-direction:column;align-items:stretch}.account-delete-box .sg-btn{width:100%}}</style>
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+<main class="module-page settings-page">
+  <div class="module-wrap">
+    <section class="module-hero settings-hero">
+      <span class="kicker">⚙️ SGUNMS SETTINGS</span>
+      <h1>Settings / सेटिंग्स</h1>
+      <p>अपने Profile, Security, Data और PWA को यहीं से manage करें।</p>
+      <div class="settings-user"><span id="userAvatar">👤</span><div><b id="userName">Guest User</b><small id="userMode">Local / Guest mode</small></div></div>
+    </section>
+
+    <section class="settings-cards">
+      <button class="settings-card profile-card" data-panel="profilePanel">
+        <div class="card-top"><span class="card-icon">👤</span><span class="card-arrow">›</span></div>
+        <b>Profile</b><small class="card-subtitle">नाम और basic account information</small>
+        <span class="card-divider"></span><span class="card-label">अंदर क्या मिलेगा</span>
+        <span class="card-points">नाम, Mobile, Village / City<br>Profile update और Account Delete</span>
+      </button>
+      <button class="settings-card security-card" data-panel="securityPanel">
+        <div class="card-top"><span class="card-icon">🔐</span><span class="card-arrow">›</span></div>
+        <b>Security</b><small class="card-subtitle">Password, session और logout</small>
+        <span class="card-divider"></span><span class="card-label">अंदर क्या मिलेगा</span>
+        <span class="card-points">Current session status<br>Password reset और Logout</span>
+      </button>
+      <button class="settings-card sync-card" data-panel="syncPanel">
+        <div class="card-top"><span class="card-icon">☁️</span><span class="card-arrow">›</span></div>
+        <b>Data & Sync</b><small class="card-subtitle">Backup, restore और local data</small>
+        <span class="card-divider"></span><span class="card-label">अंदर क्या मिलेगा</span>
+        <span class="card-points">Backup Data और Restore Data<br>Local data management</span>
+      </button>
+      <button class="settings-card pwa-card" data-panel="pwaPanel">
+        <div class="card-top"><span class="card-icon">📱</span><span class="card-arrow">›</span></div>
+        <b>PWA</b><small class="card-subtitle">Home Screen पर app install करें</small>
+        <span class="card-divider"></span><span class="card-label">अंदर क्या मिलेगा</span>
+        <span class="card-points">SGUNMS को app की तरह install करें<br>Mobile / Desktop access</span>
+      </button>
+      <button class="settings-card danger-card" data-panel="guestDataPanel">
+        <div class="card-top"><span class="card-icon">🗑️</span><span class="card-arrow">›</span></div>
+        <b>Delete Guest Details</b><small class="card-subtitle">Guest का पूरा local data हटाएँ</small>
+        <span class="card-divider"></span><span class="card-label">अंदर क्या मिलेगा</span>
+        <span class="card-points">Guest Events और Entries delete<br>Cash, UPI, Gifts और local data हटाएँ</span>
+      </button>
+    </section>
+
+    <section id="profilePanel" class="settings-panel">
+      <div class="panel-head"><div><span class="panel-kicker">👤 PROFILE</span><h2>Profile Information</h2></div><button class="close-panel">×</button></div>
+      <div class="form-grid">
+        <label>नाम<input id="profileName" type="text" placeholder="अपना नाम"></label>
+        <label>Mobile<input id="profileMobile" type="tel" inputmode="numeric" placeholder="Mobile number"></label>
+        <label class="full">Village / City<input id="profilePlace" type="text" placeholder="गाँव / शहर"></label>
+      </div>
+      <button class="sg-btn" id="saveProfile">💾 Save Profile</button><span class="save-status" id="profileStatus"></span>
+      <div class="account-delete-box">
+        <div><b>Delete Account</b><small>Account, profile, events, entries और सभी saved details permanently हटाएँ</small></div>
+        <button class="sg-btn danger" id="deleteAccount">🗑️ Delete Account</button>
+      </div>
+      <div id="accountDeleteStatus" class="sync-status"></div>
+    </section>
+
+    <section id="guestDataPanel" class="settings-panel danger-panel">
+      <div class="panel-head"><div><span class="panel-kicker">🗑️ GUEST DATA</span><h2>Delete Guest Details</h2></div><button class="close-panel">×</button></div>
+      <p class="panel-note">Guest mode में इस device पर saved Events, Guest Entries, Cash/UPI/Gift details, Profile और local app data को permanently हटाया जा सकता है।</p>
+      <div class="guest-delete-warning">⚠️ <b>सावधान:</b> Delete करने के बाद यह data वापस नहीं आएगा। जरूरत हो तो पहले Backup Data ले लें।</div>
+      <button class="sg-btn danger" id="deleteGuestDetails">🗑️ Delete Guest Details</button>
+      <div id="guestDeleteStatus" class="sync-status"></div>
+    </section>
+
+    <section id="securityPanel" class="settings-panel">
+      <div class="panel-head"><div><span class="panel-kicker">🔐 SECURITY</span><h2>Security & Session</h2></div><button class="close-panel">×</button></div>
+      <div class="security-row"><div><b>Current Session</b><small id="sessionText">Checking…</small></div><span class="status-dot"></span></div>
+      <div class="action-row"><a class="sg-btn alt" href="forgot-password.html">🔑 Change / Reset Password</a><button class="sg-btn danger" id="settingsLogout">🚪 Logout</button></div>
+    </section>
+
+    <section id="syncPanel" class="settings-panel">
+      <div class="panel-head"><div><span class="panel-kicker">☁️ DATA & SYNC</span><h2>Backup & Restore</h2></div><button class="close-panel">×</button></div>
+      <p class="panel-note">आपके browser में रखे SGUNMS local data का backup JSON file में लें और जरूरत पर restore करें।</p>
+      <div class="action-row"><button class="sg-btn" id="exportData">⬇️ Backup Data</button><label class="sg-btn alt file-btn">⬆️ Restore Data<input id="importData" type="file" accept="application/json"></label><button class="sg-btn danger" id="clearLocal">🗑️ Clear Local Data</button></div>
+      <div id="syncStatus" class="sync-status"></div>
+    </section>
+
+    <section id="pwaPanel" class="settings-panel">
+      <div class="panel-head"><div><span class="panel-kicker">📱 PWA</span><h2>Install SGUNMS</h2></div><button class="close-panel">×</button></div>
+      <p class="panel-note">अगर browser installation support करता है तो SGUNMS को mobile/desktop app की तरह install कर सकते हैं।</p>
+      <button class="sg-btn" id="installPwa">📲 Install SGUNMS</button>
+      <div id="pwaStatus" class="sync-status"></div>
+    </section>
+
+    <div class="settings-footer"><a href="home.html">← Home पर वापस जाएँ</a></div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/topbar.js"></script>
+<script src="../js/settings.js"></script>
+<script src="../js/premium-calendar.js"></script>
+
+<script id="guest-delete-final">
+(function(){
+  const btn=document.getElementById('deleteGuestDetails');
+  if(!btn)return;
+  const guest=localStorage.getItem('guestMode')==='true'||localStorage.getItem('guestAuth')==='true';
+  if(!guest){
+    btn.disabled=true; btn.textContent='🗑️ Guest mode में उपलब्ध';
+    const st=document.getElementById('guestDeleteStatus'); if(st)st.textContent='यह विकल्प केवल Guest mode के लिए है।';
+    return;
+  }
+  btn.addEventListener('click',async function(){
+    const ok=confirm('⚠️ WARNING\n\nGuest का पूरा data delete होने वाला है।\n\nइसमें Events, Guest Entries, Cash, UPI, Gifts, Profile और local app data शामिल हैं।\n\nDelete करने से पहले Backup Data लेना चाहते हैं तो Cancel दबाएँ।\n\nक्या आप सच में आगे बढ़ना चाहते हैं?');
+    if(!ok)return;
+    const ok2=confirm('🚨 FINAL CONFIRMATION\n\nDelete करने के बाद Guest data वापस नहीं आएगा।\n\nक्या Delete Guest Details करना है?');
+    if(!ok2)return;
+    btn.disabled=true; btn.textContent='Deleting…';
+    try{
+      // Remove every localStorage item.
+      localStorage.clear();
+      // Remove session storage as well.
+      try{sessionStorage.clear();}catch(e){}
+      // Clear IndexedDB databases used by offline/PWA storage when supported.
+      if(indexedDB.databases){
+        const dbs=await indexedDB.databases();
+        await Promise.all((dbs||[]).filter(x=>x&&x.name).map(x=>new Promise(r=>{try{const q=indexedDB.deleteDatabase(x.name);q.onsuccess=q.onerror=q.onblocked=()=>r();}catch(e){r()}})));
+      }
+      // Clear service-worker caches.
+      if(window.caches){const names=await caches.keys();await Promise.all(names.map(n=>caches.delete(n)));}
+      // Unregister service workers.
+      if(navigator.serviceWorker){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));}
+      alert('✅ Guest का पूरा local data delete कर दिया गया है।');
+      location.href='login.html';
+    }catch(e){
+      console.error(e);
+      btn.disabled=false; btn.textContent='🗑️ Delete Guest Details';
+      alert('कुछ data delete नहीं हो सका। कृपया फिर से कोशिश करें।');
+    }
+  });
+})();
+</script>
+</body>
+</html>

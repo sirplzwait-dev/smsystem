@@ -1,0 +1,370 @@
+.event-picker-wrap{margin:0 0 18px;padding:20px;border-radius:24px;background:linear-gradient(145deg,#fffaf2,#fff);border:1px solid #f1dfc2;box-shadow:0 12px 32px rgba(92,55,15,.08)}
+.event-picker-heading{display:flex;align-items:center;gap:12px;margin-bottom:16px}.event-picker-heading.compact{margin-bottom:14px}.event-picker-heading h3{margin:0;font-size:20px;color:#6b3f16}.event-picker-heading p{margin:4px 0 0;color:#8b735d;font-size:13px}.event-picker-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:#fff1d6;font-size:23px;box-shadow:inset 0 0 0 1px #f3d8aa}
+.event-card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.event-card-grid.mini{grid-template-columns:repeat(3,1fr)}
+.event-card{position:relative;min-height:220px;border:1px solid #e4bd70;background:linear-gradient(145deg,#fffdf8,#fff3d6 55%,#fffaf3);border-radius:22px;padding:30px 16px 26px;cursor:pointer;text-align:center;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;box-shadow:0 12px 28px rgba(120,70,10,.12);font:inherit;color:#4b3827;overflow:hidden}.event-card:before{content:'';position:absolute;left:15%;right:15%;top:0;height:3px;border-radius:0 0 8px 8px;background:linear-gradient(90deg,#c58a2a,#f2d58a,#c58a2a);opacity:.7}.event-card:hover{transform:translateY(-6px) scale(1.015);box-shadow:0 18px 32px rgba(70,42,10,.15);border-color:#d7a95e}.event-card.active{border-color:#c88628;background:linear-gradient(145deg,#fff6e4,#fff);box-shadow:0 0 0 3px rgba(200,134,40,.12),0 12px 25px rgba(70,42,10,.1)}.event-emoji{display:grid;place-items:center;width:82px;height:82px;margin:0 auto 11px;border-radius:18px;background:linear-gradient(145deg,#fff8e6,#ffd878);box-shadow:inset 0 0 0 2px rgba(196,129,28,.28),0 10px 20px rgba(140,91,20,.14);font-size:44px;line-height:1}.event-card strong{display:block;font-size:19px}.event-card small{display:block;margin-top:3px;color:#9b8062;font-size:11px}
+@media(max-width:700px){.event-card-grid{grid-template-columns:repeat(2,1fr)}.event-card-grid.mini{grid-template-columns:repeat(3,1fr)}.event-picker-wrap{padding:15px}.event-emoji{font-size:30px}}
+@media(max-width:430px){.event-card-grid.mini{grid-template-columns:1fr 1fr 1fr;gap:8px}.event-card{padding:14px 6px}.event-card strong{font-size:14px}}
+
+
+
+*{box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{margin:0;min-height:100vh;padding:18px;background:radial-gradient(circle at 12% 18%,rgba(255,215,120,.30),transparent 25%),radial-gradient(circle at 88% 82%,rgba(255,255,255,.16),transparent 25%),linear-gradient(135deg,#3b0610,#7b1020 42%,#a96817 72%,#f4d47b);background-size:100% 100%;display:flex;align-items:flex-start;justify-content:center;position:relative;overflow-x:hidden;overflow-y:hidden}
+.setup-card:before{content:'✦  ✧  ✦  ✧  ✦';position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.10);font-size:70px;letter-spacing:35px;pointer-events:none}.setup-card{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.75)}
+.setup-card{width:min(1120px,100%);background:rgba(255,252,247,.97);border-radius:30px;padding:30px;box-shadow:0 30px 80px rgba(36,4,10,.38),0 4px 18px rgba(255,215,120,.16);backdrop-filter:blur(10px);z-index:1}
+.setup-head{text-align:center;margin-bottom:24px;position:relative}.setup-head:after{content:'';display:block;width:90px;height:3px;margin:14px auto 0;border-radius:10px;background:linear-gradient(90deg,#8b1e1e,#d5a33b,#8b1e1e)}
+.setup-head .icon{font-size:44px;display:inline-grid;place-items:center;width:72px;height:72px;border-radius:22px;background:linear-gradient(145deg,#fff5d8,#ffe7aa);box-shadow:0 10px 25px rgba(139,30,30,.12),inset 0 0 0 1px #efd49a}
+.setup-head h2{margin:10px 0 5px;color:#65000d;font-size:29px;letter-spacing:.2px}
+.setup-head p{margin:0;color:#806b59;font-size:14px}
+.event-picker-wrap{margin:0!important;background:linear-gradient(145deg,rgba(255,248,235,.96),rgba(255,255,255,.92));border:1px solid #ead6b7!important;box-shadow:inset 0 1px rgba(255,255,255,.9),0 14px 35px rgba(75,34,8,.07)!important}
+.event-card-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;max-height:calc(100vh - 250px);overflow-y:auto;padding:6px 8px 14px;scrollbar-width:thin}
+@media(max-width:700px){.setup-card{padding:16px}.event-card-grid{grid-template-columns:1fr;gap:16px}.event-card{min-height:145px;padding:22px 14px}.event-emoji{width:82px;height:82px;font-size:38px}.event-card strong{font-size:18px}.event-card small{font-size:12px}}
+@media(max-width:430px){body{padding:10px}.setup-card{padding:14px;border-radius:22px}.event-card{padding:22px 12px;min-height:175px}.event-card strong{font-size:19px}}
+
+
+
+body{overflow:hidden!important;height:100vh!important;min-height:0!important;padding:10px!important}
+.setup-card{height:calc(100vh - 20px)!important;padding:18px!important;display:flex;flex-direction:column}
+.setup-head{margin-bottom:12px!important}.setup-head .icon{width:54px!important;height:54px!important;font-size:31px!important}.setup-head h2{font-size:24px!important;margin:6px 0 3px!important}.setup-head p{font-size:12px!important}.setup-head:after{margin:8px auto 0!important;width:65px!important}
+.event-picker-wrap{padding:10px!important;margin:0!important;flex:1;min-height:0;display:flex;flex-direction:column}
+.event-card-grid{flex:1;min-height:0;overflow:visible!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(4,minmax(0,1fr));gap:10px!important;padding:3px!important}
+.event-card{min-height:0!important;height:auto!important;padding:10px 8px!important;border-radius:16px!important;display:flex;flex-direction:column;align-items:center;justify-content:center}.event-emoji{width:55px!important;height:55px!important;font-size:30px!important;margin:0 auto 6px!important;border-radius:14px!important}.event-card strong{font-size:14px!important;line-height:1.2}.event-card small{font-size:9px!important;line-height:1.15;margin-top:3px!important}
+@media(max-width:700px){body{padding:6px!important}.setup-card{height:calc(100vh - 12px)!important;padding:10px!important;border-radius:20px!important}.setup-head .icon{width:45px!important;height:45px!important;font-size:26px!important}.setup-head h2{font-size:19px!important}.event-picker-wrap{padding:7px!important}.event-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(7,minmax(0,1fr));gap:7px!important}.event-card{padding:6px 4px!important;border-radius:13px!important}.event-emoji{width:42px!important;height:42px!important;font-size:23px!important;margin-bottom:4px!important}.event-card strong{font-size:11px!important}.event-card small{font-size:7px!important}}
+
+
+
+/* Premium Event Cards */
+#eventCardGrid{
+  grid-template-columns:repeat(5,minmax(225px,1fr))!important;
+  gap:30px!important;
+  width:100%;
+  margin:34px auto!important;
+  align-items:stretch;
+}
+
+#eventCardGrid .event-card{
+  position:relative;
+  min-height:300px!important;
+  padding:34px 22px!important;
+  border-radius:30px!important;
+  border:2px solid transparent!important;
+  overflow:hidden;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  cursor:pointer;
+  background:#fff!important;
+  box-shadow:0 14px 34px rgba(30,35,55,.14)!important;
+  transition:transform .28s ease,box-shadow .28s ease,filter .28s ease!important;
+}
+
+#eventCardGrid .event-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.13;
+  pointer-events:none;
+}
+
+#eventCardGrid .event-card::after{
+  content:"";
+  position:absolute;
+  top:-55px;
+  right:-55px;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  opacity:.16;
+  pointer-events:none;
+}
+
+#eventCardGrid .event-card:hover{
+  transform:translateY(-10px) scale(1.025);
+  box-shadow:0 24px 48px rgba(25,30,55,.22)!important;
+  filter:saturate(1.08);
+}
+
+#eventCardGrid .event-card:active{
+  transform:translateY(-3px) scale(.995);
+}
+
+#eventCardGrid .event-emoji{
+  position:relative;
+  z-index:1;
+  font-size:78px!important;
+  line-height:1!important;
+  margin-bottom:24px!important;
+  filter:drop-shadow(0 7px 8px rgba(0,0,0,.14));
+}
+
+#eventCardGrid .event-card strong{
+  position:relative;
+  z-index:1;
+  font-size:23px!important;
+  font-weight:800!important;
+  line-height:1.3!important;
+  margin-bottom:11px!important;
+}
+
+#eventCardGrid .event-card small{
+  position:relative;
+  z-index:1;
+  font-size:15px!important;
+  font-weight:600;
+  line-height:1.45!important;
+  opacity:.75;
+}
+
+/* Marriage - royal red/gold */
+#eventCardGrid .event-card[data-event="marriage"]{
+  background:linear-gradient(145deg,#fff8f7,#fff0eb)!important;
+  border-color:#e8b4a8!important;
+}
+#eventCardGrid .event-card[data-event="marriage"]::before{background:linear-gradient(135deg,#b91c1c,#f59e0b)}
+#eventCardGrid .event-card[data-event="marriage"]::after{background:#b91c1c}
+
+/* Engagement - diamond blue */
+#eventCardGrid .event-card[data-event="engagement"]{
+  background:linear-gradient(145deg,#f7fbff,#eaf4ff)!important;
+  border-color:#a9cfee!important;
+}
+#eventCardGrid .event-card[data-event="engagement"]::before{background:linear-gradient(135deg,#2563eb,#67e8f9)}
+#eventCardGrid .event-card[data-event="engagement"]::after{background:#2563eb}
+
+/* Griha Pravesh - auspicious green */
+#eventCardGrid .event-card[data-event="griha_pravesh"]{
+  background:linear-gradient(145deg,#f7fff9,#e8f8ed)!important;
+  border-color:#a8d5b5!important;
+}
+#eventCardGrid .event-card[data-event="griha_pravesh"]::before{background:linear-gradient(135deg,#15803d,#f59e0b)}
+#eventCardGrid .event-card[data-event="griha_pravesh"]::after{background:#15803d}
+
+/* Anniversary - floral purple/pink */
+#eventCardGrid .event-card[data-event="anniversary"]{
+  background:linear-gradient(145deg,#fff8fd,#f9edfa)!important;
+  border-color:#dfb6dc!important;
+}
+#eventCardGrid .event-card[data-event="anniversary"]::before{background:linear-gradient(135deg,#be185d,#9333ea)}
+#eventCardGrid .event-card[data-event="anniversary"]::after{background:#be185d}
+
+/* Birthday - festive orange/yellow */
+#eventCardGrid .event-card[data-event="birthday"]{
+  background:linear-gradient(145deg,#fffaf2,#fff0d5)!important;
+  border-color:#f0c67a!important;
+}
+#eventCardGrid .event-card[data-event="birthday"]::before{background:linear-gradient(135deg,#ea580c,#facc15)}
+#eventCardGrid .event-card[data-event="birthday"]::after{background:#ea580c}
+
+/* Responsive */
+@media(max-width:1400px){
+  #eventCardGrid{grid-template-columns:repeat(3,minmax(225px,1fr))!important}
+}
+@media(max-width:850px){
+  #eventCardGrid{grid-template-columns:repeat(2,minmax(190px,1fr))!important;gap:20px!important}
+  #eventCardGrid .event-card{min-height:260px!important;padding:28px 16px!important}
+  #eventCardGrid .event-emoji{font-size:66px!important}
+}
+@media(max-width:500px){
+  #eventCardGrid{grid-template-columns:1fr 1fr!important;gap:14px!important}
+  #eventCardGrid .event-card{min-height:220px!important;padding:22px 10px!important;border-radius:22px!important}
+  #eventCardGrid .event-emoji{font-size:54px!important;margin-bottom:17px!important}
+  #eventCardGrid .event-card strong{font-size:17px!important}
+  #eventCardGrid .event-card small{font-size:12px!important}
+}
+
+
+
+/* FINAL: large 3+2 event layout */
+#eventCardGrid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(250px,1fr))!important;
+  grid-template-rows:repeat(2,300px)!important;
+  gap:26px!important;
+  flex:none!important;
+  height:626px!important;
+  min-height:626px!important;
+  max-height:none!important;
+  overflow:visible!important;
+  padding:8px!important;
+  align-items:stretch!important;
+}
+
+#eventCardGrid .event-card{
+  width:100%!important;
+  height:300px!important;
+  min-height:300px!important;
+  padding:30px 20px!important;
+  border-radius:28px!important;
+  border-width:2px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-shadow:0 16px 36px rgba(45,25,10,.16)!important;
+}
+
+#eventCardGrid .event-emoji{
+  width:100px!important;
+  height:100px!important;
+  min-width:100px!important;
+  min-height:100px!important;
+  font-size:58px!important;
+  margin:0 auto 20px!important;
+  border-radius:24px!important;
+}
+
+#eventCardGrid .event-card strong{
+  font-size:22px!important;
+  line-height:1.3!important;
+  margin-bottom:8px!important;
+}
+
+#eventCardGrid .event-card small{
+  font-size:14px!important;
+  line-height:1.4!important;
+}
+
+@media(max-width:1100px){
+  #eventCardGrid{
+    grid-template-columns:repeat(2,minmax(240px,1fr))!important;
+    grid-template-rows:repeat(3,270px)!important;
+    height:872px!important;
+    min-height:872px!important;
+  }
+  #eventCardGrid .event-card{height:270px!important;min-height:270px!important}
+}
+
+@media(max-width:700px){
+  #eventCardGrid{
+    grid-template-columns:repeat(2,minmax(150px,1fr))!important;
+    grid-template-rows:repeat(3,220px)!important;
+    height:680px!important;
+    min-height:680px!important;
+    gap:14px!important;
+  }
+  #eventCardGrid .event-card{
+    height:220px!important;
+    min-height:220px!important;
+    padding:18px 10px!important;
+    border-radius:22px!important;
+  }
+  #eventCardGrid .event-emoji{
+    width:70px!important;height:70px!important;
+    min-width:70px!important;min-height:70px!important;
+    font-size:42px!important;margin-bottom:13px!important;
+  }
+  #eventCardGrid .event-card strong{font-size:17px!important}
+  #eventCardGrid .event-card small{font-size:11px!important}
+}
+
+
+
+/* ===== Setup Event Cards: LARGE 3 + 2 layout ===== */
+body{
+  overflow:hidden!important;
+}
+.setup-card{
+  width:min(1240px,calc(100vw - 24px))!important;
+  height:calc(100vh - 24px)!important;
+  padding:22px!important;
+}
+.setup-head{
+  margin-bottom:14px!important;
+}
+.event-picker-wrap{
+  flex:1!important;
+  min-height:0!important;
+  padding:14px!important;
+}
+#eventCardGrid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-template-rows:repeat(2,minmax(0,1fr))!important;
+  gap:20px!important;
+  flex:1!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+  padding:6px!important;
+}
+#eventCardGrid .event-card{
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  padding:22px!important;
+  border-radius:26px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-shadow:0 14px 34px rgba(60,30,10,.16)!important;
+}
+#eventCardGrid .event-emoji{
+  width:82px!important;
+  height:82px!important;
+  min-width:82px!important;
+  min-height:82px!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:52px!important;
+  margin:0 auto 15px!important;
+  border-radius:21px!important;
+}
+#eventCardGrid .event-card strong{
+  font-size:21px!important;
+  line-height:1.25!important;
+  margin:0!important;
+}
+#eventCardGrid .event-card small{
+  font-size:13px!important;
+  line-height:1.3!important;
+  margin-top:6px!important;
+}
+
+/* Keep each event visually distinct */
+#eventCardGrid .event-card[data-event="marriage"]{
+  background:linear-gradient(145deg,#fff4f1,#ffe5dc)!important;
+  border:2px solid #e8ad9c!important;
+}
+#eventCardGrid .event-card[data-event="engagement"]{
+  background:linear-gradient(145deg,#f1f8ff,#dcefff)!important;
+  border:2px solid #9bc6e9!important;
+}
+#eventCardGrid .event-card[data-event="griha_pravesh"]{
+  background:linear-gradient(145deg,#f3fff5,#def4e4)!important;
+  border:2px solid #9bcea9!important;
+}
+#eventCardGrid .event-card[data-event="anniversary"]{
+  background:linear-gradient(145deg,#fff4fb,#f3e1f5)!important;
+  border:2px solid #d8a8d4!important;
+}
+#eventCardGrid .event-card[data-event="birthday"]{
+  background:linear-gradient(145deg,#fff9ed,#ffe9bd)!important;
+  border:2px solid #e8bd67!important;
+}
+
+#eventCardGrid .event-card:hover{
+  transform:translateY(-7px) scale(1.015)!important;
+  box-shadow:0 22px 42px rgba(60,30,10,.22)!important;
+}
+
+@media(max-width:900px){
+  .setup-card{
+    width:calc(100vw - 14px)!important;
+    height:calc(100vh - 14px)!important;
+    padding:14px!important;
+  }
+  #eventCardGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+    gap:12px!important;
+  }
+  #eventCardGrid .event-card{padding:14px!important}
+  #eventCardGrid .event-emoji{
+    width:65px!important;height:65px!important;
+    min-width:65px!important;min-height:65px!important;
+    font-size:42px!important;
+  }
+}

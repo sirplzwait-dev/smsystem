@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reminders | SGUNMS</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/modules.css"><link rel="stylesheet" href="../css/topbar.css"><link rel="stylesheet" href="../css/reminders.css">
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+<main class="rem-page"><div class="rem-wrap">
+<section class="rem-hero"><div><span class="kicker">🔔 REMINDERS</span><h1>Reminders / याद दिलाएँ</h1><p>Family की तारीखें और आपके सभी reminders एक जगह।</p></div><button id="addReminderBtn" class="primary-btn">＋ Reminder जोड़ें</button></section>
+<section class="stats-grid"><div class="stat-card clickable-stat" data-stat-type="birthday"><span>🎂</span><b id="birthdayCount">0</b><small>Birthday • क्लिक करें</small></div><div class="stat-card clickable-stat" data-stat-type="anniversary"><span>💍</span><b id="anniversaryCount">0</b><small>Anniversary • क्लिक करें</small></div><div class="stat-card"><span>🔔</span><b id="upcomingCount">0</b><small>Next 7 Days</small></div><div class="stat-card"><span>📋</span><b id="todayCount">0</b><small>आज</small></div></section>
+<section class="today-panel today-top"><div class="section-title"><div><h2>🔔 आज के Reminders</h2><p>आज जिनका Reminder है, वे सबसे ऊपर दिखाई देंगे।</p></div></div><div id="todayList" class="today-list"></div></section>
+<section class="upcoming-panel"><div class="section-title"><div><h2>⏰ Upcoming — अगले 7 दिन</h2><p>हर जोड़े गए reminder में 7 day left, 6 day left... ऐसे दिखेगा।</p></div></div><div id="upcomingList" class="upcoming-list"></div></section>
+<section class="family-rem-panel"><div class="section-title"><div><h2>👨‍👩‍👧 Family से Reminders</h2><p>Family में जो Birthday और Anniversary डाली गई है, वह यहाँ automatic आएगी।</p></div></div><div id="familyRemindersList" class="family-groups"></div></section>
+<section class="type-section"><div class="section-title"><div><h2>📌 Reminder Categories</h2><p>किसी category पर click करके उसकी सभी entries देखें और उसी type का reminder जोड़ें।</p></div></div><div class="type-grid" id="typeGrid"></div></section>
+<section id="groupDetail" class="group-detail" hidden></section>
+
+</div></main>
+<div id="remModal" class="modal" hidden><div class="modal-card"><button class="modal-close" data-close>×</button><h2 id="modalTitle">Reminder जोड़ें</h2><form id="remForm"><input type="hidden" id="remId">
+<label>Reminder Type *</label><select id="remType" required></select>
+<label>नाम / Title *</label><input id="remTitle" required placeholder="जैसे मोहन का जन्मदिन / हमारी शादी">
+<label>तारीख *</label><input id="remDate" type="date" required><small class="hint">📅 तारीख चुनें। Birthday/Anniversary जैसे yearly reminders में हर साल यही दिन दोहराया जाएगा।</small>
+<label>Reminder का समय</label>
+<div class="time-options" id="timeOptions">
+  <button type="button" class="time-option active" data-time="all">🕐 Full Day</button>
+  <button type="button" class="time-option" data-time="morning">🌅 Morning</button>
+  <button type="button" class="time-option" data-time="afternoon">☀️ Afternoon</button>
+  <button type="button" class="time-option" data-time="evening">🌆 Evening</button>
+  <button type="button" class="time-option" data-time="night">🌙 Night</button>
+</div>
+<input id="remTime" type="time" class="time-input" aria-label="समय">
+<label class="check"><input id="allDay" type="checkbox" checked> पूरा दिन (Full Day)</label>
+<label>Alert</label><select id="remAlert"><option value="0">कार्यक्रम के दिन</option><option value="1">1 दिन पहले</option><option value="3">3 दिन पहले</option><option value="7">7 दिन पहले</option><option value="15">15 दिन पहले</option><option value="30">1 महीना पहले</option><option value="custom">Custom Date/Time</option></select>
+<div id="customAlertBox" hidden><label>Custom Alert Date/Time</label><input id="customAlert" type="datetime-local"></div>
+<label class="check"><input id="repeatYearly" type="checkbox"> 🔁 हर साल दोहराएँ</label>
+<label>Notes</label><textarea id="remNotes" rows="3" placeholder="कोई अतिरिक्त जानकारी..."></textarea>
+<div class="notify-row"><label class="check"><input id="browserNotify" type="checkbox"> 🔔 Notification</label><label class="check"><input id="whatsappNotify" type="checkbox"> 📱 WhatsApp/SMS</label></div>
+<div class="modal-actions"><button type="button" class="ghost-btn" data-close>रद्द करें</button><button class="primary-btn" type="submit">💾 Save Reminder</button></div>
+</form></div></div>
+<div id="toast" class="toast"></div>
+<script src="../js/topbar.js"></script><script src="../js/reminders.js"></script>
+</body></html>

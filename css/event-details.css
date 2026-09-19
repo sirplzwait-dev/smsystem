@@ -1,0 +1,646 @@
+*{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+        body{ 
+            background: linear-gradient(135deg, #600000, #800000, #b38f00, #ffd700); 
+            background-size: 300% 300%;
+            animation: gradientBG 10s ease infinite;
+            min-height: 100vh; 
+            width: 100vw; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 15px; 
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container{ 
+            width: 100%; 
+            max-width: 600px; 
+            background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(10px);
+            padding: 20px 25px; 
+            border-radius: 22px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3), 0 0 0 2px rgba(255, 215, 0, 0.4); 
+        }
+
+        h2 { 
+            text-align: center; 
+            color: #800000; 
+            font-size: 20px; 
+            font-weight: 700;
+            margin-bottom: 12px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px dashed #ffd700;
+            padding-bottom: 6px;
+        }
+
+        label { 
+            display: block; 
+            margin-top: 8px; 
+            font-weight: 600; 
+            color: #444; 
+            font-size: 13px; 
+        }
+
+        input[type="text"], select { 
+            width: 100%; 
+            padding: 9px 12px; 
+            margin-top: 3px; 
+            border: 1.5px solid #d4af37; 
+            border-radius: 8px; 
+            outline: none; 
+            font-size: 14px; 
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: #800000;
+            box-shadow: 0 0 8px rgba(128, 0, 0, 0.2);
+        }
+        
+        .custom-calendar {
+            width: 100%;
+            padding: 9px 12px;
+            margin-top: 3px;
+            border: 1.5px solid #d4af37;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            background: #fffcfc;
+            color: #800000;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .grid-row { display: flex; gap: 12px; }
+        .grid-col { flex: 1; }
+
+        .image-upload-wrapper { 
+            position: relative; 
+            width: 85px; 
+            height: 85px; 
+            margin: 8px auto; 
+            border: 2px dashed #800000; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: #fff8f8; 
+            transition: all 0.3s ease;
+        }
+
+        .image-upload-wrapper:hover {
+            transform: scale(1.05);
+            border-color: #d4af37;
+            background: #fff0f0;
+        }
+
+        .image-upload-wrapper img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+        
+        .section-box { 
+            background: linear-gradient(135deg, #fffcfc, #fff5f5); 
+            border: 1px solid #f2d6d6; 
+            padding: 10px 14px; 
+            border-radius: 12px; 
+            margin-top: 10px; 
+        }
+
+        .section-box h3 { 
+            color: #800000; 
+            font-size: 13px; 
+            font-weight: 700;
+            margin-bottom: 4px; 
+            border-bottom: 1.5px solid #ffd700; 
+            padding-bottom: 2px; 
+        }
+        
+        .flex-inputs { display: flex; gap: 10px; align-items: center; }
+
+        /* ===== OFFLINE PHOTO EDITOR ===== */
+        .cropModal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:12px;background:rgba(12,8,12,.82);backdrop-filter:blur(7px);z-index:99999;overflow:auto}
+        .cropModal.open{display:flex}
+        .cropBox{width:min(94vw,520px);max-height:calc(100vh - 24px);overflow:auto;background:linear-gradient(145deg,#fff,#fff8ec);border:2px solid #d4af37;border-radius:22px;padding:14px;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+        .cropHead{text-align:center;margin:2px 0 10px;color:#72102b}.cropHead strong{display:block;font-size:17px}.cropHead span{display:block;margin-top:3px;font-size:11px;color:#8d7662}
+        .editorStage{position:relative;width:min(82vw,420px);height:min(82vw,420px);max-width:420px;max-height:420px;margin:0 auto;border-radius:14px;overflow:hidden;background:#202020;touch-action:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+        #editorCanvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}.editorStage.dragging #editorCanvas{cursor:grabbing}
+        .cropGuide{position:absolute;inset:0;border:2px solid rgba(255,215,0,.95);box-shadow:inset 0 0 0 9999px rgba(0,0,0,.05);pointer-events:none}
+        .cropGuide:before,.cropGuide:after{content:"";position:absolute;background:rgba(255,255,255,.25)}.cropGuide:before{left:33.33%;top:0;width:1px;height:100%;box-shadow:calc(33.33% + 0px) 0 0 rgba(255,255,255,.25)}.cropGuide:after{top:33.33%;left:0;height:1px;width:100%;box-shadow:0 calc(33.33% + 0px) 0 rgba(255,255,255,.25)}
+        .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}.tools button{min-height:42px;padding:8px 5px;border:0;border-radius:10px;background:#800000;color:#fff;cursor:pointer;font-weight:800;font-size:12px;box-shadow:0 4px 10px rgba(0,0,0,.14)}.tools button:active{transform:scale(.98)}#cropSave{background:linear-gradient(135deg,#218838,#27ae60)!important}.tools #closeCrop{background:linear-gradient(135deg,#a93226,#c0392b)!important}
+        @media(max-width:480px){.cropBox{width:96vw;padding:10px;border-radius:18px}.tools{grid-template-columns:repeat(2,1fr)}.tools button{min-height:44px}.cropHead strong{font-size:16px}}
+                #saveBtn { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 15px; 
+            border: none; 
+            border-radius: 10px; 
+            background: linear-gradient(135deg, #800000, #a00000); 
+            color: #fff; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 15px; 
+            box-shadow: 0 5px 15px rgba(128,0,0,0.3);
+            transition: 0.3s;
+        }
+        #saveBtn:hover { background: linear-gradient(135deg, #600000, #800000); transform: translateY(-2px); }
+    
+/* Special event save buttons */
+#anniversarySaveBtn{
+  width:100%;display:block;margin-top:12px;padding:12px 16px;border:0;border-radius:10px;
+  background:linear-gradient(135deg,#8b102d,#c21f4f 55%,#d49a20);color:#fff;font-weight:800;font-size:15px;
+  line-height:1.2;cursor:pointer;box-shadow:0 5px 15px rgba(128,0,0,.3);transition:.2s ease;
+}
+#anniversarySaveBtn:hover{filter:brightness(1.05);transform:translateY(-2px)}
+#engagementSaveBtn,#grihaSaveBtn{
+  width:100%;
+  display:block;
+  margin-top:12px;
+  padding:12px 16px;
+  border:0;
+  border-radius:10px;
+  background:linear-gradient(135deg,#800000,#a00000);
+  color:#fff;
+  font-weight:800;
+  font-size:15px;
+  line-height:1.2;
+  cursor:pointer;
+  box-shadow:0 5px 15px rgba(128,0,0,.3);
+  transition:.2s ease;
+}
+#engagementSaveBtn:hover,#grihaSaveBtn:hover{
+  background:linear-gradient(135deg,#600000,#800000);
+  transform:translateY(-2px);
+}
+#engagementSaveBtn:active,#grihaSaveBtn:active{transform:translateY(0);}
+.special-event-form h3{
+  color:#800000;
+  border-bottom:1.5px solid #ffd700;
+  padding-bottom:5px;
+  margin-bottom:8px;
+}
+
+
+        /* Premium centered typography */
+        @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+        html, body, input, select, button, textarea {
+            font-family: 'Poppins', 'Noto Sans Devanagari', 'Segoe UI', sans-serif !important;
+        }
+        .container {
+            text-align: center;
+        }
+        .container h1, .container h2, .container h3, .container p,
+        .container label, .container .subtitle, .container .section-title,
+        .container .hint, .container .description, .container .field-title {
+            text-align: center !important;
+        }
+        .container h1, .container h2 {
+            font-family: 'Kalam', 'Noto Sans Devanagari', cursive !important;
+            letter-spacing: .3px;
+            text-transform: none !important;
+        }
+        label {
+            font-weight: 700 !important;
+        }
+        input[type="text"], input[type="date"], input[type="number"], input[type="email"], select, textarea {
+            text-align: center;
+            font-weight: 500;
+        }
+        input::placeholder, textarea::placeholder {
+            text-align: center;
+        }
+        button {
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif !important;
+            font-weight: 700 !important;
+        }
+        .section, .card, .form-section, .photo-section, .upload-area {
+            text-align: center;
+        }
+        .section-title, .card-title {
+            font-weight: 800;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 22px 16px; }
+            h2 { font-size: 22px !important; }
+            label { font-size: 14px !important; }
+            input[type="text"], select { font-size: 15px !important; padding: 11px 12px !important; }
+        }
+
+    
+
+
+.event-choice-panel{}
+#birthdayForm{border:2px solid #d4af37!important;background:linear-gradient(135deg,#fff8fb,#fffdf2)!important}
+#birthdayForm h3{font-size:16px!important}
+#birthdaySaveBtn{width:100%;padding:12px;margin-top:12px;border:0;border-radius:10px;background:linear-gradient(135deg,#800000,#a00000);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+
+
+
+#welcomeBy,#birthdayWelcome{
+  width:100%;
+  padding:9px 12px;
+  border:1.5px solid #d4af37;
+  border-radius:8px;
+  font-size:14px;
+  background:#fff;
+}
+
+
+
+body{
+  background:
+    radial-gradient(circle at 10% 10%,rgba(255,215,64,.22),transparent 25%),
+    radial-gradient(circle at 90% 15%,rgba(233,30,99,.18),transparent 25%),
+    linear-gradient(135deg,#fff8fb 0%,#fffdf3 45%,#f4f0ff 100%) !important;
+}
+.card,.container{
+  position:relative;
+  border:2px solid rgba(255,193,7,.65);
+  box-shadow:0 18px 55px rgba(104,45,120,.16),0 0 0 6px rgba(255,255,255,.55);
+  border-radius:24px;
+}
+.card:before,.container:before{
+  content:"✦  ✨  🎈  ✨  ✦";
+  position:absolute;left:0;right:0;top:-17px;text-align:center;
+  font-size:20px;letter-spacing:8px;pointer-events:none;
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.12));
+  animation:sagunSpark 2s ease-in-out infinite alternate;
+}
+h2,h1{text-align:center;color:#7b0010;text-shadow:0 2px 8px rgba(255,193,7,.25)}
+label{color:#6a1b4d !important;font-weight:800 !important}
+select,input{
+  border:2px solid rgba(156,39,176,.22) !important;
+  background:linear-gradient(135deg,#fff,#fff8fc) !important;
+  box-shadow:0 3px 12px rgba(123,31,162,.07);transition:.2s;
+}
+select:focus,input:focus{
+  border-color:#e91e63 !important;
+  box-shadow:0 0 0 4px rgba(233,30,99,.10),0 6px 18px rgba(123,31,162,.12) !important;
+  transform:translateY(-1px);
+}
+button{box-shadow:0 7px 18px rgba(123,31,162,.18);transition:transform .18s,box-shadow .18s}
+button:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(123,31,162,.25)}
+#marriageOptions,.section-box,#birthdaySection{
+  border-radius:18px !important;
+  border:1.5px solid rgba(255,193,7,.45) !important;
+  background:rgba(255,255,255,.82) !important;
+}
+.image-upload-wrapper{
+  border:3px dashed #d4af37 !important;border-radius:18px !important;
+  background:linear-gradient(135deg,#fffaf0,#fff) !important;
+  box-shadow:inset 0 0 20px rgba(255,193,7,.08);transition:.2s;
+}
+.image-upload-wrapper:hover{transform:scale(1.02);border-color:#e91e63 !important}
+@keyframes sagunSpark{from{opacity:.55;transform:translateY(0)}to{opacity:1;transform:translateY(-3px)}}
+@media(max-width:600px){
+  .card,.container{border-radius:18px}
+  .card:before,.container:before{font-size:15px;letter-spacing:4px}
+}
+
+
+
+.event-picker-wrap{margin:0 0 18px;padding:20px;border-radius:24px;background:linear-gradient(145deg,#fffaf2,#fff);border:1px solid #f1dfc2;box-shadow:0 12px 32px rgba(92,55,15,.08)}
+.event-picker-heading{display:flex;align-items:center;gap:12px;margin-bottom:16px}.event-picker-heading.compact{margin-bottom:14px}.event-picker-heading h3{margin:0;font-size:20px;color:#6b3f16}.event-picker-heading p{margin:4px 0 0;color:#8b735d;font-size:13px}.event-picker-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:#fff1d6;font-size:23px;box-shadow:inset 0 0 0 1px #f3d8aa}
+.event-card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.event-card-grid.mini{grid-template-columns:repeat(3,1fr)}
+.event-card{position:relative;border:1px solid #eadcc9;background:#fff;border-radius:20px;padding:17px 10px 14px;cursor:pointer;text-align:center;transition:.2s ease;box-shadow:0 6px 16px rgba(70,42,10,.06);font:inherit;color:#4b3827}.event-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(70,42,10,.12);border-color:#d7a95e}.event-card.active{border-color:#c88628;background:linear-gradient(145deg,#fff6e4,#fff);box-shadow:0 0 0 3px rgba(200,134,40,.12),0 12px 25px rgba(70,42,10,.1)}.event-emoji{display:block;font-size:34px;line-height:1;margin-bottom:9px}.event-card strong{display:block;font-size:16px}.event-card small{display:block;margin-top:3px;color:#9b8062;font-size:11px}
+@media(max-width:700px){.event-card-grid{grid-template-columns:repeat(2,1fr)}.event-card-grid.mini{grid-template-columns:repeat(3,1fr)}.event-picker-wrap{padding:15px}.event-emoji{font-size:30px}}
+@media(max-width:430px){.event-card-grid.mini{grid-template-columns:1fr 1fr 1fr;gap:8px}.event-card{padding:14px 6px}.event-card strong{font-size:14px}}
+
+
+
+  #eventCardGrid, #eventCardGrid + select { display:none !important; }
+  .event-picker-wrap{padding:0;background:transparent;border:0;box-shadow:none;margin:0 0 12px}
+  .event-picker-heading{margin-bottom:12px}
+  .event-details-note{padding:12px 14px;border-radius:14px;background:linear-gradient(135deg,#fff7e8,#fff);border:1px solid #efd9ae;color:#6b4b27;font-size:13px;margin-bottom:12px}
+  #genericForm{display:none}
+  #genericForm input{margin-bottom:4px}
+  .back-setup{display:inline-flex;align-items:center;gap:6px;border:0;background:#fff3df;color:#7a4b16;border:1px solid #e4c58f;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer;margin-bottom:10px}
+
+
+
+body{padding:24px 14px!important;background:radial-gradient(circle at 8% 8%,rgba(255,215,0,.28),transparent 24%),radial-gradient(circle at 92% 12%,rgba(233,30,99,.18),transparent 25%),linear-gradient(135deg,#fff7fb,#fffdf4 48%,#f5f1ff)!important;background-attachment:fixed!important}
+.container{max-width:760px!important;padding:24px!important;border-radius:30px!important;background:rgba(255,255,255,.94)!important;border:1px solid rgba(212,175,55,.55)!important;box-shadow:0 24px 70px rgba(77,35,80,.18),0 0 0 7px rgba(255,255,255,.58)!important;overflow:hidden}
+.container:before{content:'✦  ✨  SAGUN  ✨  ✦'!important;top:8px!important;color:#c18a16!important;font-size:12px!important;letter-spacing:5px!important;opacity:.85!important}
+.back-setup{margin-top:22px!important;border-radius:14px!important;padding:10px 15px!important;background:linear-gradient(135deg,#fff7e5,#fff)!important;border:1px solid #e7c98e!important;color:#713f0e!important;box-shadow:0 5px 14px rgba(110,70,20,.08)!important}
+#mainTitle{font-size:27px!important;line-height:1.25!important;margin:10px 0 18px!important;padding:16px 14px!important;border:0!important;border-radius:20px!important;background:linear-gradient(135deg,#fff0f5,#fff8e8)!important;box-shadow:inset 0 0 0 1px rgba(212,175,55,.28),0 10px 25px rgba(112,46,77,.08)!important;letter-spacing:.2px!important}
+#mainTitle:after{content:'\A Event Details • समारोह की जानकारी';white-space:pre;color:#9b7350;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:none;text-shadow:none}
+.event-details-note{font-size:14px!important;line-height:1.6!important;padding:15px 17px!important;border-radius:18px!important;background:linear-gradient(135deg,#fff8e9,#fff)!important;border:1px solid #efd29a!important;box-shadow:0 8px 20px rgba(113,75,20,.07)!important}
+.section-box{padding:17px!important;margin-top:14px!important;border-radius:20px!important;background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(255,248,252,.92))!important;border:1px solid rgba(206,164,68,.32)!important;box-shadow:0 8px 22px rgba(80,45,80,.06)!important}
+.section-box h3{font-size:16px!important;margin-bottom:10px!important;padding:0 0 8px!important;border-bottom:2px solid rgba(212,175,55,.45)!important;color:#74102b!important}
+label{font-size:13px!important;margin-top:11px!important;color:#5e3a4b!important}
+input[type="text"],select{min-height:44px!important;padding:11px 13px!important;border-radius:12px!important;font-size:14px!important}
+input[type="text"]::placeholder{color:#b39aa7!important}
+.image-upload-wrapper{width:92px!important;height:92px!important;border-radius:20px!important}
+#saveBtn,#engagementSaveBtn,#grihaSaveBtn,#birthdaySaveBtn{min-height:50px!important;border-radius:16px!important;font-size:16px!important;background:linear-gradient(135deg,#8b102d,#c21f4f 55%,#d49a20)!important;box-shadow:0 12px 25px rgba(139,16,45,.22)!important;letter-spacing:.2px!important}
+#saveBtn:hover,#engagementSaveBtn:hover,#grihaSaveBtn:hover,#birthdaySaveBtn:hover{filter:brightness(1.05);transform:translateY(-2px)!important}
+.event-card{min-height:126px!important;padding:18px 10px!important;border-radius:22px!important;background:linear-gradient(145deg,#fff,#fff9f1)!important;box-shadow:0 9px 22px rgba(74,44,10,.08)!important}
+.event-card:nth-child(2n){background:linear-gradient(145deg,#fff7fb,#fff)!important}.event-card:nth-child(3n){background:linear-gradient(145deg,#f8f5ff,#fff)!important}.event-card:nth-child(4n){background:linear-gradient(145deg,#f3fff9,#fff)!important}
+.event-emoji{font-size:40px!important}.event-card strong{font-size:16px!important;color:#4e2d3c!important}.event-card small{font-size:11px!important;color:#8c7180!important}
+.flex-inputs{gap:12px!important}
+@media(max-width:600px){body{padding:10px 8px!important}.container{padding:16px!important;border-radius:22px!important}.container:before{font-size:10px!important;letter-spacing:3px!important}#mainTitle{font-size:22px!important;padding:14px 10px!important}.section-box{padding:14px!important;border-radius:17px!important}.event-card{min-height:112px!important}.event-emoji{font-size:34px!important}}
+
+
+
+/* Event Details: सामान्य event chooser नहीं दिखेगा; Marriage में ही sub-event chooser दिखेगा */
+.event-picker-wrap{display:none !important;}
+.event-picker-wrap.marriage-visible{display:block !important;}
+/* नीचे वाला छोटा लाल ribbon हटाया गया */
+#setupPremiumRibbon{display:none !important;}
+
+
+
+#eventCardGrid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(180px,1fr))!important;
+  gap:16px!important;
+}
+#eventCardGrid .event-card{
+  min-height:145px!important;
+  padding:18px 12px!important;
+  border-radius:20px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#eventCardGrid .event-emoji{font-size:48px!important;margin-bottom:10px!important}
+#eventCardGrid .event-card strong{font-size:17px!important}
+#eventCardGrid .event-card small{font-size:12px!important}
+@media(max-width:700px){
+  #eventCardGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+
+
+/* Marriage heading/logo - बड़ा और स्पष्ट */
+#mainTitle{
+  position:relative!important;
+  min-height:118px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:16px!important;
+  padding:22px 20px!important;
+  font-size:30px!important;
+  border-radius:26px!important;
+  background:linear-gradient(135deg,#fff4e8 0%,#fff9ef 45%,#fff0f5 100%)!important;
+  border:2px solid rgba(212,175,55,.45)!important;
+  box-shadow:0 14px 32px rgba(104,45,40,.13)!important;
+}
+#mainTitle::before{
+  content:"💍";
+  width:76px;
+  height:76px;
+  flex:0 0 76px;
+  display:grid;
+  place-items:center;
+  border-radius:22px;
+  font-size:48px;
+  background:linear-gradient(145deg,#fff,#ffe9b8);
+  border:2px solid #d4af37;
+  box-shadow:0 8px 20px rgba(139,80,20,.18);
+}
+#mainTitle:after{content:none!important;}
+#mainTitle.marriage-tilak{background:linear-gradient(135deg,#fff4d6,#fffaf0)!important;border-color:#e3bd69!important;}
+#mainTitle.marriage-barat{background:linear-gradient(135deg,#ffe8e8,#fff7f7)!important;border-color:#dfa4a4!important;}
+#mainTitle.marriage-reception{background:linear-gradient(135deg,#ffeaf5,#fff8fc)!important;border-color:#d7a7c2!important;}
+#marriageOptions{
+  padding:22px!important;
+  border-radius:24px!important;
+}
+#marriageOptions .event-picker-heading{
+  justify-content:center!important;
+  text-align:center!important;
+}
+#marriageOptions .event-picker-icon{
+  width:58px!important;height:58px!important;
+  font-size:30px!important;
+  border-radius:18px!important;
+}
+#marriageCardGrid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:18px!important;
+}
+#marriageCardGrid .event-card{
+  min-height:155px!important;
+  padding:20px 12px!important;
+  border-radius:22px!important;
+  border:2px solid #ead3aa!important;
+  background:linear-gradient(145deg,#fffaf1,#fff)!important;
+  box-shadow:0 10px 24px rgba(80,45,15,.10)!important;
+}
+#marriageCardGrid .event-card[data-marriage-event="tilak"]{
+  background:linear-gradient(145deg,#fff5df,#fff)!important;
+  border-color:#e3bd69!important;
+}
+#marriageCardGrid .event-card[data-marriage-event="barat"]{
+  background:linear-gradient(145deg,#fff0f0,#fff)!important;
+  border-color:#dfa4a4!important;
+}
+#marriageCardGrid .event-card[data-marriage-event="reception"]{
+  background:linear-gradient(145deg,#fff1f8,#fff)!important;
+  border-color:#d7a7c2!important;
+}
+#marriageCardGrid .event-emoji{
+  font-size:52px!important;
+  margin-bottom:13px!important;
+}
+#marriageCardGrid .event-card strong{
+  font-size:19px!important;
+  color:#5b2939!important;
+}
+#marriageCardGrid .event-card small{
+  font-size:12px!important;
+}
+@media(max-width:650px){
+  #mainTitle{
+    min-height:105px!important;
+    font-size:23px!important;
+    gap:10px!important;
+    padding:17px 10px 27px!important;
+  }
+  #mainTitle::before{
+    width:60px;height:60px;flex-basis:60px;font-size:38px;border-radius:18px;
+  }
+  #marriageCardGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important}
+  #marriageCardGrid .event-card{min-height:125px!important;padding:12px 5px!important}
+  #marriageCardGrid .event-emoji{font-size:38px!important;margin-bottom:8px!important}
+  #marriageCardGrid .event-card strong{font-size:14px!important}
+  #marriageCardGrid .event-card small{font-size:10px!important}
+}
+
+
+
+/* ===== Premium Event Details UI ===== */
+:root{
+  --wine:#7b1734;
+  --wine-dark:#551126;
+  --gold:#c89b3c;
+  --ink:#382a31;
+  --muted:#806b74;
+  --cream:#fffaf4;
+}
+*{font-family:"Noto Sans Devanagari","Mukta","Hind", "Segoe UI", Arial, sans-serif!important;}
+body{
+  background:
+    radial-gradient(circle at 15% 15%,rgba(255,255,255,.28),transparent 28%),
+    radial-gradient(circle at 85% 85%,rgba(255,215,120,.22),transparent 30%),
+    linear-gradient(135deg,#5b1028 0%,#8a2443 48%,#b88a35 100%)!important;
+  background-size:auto!important;
+  animation:none!important;
+  padding:24px 14px!important;
+}
+.container{
+  max-width:720px!important;
+  padding:28px!important;
+  border-radius:30px!important;
+  background:rgba(255,253,249,.97)!important;
+  border:1px solid rgba(200,155,60,.30)!important;
+  box-shadow:0 24px 60px rgba(40,10,22,.28),0 0 0 5px rgba(255,255,255,.10)!important;
+}
+#mainTitle{
+  font-family:Georgia,"Noto Serif Devanagari",serif!important;
+  color:var(--wine-dark)!important;
+  letter-spacing:.2px!important;
+  line-height:1.25!important;
+  margin-bottom:20px!important;
+}
+.event-picker-heading{
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  padding:14px 16px!important;
+  margin-bottom:14px!important;
+  border-radius:18px!important;
+  background:linear-gradient(135deg,#fff8ed,#fff)!important;
+  border:1px solid rgba(200,155,60,.25)!important;
+}
+.event-picker-heading h3,.form-heading,h3{
+  font-family:Georgia,"Noto Serif Devanagari",serif!important;
+  color:var(--wine)!important;
+  font-weight:800!important;
+  letter-spacing:.15px!important;
+}
+.event-picker-heading p{color:var(--muted)!important;margin-top:3px!important}
+.event-card-grid{gap:18px!important}
+.event-card{
+  position:relative!important;
+  overflow:hidden!important;
+  border:1px solid rgba(123,23,52,.12)!important;
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease!important;
+}
+.event-card::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:4px;
+  background:linear-gradient(90deg,var(--wine),var(--gold));
+  opacity:.65;
+}
+.event-card:hover{transform:translateY(-5px)!important;box-shadow:0 16px 30px rgba(75,31,48,.16)!important;border-color:rgba(123,23,52,.28)!important}
+.event-card strong{font-family:Georgia,"Noto Serif Devanagari",serif!important;font-weight:800!important}
+.section-box,.event-form,.special-event-form{
+  border-radius:22px!important;
+  border:1px solid rgba(200,155,60,.24)!important;
+  box-shadow:0 10px 28px rgba(67,35,48,.08)!important;
+}
+.section-box h3{font-family:Georgia,"Noto Serif Devanagari",serif!important;font-size:18px!important}
+label{font-weight:700!important;color:#5d4650!important;letter-spacing:.05px!important}
+input[type="text"],input[type="date"],select{
+  font-family:"Noto Sans Devanagari","Mukta","Hind","Segoe UI",sans-serif!important;
+  color:var(--ink)!important;
+  background:#fffdfb!important;
+  border:1.5px solid #dfcda9!important;
+  min-height:48px!important;
+  border-radius:13px!important;
+  box-shadow:inset 0 1px 2px rgba(80,40,20,.03)!important;
+}
+input:focus,select:focus{
+  border-color:var(--wine)!important;
+  box-shadow:0 0 0 4px rgba(123,23,52,.09)!important;
+}
+input::placeholder{color:#b29ca4!important}
+.image-upload-wrapper{
+  border:2px dashed #d8b66b!important;
+  background:linear-gradient(145deg,#fffaf0,#fff)!important;
+  box-shadow:0 6px 15px rgba(120,75,20,.08)!important;
+  transition:.2s ease!important;
+}
+.image-upload-wrapper:hover{transform:scale(1.03);border-color:var(--wine)!important}
+button:not(.event-card){
+  font-family:"Noto Sans Devanagari","Mukta","Hind","Segoe UI",sans-serif!important;
+  font-weight:800!important;
+  letter-spacing:.15px!important;
+  cursor:pointer!important;
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease!important;
+}
+#saveBtn,#engagementSaveBtn,#grihaSaveBtn,#birthdaySaveBtn,#anniversarySaveBtn,.save-btn{
+  width:100%!important;
+  margin-top:18px!important;
+  min-height:54px!important;
+  border:0!important;
+  border-radius:16px!important;
+  color:#fff!important;
+  background:linear-gradient(135deg,#6d102d,#9f2045 55%,#c89636)!important;
+  box-shadow:0 13px 28px rgba(109,16,45,.22)!important;
+}
+#saveBtn:hover,#engagementSaveBtn:hover,#grihaSaveBtn:hover,#birthdaySaveBtn:hover,#anniversarySaveBtn:hover,.save-btn:hover{transform:translateY(-2px)!important;filter:brightness(1.04)!important}
+.form-heading{
+  text-align:center!important;
+  padding:15px 12px!important;
+  margin-bottom:12px!important;
+  border-radius:18px!important;
+  background:linear-gradient(135deg,#fff4e6,#fff)!important;
+  border:1px solid rgba(200,155,60,.25)!important;
+  font-size:23px!important;
+}
+.entry-note,.event-details-note{
+  color:#6f5b63!important;
+  background:#fffaf2!important;
+  border:1px solid #ecd9b5!important;
+}
+#anniversaryYearInfo{
+  padding:10px 14px!important;
+  border-radius:12px!important;
+  background:linear-gradient(90deg,#fff2f5,#fff9ef)!important;
+  border:1px solid rgba(139,30,63,.12)!important;
+}
+@media(max-width:700px){
+  body{padding:10px 7px!important}
+  .container{padding:16px!important;border-radius:24px!important}
+  #mainTitle{min-height:100px!important;font-size:24px!important}
+  #mainTitle::before{width:60px!important;height:60px!important;flex-basis:60px!important;font-size:38px!important}
+  #eventCardGrid{gap:12px!important}
+  #eventCardGrid .event-card{min-height:128px!important}
+}
+
+
+
+#birthdayForm{border:2px solid #f3b52b!important;background:linear-gradient(135deg,#fff8fb,#fffdf2)!important;border-radius:22px!important;padding:18px!important}
+#birthdayForm h3{font-size:24px!important;color:#d81b60!important;margin:0 0 12px!important}
+#birthdayForm .birthday-guest-note{margin:12px 0;padding:12px;border-radius:14px;background:linear-gradient(135deg,#fff3cd,#ffe4ef);border:1px dashed #e0a21a;color:#6d214f;text-align:center;font-weight:700}
+#birthdayForm .image-upload-wrapper{border:3px solid #ffd54f;border-radius:50%;overflow:hidden;box-shadow:0 8px 24px rgba(233,30,99,.18);cursor:pointer}
+#birthdayForm .image-upload-wrapper img{width:100%;height:100%;object-fit:cover}
+
+
+
+/* Birthday date picker + live age */
+#birthdayForm .flatpickr-input{width:100%;box-sizing:border-box;text-align:center;font-weight:700;cursor:pointer;background:#fffdf8;}
+#birthdayForm .birthday-age-info{display:block;min-height:22px;margin:10px 0 0;padding:10px 12px;border-radius:14px;text-align:center;font-weight:800;font-size:16px;background:#fff7df;color:#7b0010;border:1px solid #e7c76a;box-shadow:0 3px 10px rgba(123,0,16,.06);}
+#birthdayForm .flatpickr-calendar{z-index:99999!important;border-radius:16px;box-shadow:0 14px 35px rgba(70,20,35,.22);font-family:Georgia,'Noto Serif Devanagari',serif;}
+#birthdayForm .flatpickr-months{padding:5px 4px;}
+#birthdayForm .flatpickr-current-month{font-weight:700;}
+
+.birthday-age-info{margin:7px 0 2px;padding:9px 12px;border-radius:12px;text-align:center;font-weight:800;background:#fff7df;color:#7b0010;border:1px solid #e7c76a;}
+#setupPremiumRibbon{
+  position:fixed;left:50%;bottom:8px;transform:translateX(-50%);
+  z-index:9998;padding:6px 15px;border-radius:999px;
+  background:rgba(123,0,16,.92);color:#fff;border:1px solid #ffd54f;
+  box-shadow:0 5px 18px rgba(0,0,0,.16);font-size:11px;font-weight:800;
+  white-space:nowrap;
+}
+#setupPremiumRibbon b{color:#ffe082}
+@media(max-width:600px){#setupPremiumRibbon{font-size:9px;padding:5px 9px;bottom:5px}}

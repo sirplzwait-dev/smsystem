@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sagun Management System | Newta & Shagun Management | Wedding Guest Management</title>
+
+<meta name="description" content="Sagun Management System is India's smart digital platform to manage Newta, Shagun, wedding guests, cash & UPI gifts, reminders, PDF reports, Excel export and complete wedding records securely.">
+<meta name="keywords" content="Sagun Management System, Newta, Newta Online, Shagun, Shagun Register, Wedding Guest Management, Wedding Management Software, Marriage Management, Digital Newta, UPI Shagun">
+<meta name="author" content="Shashi Kushwaha">
+<meta property="og:image" content="https://sgunms.in/../assets/images/appicon.ico">
+<meta name="twitter:image" content="https://sgunms.in/../assets/images/appicon.ico">
+<meta name="robots" content="index, follow">
+
+<link rel="canonical" href="https://sgunms.in/">
+
+<meta property="og:title" content="Sagun Management System">
+<meta property="og:description" content="India's Smart Digital Newta & Shagun Management Platform">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sgunms.in/">
+
+<link rel="icon" href="assets/images/appicon.ico"" type="image/x-icon">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sagun Management System">
+<meta name="twitter:description" content="India's Smart Digital Newta & Shagun Management Platform">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SoftwareApplication",
+  "name":"Sagun Management System",
+  "url":"https://sgunms.in/",
+  "applicationCategory":"BusinessApplication",
+  "operatingSystem":"Web",
+  "description":"Digital platform for managing Newta, Shagun, wedding guests, cash & UPI gifts, reminders, PDF reports and Excel export."
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <link rel="stylesheet" href="css/index.css"">
+<link rel="stylesheet" href="css/process-ui.css">
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+<div class="container">
+    <div class="logo">
+        <img src="assets/images/appicon.ico"" alt="Logo">
+        <div>
+            <h2>sagun System</h2>
+            <p>Smart Wedding</p>
+        </div>
+    </div>
+    
+    <div style="display:flex; align-items:center; gap:8px;">
+        <button class="notice-header-btn" onclick="openNoticeModal()">
+            🔔 <span data-en="Notice" data-hi="सूचना">सूचना</span>
+        </button>
+        <div class="lang-switch" style="display:inline-flex; gap:2px; background:rgba(255,255,255,0.2); padding:2px; border-radius:20px;">
+            <button onclick="setLanguage('en')" id="langEnBtn" style="background:#FFD700; color:#800000; border:none; padding:4px 10px; border-radius:15px; font-weight:bold; font-size:11px; cursor:pointer;">EN</button>
+            <button onclick="setLanguage('hi')" id="langHiBtn" style="background:transparent; color:#fff; border:none; padding:4px 10px; border-radius:15px; font-weight:bold; font-size:11px; cursor:pointer;">हिंदी</button>
+        </div>
+        <div class="menu-btn" onclick="toggleMenu()">☰</div>
+    </div>
+
+    <nav id="navMenu">
+        <a href="index.html" onclick="toggleMenu()" data-en="Home" data-hi="होम">Home</a>
+        <a href="#preview" onclick="toggleMenu()" data-en="Preview" data-hi="झलक">Preview</a>
+        <a href="#features" onclick="toggleMenu()" data-en="Features" data-hi="विशेषताएं">Features</a>
+        <a href="#about" onclick="toggleMenu()" data-en="About" data-hi="परिचय">About</a>
+        <a href="#developer" onclick="toggleMenu()" data-en="Developer" data-hi="डेवलपर">Developer</a>
+        <a href="#faq" onclick="toggleMenu()" data-en="FAQ" data-hi="सामान्य प्रश्न">FAQ</a>
+        <a href="html/manual.html" style="color: #FFD700; font-weight: 600;" onclick="toggleMenu()" data-en="<i class='fas fa-book-open'></i> User Manual" data-hi="<i class='fas fa-book-open'></i> यूजर मैनुअल"><i class="fas fa-book-open"></i> User Manual</a>
+        <a href="utility.html" style="color: #FFD700; font-weight: 600;" onclick="toggleMenu()" data-en="<i class='fas fa-tools'></i> Utility Tools" data-hi="<i class='fas fa-tools'></i> यूटिलिटी टूल"><i class="fas fa-tools"></i> Utility Tools</a>
+        <a href="#contact" onclick="toggleMenu()" data-en="Contact" data-hi="संपर्क">Contact</a>
+        <a href="html/home.html" class="login-btn" data-en="Login" data-hi="लॉगिन">Login</a>
+    </nav>
+</div>
+</header>
+
+<!-- ================= WEBSITE NOTICE MODAL ================= -->
+<div id="websiteNoticeModal" class="notice-modal">
+    <div class="notice-content">
+        <span class="close-notice" onclick="closeNoticeModal()">&times;</span>
+        <h2>🚧 <span data-en="Important Notice" data-hi="महत्वपूर्ण सूचना">महत्वपूर्ण सूचना</span></h2>
+        
+        <p data-en="This website is currently running in a <b>Demo Version</b>." data-hi="यह वेबसाइट वर्तमान में <b>डेमो (Demo) संस्करण</b> में चल रही है।">
+            यह वेबसाइट वर्तमान में <b>डेमो (Demo) संस्करण</b> में चल रही है।
+        </p>
+        <p data-en="We request you all to use the website. If you encounter any issues, errors, shortcomings, or have suggestions, please let us know. Your feedback is valuable and helps us improve." data-hi="आप सभी से अनुरोध है कि वेबसाइट का उपयोग करें। यदि आपको किसी प्रकार की कोई समस्या, गलती, कमी या कोई सुझाव मिले, तो कृपया हमें अवश्य बताएं। आपके सुझाव हमारे लिए बहुत महत्वपूर्ण हैं और वेबसाइट को बेहतर बनाने में मदद करेंगे।">
+            आप सभी से अनुरोध है कि वेबसाइट का उपयोग करें। यदि आपको किसी प्रकार की कोई समस्या, गलती, कमी या कोई सुझाव मिले, तो कृपया हमें अवश्य बताएं। आपके सुझाव हमारे लिए बहुत महत्वपूर्ण हैं और वेबसाइट को बेहतर बनाने में मदद करेंगे।
+        </p>
+        
+        <div style="background: #fff8f2; padding: 12px 15px; border-radius: 10px; border-left: 4px solid #ff4500; margin: 15px 0;">
+            <p style="margin: 0; font-weight: 600; color: #800000;">⚠️ <span data-en="Important Details:" data-hi="महत्वपूर्ण बिंदु:">महत्वपूर्ण बिंदु:</span></p>
+            <ul style="margin-top: 5px; margin-bottom: 0;">
+                <li data-en="The official launch of this website will take place on <b>02 October 2026</b>. All demo data entered before this date will be permanently deleted." data-hi="<b>02 अक्टूबर 2026</b> को इस वेबसाइट का आधिकारिक शुभारंभ (Official Launch) किया जाएगा। इस तिथि से पहले वेबसाइट पर दर्ज किया गया सभी डेमो डेटा स्थायी रूप से हटा दिया जाएगा।">
+                    <b>02 अक्टूबर 2026</b> को इस वेबसाइट का आधिकारिक शुभारंभ (Official Launch) किया जाएगा। इस तिथि से पहले वेबसाइट पर दर्ज किया गया सभी डेमो डेटा स्थायी रूप से हटा दिया जाएगा।
+                </li>
+                <li data-en="From <b>02 October 2026</b> onwards, all information entered on the website will be considered real and permanent records." data-hi="<b>02 अक्टूबर 2026</b> से वेबसाइट पर दर्ज की जाने वाली सभी जानकारी वास्तविक (Real) और स्थायी रिकॉर्ड मानी जाएगी।">
+                    <b>02 अक्टूबर 2026</b> से वेबसाइट पर दर्ज की जाने वाली सभी जानकारी वास्तविक (Real) और स्थायी रिकॉर्ड मानी जाएगी।
+                </li>
+            </ul>
+        </div>
+
+        <p style="text-align: center; font-weight: 600; color: #800000; margin-top: 15px;" data-en="Thank you for your cooperation, suggestions, and trust! 🙏" data-hi="आपके सहयोग, सुझाव और विश्वास के लिए हार्दिक धन्यवाद। 🙏">
+            आपके सहयोग, सुझाव और विश्वास के लिए हार्दिक धन्यवाद। 🙏
+        </p>
+    </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="hero" data-aos="fade-up">
+<div class="hero-left">
+    <div class="badge" data-en="👋 Bye Bye Paper Register!" data-hi="👋 बाय-बाय पेपर रजिस्टर!">👋 Bye Bye Paper Register!</div>
+    <h1 data-en="sagun Management System" data-hi="सगुन मैनेजमेंट सिस्टम">sagun Management System</h1>
+    <p data-en="Welcome to the ultimate digital platform designed to completely revolutionize traditional Indian wedding management. Effortlessly track wedding guests, manage detailed shagun entries, handle cash and secure UPI payments, generate real-time financial reports, and maintain complete digital records with absolute peace of mind." data-hi="पारंपरिक भारतीय विवाह प्रबंधन में पूरी तरह से क्रांति लाने के लिए डिज़ाइन किए गए अंतिम डिजिटल प्लेटफॉर्म में आपका स्वागत है। शादी के मेहमानों को आसानी से ट्रैक करें, विस्तृत शगुन प्रविष्टियों का प्रबंधन करें, नकद और सुरक्षित UPI भुगतान संभालें, वास्तविक समय की वित्तीय रिपोर्ट तैयार करें, और पूर्ण मन की शांति के साथ संपूर्ण डिजिटल रिकॉर्ड बनाए रखें।">
+        Welcome to the ultimate digital platform designed to completely revolutionize traditional Indian wedding management. Effortlessly track wedding guests, manage detailed shagun entries, handle cash and secure UPI payments, generate real-time financial reports, and maintain complete digital records with absolute peace of mind.
+    </p>
+    <div class="hero-buttons">
+        <a href="html/register.html" class="start-btn" data-en="🚀 Get Started Now" data-hi="🚀 अभी शुरू करें">🚀 Get Started Now</a>
+        <a href="html/manual.html" class="demo-btn" data-en="📖 Read User Manual" data-hi="📖 यूजर मैनुअल पढ़ें">📖 Read User Manual</a>
+    </div>
+</div>
+<div class="hero-right">
+    <div class="person-card">
+        <img src="assets/images/groom.jpg"" alt="Groom">
+        <p data-en="🤵 Groom" data-hi="🤵 दूल्हा">🤵 Groom</p>
+    </div>
+    <div class="heart">❤️</div>
+    <div class="person-card">
+        <img src="assets/images/bride.jpg"" alt="Bride">
+        <p data-en="👰 Bride" data-hi="👰 दुल्हन">👰 Bride</p>
+    </div>
+</div>
+</section>
+
+<!-- ================= QUESTION + SOLUTION SECTION ================= -->
+<section class="problem-solution-section" data-aos="fade-up">
+    <div class="ps-container">
+        
+        <div class="problem-box">
+            <h2 data-en="💭 Does this ever happen to you?" data-hi="💭 क्या आपके साथ भी ऐसा होता है?">💭 क्या आपके साथ भी ऐसा होता है?</h2>
+            <p class="ps-subtitle" data-en="Do you still record weddings or family ceremonies in a diary or register?" data-hi="क्या आज भी आप शादी या पारिवारिक कार्यक्रमों का हिसाब डायरी या रजिस्टर में लिखते हैं?">क्या आज भी आप शादी या पारिवारिक कार्यक्रमों का हिसाब डायरी या रजिस्टर में लिखते हैं?</p>
+            
+            <ul class="problem-list">
+                <li data-en="❓ Did you ever forget to invite a relative to an event?" data-hi="❓ क्या कभी किसी रिश्तेदार को निमंत्रण देना भूल गए?">❓ क्या कभी किसी रिश्तेदार को निमंत्रण देना भूल गए?</li>
+                <li data-en="❓ Do you struggle to remember which relative belongs to which family?" data-hi="❓ क्या आपको याद नहीं रहता कि कौन-सा रिश्तेदार किस परिवार से है?">❓ क्या आपको याद नहीं रहता कि कौन-सा रिश्तेदार किस परिवार से है?</li>
+                <li data-en="❓ Do you lose track of how many children a relative has?" data-hi="❓ क्या आपको पता नहीं रहता कि किसके कितने बेटे और कितनी बेटियाँ हैं?">❓ क्या आपको पता नहीं रहता कि किसके कितने बेटे और कितनी बेटियाँ हैं?</li>
+                <li data-en="❓ Do you have to search for phone numbers or addresses every time?" data-hi="❓ क्या हर बार किसी का मोबाइल नंबर, पता या गाँव ढूँढना पड़ता है?">❓ क्या हर बार किसी का मोबाइल नंबर, पता या गाँव ढूँढना पड़ता है?</li>
+                <li data-en="❓ Do you forget birthdays, anniversaries, or important event dates?" data-hi="❓ क्या आपको याद नहीं रहता कि किसका जन्मदिन, शादी की सालगिरह या अन्य महत्वपूर्ण तिथि कब है?">❓ क्या आपको याद नहीं रहता कि किसका जन्मदिन, शादी की सालगिरह या अन्य महत्वपूर्ण तिथि कब है?</li>
+                <li data-en="❓ Do you forget who gave how much shagun in the past ceremonies?" data-hi="❓ क्या आपको याद नहीं रहता कि पिछली शादी या कार्यक्रम में किसने कितना शगुन दिया था?">❓ क्या आपको याद नहीं रहता कि पिछली शादी या कार्यक्रम में किसने कितना शगुन दिया था?</li>
+                <li data-en="❓ Did your old record diaries get lost or damaged?" data-hi="❓ क्या आपकी पुरानी डायरी खो गई या खराब हो गई?">❓ क्या आपकी पुरानी डायरी खो गई या खराब हो गई?</li>
+            </ul>
+        </div>
+
+        <div class="solution-box">
+            <span class="solution-badge" data-en="🎯 Now there is a solution..." data-hi="🎯 अब समाधान है...">🎯 अब समाधान है...</span>
+            <h2 data-en="Sagun Management System" data-hi="Sagun Management System">Sagun Management System</h2>
+            <p class="solution-intro" data-en="A Smart Digital Family Management Platform where you can—" data-hi="एक ऐसा Smart Digital Family Management Platform जहाँ आप—">एक ऐसा Smart Digital Family Management Platform जहाँ आप—</p>
+            
+            <ul class="solution-list">
+                <li data-en="✅ Maintain complete records of all relatives." data-hi="✅ सभी रिश्तेदारों का पूरा रिकॉर्ड रख सकते हैं।">✅ सभी रिश्तेदारों का पूरा रिकॉर्ड रख सकते हैं।</li>
+                <li data-en="✅ Build comprehensive Family Trees." data-hi="✅ Family Tree बना सकते हैं।">✅ Family Tree बना सकते हैं।</li>
+                <li data-en="✅ Keep track of relationship tags (Chacha, Mama, Phupha, Mausi, Jija, Sala, etc.)." data-hi="✅ रिश्तों की पहचान (चाचा, मामा, फूफा, मौसी, जीजा, साला आदि) सुरक्षित रख सकते हैं।">✅ रिश्तों की पहचान (चाचा, मामा, फूफा, मौसी, जीजा, साला आदि) सुरक्षित रख सकते हैं।</li>
+                <li data-en="✅ Receive smart reminders for birthdays, anniversaries, and milestones." data-hi="✅ जन्मदिन, सालगिरह और अन्य महत्वपूर्ण तिथियों के लिए Reminder पा सकते हैं।">✅ जन्मदिन, सालगिरह और अन्य महत्वपूर्ण तिथियों के लिए Reminder पा सकते हैं।</li>
+                <li data-en="✅ Record all ceremonies including Weddings, Tilak, Reception, Mundan, and Griha Pravesh." data-hi="✅ शादी, तिलक, रिसेप्शन, मुंडन, गृह प्रवेश सहित सभी कार्यक्रमों का रिकॉर्ड रख सकते हैं।">✅ शादी, तिलक, रिसेप्शन, मुंडन, गृह प्रवेश सहित सभी कार्यक्रमों का रिकॉर्ड रख सकते हैं।</li>
+                <li data-en="✅ Securely track Shagun, Cash, UPI, and gifts forever." data-hi="✅ शगुन, Cash, UPI और उपहार का पूरा हिसाब हमेशा के लिए सुरक्षित रख सकते हैं।">✅ शगुन, Cash, UPI और उपहार का पूरा हिसाब हमेशा के लिए सुरक्षित रख सकते हैं।</li>
+                <li data-en="✅ Safeguard your family's digital history for upcoming generations." data-hi="✅ आने वाली पीढ़ियों के लिए पूरे परिवार का डिजिटल इतिहास सुरक्षित रख सकते हैं।">✅ आने वाली पीढ़ियों के लिए पूरे परिवार का डिजिटल इतिहास सुरक्षित रख सकते हैं।</li>
+            </ul>
+
+            <div class="ps-footer-quote">
+                <p data-en="❤️ \"Today's diary can get lost tomorrow, but Sagun Management System keeps your relationships and memories safe forever.\"" data-hi="❤️ \"आज की डायरी कल खो सकती है, लेकिन Sagun Management System आपके रिश्तों और यादों को हमेशा सुरक्षित रखता है।\"">❤️ "आज की डायरी कल खो सकती है, लेकिन Sagun Management System आपके रिश्तों और यादों को हमेशा सुरक्षित रखता है।"</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ================= VIDEO DEMO ================= -->
+<section class="preview" data-aos="fade-right">
+<h4 class="section-tag" data-en="🎥 LIVE DEMO & WALKTHROUGH" data-hi="🎥 लाइव डेमो और वॉकथ्रू">🎥 LIVE DEMO & WALKTHROUGH</h4>
+<h2 class="section-title" data-en="Watch How sagun Management System Works" data-hi="देखें सगुन मैनेजमेंट सिस्टम कैसे काम करता है">Watch How sagun Management System Works</h2>
+<p class="section-text" data-en="Take a comprehensive video tour of our platform to understand how every feature helps you manage your family celebrations smoothly." data-hi="यह समझने के लिए हमारे प्लेटफॉर्म का एक व्यापक वीडियो टूर लें कि प्रत्येक सुविधा आपको अपने पारिवारिक समारोहों को सुचारू रूप से प्रबंधित करने में कैसे मदद करती है।">Take a comprehensive video tour of our platform to understand how every feature helps you manage your family celebrations smoothly.</p>
+<div style="max-width:950px;margin:auto;border-radius:20px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,.25);border:2px solid #f2e2d0;">
+    <video width="100%" controls poster="../assets/images/home.jpg">
+        <source src="demo.mp4" type="video/mp4">
+        Your browser does not support video playback.
+    </video>
+</div>
+</section>
+
+<!-- ================= APPLICATION PREVIEW ================= -->
+<section id="preview" class="preview" data-aos="fade-up">
+<h4 class="section-tag" data-en="APPLICATION PREVIEW" data-hi="एप्लिकेशन झलक">APPLICATION PREVIEW</h4>
+<h2 class="section-title" data-en="Explore Application Screens & Modules" data-hi="एप्लिकेशन स्क्रीन और मॉड्यूल का अन्वेषण करें">Explore Application Screens & Modules</h2>
+<p class="section-text" data-en="A detailed visual look at the core interfaces built to streamline your event workflow." data-hi="आपके इवेंट वर्कफ़्लो को सुव्यवस्थित करने के लिए बनाई गई मुख्य इंटरफेस पर एक विस्तृत दृश्य नज़र।">A detailed visual look at the core interfaces built to streamline your event workflow.</p>
+
+<div class="preview-grid">
+    <div class="preview-card">
+        <img src="assets/images/login.jpg"" alt="Login Desktop" class="desktop-img">
+        <img src="assets/images/login_m.jpg"" alt="Login Mobile" class="mobile-img">
+        <h3 data-en="🔐 Secure Login Portal" data-hi="🔐 सुरक्षित लॉगिन पोर्टल">🔐 Secure Login Portal</h3>
+        <ul>
+            <li data-en="Encrypted user authentication system for privacy." data-hi="गोपनीयता के लिए एन्क्रिप्टेड उपयोगकर्ता प्रमाणीकरण प्रणाली।">Encrypted user authentication system for privacy.</li>
+            <li data-en="Instant password recovery and email protection." data-hi="त्वरित पासवर्ड पुनर्प्राप्ति और ईमेल सुरक्षा।">Instant password recovery and email protection.</li>
+        </ul>
+    </div>
+    <div class="preview-card">
+        <img src="assets/images/register.jpg"" alt="Registration Desktop" class="desktop-img">
+        <img src="assets/images/register_m.jpg"" alt="Registration Mobile" class="mobile-img">
+        <h3 data-en="📝 Account Registration" data-hi="📝 खाता पंजीकरण">📝 Account Registration</h3>
+        <ul>
+            <li data-en="Quick sign-up process for event organizers." data-hi="इवेंट आयोजकों के लिए त्वरित साइन-अप प्रक्रिया।">Quick sign-up process for event organizers.</li>
+            <li data-en="Secure email verification to activate panels." data-hi="पैनल सक्रिय करने के लिए सुरक्षित ईमेल सत्यापन।">Secure email verification to activate panels.</li>
+        </ul>
+    </div>
+    <div class="preview-card">
+        <img src="assets/images/setup.jpg"" alt="Setup Desktop" class="desktop-img">
+        <img src="assets/images/setup_m.jpg"" alt="Setup Mobile" class="mobile-img">
+        <h3 data-en="⚙️ Event Configuration" data-hi="⚙️ इवेंट कॉन्फ़िगरेशन">⚙️ Event Configuration</h3>
+        <ul>
+            <li data-en="Customize bride & groom names and event dates." data-hi="दूल्हा और दुल्हन के नाम और इवेंट की तारीखें कस्टमाइज़ करें।">Customize bride & groom names and event dates.</li>
+            <li data-en="Upload custom UPI QR codes for digital shagun." data-hi="डिजिटल शगुन के लिए कस्टम UPI QR कोड अपलोड करें।">Upload custom UPI QR codes for digital shagun.</li>
+        </ul>
+    </div>
+    <div class="preview-card">
+        <img src="assets/images/home.jpg"" alt="Dashboard Desktop" class="desktop-img">
+        <img src="assets/images/home_m.jpg"" alt="Dashboard Mobile" class="mobile-img">
+        <h3 data-en="🏠 Interactive Dashboard" data-hi="🏠 इंटरएक्टिव डैशबोर्ड">🏠 Interactive Dashboard</h3>
+        <ul>
+            <li data-en="Real-time analytics of total guests and shagun totals." data-hi="कुल मेहमानों और शगुन के कुल योग का रियल-टाइम एनालिटिक्स।">Real-time analytics of total guests and shagun totals.</li>
+            <li data-en="Quick access shortcuts to all primary features." data-hi="सभी प्राथमिक सुविधाओं के लिए त्वरित पहुँच शॉर्टकट।">Quick access shortcuts to all primary features.</li>
+        </ul>
+    </div>
+    <div class="preview-card">
+        <img src="assets/images/entry.jpg"" alt="Shagun Entry Desktop" class="desktop-img">
+        <img src="assets/images/entry_m.jpg"" alt="Shagun Entry Mobile" class="mobile-img">
+        <h3 data-en="💰 Shagun & Gift Entry" data-hi="💰 शगुन और उपहार प्रविष्टि">💰 Shagun & Gift Entry</h3>
+        <ul>
+            <li data-en="Record names, villages, amounts, and gift types." data-hi="नाम, गाँव, राशि और उपहार के प्रकार रिकॉर्ड करें।">Record names, villages, amounts, and gift types.</li>
+            <li data-en="Seamless toggle between Cash and UPI payment modes." data-hi="नकद और UPI भुगतान मोड के बीच सहज टॉगल।">Seamless toggle between Cash and UPI payment modes.</li>
+        </ul>
+    </div>
+    <div class="preview-card">
+        <img src="assets/images/report.jpg"" alt="Reports Desktop" class="desktop-img">
+        <img src="assets/images/report_m.jpg"" alt="Reports Mobile" class="mobile-img">
+        <h3 data-en="📊 Advanced Reports" data-hi="📊 उन्नत रिपोर्ट्स">📊 Advanced Reports</h3>
+        <ul>
+            <li data-en="Filter, search, and sort guest registries instantly." data-hi="तुरंत गेस्ट रजिस्ट्री को फ़िल्टर, खोज और सॉर्ट करें।">Filter, search, and sort guest registries instantly.</li>
+            <li data-en="One-click export to PDF and Excel spreadsheets." data-hi="PDF और Excel स्प्रेडशीट में एक-क्लिक एक्सपोर्ट।">One-click export to PDF and Excel spreadsheets.</li>
+        </ul>
+    </div>
+    <div class="preview-card">
+        <img src="assets/images/admin.jpg"" alt="Admin Desktop" class="desktop-img">
+        <img src="assets/images/admin_m.jpg"" alt="Admin Mobile" class="mobile-img">
+        <h3 data-en="👨‍💼 Super Admin Panel" data-hi="👨‍💼 सुपर एडमिन पैनल">👨‍💼 Super Admin Panel</h3>
+        <ul>
+            <li data-en="Comprehensive database record controls." data-hi="व्यापक डेटाबेस रिकॉर्ड नियंत्रण।">Comprehensive database record controls.</li>
+            <li data-en="Complete master statistics and security logs." data-hi="पूर्ण मास्टर आँकड़े और सुरक्षा लॉग।">Complete master statistics and security logs.</li>
+        </ul>
+    </div>
+</div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section id="features" class="features" data-aos="fade-up">
+<h4 class="section-tag" data-en="POWERFUL FEATURES" data-hi="शक्तिशाली विशेषताएं">POWERFUL FEATURES</h4>
+<h2 class="section-title" data-en="Everything You Need in One Unified Platform" data-hi="एक एकीकृत प्लेटफॉर्म में आपकी सभी ज़रूरतें">Everything You Need in One Unified Platform</h2>
+<p class="section-text" data-en="Discover the advanced digital tools built specifically to eradicate traditional bookkeeping errors." data-hi="पारंपरिक बहीखाता त्रुटियों को समाप्त करने के लिए विशेष रूप से बनाए गए उन्नत डिजिटल टूल की खोज करें।">Discover the advanced digital tools built specifically to eradicate traditional bookkeeping errors.</p>
+
+<div class="feature-grid-modern">
+    <div class="feature-box">
+        <div class="feature-icon">👥</div>
+        <div class="feature-info">
+            <h3 data-en="Comprehensive Guest Management" data-hi="व्यापक गेस्ट प्रबंधन">Comprehensive Guest Management</h3>
+            <p data-en="Effortlessly add, update, organize, and search guest profiles with their respective native locations and family details." data-hi="मेहमानों की प्रोफ़ाइल को उनके मूल स्थानों और पारिवारिक विवरण के साथ आसानी से जोड़ें, अपडेट करें, व्यवस्थित करें और खोजें।">Effortlessly add, update, organize, and search guest profiles with their respective native locations and family details.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">💰</div>
+        <div class="feature-info">
+            <h3 data-en="Digital Shagun Tracking" data-hi="डिजिटल शगुन ट्रैकिंग">Digital Shagun Tracking</h3>
+            <p data-en="Maintain foolproof records of every monetary offering or physical gift received during the ceremony without any discrepancies." data-hi="समारोह के दौरान प्राप्त होने वाले प्रत्येक मौद्रिक प्रस्ताव या भौतिक उपहार के फुलप्रूफ रिकॉर्ड को बिना किसी विसंगति के बनाए रखें।">Maintain foolproof records of every monetary offering or physical gift received during the ceremony without any discrepancies.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">📱</div>
+        <div class="feature-info">
+            <h3 data-en="Integrated QR & UPI Payments" data-hi="एकीकृत QR और UPI भुगतान">Integrated QR & UPI Payments</h3>
+            <p data-en="Allow guests to scan your custom setup QR code and make digital contributions directly while recording details automatically." data-hi="मेहमानों को आपके कस्टम सेटअप QR कोड को स्कैन करने और विवरण को स्वचालित रूप से रिकॉर्ड करते समय सीधे डिजिटल योगदान करने की अनुमति दें।">Allow guests to scan your custom setup QR code and make digital contributions directly while recording details automatically.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">📊</div>
+        <div class="feature-info">
+            <h3 data-en="Instant Report Generation" data-hi="त्वरित रिपोर्ट जनरेशन">Instant Report Generation</h3>
+            <p data-en="Compile comprehensive transaction and guest histories into professional PDF documents and Excel sheets within seconds." data-hi="सेकंड के भीतर व्यापक लेनदेन और गेस्ट इतिहास को पेशेवर PDF दस्तावेजों और Excel शीट में संकलित करें।">Compile comprehensive transaction and guest histories into professional PDF documents and Excel sheets within seconds.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">☁️</div>
+        <div class="feature-info">
+            <h3 data-en="Secure Cloud Backup" data-hi="सुरक्षित क्लाउड बैकअप">Secure Cloud Backup</h3>
+            <p data-en="Never lose your valuable event data with automated, encrypted cloud synchronization protecting every entry in real time." data-hi="वास्तविक समय में प्रत्येक प्रविष्टि की रक्षा करने वाले स्वचालित, एन्क्रिप्टेड क्लाउड सिंक्रोनाइजेशन के साथ अपने मूल्यवान इवेंट डेटा को कभी न खोएं।">Never lose your valuable event data with automated, encrypted cloud synchronization protecting every entry in real time.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-info">
+            <h3 data-en="Enterprise-Grade Authentication" data-hi="एंटरप्राइज-ग्रेड प्रमाणीकरण">Enterprise-Grade Authentication</h3>
+            <p data-en="Powered by secure Supabase authentication architecture, ensuring that your financial records remain completely private and confidential." data-hi="सुरक्षित Supabase प्रमाणीकरण वास्तुकला द्वारा संचालित, यह सुनिश्चित करते हुए कि आपके वित्तीय रिकॉर्ड पूरी तरह से निजी और गोपनीय रहें।">Powered by secure Supabase authentication architecture, ensuring that your financial records remain completely private and confidential.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">👨‍💼</div>
+        <div class="feature-info">
+            <h3 data-en="Centralized Admin Control" data-hi="केंद्रीकृत एडमिन कंट्रोल">Centralized Admin Control</h3>
+            <p data-en="Oversee all administrative functions, modify settings, and control user privileges from an intuitive control dashboard." data-hi="एक सहज नियंत्रण डैशबोर्ड से सभी प्रशासनिक कार्यों की देखरेख करें, सेटिंग्स को संशोधित करें और उपयोगकर्ता विशेषाधिकारों को नियंत्रित करें।">Oversee all administrative functions, modify settings, and control user privileges from an intuitive control dashboard.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">📈</div>
+        <div class="feature-info">
+            <h3 data-en="Insightful Analytics Dashboard" data-hi="अंतर्दृष्टिपूर्ण एनालिटिक्स डैशबोर्ड">Insightful Analytics Dashboard</h3>
+            <p data-en="View graphical breakdowns, collection trends, and cash flow summaries at a glance to stay fully informed." data-hi="पूरी तरह से सूचित रहने के लिए एक नज़र में ग्राफिकल ब्रेकडाउन, संग्रह रुझान और नकदी प्रवाह सारांश देखें।">View graphical breakdowns, collection trends, and cash flow summaries at a glance to stay fully informed.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">💵</div>
+        <div class="feature-info">
+            <h3 data-en="Automated Cash Counter" data-hi="स्वचालित कैश काउंटर">Automated Cash Counter</h3>
+            <p data-en="Quickly tally physical currency notes ranging from INR 500 down to INR 1 and reconcile totals with system entries effortlessly." data-hi="INR 500 से लेकर INR 1 तक के भौतिक करेंसी नोटों को तुरंत गिनें और सिस्टम प्रविष्टियों के साथ कुल का मिलान आसानी से करें।">Quickly tally physical currency notes ranging from INR 500 down to INR 1 and reconcile totals with system entries effortlessly.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">📒</div>
+        <div class="feature-info">
+            <h3 data-en="Real-Time Cash Book Ledger" data-hi="रियल-टाइम कैश बुक लेजर">Real-Time Cash Book Ledger</h3>
+            <p data-en="Accurately record and monitor all daily operational expenditures (Cash Out) and secondary incomes (Cash In) on the go." data-hi="चलते-फिरते सभी दैनिक परिचालन खर्चों (कैश आउट) और माध्यमिक आय (कैश इन) को सटीक रूप से रिकॉर्ड और मॉनिटर करें।">Accurately record and monitor all daily operational expenditures (Cash Out) and secondary incomes (Cash In) on the go.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">👑</div>
+        <div class="feature-info">
+            <h3 data-en="Super Admin Oversight" data-hi="सुपर एडमिन निरीक्षण">Super Admin Oversight</h3>
+            <p data-en="Exercise ultimate authority over multi-user databases, system configurations, and master data safety protocols." data-hi="मल्टी-यूजर डेटाबेस, सिस्टम कॉन्फ़िगरेशन और मास्टर डेटा सुरक्षा प्रोटोकॉल पर अंतिम अधिकार का प्रयोग करें।">Exercise ultimate authority over multi-user databases, system configurations, and master data safety protocols.</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">🌳</div>
+        <div class="feature-info">
+            <h3 data-en="Family Management" data-hi="फैमिली मैनेजमेंट">Family Management</h3>
+            <p data-en="Family Tree, joint family records, relative directory, and legal documents." data-hi="फैमिली ट्री, संयुक्त परिवार का रिकॉर्ड, रिश्तेदारों की जानकारी और दस्तावेज।">Family Tree, joint family records, relative directory, and legal documents.</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">❤️</div>
+        <div class="feature-info">
+            <h3 data-en="Relationship Manager" data-hi="रिलेशनशिप मैनेजर">Relationship Manager</h3>
+            <p data-en="Automatically identify relationships like Chacha, Mama, Mausi, Phupha, and Sasural side." data-hi="चाचा, मामा, मौसी, फूफा और ससुराल पक्ष का रिश्ता अपने आप पता चले।">Automatically identify relationships like Chacha, Mama, Mausi, Phupha, and Sasural side.</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">🎉</div>
+        <div class="feature-info">
+            <h3 data-en="Multi-Event Management" data-hi="मल्टी-इवेंट मैनेजमेंट">Multi-Event Management</h3>
+            <p data-en="Manage Weddings, Tilak, Reception, Birthdays, Anniversaries, Mundan, and Shradh." data-hi="शादी, तिलक, रिसेप्शन, जन्मदिन, एनिवर्सरी, मुंडन और श्राद्ध का प्रबंधन।">Manage Weddings, Tilak, Reception, Birthdays, Anniversaries, Mundan, and Shradh.</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">📜</div>
+        <div class="feature-info">
+            <h3 data-en="Historical Records" data-hi="ऐतिहासिक रिकॉर्ड">Historical Records</h3>
+            <p data-en="Chronological event history across years available forever in your account." data-hi="सालों-साल का पारिवारिक इतिहास हमेशा के लिए सुरक्षित उपलब्ध रहे।">Chronological event history across years available forever in your account.</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">⏰</div>
+        <div class="feature-info">
+            <h3 data-en="Smart Reminders" data-hi="स्मार्ट रिमाइंडर">Smart Reminders</h3>
+            <p data-en="Automated alerts for Birthdays, Anniversaries, Marriage Dates, and Shradh Tithis." data-hi="जन्मदिन, विवाह वर्षगांठ और श्राद्ध तिथियों के लिए ऑटोमैटिक रिमाइंडर।">Automated alerts for Birthdays, Anniversaries, Marriage Dates, and Shradh Tithis.</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-info">
+            <h3 data-en="SGUNMS AI Assistant" data-hi="SGUNMS एआई असिस्टेंट">SGUNMS AI Assistant</h3>
+            <p data-en="Smart AI helper to answer queries about past shagun amounts and guest attendance." data-hi="शगुन राशि और पिछले मेहमानों की उपस्थिति से जुड़े सवालों के जवाब देने वाला स्मार्ट AI।">Smart AI helper to answer queries about past shagun amounts and guest attendance.</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">🌐</div>
+        <div class="feature-info">
+            <h3 data-en="Cloud + Offline Sync" data-hi="क्लाउड + ऑफलाइन सिंक">Cloud + Offline Sync</h3>
+            <p data-en="Works offline without internet and automatically syncs when connected back." data-hi="बिना इंटरनेट के ऑफलाइन काम करेगा और ऑनलाइन होने पर स्वतः सिंक हो जाएगा।">Works offline without internet and automatically syncs when connected back.</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+    </div>
+    <div class="feature-box">
+        <div class="feature-icon">📱</div>
+        <div class="feature-info">
+            <h3 data-en="Cross-Platform Apps" data-hi="क्रॉस-प्लेटफॉर्म ऐप्स">Cross-Platform Apps</h3>
+            <p data-en="Available across Android, iPhone, Windows, and Web Progressive App formats." data-hi="एंड्रॉइड, आईफोन, विंडोज और वेब फॉर्मेट में उपलब्ध।">Available across Android, iPhone, Windows, and Web Progressive App formats.</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ================= WHY CHOOSE US ================= -->
+<section class="why" data-aos="fade-right">
+<div class="why-content">
+    <h4 class="section-tag" data-en="WHY CHOOSE US" data-hi="हमें क्यों चुनें">WHY CHOOSE US</h4>
+    <h2 class="section-title" data-en="Why Choose sagun Management System?" data-hi="सगुन मैनेजमेंट सिस्टम क्यों चुनें?">Why Choose sagun Management System?</h2>
+    <p class="section-text" data-en="The definitive digital solution replacing outdated notebooks and insecure paper registers." data-hi="पुराने नोटबुक्स और असुरक्षित कागजी रजिस्टरों की जगह लेने वाला निश्चित डिजिटल समाधान।">The definitive digital solution replacing outdated notebooks and insecure paper registers.</p>
+    
+    <div class="why-grid">
+        <div class="why-card">
+            <div class="why-icon">⚡</div>
+            <div class="why-info">
+                <h3 data-en="Lightning-Fast Interface" data-hi="बिजली की तरह तेज इंटरफेस">Lightning-Fast Interface</h3>
+                <p data-en="Optimized performance ensuring zero lag during high-traffic wedding hours." data-hi="उच्च-यातायात शादी के घंटों के दौरान शून्य अंतराल सुनिश्चित करने के लिए अनुकूलित प्रदर्शन।">Optimized performance ensuring zero lag during high-traffic wedding hours.</p>
+            </div>
+        </div>
+        <div class="why-card">
+            <div class="why-icon">☁️</div>
+            <div class="why-info">
+                <h3 data-en="Guaranteed Data Reliability" data-hi="गारंटीड डेटा विश्वसनीयता">Guaranteed Data Reliability</h3>
+                <p data-en="Continuous background cloud storage prevents accidental data loss completely." data-hi="निरंतर बैकग्राउंड क्लाउड स्टोरेज आकस्मिक डेटा हानि को पूरी तरह से रोकता है।">Continuous background cloud storage prevents accidental data loss completely.</p>
+            </div>
+        </div>
+        <div class="why-card">
+            <div class="why-icon">👥</div>
+            <div class="why-info">
+                <h3 data-en="Designed for Indian Families" data-hi="भारतीय परिवारों के लिए डिज़ाइन किया गया">Designed for Indian Families</h3>
+                <p data-en="Tailored specifically to handle traditional shagun customs combined with modern tech." data-hi="आधुनिक तकनीक के साथ पारंपरिक शगुन रीति-रिवाजों को संभालने के लिए विशेष रूप से तैयार किया गया।">Tailored specifically to handle traditional shagun customs combined with modern tech.</p>
+            </div>
+        </div>
+        <div class="why-card">
+            <div class="why-icon">📱</div>
+            <div class="why-info">
+                <h3 data-en="Multi-Device Compatibility" data-hi="मल्टी-डिवाइस संगतता">Multi-Device Compatibility</h3>
+                <p data-en="Operate smoothly across smartphones, tablets, laptops, and desktop workstations." data-hi="स्मार्टफोन, टैबलेट, लैपटॉप और डेस्कटॉप वर्कस्टेशन पर सुचारू रूप से काम करता है।">Operate smoothly across smartphones, tablets, laptops, and desktop workstations.</p>
+            </div>
+        </div>
+        <div class="why-card">
+            <div class="why-icon">📊</div>
+            <div class="why-info">
+                <h3 data-en="Zero Calculation Errors" data-hi="शून्य गणना त्रुटियां">Zero Calculation Errors</h3>
+                <p data-en="Automated ledger summation eliminates manual human calculation mistakes entirely." data-hi="स्वचालित बहीखाता योग पूरी तरह से मैनुअल मानव गणना गलतियों को समाप्त करता है।">Automated ledger summation eliminates manual human calculation mistakes entirely.</p>
+            </div>
+        </div>
+        <div class="why-card">
+            <div class="why-icon">👨‍💼</div>
+            <div class="why-info">
+                <h3 data-en="Complete Administrative Control" data-hi="पूर्ण प्रशासनिक नियंत्रण">Complete Administrative Control</h3>
+                <p data-en="Robust security controls giving organizers absolute command over event data." data-hi="आयोजकों को इवेंट डेटा पर पूर्ण कमान देने वाले मजबूत सुरक्षा नियंत्रण।">Robust security controls giving organizers absolute command over event data.</p>
+            </div>
+        </div>
+        <div class="why-card">
+            <div class="why-icon">💻</div>
+            <div class="why-info">
+                <h3 data-en="Zero Installation Hassle" data-hi="शून्य स्थापना झंझट">Zero Installation Hassle</h3>
+                <p data-en="Web-based platform accessible instantly via any modern internet browser." data-hi="किसी भी आधुनिक इंटरनेट ब्राउज़र के माध्यम से तुरंत सुलभ वेब-आधारित प्लेटफ़ॉर्म।">Web-based platform accessible instantly via any modern internet browser.</p>
+            </div>
+        </div>
+        <div class="why-card">
+            <div class="why-icon">🌐</div>
+            <div class="why-info">
+                <h3 data-en="Bilingual Accessibility" data-hi="द्विभाषी सुलभता">Bilingual Accessibility</h3>
+                <p data-en="Switch effortlessly between English and Hindi text displays for ultimate user comfort." data-hi="अल्टीमेट उपयोगकर्ता आराम के लिए अंग्रेजी और हिंदी टेक्स्ट डिस्प्ले के बीच आसानी से स्विच करें।">Switch effortlessly between English and Hindi text displays for ultimate user comfort.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ================= ABOUT US ================= -->
+<section id="about" class="about" data-aos="fade-left">
+<div class="about-container">
+    <h4 class="section-tag" data-en="ABOUT US" data-hi="हमारे बारे में">ABOUT US</h4>
+    <h2 class="section-title" data-en="About sagun Management System" data-hi="सगुन मैनेजमेंट सिस्टम के बारे में">About sagun Management System</h2>
+    <p class="section-text" data-en="Empowering digital transformations for modern Indian weddings and family milestones." data-hi="आधुनिक भारतीय शादियों और पारिवारिक मील के पत्थर के लिए डिजिटल परिवर्तन को सशक्त बनाना।">Empowering digital transformations for modern Indian weddings and family milestones.</p>
+
+    <div class="about-main-box">
+        <h3 data-en="✨ Revolutionizing Wedding Management Digitally" data-hi="✨ डिजिटल रूप से विवाह प्रबंधन में क्रांति लाना">✨ Revolutionizing Wedding Management Digitally</h3>
+        <p data-en="<b>sagun Management System (SMS)</b> is a state-of-the-art digital wedding platform conceptualized and developed to eliminate the hassles and discrepancies of traditional paper-based record-keeping during marriages and family events. From managing guest arrivals seamlessly to recording every single cash, gift, or UPI shagun entry accurately, our system brings 100% transparency, speed, and absolute security to your celebrations." data-hi="<b>सगुन मैनेजमेंट सिस्टम (SMS)</b> एक अत्याधुनिक डिजिटल वेडिंग प्लेटफॉर्म है, जिसे विवाह और पारिवारिक कार्यक्रमों के दौरान पारंपरिक कागजी रिकॉर्ड-कीपिंग की परेशानियों और विसंगतियों को खत्म करने के लिए वैचारिक रूप से विकसित किया गया है। मेहमानों के आगमन को सुचारू रूप से प्रबंधित करने से लेकर हर एक नकद, उपहार या UPI शगुन प्रविष्टि को सटीक रूप से रिकॉर्ड करने तक, हमारा सिस्टम आपके समारोहों में 100% पारदर्शिता, गति और पूर्ण सुरक्षा लाता है।">
+            <b>sagun Management System (SMS)</b> is a state-of-the-art digital wedding platform conceptualized and developed to eliminate the hassles and discrepancies of traditional paper-based record-keeping during marriages and family events. From managing guest arrivals seamlessly to recording every single cash, gift, or UPI shagun entry accurately, our system brings 100% transparency, speed, and absolute security to your celebrations.
+        </p>
+
+        <div class="about-highlight-grid">
+            <div class="about-feature-item">
+                <h4 data-en="🎯 Our Vision & Mission" data-hi="🎯 हमारा विजन और मिशन">🎯 Our Vision & Mission</h4>
+                <p data-en="To provide a smart, paperless, and error-free digital ledger for every household event across India, ensuring complete trust and efficiency." data-hi="भारत भर में हर घरेलू आयोजन के लिए एक स्मार्ट, पेपरलेस और त्रुटिमुक्त डिजिटल लेजर प्रदान करना, जो पूर्ण विश्वास और दक्षता सुनिश्चित करता है।">To provide a smart, paperless, and error-free digital ledger for every household event across India, ensuring complete trust and efficiency.</p>
+            </div>
+            <div class="about-feature-item">
+                <h4 data-en="🔒 Absolute Security" data-hi="🔒 पूर्ण सुरक्षा">🔒 Absolute Security</h4>
+                <p data-en="Advanced cloud authentication ensuring your financial records and guest information remain strictly private and protected." data-hi="उन्नत क्लाउड प्रमाणीकरण यह सुनिश्चित करता है कि आपके वित्तीय रिकॉर्ड और गेस्ट की जानकारी पूरी तरह से निजी और सुरक्षित रहें।">Advanced cloud authentication ensuring your financial records and guest information remain strictly private and protected.</p>
+            </div>
+            <div class="about-feature-item">
+                <h4 data-en="⚡ Seamless Efficiency" data-hi="⚡ सहज दक्षता">⚡ Seamless Efficiency</h4>
+                <p data-en="Save hours of stressful manual counting with automated cash counters, real-time reports, and instant document exports." data-hi="स्वचालित कैश काउंटर, रियल-टाइम रिपोर्ट और त्वरित दस्तावेज़ एक्सपोर्ट के साथ तनावपूर्ण मैनुअल गिनती के घंटों की बचत करें।">Save hours of stressful manual counting with automated cash counters, real-time reports, and instant document exports.</p>
+            </div>
+            <div class="about-feature-item">
+                <h4 data-en="🌐 Bilingual Design" data-hi="🌐 द्विभाषी डिजाइन">🌐 Bilingual Design</h4>
+                <p data-en="Built with dual English and Hindi interface options so anyone in the family can operate the system comfortably." data-hi="ड्युअल अंग्रेजी और हिंदी इंटरफेस विकल्पों के साथ निर्मित ताकि परिवार में कोई भी व्यक्ति सिस्टम को आराम से संचालित कर सके।">Built with dual English and Hindi interface options so anyone in the family can operate the system comfortably.</p>
+            </div>
+        </div>
+
+        <div class="about-btn-container">
+            <a href="html/register.html" class="about-btn" data-en="Explore Platform Now" data-hi="प्लेटफॉर्म अभी देखें">Explore Platform Now</a>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ================= DEVELOPER SECTION ================= -->
+<section id="developer" class="developer" data-aos="fade-up">
+<div class="developer-box">
+    <div class="developer-img">
+        <img src="assets/images/developer.jpg"" alt="Shashi Kushwaha">
+    </div>
+    <div class="developer-content">
+        <h4 class="section-tag" data-en="DEVELOPER" data-hi="डेवलपर">DEVELOPER</h4>
+        <h2 data-en="Shashi Kushwaha" data-hi="शशि कुशवाहा">Shashi Kushwaha</h2>
+        <h3 data-en="Primary Government Teacher | Former Computer Teacher | BCA, D.El.Ed, CTET" data-hi="प्राथमिक सरकारी शिक्षक | पूर्व कंप्यूटर शिक्षक | BCA, D.El.Ed, CTET">Primary Government Teacher | Former Computer Teacher | BCA, D.El.Ed, CTET</h3>
+        <p data-en="Hello! I am Shashi Kushwaha, based in Sasamusa, Gopalganj, Bihar. I am a professional educator currently working as a primary government teacher, and I have also served as a computer teacher in the past. Professionally qualified with a BCA, D.El.Ed, and CTET certification, I developed the <b>sagun Management System</b> to digitize and simplify traditional Indian wedding management." data-hi="नमस्ते! मैं शशि कुशवाहा हूँ, ससामूसा, गोपालगंज, बिहार का निवासी। मैं वर्तमान में प्राथमिक सरकारी शिक्षक के रूप में कार्यरत हूँ और पहले कंप्यूटर शिक्षक के रूप में भी सेवा दे चुका हूँ। BCA, D.El.Ed और CTET की योग्यताओं के साथ, मैंने पारंपरिक भारतीय विवाह प्रबंधन को डिजिटल बनाने के लिए <b>सगुन मैनेजमेंट सिस्टम</b> विकसित किया है।">
+            Hello! I am Shashi Kushwaha, based in Sasamusa, Gopalganj, Bihar. I am a professional educator currently working as a primary government teacher, and I have also served as a computer teacher in the past. Professionally qualified with a BCA, D.El.Ed, and CTET certification, I developed the <b>sagun Management System</b> to digitize and simplify traditional Indian wedding management.
+        </p>
+        <div class="quote" data-en="&ldquo;Technology should serve humanity by bringing ease, transparency, and joy to our cherished family traditions.&rdquo;" data-hi="&ldquo;प्रौद्योगिकी को हमारी मूल्यवान पारिवारिक परंपराओं में आसानी, पारदर्शिता और खुशी लाकर मानवता की सेवा करनी चाहिए।&rdquo;">
+            &ldquo;Technology should serve humanity by bringing ease, transparency, and joy to our cherished family traditions.&rdquo;
+        </div>
+        <div class="social-links">
+            <a href="https://instagram.com/shashi_kushwaha_28" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://facebook.com/shashikushwaha28" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://wa.me/919931516195" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:sirplzwait@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.sgunms.in" target="_blank" title="Website"><i class="fas fa-globe"></i></a>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq" class="faq" data-aos="fade-up">
+<h4 class="section-tag" data-en="FAQ" data-hi="सामान्य प्रश्न">FAQ</h4>
+<h2 class="section-title" data-en="Frequently Asked Questions" data-hi="अक्सर पूछे जाने वाले प्रश्न">Frequently Asked Questions</h2>
+<p class="section-text" data-en="Got questions? Find comprehensive answers to common queries about sagun Management System." data-hi="कोई सवाल है? सगुन मैनेजमेंट सिस्टम के बारे में आम सवालों के व्यापक उत्तर पाएं।">Got questions? Find comprehensive answers to common queries about sagun Management System.</p>
+
+<div class="faq-container">
+    <div class="faq-card">
+        <details>
+            <summary data-en="❓ Is sagun Management System Free to Use?" data-hi="❓ क्या सगुन मैनेजमेंट सिस्टम उपयोग करने के लिए निःशुल्क है?">❓ Is sagun Management System Free to Use?</summary>
+            <div class="faq-content-box">
+                <p data-en="Yes, currently the platform is available completely free of cost for everyone looking to manage their family events seamlessly and efficiently." data-hi="हाँ, वर्तमान में यह प्लेटफॉर्म उन सभी के लिए पूरी तरह से निःशुल्क उपलब्ध है जो अपने पारिवारिक आयोजनों को सुचारू और कुशलतापूर्वक प्रबंधित करना चाहते हैं।">Yes, currently the platform is available completely free of cost for everyone looking to manage their family events seamlessly and efficiently.</p>
+            </div>
+        </details>
+    </div>
+    <div class="faq-card">
+        <details>
+            <summary data-en="❓ Can I operate this platform on my Mobile Phone?" data-hi="❓ क्या मैं इस प्लेटफॉर्म को अपने मोबाइल फोन पर चला सकता हूँ?">❓ Can I operate this platform on my Mobile Phone?</summary>
+            <div class="faq-content-box">
+                <p data-en="Yes, it is built with fully responsive design principles and works exceptionally smoothly on Mobile phones, Tablets, and Desktop computers." data-hi="हाँ, यह पूरी तरह से रिस्पॉन्सिव डिज़ाइन सिद्धांतों के साथ बनाया गया है और मोबाइल फोन, टैबलेट और डेस्कटॉप कंप्यूटर पर असाधारण रूप से सुचारू रूप से काम करता है।">Yes, it is built with fully responsive design principles and works exceptionally smoothly on Mobile phones, Tablets, and Desktop computers.</p>
+            </div>
+        </details>
+    </div>
+    <div class="faq-card">
+        <details>
+            <summary data-en="❓ Is my wedding guest and financial data secure?" data-hi="❓ क्या मेरा शादी का गेस्ट और वित्तीय डेटा सुरक्षित है?">❓ Is my wedding guest and financial data secure?</summary>
+            <div class="faq-content-box">
+                <p data-en="Yes, your data is securely stored with advanced cloud backup and authentication systems. Your data is strictly linked to your account and cannot be viewed by any other user." data-hi="हाँ, आपका डेटा उन्नत क्लाउड बैकअप और प्रमाणीकरण प्रणालियों के साथ सुरक्षित रूप से संग्रहीत है। आपका डेटा केवल आपके खाते से जुड़ा रहता है और किसी अन्य उपयोगकर्ता द्वारा नहीं देखा जा सकता है।">Yes, your data is securely stored with advanced cloud backup and authentication systems. Your data is strictly linked to your account and cannot be viewed by any other user.</p>
+            </div>
+        </details>
+    </div>
+    <div class="faq-card">
+        <details>
+            <summary data-en="❓ Can I export PDF and Excel reports instantly?" data-hi="❓ क्या मैं तुरंत PDF और Excel रिपोर्ट एक्सपोर्ट कर सकता हूँ?">❓ Can I export PDF and Excel reports instantly?</summary>
+            <div class="faq-content-box">
+                <p data-en="Yes, you can generate, view, and download complete PDF and Excel reports of all guests and shagun entries with a single click." data-hi="हाँ, आप एक ही क्लिक के साथ सभी मेहमानों और शगुन प्रविष्टियों की पूरी PDF और Excel रिपोर्ट जनरेट, देख और डाउनलोड कर सकते हैं।">Yes, you can generate, view, and download complete PDF and Excel reports of all guests and shagun entries with a single click.</p>
+            </div>
+        </details>
+    </div>
+    <div class="faq-card">
+        <details>
+            <summary data-en="❓ Does it support UPI Payments and QR Codes?" data-hi="❓ क्या यह UPI भुगतान और QR कोड का समर्थन करता है?">❓ Does it support UPI Payments and QR Codes?</summary>
+            <div class="faq-content-box">
+                <p data-en="Yes, custom QR Code setup and automated UPI transaction tracking are fully integrated to manage digital shagun effortlessly." data-hi="हाँ, डिजिटल शगुन को आसानी से प्रबंधित करने के लिए कस्टम QR कोड सेटअप और स्वचालित UPI लेनदेन ट्रैकिंग पूरी तरह से एकीकृत हैं।">Yes, custom QR Code setup and automated UPI transaction tracking are fully integrated to manage digital shagun effortlessly.</p>
+            </div>
+        </details>
+    </div>
+</div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="contact" data-aos="fade-up">
+<h4 class="section-tag" data-en="CONTACT US" data-hi="संपर्क करें">CONTACT US</h4>
+<h2 class="section-title" data-en="Get in Touch with Us" data-hi="हमसे संपर्क करें">Get in Touch with Us</h2>
+<p class="section-text" data-en="Have questions, feedback, or need technical assistance? Reach out to us anytime." data-hi="कोई सवाल, प्रतिक्रिया है, या तकनीकी सहायता की आवश्यकता है? हमसे कभी भी संपर्क करें।">Have questions, feedback, or need technical assistance? Reach out to us anytime.</p>
+
+<div class="contact-grid">
+    <div class="contact-card">
+        <h3 data-en="📧 Email Address" data-hi="📧 ईमेल पता">📧 Email Address</h3>
+        <p>sirplzwait@gmail.com</p>
+    </div>
+    <div class="contact-card">
+        <h3 data-en="📱 Mobile Number" data-hi="📱 मोबाइल नंबर">📱 Mobile Number</h3>
+        <p>+91 9931516195</p>
+    </div>
+    <div class="contact-card">
+        <h3 data-en="📍 Office Location" data-hi="📍 कार्यालय का स्थान">📍 Office Location</h3>
+        <p data-en="Gopalganj, Bihar, India" data-hi="गोपालगंज, बिहार, भारत">Gopalganj, Bihar, India</p>
+    </div>
+</div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+<div class="footer-container">
+    <div>
+        <h2 data-en="sagun Management System" data-hi="सगुन मैनेजमेंट सिस्टम">sagun Management System</h2>
+        <p data-en="Smart Digital Wedding Management Platform designed for effortless record-keeping." data-hi="आसान रिकॉर्ड-कीपिंग के लिए डिज़ाइन किया गया स्मार्ट डिजिटल वेडिंग मैनेजमेंट प्लेटफॉर्म।">Smart Digital Wedding Management Platform designed for effortless record-keeping.</p>
+    </div>
+    <div>
+        <h3 data-en="Quick Links" data-hi="त्वरित लिंक">Quick Links</h3>
+        <a href="index.html" data-en="Home" data-hi="होम">Home</a><br>
+        <a href="#features" data-en="Features" data-hi="विशेषताएं">Features</a><br>
+        <a href="#preview" data-en="Preview" data-hi="झलक">Preview</a><br>
+        <a href="#about" data-en="About" data-hi="परिचय">About</a>
+    </div>
+    <div>
+        <h3 data-en="Legal & Support" data-hi="कानूनी और सहायता">Legal & Support</h3>
+        <a onclick="openLegalModal('privacyModal')" data-en="Privacy Policy" data-hi="गोपनीयता नीति">Privacy Policy</a><br>
+        <a onclick="openLegalModal('termsModal')" data-en="Terms of Service" data-hi="सेवा की शर्तें">Terms of Service</a><br>
+        <a href="https://wa.me/919931516195" target="_blank" data-en="WhatsApp Support" data-hi="व्हाट्सएप सहायता">WhatsApp Support</a>
+    </div>
+</div>
+
+<hr>
+<p class="copyright" data-en="© 2026 sagun Management System. All Rights Reserved." data-hi="© 2026 सगुन मैनेजमेंट सिस्टम। सर्वाधिकार सुरक्षित।">© 2026 sagun Management System. All Rights Reserved.</p>
+<hr>
+<p style="text-align:center;color:#ccc;font-size:14px;" data-en="Version 1.0.0 | Made with ❤️ in India" data-hi="वर्जन 1.0.0 | भारत में ❤️ के साथ निर्मित">Version 1.0.0 | Made with ❤️ in India</p>
+</footer>
+
+<!-- ================= LEGAL MODALS ================= -->
+<div id="privacyModal" class="legal-modal">
+    <div class="legal-content">
+        <span class="close-legal" onclick="closeLegalModal('privacyModal')">&times;</span>
+        <h2>Privacy Policy</h2>
+        <p>At <b>sagun Management System (SGUNMS)</b>, accessible from www.sgunms.in, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by SGUNMS and how we use it.</p>
+        
+        <h3>1. Information We Collect</h3>
+        <p>We collect personal information that you provide voluntarily when registering on the platform, such as your full name, email address, mobile number, and event details (groom/bride names, UPI QR codes).</p>
+
+        <h3>2. How We Use Your Information</h3>
+        <p>Your data is strictly used to provide, operate, and maintain the wedding management services, generate reports, send admin password updates via email, and ensure secure account access.</p>
+
+        <h3>3. Data Security</h3>
+        <p>We implement robust security measures and Supabase cloud authentication to protect your financial records and guest information from unauthorized access.</p>
+    </div>
+</div>
+
+<div id="termsModal" class="legal-modal">
+    <div class="legal-content">
+        <span class="close-legal" onclick="closeLegalModal('termsModal')">&times;</span>
+        <h2>Terms & Conditions</h2>
+        <p>Welcome to <b>sagun Management System (SGUNMS)</b>. By accessing or using our website, you agree to comply with and be bound by the following terms and conditions.</p>
+
+        <h3>1. Use of Service</h3>
+        <p>SGUNMS provides a digital platform for managing wedding events, guest entries, cash books, and shagun records. You agree to use this platform only for lawful personal and family event management purposes.</p>
+
+        <h3>2. Account Responsibility</h3>
+        <p>You are responsible for maintaining the confidentiality of your account credentials, password, and super admin access. Any activity performed under your account is your sole responsibility.</p>
+
+        <h3>3. Limitation of Liability</h3>
+        <p>While we ensure high availability and cloud data synchronization, SGUNMS shall not be held liable for any data loss resulting from network failures, incorrect user entries, or device issues.</p>
+    </div>
+</div>
+
+<!-- WhatsApp & Scroll Top -->
+<a href="https://wa.me/919931516195?text=Hello%20Shashi%20Ji,%20I%20want%20to%20know%20more%20about%20sagun%20Management%20System." class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
+<button id="scrollTopBtn" onclick="scrollToTop()" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox">
+    <img id="lightboxImg" alt="Zoom Preview">
+</div>
+
+<!-- Scripts -->
+
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/visitor.js""></script>
+    <script src="js/index.js"" defer></script>
+<script src="js/process-ui.js"></script>
+</body>
+</html>

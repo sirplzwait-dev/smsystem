@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Dashboard | Sagum Management System</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="../css/admin.css"">
+<script src="offline-test.js"></script>
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+
+<div class="header">
+    <div class="headerLeft">
+        <button class="menuToggle" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <span class="top-title">👑 Super Admin Dashboard</span>
+    </div>
+    <div class="btn-group">
+        <button class="settings-btn" onclick="window.location.href='settings.html'">⚙️ सेटिंग्स</button>
+    </div>
+</div>
+
+<div class="main">
+    <!-- साइडबार -->
+    <div class="sidebar" id="sidebar">
+        <a href="home.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="entry.html"><i class="fa-solid fa-user-plus"></i> Shagun Entry</a>
+        <a href="cash-counter.html"><i class="fa-solid fa-calculator"></i> Cash Counter</a>
+        <a href="cashbook.html"><i class="fa-solid fa-book-open"></i> Cash In / Cash Out</a>
+        <a href="report.html"><i class="fa-solid fa-chart-pie"></i> Report</a>
+        <a href="admin.html" class="active"><i class="fa-solid fa-crown"></i> Super Admin</a>
+    </div>
+
+    <div class="content">
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <h3>कुल गेस्ट (Guests)</h3>
+                    <h1 id="totalGuests">0</h1>
+                </div>
+            </div>
+            <div class="stat-card" style="border-left-color: #27ae60;">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                    <h3>कुल प्राप्त शगुन</h3>
+                    <h1 id="rawAmount">₹0</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <h3 style="color: #800000; font-size: 16px;">📋 गेस्ट एवं शगुन सूची</h3>
+                <button class="deleteAll-btn" onclick="deleteAllData()">🗑️ सारा डेटा डिलीट करें</button>
+            </div>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>नाम</th>
+                            <th>राज्य</th>
+                            <th>जिला</th>
+                            <th>गाँव</th>
+                            <th>शगुन राशि</th>
+                            <th style="text-align: center;">एक्शन</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr><td colspan="6" style="text-align: center; color: #888; padding: 20px;">डेटा लोड हो रहा है...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="../js/visitor.js""></script>
+    <script src="../js/admin.js"" defer></script>
+  <script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>

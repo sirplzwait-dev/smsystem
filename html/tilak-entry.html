@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<link rel="manifest" href="manifest.json">
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js');
+  });
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const sb = window.supabase.createClient(
+'https://rdlliurzgwwfjscgwssa.supabase.co',
+'sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc'
+);
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const {
+        data: { session }
+    } = await sb.auth.getSession();
+});
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">🪔 शुभ तिलक | Sagun Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Fullscreen Loading Overlay */
+        #pageLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #600000, #800000, #b38f00, #ffd700);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            color: #fff;
+            text-align: center;
+            font-family: 'Georgia', serif;
+            transition: opacity 0.5s ease;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #FFD700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loader-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #FFD700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        .loader-subtext {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .popup{
+            display:none;
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.7);
+            justify-content:center;
+            align-items:center;
+            z-index:9999;
+        }
+
+        .popup-content{
+            background:#fff;
+            padding:20px;
+            border-radius:10px;
+            text-align:center;
+            position:relative;
+        }
+
+        .close-btn{
+            position:absolute;
+            top:10px;
+            right:10px;
+            cursor:pointer;
+        }
+    
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width:100%;
+            min-height:100%;
+            overflow-x:hidden;
+            overflow-y:auto;
+            font-family:'Georgia', serif;
+        }
+        
+        .card { 
+            width: 100vw; 
+            min-height: 100vh; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background: linear-gradient(135deg, #ffffff 0%, #fff7cc 50%, #ffd700 100%);
+            padding-bottom: 50px;
+        }
+
+        .decor-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .side-flower { position: absolute; top: 0; width: 220px; }
+        .left-flower { left: 28%; } .right-flower { right: 28%; }
+        .hanging-image { position: absolute; top: 0; width: 320px; height: 100%; object-fit: contain; object-position: top; animation: blink 2s infinite alternate; }
+        @keyframes blink { 0% { opacity: 0.7; } 100% { opacity: 0.9; } }
+        .left-side { left: 0px; } .right-side { right: 0px; }
+        .corner-flower { position: absolute; bottom: 0; width: 200px; }
+        .left-corner { left: 0; } .right-corner { right: 0; transform: scaleX(-1); }
+
+        .main-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 10px; }
+        
+        .header-section { margin-top: 10px; text-align: center; }
+        .ganesh { width: 65px; height: 65px; border-radius: 50%; border: 2px solid #800000; }
+        .title { font-size: 1.8rem; color: #800000; font-family: 'cursive', cursive; margin: 2px 0; }
+        .date-text { font-size: 1.1rem; color: #800000; margin-bottom: 5px; font-weight: bold; }
+        
+        .msg-container { height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .-msg { font-size: 1rem; font-weight: bold; text-align: center; line-height: 1.2; color: #333; }
+        .signature { font-size: 1rem; color: #d84315; font-weight: bold; font-style: italic; margin-top: 3px; }
+
+        .couple-section { display: flex; justify-content: center; align-items: center; gap: 25px; margin-top: 15px; text-align: center; }
+        .couple-box { display: flex; flex-direction: column; align-items: center; }
+        .photo-frame { width: 180px; height: 180px; border: 4px solid #800000; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .name-label { font-size: 0.85rem; color: #5d4037; font-weight: bold; margin-top: 6px; }
+        .name { font-size: 1.1rem; color: #800000; font-family: 'Arial Black', sans-serif; text-transform: uppercase; margin-top: 2px; }
+        .sang-elegant { font-size: 2.2rem; color: #d84315; font-family: 'cursive', cursive; font-weight: bold; }
+        
+        /* डेस्कटॉप के लिए फॉर्म सेक्शन: सभी फील्ड्स एक ही लाइन में रहेंगे */
+        .form-section{
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border: 1.5px solid #800000;
+            border-radius: 12px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .input-box {
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1.5px solid #800000;
+            flex: 1;
+            min-width: 0;
+            height: 42px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.98);
+            color: #000;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .input-box:focus{
+            outline: none;
+            border: 2px solid #ff0000;
+            background: #ffff66;
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        .submit-btn{
+            background: #800000;
+            color: #ffffff;
+            flex: 0 0 95px;
+            height: 42px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #800000;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #600000;
+        }
+        
+        #thankYouMsg{
+            display: none;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg,#800000,#c62828);
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp{
+            from{ opacity:0; transform:translateY(20px); }
+            to{ opacity:1; transform:translateY(0); }
+        }  
+
+        /* ऊपर वाली पट्टी (Header Bar) */
+        .top-header-bar {
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(135deg, #600000, #800000);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .top-logo {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .actionBtn {
+            background: #FFD700;
+            color: #800000;
+            border: none;
+            border-radius: 5px;
+            padding: 4px 10px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .actionBtn:hover {
+            background: #fff;
+        }
+
+        .logoutBtn {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .logoutBtn:hover {
+            background: #bb2d3b;
+            color: #fff;
+        }
+
+        .footer-area{
+            width:100%;
+            height:45px;
+            background:#800000;
+            color:#fff;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            display:flex;
+            align-items:center;
+            z-index: 1000;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+        }
+
+        .footer-left{
+            padding:0 10px;
+            white-space:nowrap;
+            font-size:12px;
+            font-weight:bold;
+        }
+
+        .footer-center{
+            flex:1;
+            overflow:hidden;
+        }
+
+        .footer-center marquee{
+            color:#fff;
+            font-size:12px;
+            font-weight:bold;
+        }
+
+        /* मोबाइल के लिए मीडिया क्वेरी: केवल मोबाइल स्क्रीन पर State और Dist छिपे रहेंगे */
+        @media (max-width:768px){
+            .card{
+                width:100%;
+                min-height:100vh;
+                height:auto;
+                position:relative;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                background:linear-gradient(135deg,#ffffff 0%,#fff7cc 50%,#ffd700 100%);
+                padding-bottom: 60px;
+            }
+            .title{ font-size:1.4rem; }
+            .date-text{ font-size:0.95rem; }
+            
+            .couple-section{ 
+                flex-direction: column; 
+                gap: 8px; 
+                margin-top: 10px; 
+            }
+            .photo-frame{ 
+                width: 115px; 
+                height: 115px; 
+                border-width: 3px;
+            }
+            .sang-elegant{ 
+                font-size: 1.5rem; 
+                margin: -2px 0;
+            }
+            .name-label { font-size: 0.75rem; }
+            .name { font-size: 0.95rem; }
+
+            /* मोबाइल में state और dist को छिपाया गया है */
+            #guestState, #guestDist {
+                display: none !important;
+            }
+
+            .form-section{ 
+                width: 96%; 
+                padding: 8px;
+                gap: 6px;
+                margin-top: 12px;
+                flex-wrap: wrap; 
+            }
+
+            .input-box {
+                font-size: 0.9rem;
+                padding: 6px;
+                height: 42px;
+                flex: 1 1 45%; 
+            }
+
+            #guestName {
+                flex: 1 1 100%; 
+            }
+
+            .submit-btn {
+                flex: 1 1 100%;
+                height: 42px;
+                font-size: 0.95rem;
+            }
+
+            .hanging-image{ width:70px; }
+            .side-flower{ width:75px; }
+            .corner-flower{ width:75px; }
+            
+            .footer-left{ font-size:9px; padding:0 5px; }
+        }
+    </style>
+
+<style id="mobile-entry-polish">
+/* ===== Entry Page Responsive Polish ===== */
+@media (max-width: 768px) {
+    /* Mobile: keep bride/groom photos + names */
+    .photo-frame {
+        display: block !important;
+        width: 105px;
+        height: 105px;
+        border-width: 3px;
+    }
+
+    .couple-section {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 22px;
+        width: 100%;
+        margin-top: 14px;
+    }
+
+    .couple-box {
+        min-width: 120px;
+        max-width: 42%;
+    }
+
+    .name-label {
+        font-size: 0.78rem;
+        margin-top: 3px;
+        line-height: 1.25;
+    }
+
+    .name {
+        font-size: 1rem;
+        line-height: 1.25;
+        word-break: break-word;
+    }
+
+    .sang-elegant {
+        align-self: center;
+        margin-top: 3px;
+        font-size: 1.55rem;
+    }
+
+    /* Clean mobile input card */
+    .form-section {
+        box-sizing: border-box;
+        width: calc(100% - 18px);
+        max-width: 560px;
+        margin: 14px auto 0;
+        padding: 10px;
+        gap: 8px;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(80, 0, 0, .16);
+    }
+
+    .input-box {
+        box-sizing: border-box;
+        min-height: 44px;
+        height: 44px;
+        padding: 8px 10px;
+        border: 1.5px solid #800000;
+        border-radius: 9px;
+        font-size: 0.9rem;
+        background: rgba(255,255,255,.98);
+        box-shadow: inset 0 1px 3px rgba(0,0,0,.05);
+    }
+
+    #guestName {
+        flex: 1 1 100%;
+    }
+
+    #guestVillage,
+    #guestAmount,
+    #paymentMode {
+        flex: 1 1 calc(50% - 4px);
+    }
+
+    .submit-btn {
+        flex: 1 1 100%;
+        min-height: 45px;
+        height: 45px;
+        border-radius: 9px;
+        font-size: 0.95rem;
+        box-shadow: 0 3px 8px rgba(128,0,0,.22);
+    }
+}
+
+/* Very small phones */
+@media (max-width: 390px) {
+    .couple-section {
+        gap: 10px;
+    }
+
+    .couple-box {
+        min-width: 100px;
+    }
+
+    .name {
+        font-size: 0.9rem;
+    }
+
+    .form-section {
+        width: calc(100% - 12px);
+        padding: 8px;
+    }
+
+    .input-box {
+        font-size: 0.84rem;
+    }
+}
+</style>
+
+
+<style id="single-screen-mobile">
+@media (max-width:768px){
+    html,body{
+        width:100%;
+        min-height:100%;
+        overflow-x:hidden;
+    }
+    body{
+        padding:4px !important;
+    }
+    .card{
+        width:100% !important;
+        min-height:100vh !important;
+        padding:8px 7px 45px !important;
+        border-radius:12px !important;
+    }
+    .top-header-bar{
+        height:36px !important;
+        min-height:36px !important;
+    }
+    .title{
+        font-size:1.35rem !important;
+        margin:3px 0 !important;
+    }
+    .date-text{
+        font-size:.82rem !important;
+    }
+    .couple-section{
+        flex-direction:row !important;
+        gap:6px !important;
+        width:100% !important;
+        margin:7px 0 !important;
+        justify-content:center !important;
+        align-items:flex-start !important;
+    }
+    .couple-box{
+        width:42% !important;
+        min-width:0 !important;
+    }
+    .photo-frame{
+        display:block !important;
+        width:82px !important;
+        height:82px !important;
+        border-width:3px !important;
+        margin:auto !important;
+    }
+    .name-label{
+        font-size:.68rem !important;
+        margin-top:2px !important;
+    }
+    .name{
+        font-size:.88rem !important;
+        line-height:1.15 !important;
+        margin-top:1px !important;
+    }
+    .sang-elegant{
+        font-size:1.15rem !important;
+        align-self:center !important;
+        margin-top:30px !important;
+    }
+    .form-section{
+        width:100% !important;
+        max-width:none !important;
+        margin-top:7px !important;
+        padding:7px !important;
+        gap:6px !important;
+        border-radius:10px !important;
+        flex-wrap:wrap !important;
+    }
+    .input-box{
+        height:38px !important;
+        min-height:38px !important;
+        padding:5px 7px !important;
+        font-size:.78rem !important;
+        border-radius:7px !important;
+    }
+    #guestName{
+        flex:1 1 100% !important;
+    }
+    #guestVillage,#guestAmount,#paymentMode{
+        flex:1 1 calc(33.333% - 5px) !important;
+    }
+    #guestState,#guestDist{
+        display:none !important;
+    }
+    .submit-btn{
+        flex:1 1 100% !important;
+        height:38px !important;
+        min-height:38px !important;
+        font-size:.82rem !important;
+        border-radius:7px !important;
+    }
+    #thankYouMsg{
+        margin-top:6px !important;
+        padding:7px !important;
+        font-size:.78rem !important;
+    }
+    .bottom-footer{
+        font-size:.65rem !important;
+        padding:5px !important;
+    }
+}
+@media (max-width:390px){
+    .photo-frame{
+        width:72px !important;
+        height:72px !important;
+    }
+    .name{
+        font-size:.8rem !important;
+    }
+    .input-box{
+        font-size:.73rem !important;
+    }
+}
+</style>
+
+
+<style id="desktop-welcome-mobile-hide">
+@media (max-width:768px){ #welcomeSignature, .signature{ display:block !important; } }
+@media (min-width:769px){
+    #welcomeSignature{
+        display:block;
+    }
+}
+</style>
+
+
+<style id="desktop-decoration-blink">
+/* Desktop only: soft, slow decorative glow/blink */
+@media (min-width:769px){
+    .side-flower,
+    .hanging-image,
+    .corner-flower{
+        animation: softDecorationBlink 3.8s ease-in-out infinite;
+        transform-origin:center;
+    }
+
+    .hanging-image{
+        animation-duration:4.6s;
+    }
+
+    .corner-flower{
+        animation-duration:4.2s;
+    }
+
+    @keyframes softDecorationBlink{
+        0%,100%{
+            opacity:1;
+            filter:brightness(1);
+        }
+        50%{
+            opacity:.62;
+            filter:brightness(1.12);
+        }
+    }
+}
+</style>
+
+
+<style id="welcome-by-display-style">
+.welcome-by-display{
+    margin-top:5px;
+    text-align:right;
+    padding-right:12%;
+    color:#9a3b16;
+    font-size:15px;
+    font-weight:700;
+    font-style:italic;
+}
+@media(max-width:768px){
+    .welcome-by-display{
+        padding-right:5%;
+        font-size:12px;
+        margin-top:3px;
+    }
+}
+</style>
+
+
+<script>
+/* ==========================================
+   OFFLINE TEST MODE
+   Login/session requirement is disabled.
+   ========================================== */
+window.OFFLINE_TEST_MODE = true;
+window.TEST_USER_ID = localStorage.getItem("test_user_id") || "offline-test-user";
+</script>
+
+<script src="offline-test.js"></script>
+  <link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/premium-calendar.css">
+<script>/* Query -> active event bridge */
+(function(){try{const q=new URLSearchParams(location.search);const id=q.get("event_id")||q.get("eventId");if(id){localStorage.setItem("currentEventId",String(id));try{localStorage.setItem("sgunmsActiveEvent",JSON.stringify({id:String(id)}));}catch(e){}}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+</head>
+<body>
+
+    <!-- Loading Overlay -->
+    <div id="pageLoader">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">✨ समारोह विवरण लोड हो रहा है... ✨</div>
+        <div class="loader-subtext">कृपया थोड़ा इंतज़ार करें, दूल्हा-दुल्हन की जानकारी आ रही है।</div>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <div class="top-header-bar">
+        <div class="top-logo">SAGUN SYSTEM</div>
+        <div class="header-btns">
+            <button class="actionBtn" onclick="location.href='home.html'">
+                🏠 Home
+            </button>
+            <button class="actionBtn logoutBtn" id="logoutBtn">
+                🚪 Logout
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="decor-container">
+            <img src="../assets/images/Decoration Flower.png" class="side-flower left-flower">
+            <img src="../assets/images/Decoration Flower.png" class="side-flower right-flower">
+            <img src="../assets/images/Decoration.png" class="hanging-image left-side">
+            <img src="../assets/images/Decoration.png" class="hanging-image right-side">
+            <img src="../assets/images/Flower.png" class="corner-flower left-corner">
+            <img src="../assets/images/Flower.png" class="corner-flower right-corner">
+        </div>
+
+        <div class="main-content">
+            <div class="header-section">
+                <div>॥ श्री गणेशाय नमः ॥</div>
+                <img src="../assets/images/Ganesh.png" class="ganesh">
+                <h1 class="title" id="mainTitleText">शुभ तिलक</h1>
+                <div class="date-text" id="dateDisplay">दिनांक:14 नवम्बर 2026</div>
+                <div class="msg-container">
+                    <div id="msgDisplay" class="-msg animate__animated"></div>
+                    <div id="welcomeByDisplay" class="welcome-by-display"></div>
+                </div>
+            </div>
+            
+            <div class="couple-section" id="coupleContainer">
+                <div class="couple-box">
+                    <img src="../assets/images/groom.jpg" class="photo-frame" id="firstPhoto">
+                    <div class="name-label" id="firstLabel">चिरंजीवी</div>
+                    <div class="name" id="firstName">अभिषेक कुमार</div>
+                </div>
+                <div class="sang-elegant">संग</div>
+                <div class="couple-box">
+                    <img src="../assets/images/bride.jpg" class="photo-frame" id="secondPhoto">
+                    <div class="name-label" id="secondLabel">आयुष्मती</div>
+                    <div class="name" id="secondName">अचल कुमारी</div>
+                </div>
+            </div>
+            
+            <!-- इनपुट फील्ड्स -->
+            <div class="form-section">
+                <input type="text" id="guestName" class="input-box" placeholder="नाम (Name)" oninput="this.value=this.value.toUpperCase()">
+                
+                <select id="guestState" class="input-box">
+                    <option value="">राज्य</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar" selected>Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="West Bengal">West Bengal</option>
+                    <option value="None of these">None</option>
+                </select>
+
+                <select id="guestDist" class="input-box">
+                    <option value="">जिला</option>
+                    <option value="Araria">Araria</option><option value="Arwal">Arwal</option>
+                    <option value="Aurangabad">Aurangabad</option><option value="Banka">Banka</option>
+                    <option value="Begusarai">Begusarai</option><option value="Bhagalpur">Bhagalpur</option>
+                    <option value="Bhojpur">Bhojpur</option><option value="Buxar">Buxar</option>
+                    <option value="Darbhanga">Darbhanga</option><option value="East Champaran">East Champaran</option>
+                    <option value="Gaya">Gaya</option>
+                    <option value="Gopalganj" selected>Gopalganj</option>
+                    <option value="Jamui">Jamui</option><option value="Jehanabad">Jehanabad</option>
+                    <option value="Kaimur">Kaimur</option><option value="Katihar">Katihar</option>
+                    <option value="Khagaria">Khagaria</option><option value="Kishanganj">Kishanganj</option>
+                    <option value="Lakhisarai">Lakhisarai</option><option value="Madhepura">Madhepura</option>
+                    <option value="Madhubani">Madhubani</option><option value="Munger">Munger</option>
+                    <option value="Muzaffarpur">Muzaffarpur</option><option value="Nalanda">Nalanda</option>
+                    <option value="Nawada">Nawada</option><option value="Patna">Patna</option>
+                    <option value="Purnia">Purnia</option><option value="Rohtas">Rohtas</option>
+                    <option value="Saharsa">Saharsa</option><option value="Samastipur">Samastipur</option>
+                    <option value="Saran">Saran</option><option value="Sheikhpura">Sheikhpura</option>
+                    <option value="Sheohar">Sheohar</option><option value="Sitamarhi">Sitamarhi</option>
+                    <option value="Siwan">Siwan</option><option value="Supaul">Supaul</option>
+                    <option value="Vaishali">Vaishali</option><option value="West Champaran">West Champaran</option>
+                    <option value="None of these">None</option>
+                </select>
+
+                <input type="text" id="guestVillage" class="input-box" placeholder="गाँव" oninput="this.value=this.value.toUpperCase()">
+                <input type="number" id="guestAmount" class="input-box" placeholder="शगुन (₹)">
+
+                <select id="paymentMode" class="input-box">
+                    <option value="Cash" selected>Cash</option>
+                    <option value="UPI">UPI</option>
+                </select>
+
+                <button class="submit-btn" onclick="saveGuest()">दर्ज करें</button>
+            </div>
+
+            <div id="thankYouMsg"></div>
+        </div>
+
+        <div class="footer-area">
+            <div class="footer-left">
+                🌐 Visit us at <strong>www.sgunms.in</strong>
+            </div>
+            <div class="footer-center">
+                <marquee scrollamount="4">
+                    🌱 बेटी बचाओ • 📚 शिक्षा सबसे बड़ा धन है • 🌳 एक पेड़ अवश्य लगाएं • 💧 जल है तो कल है • ❤️ रक्तदान महादान • 🤝 आपसी भाईचारा बनाए रखें • 🌺 शुभ विवाह के इस पावन अवसर पर पधारने के लिए सादर आभार • 🪷 आपका शुभागमन हमारे लिए सौभाग्य का विषय है • 🙏 नवदंपति को आपका आशीर्वाद जीवनभर सुख और समृद्धि प्रदान करे • 🌸 आपके स्नेह से यह समारोह पूर्ण हुआ • 💐 आपके आगमन से खुशियों की महफ़िल और भी सुंदर हो गई • ❤️ रिश्तों की यह डोर सदैव प्रेम और विश्वास से बंधी रहे • 🙏 आपका आशीर्वाद हमारे लिए सदैव अमूल्य रहेगा।
+                </marquee>
+            </div>
+        </div>
+    </div>
+
+    <div id="upiPopup" class="popup">
+        <div class="popup-content">
+            <button class="close-btn" id="closePopup">✖</button>
+            <h3>UPI Scanner</h3>
+            <img id="upiQrImage" src="" alt="UPI QR Code" width="300">
+        </div>
+    </div>
+
+<script>
+const popup = document.getElementById("upiPopup");
+
+document.getElementById("paymentMode").addEventListener("change", function(){
+    if(this.value === "UPI"){
+        popup.style.display = "flex";
+    }else{
+        popup.style.display = "none";
+    }
+});
+
+document.getElementById("closePopup").onclick = function(){
+    popup.style.display = "none";
+};
+
+document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+        popup.style.display = "none";
+    }
+});
+</script>
+
+<script>
+window.onload = async function() {
+    await loadSetup();
+    updateMsg();
+
+    if(navigator.onLine){
+        syncData();
+    }
+};
+
+window.addEventListener("online", () => {
+    syncData();
+});
+
+const messages = [
+"🙏 आपके शुभ आगमन के लिए हार्दिक धन्यवाद।",
+"💐 हमारे शुभ विवाह समारोह में पधारने के लिए आपका बहुत-बहुत आभार।",
+"❤️ आपकी उपस्थिति ने हमारे इस खास दिन को और भी खास बना दिया। धन्यवाद!",
+"🙏 अपना बहुमूल्य समय निकालकर आने के लिए हृदय से धन्यवाद।",
+"🌸 आपके स्नेह और आशीर्वाद के लिए कोटि-कोटि धन्यवाद।",
+"💖 आपकी उपस्थिति हमारे लिए सम्मान और खुशी की बात है।",
+"🙏 नवविवाहित जोड़े को अपना आशीर्वाद देने के लिए धन्यवाद।",
+"🌹 आपके आने से हमारे समारोह की रौनक बढ़ गई। हार्दिक धन्यवाद।",
+"✨ इस शुभ अवसर का हिस्सा बनने के लिए आपका हृदय से आभार।",
+"🙏 आपके प्यार, स्नेह और आशीर्वाद के लिए धन्यवाद।",
+"💐 आपकी मौजूदगी हमारे लिए किसी उपहार से कम नहीं।",
+"❤️ शुभ विवाह में आपका स्वागत और आपके आगमन के लिए धन्यवाद।",
+"🌸 आपके शुभ कदमों से हमारा समारोह धन्य हुआ। धन्यवाद!",
+"🙏 नवदंपति को आशीर्वाद देने के लिए आपका बहुत-बहुत धन्यवाद।",
+"💖 आपकी उपस्थिति ने इस यादगार दिन को और यादगार बना दिया।",
+"🌹 आपके स्नेह और शुभकामनाओं के लिए दिल से धन्यवाद।",
+"🙏 हमारे परिवार की खुशी में शामिल होने के लिए आभार।",
+"✨ आपके आने से खुशियों में चार चाँद लग गए। धन्यवाद!",
+"💐 इस मंगल अवसर पर आपका हार्दिक स्वागत एवं अभिनंदन।",
+"❤️ आपका आना हमारे लिए सौभाग्य की बात है। धन्यवाद।",
+"🙏 आपकी शुभकामनाएँ और आशीर्वाद हमारे लिए अमूल्य हैं।",
+"🌸 हमारे इस पावन अवसर पर पधारने के लिए हृदय से आभार।",
+"💖 आपकी मुस्कान और शुभकामनाओं ने समारोह को खूबसूरत बना दिया।",
+"🙏 हमारे सुख-दुःख और खुशी में साथ देने के लिए धन्यवाद।",
+"🌹 आपके प्रेम और आशीर्वाद के लिए सादर धन्यवाद।",
+"✨ आपकी उपस्थिति हमारे लिए सबसे सुंदर उपहार है।",
+"💐 इस नई शुरुआत के साक्षी बनने के लिए धन्यवाद।",
+"❤️ नवदंपति के जीवन में खुशियों की कामना करने के लिए आभार।",
+"🙏 आपका आगमन हमारे लिए हर्ष और गौरव का विषय है।",
+"🌸 शुभ विवाह समारोह में आपका हार्दिक अभिनंदन।",
+"💖 आपके आशीर्वाद से यह शुभ अवसर और भी मंगलमय हुआ। धन्यवाद।",
+"🙏 आपकी उपस्थिति और शुभकामनाओं के लिए हृदय से आभार।",
+"🌹 रिश्तों की इस खूबसूरत खुशी में शामिल होने के लिए धन्यवाद।",
+"✨ आपकी मौजूदगी ने हमारी खुशियों को पूरा कर दिया।",
+"💐 पधारने के लिए धन्यवाद, आपका स्नेह सदैव याद रहेगा।",
+"❤️ आपके प्यार और आशीर्वाद के लिए परिवार की ओर से धन्यवाद।",
+"🙏 शुभ अवसर पर अपनी उपस्थिति दर्ज कराने के लिए आभार।",
+"🌸 आपका स्वागत है, आपका आना हमारे लिए बेहद खास है।",
+"💖 आपके शुभाशीष नवदंपति के जीवन को सदैव सुखमय बनाएं। धन्यवाद।",
+"🙏 आपकी उपस्थिति के लिए सादर धन्यवाद एवं आभार।",
+"🌹 इस खुशी के अवसर पर हमारे साथ कदम से कदम मिलाने के लिए धन्यवाद।",
+"✨ आपकी शुभकामनाएँ इस नए सफर की खूबसूरत शुरुआत हैं।",
+"💐 आपके आने से आज का दिन और भी यादगार बन गया।",
+"❤️ दिल से स्वागत, दिल से धन्यवाद।",
+"🙏 आपके आशीर्वाद से यह शुभ विवाह सफल और मंगलमय हो।",
+"🌸 हमारे परिवार की खुशी में शामिल होने के लिए बहुत-बहुत धन्यवाद।",
+"💖 आपकी उपस्थिति हमारे लिए अनमोल है।",
+"🙏 प्रेम, स्नेह और आशीर्वाद देने के लिए आपका आभार।",
+"🌹 शुभ विवाह के इस पावन अवसर पर आपका हार्दिक स्वागत है।",
+"🎉 आए, खुशियाँ बाँटीं और यादें बना गए—बहुत-बहुत धन्यवाद!"
+];
+
+let i = 0;
+function updateMsg() {
+    const msgDisplay = document.getElementById("msgDisplay");
+    if (!msgDisplay) return;
+
+    msgDisplay.classList.remove("animate__fadeIn");
+    msgDisplay.classList.add("animate__fadeOut");
+
+    setTimeout(() => {
+        msgDisplay.innerText = messages[i];
+        i = (i + 1) % messages.length;
+        msgDisplay.classList.remove("animate__fadeOut");
+        msgDisplay.classList.add("animate__fadeIn");
+    }, 350);
+}
+setInterval(updateMsg, 5000);
+
+function ensureActiveEventId(){
+    let id=new URLSearchParams(location.search).get("event_id")||localStorage.getItem("currentEventId")||"";
+    if(!id){try{const a=JSON.parse(localStorage.getItem("sgunmsActiveEvent")||"null");id=a?.id||"";}catch(e){}}
+    if(!id){
+      try{
+        const setup=JSON.parse(localStorage.getItem("eventSetupData")||localStorage.getItem("offlineSetupData")||localStorage.getItem("sagunSetup")||"{}");
+        const targetType='tilak'; const targetDate=String(setup.event_date||"").trim();
+        const p1=String(setup.groom_name||setup.bride_name||setup.name||setup.first_name||"").trim().toLowerCase();
+        const all=[]; ["sagunEventHistory","sagunEvents","sgunmsEvents","sagunEventsData","events"].forEach(k=>{try{const v=JSON.parse(localStorage.getItem(k)||"null");const a=Array.isArray(v)?v:(v&&Array.isArray(v.events)?v.events:(v&&Array.isArray(v.data)?v.data:[]));if(Array.isArray(a))all.push(...a)}catch(e){}});
+        const hit=all.find(e=>{const raw=[e.event_type,e.eventType,e.type,e.event_name,e.eventName,e.name,e.title].filter(Boolean).join(" ").toLowerCase();const t=raw.includes("tilak")||('tilak'==="barat"&&raw.includes("baraat"));const d=!targetDate||String(e.event_date||e.eventDate||e.date||"").trim()===targetDate;const p=!p1||[e.person1,e.person2,e.groom_name,e.bride_name,e.name].filter(Boolean).some(x=>String(x).trim().toLowerCase().includes(p1)||p1.includes(String(x).trim().toLowerCase()));return t&&d&&p});
+        if(hit) id=String(hit.id||hit.eventId||hit.event_id||"");
+      }catch(e){}
+    }
+    if(id){localStorage.setItem("currentEventId",id);return id;}
+    return "";
+}
+
+async function saveGuest() {
+    let userId = "offline-user";
+    try {
+        const { data:{ user } } = await sb.auth.getUser();
+        if(user){
+            userId = user.id;
+        }
+    } catch(e){
+        console.log("Offline Mode");
+    }
+
+    const name = document.getElementById('guestName').value.toUpperCase();
+    const amount = document.getElementById('guestAmount').value;
+    const state = document.getElementById('guestState').value || "Bihar";
+    const dist = document.getElementById('guestDist').value || "Gopalganj";
+    const village = document.getElementById('guestVillage').value.toUpperCase();
+    const mode = document.getElementById('paymentMode').value;
+    
+    if(name === ""){
+        alert("कृपया नाम दर्ज करें!");
+        return;
+    }
+
+    if(amount === "" || amount <= 0){
+        alert("कृपया शगुन राशि दर्ज करें!");
+        return;
+    }
+        
+    let guests = JSON.parse(localStorage.getItem("offlineGuests") || "[]");
+    let eventSetup = {};
+    try { eventSetup = JSON.parse(localStorage.getItem("offlineSetupData") || localStorage.getItem("eventSetupData") || "{}"); } catch(e) {}
+    const eventId = ensureActiveEventId();
+
+    guests.push({
+       user_id:userId,
+       name:name,
+       amount:Number(amount),
+       state:state,
+       district:dist,
+       village:village,
+       payment_mode:mode,
+       event_type:"tilak",
+       event_id:eventId,
+       event_date:eventSetup.event_date || "",
+       event_person:eventSetup.groom_name || eventSetup.bride_name || "",
+       event_person_2:eventSetup.bride_name || ""
+    });
+
+    localStorage.setItem("offlineGuests", JSON.stringify(guests));
+
+    if(navigator.onLine){
+        await syncData();
+    }
+
+    const thankYouDiv = document.getElementById('thankYouMsg');
+    thankYouDiv.style.display = "block";
+    thankYouDiv.innerHTML = `🙏 ${name} जी, आपका ₹${amount} शगुन सफलतापूर्वक जमा हुआ। धन्यवाद आपका!`;
+
+    setTimeout(() => {
+        thankYouDiv.style.display = "none";
+    }, 5000);
+
+    document.getElementById('guestName').value = "";
+    document.getElementById('guestAmount').value = "";
+    document.getElementById('guestVillage').value = "";
+    document.getElementById('guestName').focus();
+}
+
+async function loadSetup(){
+    let data = null;
+
+    try {
+        const result = await sb.auth.getUser();
+        const user = result.data.user;
+
+        if (user) {
+            const res = await sb.from("setup").select("*").eq("user_id", user.id).single();
+            if (res.data) {
+                data = res.data;
+                localStorage.setItem("offlineSetupData", JSON.stringify(data));
+            }
+        }
+    } catch (e) {
+        console.log("Network error or offline, loading from local storage.");
+    }
+
+    if (!data) {
+        const localData = localStorage.getItem("offlineSetupData");
+        if (localData) {
+            data = JSON.parse(localData);
+        }
+    }
+
+    if (!data) {
+        console.log("No setup data found offline or online.");
+        document.getElementById("pageLoader").style.display = "none";
+        return;
+    }
+
+    document.getElementById("dateDisplay").innerHTML = "दिनांक : " + (data.event_date || "");
+
+    const titleDisplay = document.getElementById("mainTitleText");
+    const firstPhoto = document.getElementById("firstPhoto");
+    const firstLabel = document.getElementById("firstLabel");
+    const firstName = document.getElementById("firstName");
+    
+    const secondPhoto = document.getElementById("secondPhoto");
+    const secondLabel = document.getElementById("secondLabel");
+    const secondName = document.getElementById("secondName");
+    // एक ही Entry Page: Tilak / Barat / Reception dynamic
+    const eventType = "tilak";
+
+    const eventConfig = {
+        sagai:     {title:"💍 शुभ सगाई / रोका", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
+        haldi:     {title:"🌼 शुभ हल्दी समारोह", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
+        mehndi:    {title:"🌿 शुभ मेहंदी समारोह", first:"bride", firstLabel:"आयुष्मती", second:"groom", secondLabel:"चिरंजीवी"},
+        sangeet:   {title:"🎶 शुभ संगीत समारोह", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
+        tilak:     {title:"🪔 शुभ तिलक", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
+        barat:     {title:"🥁 शुभ बरात", first:"bride", firstLabel:"आयुष्मती", second:"groom", secondLabel:"चिरंजीवी"},
+        reception: {title:"🎉 शुभ Reception", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
+        vidaai:    {title:"🚗 शुभ विदाई समारोह", first:"bride", firstLabel:"आयुष्मती", second:"groom", secondLabel:"चिरंजीवी"}
+    };
+
+    const cfg = eventConfig[eventType];
+    titleDisplay.innerHTML = cfg.title;
+    document.title = "🪔 शुभ तिलक | Sagun Management System";
+
+    const people = {
+        groom:{photo:data.groom_photo_url || "../assets/images/groom.jpg",name:data.groom_name || ""},
+        bride:{photo:data.bride_photo_url || "../assets/images/bride.jpg",name:data.bride_name || ""}
+    };
+    firstPhoto.src = people[cfg.first].photo;
+    firstLabel.innerHTML = cfg.firstLabel;
+    firstName.innerHTML = people[cfg.first].name;
+    secondPhoto.src = people[cfg.second].photo;
+    secondLabel.innerHTML = cfg.secondLabel;
+    secondName.innerHTML = people[cfg.second].name;
+
+    localStorage.setItem("currentMarriageEvent", "tilak");
+
+    // Setup से स्वागतकर्ता का नाम।
+    const welcomeBy = document.getElementById("welcomeByDisplay");
+    if(welcomeBy){
+        welcomeBy.innerText = data.welcome_name ? "— स्वागतकर्ता : " + data.welcome_name : "";
+    }
+
+    if(data.qr_url){
+        document.getElementById("upiQrImage").src = data.qr_url;
+    }
+
+    const loader = document.getElementById("pageLoader");
+    if(loader) {
+        loader.style.opacity = "0";
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 500);
+    }
+}
+    
+async function syncData(){
+    if(!navigator.onLine){
+       return;
+    }
+
+    let guests = JSON.parse(localStorage.getItem("offlineGuests") || "[]");
+
+    for(let g of guests){
+        const result = await sb.auth.getUser();
+
+        if(result.data && result.data.user){
+           g.user_id = result.data.user.id;
+        }
+        if(!g.user_id || g.user_id === "offline-user"){
+           continue;
+        }
+          
+        const guestData = {
+          user_id: g.user_id,
+          name: g.name,
+          amount: g.amount,
+          state: g.state,
+          district: g.district,
+          village: g.village,
+          payment_mode: g.payment_mode,
+          event_type: g.event_type || localStorage.getItem("currentMarriageEvent") || "barat",
+          event_id: g.event_id || localStorage.getItem("currentEventId") || null,
+          event_date: g.event_date || "",
+          event_person: g.event_person || "",
+          event_person_2: g.event_person_2 || ""
+        };
+
+        const { error } = await sb.from("guests").insert([guestData]);
+
+        if(error){
+           console.log("FULL ERROR =", error);
+           return;
+        }
+    }
+
+    localStorage.removeItem("offlineGuests");
+}
+
+document.getElementById("logoutBtn").onclick = async () => {
+    await sb.auth.signOut();
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.replace("login.html");
+};
+</script>    
+  <script src="../js/sagun-store.js"></script>
+<script src="../js/topbar.js"></script>
+<script src="../js/premium-calendar.js"></script>
+</body>
+</html>
