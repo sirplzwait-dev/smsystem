@@ -2507,6 +2507,7 @@ body{
 (function(){try{const q=new URLSearchParams(location.search);const id=q.get("event_id")||q.get("eventId");if(id){localStorage.setItem("currentEventId",String(id));try{localStorage.setItem("sgunmsActiveEvent",JSON.stringify({id:String(id)}));}catch(e){}}}catch(e){}})();
 </script>
 <link rel="stylesheet" href="../css/sgunms-global-background.css">
+  <link rel="stylesheet" href="../css/process-ui.css">
 </head>
 <body>
 <div class="topbar">
@@ -3017,5 +3018,6 @@ loadBirthday();
   <script src="../js/sagun-store.js"></script>
 <script src="../js/topbar.js"></script>
 <script src="../js/premium-calendar.js"></script>
+  <script src="../js/process-ui.js"></script>
 </body>
 </html>

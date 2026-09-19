@@ -108,7 +108,7 @@
       const method=(opts.method || input?.method || 'GET').toUpperCase();
       let started=false;
       const begin=()=>{if(started)return;started=true;pendingFetches++;show('Loading…','डेटा लोड हो रहा है…',false)};
-      if(method==='GET') fetchTimer=setTimeout(begin,350); else { begin(); }
+      if(method==='GET') fetchTimer=setTimeout(begin,1200); else { begin(); }
       return nativeFetch.apply(this,arguments).finally(()=>{
         clearTimeout(fetchTimer);
         if(started){ pendingFetches=Math.max(0,pendingFetches-1); if(pendingFetches===0) setTimeout(hide,100); }
@@ -132,8 +132,8 @@
     n.querySelectorAll?.('img').forEach(watchImage);
   }))).observe(document.documentElement,{childList:true,subtree:true});
 
-  // Initial page loading overlay: disappears when the document is ready.
-  if(document.readyState==='loading') show('Loading…','पेज तैयार हो रहा है…',false);
+  // Do not block every page load with a full-screen overlay.
+  // Cached/local-first pages should appear immediately; only genuinely slow work gets the overlay.
   window.addEventListener('load',()=>setTimeout(()=>{if(pendingFetches===0)hide()},180));
   window.addEventListener('pageshow',()=>{if(pendingFetches===0)hide()});
 })();
