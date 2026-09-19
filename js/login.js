@@ -39,6 +39,19 @@ document.getElementById("loginBtn").addEventListener("click", checkLogin);
 const googleLoginBtn = document.getElementById("googleLoginBtn");
 if (googleLoginBtn) googleLoginBtn.addEventListener("click", loginWithGoogle);
 
+const guestLoginBtn = document.getElementById("guestLoginBtn");
+if (guestLoginBtn) guestLoginBtn.addEventListener("click", loginAsGuest);
+
+function loginAsGuest(){
+  if (window.SagunGuest && typeof window.SagunGuest.start === "function") {
+    guestLoginBtn.disabled = true;
+    guestLoginBtn.innerHTML = "👤 Opening Guest Mode...";
+    window.SagunGuest.start();
+    return;
+  }
+  alert("Guest Mode अभी उपलब्ध नहीं है। कृपया Login करें।");
+}
+
 async function loginWithGoogle(){
   const btn = document.getElementById("googleLoginBtn");
   if (btn) { btn.disabled = true; btn.innerHTML = "🌐 Connecting..."; }

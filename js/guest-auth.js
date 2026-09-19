@@ -34,21 +34,25 @@
     return false;
   }
   function startGuest(){
-    // Guest mode is disabled in production; authentication is required.
-    location.href='../html/login.html'; return;
-    /*
     purgeExpired();
     let s=read();
     if(!s || !s.expiresAt || Date.now()>=Number(s.expiresAt) || s.deviceId!==deviceId()){
       const now=Date.now();
-      s={mode:'guest',guestId:'guest_'+now+'_'+Math.random().toString(36).slice(2,8),deviceId:deviceId(),createdAt:now,expiresAt:now+RETENTION_DAYS*86400000};
+      s={
+        mode:'guest',
+        guestId:'guest_'+now+'_'+Math.random().toString(36).slice(2,8),
+        deviceId:deviceId(),
+        createdAt:now,
+        expiresAt:now+RETENTION_DAYS*86400000
+      };
       localStorage.setItem(SESSION_KEY,JSON.stringify(s));
     }
     localStorage.setItem('sagunUserMode','guest');
+    localStorage.setItem('sagunActiveAccountType','guest');
+    localStorage.removeItem('sagunActiveUserId');
     location.href='../html/home.html';
   }
-    */
-  function isGuest(){ return false; }
+  function isGuest(){ return valid(); }
   function logoutGuest(){
     localStorage.removeItem('sagunUserMode');
     localStorage.removeItem('sagunActiveUserId');
