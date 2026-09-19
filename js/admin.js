@@ -20,82 +20,21 @@ const sb = window.supabase.createClient(
 let currentUserId = null;
 
 window.onload = async () => {
-    const { data: { user } } = await sb.auth.getUser();
-    if (false && !user) { 
-        // login disabled 
-        return; 
-    }
-    currentUserId = user.id;
-
-    let isAuthenticated = false;
-
-    while (!isAuthenticated) {
-        const { value: password, dismiss } = await Swal.fire({
-            title: '🔒 एडमिन पासवर्ड दर्ज करें',
-            html: `
-                <div style="position: relative; width: 100%; margin-top: 10px;">
-                    <input type="password" id="swal-input-password" class="swal2-input" placeholder="अपना एडमिन पासवर्ड लिखें" style="margin: 0; width: 100%; padding-right: 45px; box-sizing: border-box;">
-                    <span id="toggle-swal-password" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 18px; user-select: none;">👁️</span>
-                </div>
-            `,
-            focusConfirm: false,
-            showCancelButton: true,
-            confirmButtonText: 'लॉगिन करें',
-            cancelButtonText: '❌ रद्द करें (मुख्य पेज पर जाएं)',
-            buttonsStyling: true,
-            customClass: {
-                confirmButton: 'swal2-confirm',
-                cancelButton: 'swal2-cancel'
-            },
-            confirmButtonColor: '#800000',
-            cancelButtonColor: '#6c757d',
-            didOpen: () => {
-                const pwdInput = document.getElementById('swal-input-password');
-                const toggleBtn = document.getElementById('toggle-swal-password');
-                
-                toggleBtn.onclick = () => {
-                    if (pwdInput.type === 'password') {
-                        pwdInput.type = 'text';
-                        toggleBtn.textContent = '🙈';
-                    } else {
-                        pwdInput.type = 'password';
-                        toggleBtn.textContent = '👁️';
-                    }
-                };
-            },
-            preConfirm: () => {
-                const pwd = document.getElementById('swal-input-password').value;
-                if (!pwd) {
-                    Swal.showValidationMessage('पासवर्ड डालना अनिवार्य है!');
-                }
-                return pwd;
-            }
-        });
-
-        if (dismiss === Swal.DismissReason.cancel || dismiss === Swal.DismissReason.backdrop || dismiss === Swal.DismissReason.close) {
-            window.location.href = '../html/home.html';
+    try {
+        const { data: { user }, error } = await sb.auth.getUser();
+        if (error || !user) {
+            window.location.href = '../html/login.html';
             return;
         }
 
-        if (password) {
-            const { error: authError } = await sb.auth.signInWithPassword({
-                email: user.email,
-                password
-            });
-            if (authError) {
-                await Swal.fire({
-                    title:'गलत पासवर्ड!',
-                    text:'आपका Login Password सही नहीं है।',
-                    icon:'error',
-                    confirmButtonColor:'#800000'
-                });
-            } else {
-                isAuthenticated = true;
-            }
-        }
+        // Admin password prompt removed. Access is controlled by the existing
+        // Supabase authentication/security guard; no separate admin password.
+        currentUserId = user.id;
+        loadData();
+    } catch (err) {
+        console.error('Admin authentication error:', err);
+        window.location.href = '../html/login.html';
     }
-
-    loadData();
 };
 
 async function loadData() {

@@ -78,10 +78,10 @@ async function verifyOtp() {
         return;
     }
 
-    alert("Email verified successfully. Please complete your setup.");
+    alert("Email verified successfully. Welcome to Sagun Management System!");
 
-    window.location.href =
-        "../html/setup.html?email=" + encodeURIComponent(email);
+    // Registration/verification ke baad seedha Dashboard/Home par जाएँ.
+    window.location.href = "../html/home.html";
 }
 
 async function resendOtp() {

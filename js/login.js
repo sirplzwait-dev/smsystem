@@ -39,20 +39,6 @@ document.getElementById("loginBtn").addEventListener("click", checkLogin);
 const googleLoginBtn = document.getElementById("googleLoginBtn");
 if (googleLoginBtn) googleLoginBtn.addEventListener("click", loginWithGoogle);
 
-const guestLoginBtn = document.getElementById("guestLoginBtn");
-if (guestLoginBtn) guestLoginBtn.addEventListener("click", () => {
-  try {
-    if (window.SagunGuest?.start) {
-      window.SagunGuest.start();
-      return;
-    }
-    alert("Guest Mode अभी उपलब्ध नहीं है। कृपया page refresh करें।");
-  } catch (e) {
-    console.error("Guest login failed:", e);
-    alert("Guest Mode शुरू नहीं हो सका।");
-  }
-});
-
 async function loginWithGoogle(){
   const btn = document.getElementById("googleLoginBtn");
   if (btn) { btn.disabled = true; btn.innerHTML = "🌐 Connecting..."; }
@@ -106,15 +92,9 @@ async function redirectRegisteredUser(user){
     return;
   }
 
-  const { data: setupData } = await client
-    .from("setup")
-    .select("*")
-    .eq("user_id", user.id)
-    .limit(1);
-
-  window.location.href = (setupData && setupData.length > 0)
-    ? "../html/home.html"
-    : "../html/setup.html";
+  // Login ke baad hamesha Dashboard/Home par जाएँ.
+  // Event Setup user Home se khud Add Event karke खोल सकता है.
+  window.location.href = "../html/home.html";
 }
 
 async function checkLogin(){

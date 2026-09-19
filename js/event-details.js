@@ -70,24 +70,6 @@ document.querySelectorAll('#eventCardGrid .event-card').forEach(card => {
   });
 });
 
-flatpickr("#eventDate", {
-  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
-});
-const birthdayPicker = flatpickr("#birthdayDate", {
-  dateFormat:"Y-m-d",
-  altInput:true,
-  altFormat:"d F Y",
-  allowInput:false,
-  defaultDate:"today",
-  disableMobile:false
-});
-flatpickr("#engagementDate", {
-  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
-});
-flatpickr("#grihaDate", {
-  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
-});
-
 let currentPreview="", cropped={};
 const editor={img:null,scale:1,rotation:0,x:0,y:0,drag:false,lastX:0,lastY:0,url:null};
 const canvas=document.getElementById('editorCanvas'), ctx=canvas.getContext('2d');
@@ -337,7 +319,6 @@ async function saveBirthday(){
       generic.style.display='block';
       document.getElementById('mainTitle').textContent=labels[type]||'🎊 समारोह Details';
       document.getElementById('genericTitle').textContent=(labels[type]||'🎊 समारोह')+' Details';
-      if(window.flatpickr) flatpickr('#genericDate',{dateFormat:'d-m-Y',altInput:true,altFormat:'F j, Y',allowInput:true});
     }
   }
 })();

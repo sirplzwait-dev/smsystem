@@ -8,9 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
-    <!-- Flatpickr Library for Custom Modern Calendar -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
         *{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
         body{ 
@@ -465,7 +462,7 @@ input[type="text"]::placeholder{color:#b39aa7!important}
             <input type="text" id="welcomeBy" placeholder="स्वागत करता का नाम">
 
             <label>📅 कार्यक्रम की तिथि</label>
-            <input type="text" id="eventDate" class="custom-calendar" placeholder="तारीख चुनें">
+            <input type="date" id="eventDate" class="custom-calendar" placeholder="तारीख चुनें">
 
             <div style="text-align:center;margin-top:8px;">
                 <label>पेमेंट QR</label>
@@ -492,7 +489,7 @@ input[type="text"]::placeholder{color:#b39aa7!important}
             </div>
         </div>
         <label>📅 सगाई की तिथि</label>
-        <input type="text" id="engagementDate" class="custom-calendar" placeholder="तारीख चुनें">
+        <input type="date" id="engagementDate" class="custom-calendar" placeholder="तारीख चुनें">
         <label>🙏 स्वागत करता का नाम</label>
         <input type="text" id="engagementWelcome" placeholder="उदाहरण: कुमार परिवार">
         <button id="engagementSaveBtn" onclick="saveEngagement()">💖 Save Engagement Setup</button>
@@ -508,7 +505,7 @@ input[type="text"]::placeholder{color:#b39aa7!important}
         </div>
         <input type="file" id="grihaPhoto" accept="image/*" style="display:none">
         <label>📅 गृह प्रवेश की तिथि</label>
-        <input type="text" id="grihaDate" class="custom-calendar" placeholder="तारीख चुनें">
+        <input type="date" id="grihaDate" class="custom-calendar" placeholder="तारीख चुनें">
         <label>🙏 स्वागत करता का नाम</label>
         <input type="text" id="grihaWelcome" placeholder="उदाहरण: शर्मा परिवार">
         <button id="grihaSaveBtn" onclick="saveGrihaPravesh()">🏠 Save गृह प्रवेश Setup</button>
@@ -521,7 +518,7 @@ input[type="text"]::placeholder{color:#b39aa7!important}
         <input type="text" id="birthdayName" placeholder="नाम लिखें">
 
         <label>📅 Birthday Date</label>
-        <input type="text" id="birthdayDate" class="custom-calendar" placeholder="जन्मदिन की तारीख चुनें">
+        <input type="date" id="birthdayDate" class="custom-calendar" placeholder="जन्मदिन की तारीख चुनें">
 
         <label>📸 Birthday Photo</label>
         <div class="image-upload-wrapper" style="width:120px;height:120px;" onclick="document.getElementById('birthdayPhoto').click()">
@@ -561,7 +558,7 @@ input[type="text"]::placeholder{color:#b39aa7!important}
       <label>👤 मुख्य व्यक्ति / परिवार का नाम</label>
       <input type="text" id="genericName" placeholder="नाम लिखें">
       <label>📅 कार्यक्रम की तिथि</label>
-      <input type="text" id="genericDate" class="custom-calendar" placeholder="तारीख चुनें">
+      <input type="date" id="genericDate" class="custom-calendar" placeholder="तारीख चुनें">
       <label>🙏 स्वागत करता का नाम</label>
       <input type="text" id="genericWelcome" placeholder="उदाहरण: कुमार परिवार">
       <button id="genericSaveBtn" onclick="saveGenericEvent()" style="width:100%;padding:12px;margin-top:12px;border:0;border-radius:10px;background:linear-gradient(135deg,#800000,#a00000);color:#fff;font-weight:800;font-size:15px;cursor:pointer">💾 Details Save करें → Entry</button>
@@ -605,19 +602,6 @@ document.querySelectorAll('#eventCardGrid .event-card').forEach(card => {
       c.setAttribute('aria-pressed', c === card ? 'true' : 'false');
     });
   });
-});
-
-flatpickr("#eventDate", {
-  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
-});
-flatpickr("#birthdayDate", {
-  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
-});
-flatpickr("#engagementDate", {
-  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
-});
-flatpickr("#grihaDate", {
-  dateFormat:"d-m-Y", altInput:true, altFormat:"F j, Y", allowInput:true
 });
 
 let currentPreview="", cropped={};
@@ -902,7 +886,6 @@ async function saveBirthday(){
       generic.style.display='block';
       document.getElementById('mainTitle').textContent=labels[type]||'🎊 समारोह Details';
       document.getElementById('genericTitle').textContent=(labels[type]||'🎊 समारोह')+' Details';
-      if(window.flatpickr) flatpickr('#genericDate',{dateFormat:'d-m-Y',altInput:true,altFormat:'F j, Y',allowInput:true});
     }
   }
 })();
