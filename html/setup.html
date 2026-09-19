@@ -383,34 +383,119 @@ body{
 <link rel="stylesheet" href="../css/sgunms-global-background.css">
   <link rel="stylesheet" href="../css/process-ui.css">
 
-<style id="sgunms-setup-final-polish">
-/* Final mobile polish: no horizontal overflow, softer cards, stable layout. */
-html,body{max-width:100%;overflow-x:hidden!important}
-#eventCardGrid .event-card{will-change:transform;backface-visibility:hidden;-webkit-tap-highlight-color:transparent}
-#eventCardGrid .event-card:focus-visible{outline:3px solid rgba(139,18,49,.28);outline-offset:2px}
-@media (max-width:700px){
-  body{overflow-y:auto!important;height:auto!important;min-height:100vh!important;padding:7px!important;align-items:flex-start!important}
-  .setup-card{width:100%!important;height:auto!important;min-height:calc(100vh - 14px)!important;padding:11px!important;border-radius:20px!important}
-  .setup-head{margin-bottom:9px!important}
-  .setup-head .icon{width:48px!important;height:48px!important;font-size:27px!important;border-radius:16px!important}
-  .setup-head h2{font-size:21px!important;line-height:1.15!important}
-  .setup-head p{font-size:11px!important}
-  .event-picker-wrap{padding:8px!important;border-radius:18px!important}
-  #eventCardGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:none!important;gap:9px!important;overflow:visible!important;margin:0!important;padding:3px!important}
-  #eventCardGrid .event-card{min-height:155px!important;height:auto!important;padding:14px 7px!important;border-radius:18px!important}
-  #eventCardGrid .event-emoji{width:55px!important;height:55px!important;min-width:55px!important;min-height:55px!important;font-size:31px!important;margin-bottom:9px!important;border-radius:15px!important}
-  #eventCardGrid .event-card strong{font-size:13px!important;line-height:1.25!important}
-  #eventCardGrid .event-card small{font-size:9px!important;line-height:1.2!important}
-  #eventCardGrid .event-card:hover{transform:none!important;box-shadow:0 10px 24px rgba(25,30,55,.12)!important}
-  #eventCardGrid .event-card:active{transform:scale(.985)!important}
+<style id="final-event-setup-beauty-fix">
+/* Final colorful Event Setup refresh */
+html,body{min-height:100%!important}
+body{
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  height:auto!important;
+  min-height:100vh!important;
+  padding:12px!important;
+  background:
+    radial-gradient(circle at 8% 12%,rgba(255,218,90,.42),transparent 22%),
+    radial-gradient(circle at 92% 18%,rgba(110,205,255,.30),transparent 24%),
+    radial-gradient(circle at 18% 88%,rgba(255,126,190,.25),transparent 25%),
+    linear-gradient(135deg,#4b0820 0%,#86154b 38%,#8d4b9e 68%,#e6a82f 100%)!important;
 }
-@media (max-width:380px){
-  #eventCardGrid{gap:7px!important}
-  #eventCardGrid .event-card{min-height:145px!important;padding:11px 5px!important}
-  #eventCardGrid .event-emoji{width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;font-size:27px!important;margin-bottom:7px!important}
-  #eventCardGrid .event-card strong{font-size:11.5px!important}
+.setup-card{
+  width:min(1180px,100%)!important;
+  height:auto!important;
+  min-height:calc(100vh - 24px)!important;
+  padding:24px!important;
+  overflow:visible!important;
+  border-radius:30px!important;
+  background:rgba(255,253,249,.97)!important;
+  box-shadow:0 26px 70px rgba(35,4,25,.30)!important;
+}
+.setup-head{margin-bottom:18px!important}
+.setup-head .icon{
+  width:64px!important;height:64px!important;font-size:36px!important;
+  background:linear-gradient(145deg,#fff0a8,#ffd1e8 55%,#c9e9ff)!important;
+  box-shadow:0 12px 26px rgba(117,30,75,.16)!important;
+}
+.setup-head h2{font-size:28px!important;color:#74123a!important}
+.setup-head p{font-size:14px!important;color:#765d72!important}
+.setup-head:after{background:linear-gradient(90deg,#e36b27,#e5b52d,#c43c86,#5c8fe8)!important}
+.event-picker-wrap{
+  flex:none!important;
+  min-height:0!important;
+  padding:16px!important;
+  border-radius:26px!important;
+  background:linear-gradient(145deg,#fff9f1,#fff,#f8f5ff)!important;
+  border:1px solid #ead7ec!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.95),0 16px 38px rgba(76,30,70,.08)!important;
+}
+#eventCardGrid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-template-rows:auto auto!important;
+  gap:18px!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+  padding:4px!important;
+  margin:0!important;
+}
+#eventCardGrid .event-card{
+  height:245px!important;
+  min-height:245px!important;
+  padding:24px 16px!important;
+  border-radius:26px!important;
+  border-width:2px!important;
+  position:relative!important;
+  isolation:isolate!important;
+  box-shadow:0 12px 28px rgba(55,30,55,.12)!important;
+  transition:transform .24s ease,box-shadow .24s ease,filter .24s ease!important;
+}
+#eventCardGrid .event-card::before{opacity:.12!important;z-index:-1}
+#eventCardGrid .event-card::after{z-index:-1}
+#eventCardGrid .event-emoji{
+  width:82px!important;height:82px!important;min-width:82px!important;min-height:82px!important;
+  font-size:52px!important;margin:0 auto 15px!important;border-radius:23px!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(255,240,190,.92))!important;
+  box-shadow:0 10px 22px rgba(55,30,55,.12),inset 0 0 0 2px rgba(255,255,255,.65)!important;
+}
+#eventCardGrid .event-card strong{font-size:20px!important;line-height:1.28!important;margin:0 0 7px!important}
+#eventCardGrid .event-card small{font-size:12px!important;line-height:1.35!important;font-weight:600!important}
+#eventCardGrid .event-card[data-event="marriage"] strong{color:#a61d48!important}
+#eventCardGrid .event-card[data-event="engagement"] strong{color:#2464b8!important}
+#eventCardGrid .event-card[data-event="griha_pravesh"] strong{color:#26784a!important}
+#eventCardGrid .event-card[data-event="anniversary"] strong{color:#9a3d91!important}
+#eventCardGrid .event-card[data-event="birthday"] strong{color:#c56a16!important}
+#eventCardGrid .event-card[data-event="birthday"]{grid-column:2!important}
+#eventCardGrid .event-card:hover{transform:translateY(-7px)!important;box-shadow:0 22px 42px rgba(55,30,55,.20)!important;filter:saturate(1.08)!important}
+
+@media(max-width:900px){
+  body{padding:8px!important}
+  .setup-card{width:100%!important;min-height:calc(100vh - 16px)!important;padding:14px!important;border-radius:24px!important}
+  .setup-head .icon{width:54px!important;height:54px!important;font-size:30px!important}
+  .setup-head h2{font-size:23px!important}
+  #eventCardGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+  #eventCardGrid .event-card{height:205px!important;min-height:205px!important;padding:16px 9px!important;border-radius:21px!important}
+  #eventCardGrid .event-emoji{width:64px!important;height:64px!important;min-width:64px!important;min-height:64px!important;font-size:40px!important;margin-bottom:10px!important;border-radius:19px!important}
+  #eventCardGrid .event-card strong{font-size:16px!important}
+  #eventCardGrid .event-card small{font-size:10px!important}
+  #eventCardGrid .event-card[data-event="birthday"]{grid-column:auto!important}
+}
+@media(max-width:430px){
+  body{padding:5px!important}
+  .setup-card{min-height:calc(100vh - 10px)!important;padding:10px!important;border-radius:20px!important}
+  .setup-head{margin-bottom:12px!important}
+  .setup-head .icon{width:48px!important;height:48px!important;font-size:27px!important}
+  .setup-head h2{font-size:20px!important}
+  .setup-head p{font-size:11px!important}
+  .event-picker-wrap{padding:8px!important;border-radius:20px!important}
+  #eventCardGrid{gap:10px!important;padding:2px!important}
+  #eventCardGrid .event-card{height:188px!important;min-height:188px!important;padding:12px 6px!important;border-radius:19px!important}
+  #eventCardGrid .event-emoji{width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;font-size:35px!important;margin-bottom:8px!important}
+  #eventCardGrid .event-card strong{font-size:14px!important}
+  #eventCardGrid .event-card small{font-size:9px!important}
 }
 </style>
+
 </head>
 <body>
 <div class="setup-card">
