@@ -496,6 +496,53 @@ body{
 }
 </style>
 
+
+<style id="mobile-safe-viewport-fix">
+@media (max-width:700px){
+  html{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;}
+  body{
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    padding:4px 6px 22px!important;
+    align-items:flex-start!important;
+  }
+  .setup-card{
+    height:auto!important;
+    min-height:calc(100dvh - 26px)!important;
+    max-height:none!important;
+    overflow:visible!important;
+    padding:10px!important;
+  }
+  .setup-head{flex-shrink:0!important;margin-bottom:8px!important;}
+  .event-picker-wrap{flex:none!important;min-height:0!important;overflow:visible!important;padding:8px!important;}
+  .event-card-grid{
+    flex:none!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+    grid-template-rows:none!important;
+    grid-auto-rows:minmax(150px,auto)!important;
+    padding:4px 2px 12px!important;
+  }
+  #eventCardGrid{margin:12px auto 18px!important;}
+  #eventCardGrid .event-card{min-height:155px!important;height:auto!important;}
+}
+@media (max-width:430px){
+  body{padding:2px 4px 26px!important;}
+  .setup-card{min-height:calc(100dvh - 30px)!important;padding:8px!important;border-radius:18px!important;}
+  .setup-head{margin-bottom:6px!important;}
+  .setup-head .icon{width:42px!important;height:42px!important;font-size:24px!important;}
+  .setup-head h2{font-size:19px!important;margin:5px 0 2px!important;}
+  .setup-head p{font-size:11px!important;}
+  .event-picker-wrap{padding:6px!important;}
+  #eventCardGrid{gap:8px!important;margin:8px auto 16px!important;}
+  #eventCardGrid .event-card{min-height:150px!important;padding:10px 5px!important;}
+}
+</style>
+
 </head>
 <body>
 <div class="setup-card">
