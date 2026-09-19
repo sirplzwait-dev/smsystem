@@ -414,7 +414,7 @@ function openHomeEvent(page){window.location.href=page;}</script>
  let homeRenderSeq=0;
  async function renderMyEvents(){
    const seq=++homeRenderSeq, box=document.getElementById('dynamicHomeEvents'); if(!box)return;
-   box.innerHTML=''; eventCache.length=0;
+   eventCache.length=0;
    const read=k=>{try{const v=JSON.parse(localStorage.getItem(k)||'[]');return Array.isArray(v)?v:(v&&Array.isArray(v.events)?v.events:[])}catch(_){return[]}};
    const id=e=>String(e?.id||e?.eventId||e?.event_id||e?.key||'').trim();
    const owner=e=>String(e?.user_id||e?.userId||e?.uid||e?.owner_id||e?.ownerId||'').trim();
@@ -590,7 +590,9 @@ function openHomeEvent(page){window.location.href=page;}</script>
    const date=v=>{const x=norm(v);let m=x.match(/^(\d{2})[-\/.](\d{2})[-\/.](\d{4})$/);return m?`${m[3]}-${m[2]}-${m[1]}`:x};
    const local=[];["offlineGuests","eventEntries","sagunEntries","birthdayEntries","birthdayGuests","guestEntries"].forEach(k=>{try{const a=JSON.parse(localStorage.getItem(k)||"[]");if(Array.isArray(a))local.push(...a)}catch(_){} });
    let cloud=[];
-   try{const c=window.supabase?.createClient?.("https://rdlliurzgwwfjscgwssa.supabase.co","sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");if(c){const {data:{user}}=await c.auth.getUser();if(user){const r=await c.from("guests").select("*").eq("user_id",user.id).limit(5000);if(!r.error)cloud=r.data||[]}}}catch(_){}
+   try{
+     if(window.SagunStore?.getEntries) cloud=await window.SagunStore.getEntries()||[];
+   }catch(_){}
    const activeUid=String(localStorage.getItem("sagunActiveUserId")||"").trim();
    const rows=local.concat(cloud).filter(g=>{
      const owner=String(g?.user_id||g?.userId||g?.owner_id||g?.ownerId||"").trim();
@@ -641,16 +643,15 @@ function openHomeEvent(page){window.location.href=page;}</script>
    setTotal("totalGifts",allGifts);
  }
  window.refreshHomeEntryCounts=refreshHomeEntryCounts;
- document.addEventListener("DOMContentLoaded",()=>setTimeout(refreshHomeEntryCounts,700));
- document.addEventListener("DOMContentLoaded",()=>setTimeout(refreshHomeEntryCounts,1800));
  window.eventCache=eventCache;
  window.showEventDetails=showEventDetails;
  window.renderMyEvents=renderMyEvents;
  document.addEventListener("DOMContentLoaded",renderMyEvents);
- window.addEventListener("storage",renderMyEvents);
- window.addEventListener("sgunms:data-updated",()=>{clearTimeout(window.__sgunHomeRefreshTimer);window.__sgunHomeRefreshTimer=setTimeout(renderMyEvents,60);});
- window.addEventListener("pageshow",renderMyEvents);
- window.addEventListener("load",()=>setTimeout(renderMyEvents,250));
+ window.addEventListener("storage",()=>{renderMyEvents();});
+ window.addEventListener("sagun:data-updated",()=>{
+   // Realtime/background sync updates the local cache. Re-render only when data actually changes.
+   renderMyEvents();
+ });
 })();
 
 (function(){
