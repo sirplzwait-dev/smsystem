@@ -40,17 +40,18 @@ const googleLoginBtn = document.getElementById("googleLoginBtn");
 if (googleLoginBtn) googleLoginBtn.addEventListener("click", loginWithGoogle);
 
 const guestLoginBtn = document.getElementById("guestLoginBtn");
-if (guestLoginBtn) guestLoginBtn.addEventListener("click", loginAsGuest);
-
-function loginAsGuest(){
-  if (window.SagunGuest && typeof window.SagunGuest.start === "function") {
-    guestLoginBtn.disabled = true;
-    guestLoginBtn.innerHTML = "👤 Opening Guest Mode...";
-    window.SagunGuest.start();
-    return;
+if (guestLoginBtn) guestLoginBtn.addEventListener("click", () => {
+  try {
+    if (window.SagunGuest?.start) {
+      window.SagunGuest.start();
+      return;
+    }
+    alert("Guest Mode अभी उपलब्ध नहीं है। कृपया page refresh करें।");
+  } catch (e) {
+    console.error("Guest login failed:", e);
+    alert("Guest Mode शुरू नहीं हो सका।");
   }
-  alert("Guest Mode अभी उपलब्ध नहीं है। कृपया Login करें।");
-}
+});
 
 async function loginWithGoogle(){
   const btn = document.getElementById("googleLoginBtn");
