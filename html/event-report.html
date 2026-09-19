@@ -201,6 +201,7 @@ body{
 }
 
 </style>
+  <link rel="stylesheet" href="../css/process-ui.css" data-sagun-process-css="1">
 </head>
 <body>
 <div class="page">
@@ -308,4 +309,5 @@ document.getElementById('continueBtn').onclick=()=>{const id=String(eventData.id
 
 const reportLogout=document.getElementById('reportLogout');if(reportLogout)reportLogout.onclick=async()=>{reportLogout.disabled=true;try{await sb.auth.signOut()}catch(e){}location.href='login.html'};
 </script>
+  <script src="../js/process-ui.js" data-sagun-process-js="1"></script>
 </body></html>

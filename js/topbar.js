@@ -1,4 +1,19 @@
 (function(){
+  // Load the global beautiful loading UI on every page that uses the topbar.
+  (function loadSagunLoadingUI(){
+    try{
+      if(!document.querySelector('link[data-sagun-process-css]')){
+        const link=document.createElement('link');
+        link.rel='stylesheet'; link.href='../css/process-ui.css'; link.dataset.sagunProcessCss='1';
+        document.head.appendChild(link);
+      }
+      if(!document.querySelector('script[data-sagun-process-js]')){
+        const script=document.createElement('script');
+        script.src='../js/process-ui.js'; script.dataset.sagunProcessJs='1';
+        document.head.appendChild(script);
+      }
+    }catch(e){}
+  })();
   // Tool pages are embedded inside the Entry popup: no navigation/menu inside the popup.
   if(new URLSearchParams(location.search).get('popup')==='1'){
     document.documentElement.classList.add('sagun-popup-page');

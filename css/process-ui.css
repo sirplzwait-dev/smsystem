@@ -1,44 +1,16 @@
-
-/* Sagun global wait/process animation */
-#sagunProcessOverlay{
-  position:fixed;inset:0;z-index:2147483647;
-  display:none;align-items:center;justify-content:center;
-  background:rgba(20,8,15,.34);backdrop-filter:blur(3px);
-}
-#sagunProcessOverlay.active{display:flex}
-.sagun-process-box{
-  min-width:210px;max-width:calc(100vw - 40px);
-  padding:20px 24px;border-radius:18px;background:#fff;
-  box-shadow:0 18px 50px rgba(0,0,0,.22);
-  text-align:center;font-family:Segoe UI,sans-serif;
-}
-.sagun-process-spinner{
-  width:38px;height:38px;margin:0 auto 11px;
-  border:4px solid #f0dfe5;border-top-color:#8b1231;
-  border-radius:50%;animation:sagunSpin .75s linear infinite;
-}
-.sagun-process-text{
-  color:#5b2737;font-size:14px;font-weight:800;
-}
-.sagun-process-sub{
-  margin-top:4px;color:#8c727b;font-size:11px;
-}
-@keyframes sagunSpin{to{transform:rotate(360deg)}}
-
-.sagun-btn-processing{
-  position:relative!important;
-  pointer-events:none!important;
-  opacity:.78!important;
-}
-.sagun-btn-processing::after{
-  content:"";display:inline-block;width:13px;height:13px;
-  margin-left:7px;vertical-align:-2px;border:2px solid currentColor;
-  border-right-color:transparent;border-radius:50%;
-  animation:sagunSpin .65s linear infinite;
-}
-#sagunProgressBar{
-  position:fixed;left:0;top:0;width:0;height:3px;z-index:2147483646;
-  background:linear-gradient(90deg,#8b1231,#e0a41a,#8b1231);
-  box-shadow:0 1px 7px rgba(139,18,49,.35);
-  transition:width .25s ease,opacity .3s ease;
-}
+/* SGUNMS beautiful global loading UI */
+#sagunProcessOverlay{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:rgba(19,8,15,.38);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+#sagunProcessOverlay.active{display:flex;animation:sagunFadeIn .18s ease}
+.sagun-process-box{min-width:230px;max-width:calc(100vw - 36px);padding:25px 30px 20px;border:1px solid rgba(255,255,255,.7);border-radius:22px;background:rgba(255,255,255,.96);box-shadow:0 22px 70px rgba(0,0,0,.24);text-align:center;font-family:Segoe UI,system-ui,sans-serif}
+.sagun-orbit{position:relative;width:54px;height:54px;margin:0 auto 13px;border:3px solid #f2dce3;border-radius:50%;animation:sagunSpin 1.2s linear infinite}
+.sagun-orbit:before{content:"";position:absolute;inset:7px;border:3px solid transparent;border-top-color:#e0a41a;border-radius:50%;animation:sagunSpin .8s linear infinite reverse}
+.sagun-orbit span{position:absolute;width:7px;height:7px;border-radius:50%;background:#8b1231;top:-5px;left:21px;box-shadow:0 0 12px rgba(139,18,49,.45)}
+.sagun-orbit span:nth-child(2){top:20px;left:-5px;background:#e0a41a}.sagun-orbit span:nth-child(3){top:44px;left:20px;background:#8b1231}
+.sagun-process-text{color:#5b2737;font-size:15px;font-weight:800;letter-spacing:.1px}.sagun-process-sub{margin-top:5px;color:#8c727b;font-size:12px}
+.sagun-mini-dots{display:flex;justify-content:center;gap:5px;margin-top:12px}.sagun-mini-dots i{width:5px;height:5px;border-radius:50%;background:#8b1231;animation:sagunDots 1s infinite ease-in-out}.sagun-mini-dots i:nth-child(2){animation-delay:.15s}.sagun-mini-dots i:nth-child(3){animation-delay:.3s}
+.sagun-btn-processing{position:relative!important;pointer-events:none!important;opacity:.78!important}.sagun-btn-processing:after{content:"";display:inline-block;width:12px;height:12px;margin-left:7px;vertical-align:-2px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sagunSpin .65s linear infinite}
+#sagunProgressBar{position:fixed;left:0;top:0;width:0;height:3px;z-index:2147483648;background:linear-gradient(90deg,#8b1231,#e0a41a,#8b1231);box-shadow:0 1px 9px rgba(139,18,49,.4);transition:width .25s ease,opacity .3s ease}
+img.sagun-image-loading{opacity:.45;filter:saturate(.35);background:linear-gradient(90deg,#f3e8ec 25%,#fff 50%,#f3e8ec 75%);background-size:200% 100%;animation:sagunShimmer 1.25s infinite;border-radius:inherit}
+img.sagun-image-loaded{animation:sagunImageIn .25s ease}
+@keyframes sagunSpin{to{transform:rotate(360deg)}}@keyframes sagunFadeIn{from{opacity:0}to{opacity:1}}@keyframes sagunDots{0%,80%,100%{transform:scale(.65);opacity:.45}40%{transform:scale(1);opacity:1}}@keyframes sagunShimmer{to{background-position:-200% 0}}@keyframes sagunImageIn{from{opacity:.45;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+@media(max-width:600px){.sagun-process-box{min-width:205px;padding:22px 24px 18px;border-radius:20px}.sagun-process-text{font-size:14px}}

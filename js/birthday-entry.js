@@ -64,30 +64,33 @@ async function saveBirthdayEntry() {
   const eventId = (activeEvent && activeEvent.id) || localStorage.getItem("currentEventId") || "";
 
   const entry = {
-    id: Date.now(), name, village, gift_type:giftType,
-    gift_description:description, amount,
+    id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+"-"+Math.random().toString(36).slice(2)),
+    name,
+    village,
+    gift_type:giftType,
+    gift_description:description,
+    amount,
     payment_mode:giftType === "Cash Gift" ? "Cash" : "Gift",
-    event_type:"birthday", event_person:birthdaySetup.name,
-    event_date:birthdaySetup.event_date || "", event_id:eventId,
-    eventId:eventId, created_at:new Date().toISOString()
+    event_type:"birthday",
+    event_person:birthdaySetup.name,
+    event_date:birthdaySetup.event_date || "",
+    event_id:eventId,
+    eventId:eventId,
+    created_at:new Date().toISOString()
   };
 
-  if(window.SagunStore) await window.SagunStore.addEntry(entry);
-  else { const local = JSON.parse(localStorage.getItem("birthdayEntries") || "[]"); local.unshift(entry); localStorage.setItem("birthdayEntries",JSON.stringify(local)); }
-
   try {
-    const {data:{user}} = await sb.auth.getUser();
-    if (user) {
-      await sb.from("guests").insert([{
-        id:entry.id, user_id:user.id, name, amount, state:"Bihar",
-        district:"", village,
-        payment_mode:giftType === "Cash Gift" ? "Cash" : "Gift",
-        event_id:eventId || null, event_type:"birthday",
-        event_person:birthdaySetup.name || null, event_date:birthdaySetup.event_date || null,
-        gift_type:giftType, gift_description:description || null
-      }]);
+    if (window.SagunStore) {
+      await window.SagunStore.addEntry(entry,{cloud:true});
+    } else {
+      const local = JSON.parse(localStorage.getItem("birthdayEntries") || "[]");
+      local.unshift(entry);
+      localStorage.setItem("birthdayEntries",JSON.stringify(local));
     }
-  } catch(e) {}
+  } catch(e) {
+    console.error("Birthday entry save error:",e);
+    return showMsg("Entry save नहीं हो सकी। कृपया फिर कोशिश करें।", true);
+  }
 
   showMsg(`✅ ${name} की ${giftType} entry दर्ज हो गई।`,false);
   document.getElementById("guestName").value="";
