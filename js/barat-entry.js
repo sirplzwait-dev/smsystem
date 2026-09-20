@@ -318,7 +318,7 @@ async function syncData(){
           event_person_2: g.event_person_2 || null
         };
 
-        const { error } = await sb.from("guests").insert([guestData]);
+        const { error } = await sb.from("guests").upsert([guestData], {onConflict:"id"});
 
         if(error){
            console.log("FULL ERROR =", error);

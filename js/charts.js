@@ -38,6 +38,10 @@ async function loadCharts() {
             console.error("Error fetching guests:", guestError.message);
         }
 
+        const seenGuests=new Set();
+        const uniqueGuestData=(guestData||[]).filter(g=>{const k=[g.event_id||g.eventId||'',g.name||'',g.amount||0,g.payment_mode||g.paymentMode||''].map(v=>String(v).trim().toLowerCase()).join('|');if(seenGuests.has(k))return false;seenGuests.add(k);return true;});
+        guestData=uniqueGuestData;
+
         // =============================
         // Monthly Registration
         // =============================

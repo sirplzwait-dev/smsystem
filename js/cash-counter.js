@@ -92,6 +92,8 @@ async function loadCurrentCash(){
     .select("amount,payment_mode")
     .eq("user_id",user.id);
 
+    const seen=new Set();
+    guests=(guests||[]).filter(g=>{const k=[g.event_id||g.eventId||'',g.name||'',g.amount||0,g.payment_mode||g.paymentMode||''].map(v=>String(v).trim().toLowerCase()).join('|');if(seen.has(k))return false;seen.add(k);return true;});
     let cashShagun = 0;
     guests.forEach(g=>{
         if(g.payment_mode !== "UPI"){

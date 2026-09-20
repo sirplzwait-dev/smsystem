@@ -15,28 +15,14 @@ async function initProfile(){
  $('profileName').value=p.name||'';$('profileMobile').value=p.mobile||'';$('profilePlace').value=p.place||'';
  $('profileDisplayName').textContent=(p.name||'').trim()||(guest?'Guest':'Account User');
  $('profileMode').textContent=guest?'Guest / Local mode':'Account / Local session';
- const cache=(()=>{try{return JSON.parse(localStorage.getItem('sgunms_user_cache_v1')||'{}')}catch(e){return {}}})();
- if(!p.name && cache.name){$('profileName').value=cache.name;$('profileDisplayName').textContent=cache.name}
- $('saveProfile').onclick=async()=>{
+ const user=await getUser(),meta=user?.user_metadata||{};
+ if(!p.name && meta.full_name){$('profileName').value=meta.full_name;$('profileDisplayName').textContent=meta.full_name}
+ $('saveProfile').onclick=()=>{
    const next={name:$('profileName').value.trim(),mobile:$('profileMobile').value.trim(),place:$('profilePlace').value.trim()};
-   // Save locally first so every next page opens instantly.
    localStorage.setItem(PROFILE_KEY,JSON.stringify(next));
-   try{localStorage.setItem('sgunms_user_cache_v1',JSON.stringify({...next,updatedAt:Date.now()}))}catch(e){}
    $('profileDisplayName').textContent=next.name||'Account User';
-   $('profileStatus').textContent='✓ Profile saved locally';
-
-   // Sync to Supabase in the background; UI never waits for this.
-   setTimeout(async()=>{
-     try{
-       const u=await getUser();
-       if(!u||!sb) return;
-       try{ await sb.from('profiles').upsert({id:u.id,name:next.name,mobile:next.mobile,place:next.place},{onConflict:'id'}); }catch(e){}
-       try{ await sb.auth.updateUser({data:{full_name:next.name}}); }catch(e){}
-     }catch(e){}
-   },0);
-
-   setTimeout(()=>$('profileStatus').textContent='✓ Synced in background',700);
-   setTimeout(()=>$('profileStatus').textContent='',2200);
+   $('profileStatus').textContent='✓ Profile saved';
+   setTimeout(()=>$('profileStatus').textContent='',1800);
  };
 }
 

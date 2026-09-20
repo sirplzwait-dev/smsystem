@@ -52,7 +52,6 @@ async function saveGuest(){
  const setup=(()=>{try{return JSON.parse(localStorage.getItem('eventSetupData')||localStorage.getItem('sagunSetup')||'{}')}catch(e){return {}}})();
  const record={user_id:userId,name,village,event_type:'griha_pravesh',event_id:localStorage.getItem('currentEventId')||'',eventId:localStorage.getItem('currentEventId')||'',event_date:setup.event_date||'',event_person:setup.name||setup.groom_name||'',event_person_2:setup.bride_name||'',timestamp:new Date().toISOString()};
  if(window.SagunStore) await window.SagunStore.addEntry(record); else {const local=JSON.parse(localStorage.getItem('offlineGuests')||'[]');local.push(record);localStorage.setItem('offlineGuests',JSON.stringify(local));}
- if(navigator.onLine){try{const res=await sb.from('guests').insert([record]);}catch(e){}}
  statusEl.textContent=name+' जी की Entry सुरक्षित हो गई।';nameEl.value='';villageEl.value='';nameEl.focus();
 }
 document.getElementById('saveBtn').onclick=saveGuest;

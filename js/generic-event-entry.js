@@ -74,13 +74,6 @@ async function saveGuest(){
   try{const {data:{user}}=await sb.auth.getUser();if(user)userId=user.id;}catch(e){}
   const record={user_id:userId,name,amount:Number(amount||0),state,district:dist,village,payment_mode:mode,gift_description:gift,event_type:setupData?.wedding_type||"other",event_date:setupData?.event_date||"",event_id:localStorage.getItem("currentEventId")||"",eventId:localStorage.getItem("currentEventId")||"",event_person:setupData?.groom_name||setupData?.name||"",event_person_2:setupData?.bride_name||"",timestamp:new Date().toISOString()};
   if(window.SagunStore) await window.SagunStore.addEntry(record); else {const local=JSON.parse(localStorage.getItem("offlineGuests")||"[]");local.push(record);localStorage.setItem("offlineGuests",JSON.stringify(local));}
-
-  if(navigator.onLine){
-    try{
-      const res=await sb.from("guests").insert([record]);
-      
-    }catch(e){console.log("Cloud sync pending",e);}
-  }
   document.getElementById("status").textContent=`${name} जी की Entry सुरक्षित हो गई।`;
   ["guestName","guestAmount","guestVillage","giftDescription"].forEach(id=>document.getElementById(id).value="");
   document.getElementById("guestName").focus();

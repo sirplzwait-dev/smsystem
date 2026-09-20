@@ -1,3 +1,101 @@
+
+/* SGUNMS_PROFILE_LOCAL_FIRST_FINAL
+   Topbar identity is painted from local cache immediately.
+   Supabase is only a background refresh and never blocks the UI.
+*/
+(function(){
+  const KEY='sgunms_profile_v2';
+  const OLD='sgunms_profile_v1';
+
+  function read(){
+    try{
+      const a=JSON.parse(localStorage.getItem(KEY)||'null');
+      if(a && (a.name || a.email || a.photo)) return a;
+    }catch(e){}
+    try{
+      const a=JSON.parse(localStorage.getItem(OLD)||'null');
+      if(a && (a.name || a.email || a.photo)){
+        localStorage.setItem(KEY,JSON.stringify(a));
+        return a;
+      }
+    }catch(e){}
+    return {};
+  }
+
+  function guest(){
+    return localStorage.getItem('guestMode')==='true' ||
+           localStorage.getItem('guestAuth')==='true';
+  }
+
+  function paint(p){
+    const name=String(p.name||'').trim() || (guest()?'Guest':'User');
+    const photo=String(p.photo||p.avatar_url||'').trim();
+
+    ['#sagunProfileName','#sagunProfilePanelName','#headerUserName','#userName']
+      .forEach(sel=>{
+        const el=document.querySelector(sel);
+        if(el) el.textContent=name;
+      });
+
+    document.querySelectorAll('#sagunAvatar,#sagunAvatarBig').forEach(el=>{
+      if(photo){
+        el.innerHTML='<img src="'+photo.replace(/"/g,'')+'" alt="" referrerpolicy="no-referrer">';
+      }else{
+        el.textContent=(name[0]||'U').toUpperCase();
+      }
+    });
+  }
+
+  function save(p){
+    try{
+      localStorage.setItem(KEY,JSON.stringify({
+        name:String(p.name||'').trim(),
+        email:String(p.email||'').trim(),
+        photo:String(p.photo||'').trim(),
+        updatedAt:Date.now()
+      }));
+    }catch(e){}
+  }
+
+  // IMPORTANT: first paint is local only.
+  paint(read());
+
+  // Refresh after the page is already usable.
+  setTimeout(async()=>{
+    try{
+      const client=window.sb || window.supabaseClient;
+      if(!client?.auth?.getUser) return;
+
+      const r=await client.auth.getUser();
+      const u=r?.data?.user;
+      if(!u) return;
+
+      const m=u.user_metadata||{};
+      let name=String(m.full_name||m.name||m.display_name||'').trim();
+      let photo=String(m.avatar_url||m.picture||m.photo_url||'').trim();
+
+      // Only if metadata has no name, try profile table in background.
+      if(!name && client.from){
+        try{
+          let q=await client.from('profiles').select('name,avatar_url,photo_url').eq('id',u.id).maybeSingle();
+          if(!q.data) q=await client.from('profiles').select('name,avatar_url,photo_url').eq('user_id',u.id).maybeSingle();
+          if(q.data?.name) name=String(q.data.name).trim();
+          if(!photo) photo=String(q.data?.avatar_url||q.data?.photo_url||'').trim();
+        }catch(e){}
+      }
+
+      const old=read();
+      const fresh={
+        name:name || old.name || (guest()?'Guest':'User'),
+        email:u.email||old.email||'',
+        photo:photo || old.photo || ''
+      };
+      save(fresh);
+      paint(fresh);
+    }catch(e){}
+  },120);
+})();
+
 (function(){
   // Load the global beautiful loading UI on every page that uses the topbar.
   (function loadSagunLoadingUI(){
@@ -28,7 +126,7 @@
     'birthday-entry.html':'🎂 Birthday Entry','anniversary-entry.html':'💐 Anniversary Entry','engagement-entry.html':'💍 Engagement Entry',
     'griha-pravesh-entry.html':'🏠 Griha Pravesh Entry','generic-event-entry.html':'🎊 Event Entry','event-entry.html':'📝 Shagun Entry',
     'shagun.html':'🎁 Shagun','shagun-given.html':'📤 Shagun Diya','cash-counter.html':'💰 Cash Counter','cashbook.html':'📒 Cash Book',
-    'report.html':'📊 Reports','reminders.html':'🔔 Reminders','assistant.html':'🤖 AI Assistant','settings.html':'⚙️ Settings','profile.html':'👤 Profile','security.html':'🔐 Security','data-sync.html':'☁️ Data & Sync','pwa.html':'📱 PWA','delete-guest.html':'🗑️ Delete Guest',
+    'report.html':'📊 Reports','reminders.html':'🔔 Reminders','assistant.html':'🤖 AI Assistant','settings.html':'⚙️ Settings',
     'admin.html':'🛡️ Super Admin','admin-dashboard.html':'🛡️ Admin Dashboard','manual.html':'📖 Manual'
   };
   const title=titles[file]||document.title.replace(/\s*\|.*$/,'')||'SGUNMS';
@@ -92,77 +190,36 @@
     bar.querySelectorAll('.sagun-quick-link').forEach(b=>b.onclick=()=>openToolModal(b.dataset.tool,b.textContent.trim()));
   }
   const profileBtn=bar.querySelector('#sagunProfileBtn'), profilePanel=bar.querySelector('#sagunProfilePanel');
-  const USER_CACHE_KEY='sgunms_user_cache_v1';
-  const PROFILE_CACHE_KEY='sgunms_profile_v1';
-  const SUPA_URL='https://rdlliurzgwwfjscgwssa.supabase.co';
-  const SUPA_KEY='sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc';
-  function readUserCache(){
+  async function profileFallback(user){
+    const meta=user?.user_metadata||{};
+    let name='';
+    // Always prefer the saved Profile Name from Supabase profiles table.
     try{
-      const a=JSON.parse(localStorage.getItem(USER_CACHE_KEY)||'null');
-      if(a&&typeof a==='object') return a;
-    }catch(e){}
-    try{
-      const p=JSON.parse(localStorage.getItem(PROFILE_CACHE_KEY)||'null');
-      if(p&&typeof p==='object') return p;
-    }catch(e){}
-    const n=String(localStorage.getItem('sagunProfileName')||'').trim();
-    return n?{name:n}:{};
-  }
-  function writeUserCache(data){try{localStorage.setItem(USER_CACHE_KEY,JSON.stringify({...data,updatedAt:Date.now()}))}catch(e){}}
-  function paintProfile(data){
-    const guest=localStorage.getItem('guestMode')==='true'||localStorage.getItem('guestAuth')==='true';
-    const name=String(data?.name||'').trim() || (guest?'Guest User':'Account User');
-    const photo=String(data?.photo||'').trim();
-    const avatar=bar.querySelector('#sagunAvatar'),big=bar.querySelector('#sagunAvatarBig');
-    [avatar,big].forEach(el=>{
-      if(!el)return;
-      if(photo) el.innerHTML=`<img src="${photo.replace(/"/g,'')}" alt="" referrerpolicy="no-referrer">`;
-      else el.textContent=(name[0]||'U').toUpperCase();
-    });
-    bar.querySelector('#sagunProfileName').textContent=name;
-    bar.querySelector('#sagunProfilePanelName').textContent=name;
-    bar.querySelector('#sagunProfileEmail').textContent=data?.email||'';
-    const welcome=document.getElementById('homeWelcomeName');
-    if(welcome && name && name!=='Account User') welcome.textContent=name;
-    const header=document.getElementById('headerUserName');
-    if(header && name && name!=='Account User') header.textContent='👤 '+name;
-  }
-  // FIRST: paint from local cache immediately. No Supabase wait.
-  paintProfile(readUserCache());
-
-  async function syncProfileInBackground(){
-    try{
-      const client=window.sb?.auth ? window.sb : (window.supabase?.createClient ? window.supabase.createClient(SUPA_URL,SUPA_KEY) : null);
-      if(!client?.auth) return;
-      const sessionRes=await client.auth.getSession();
-      const user=sessionRes?.data?.session?.user;
-      if(!user) return;
-      const meta=user.user_metadata||{};
-      let fresh={
-        name:String(meta.full_name||meta.name||'').trim(),
-        email:user.email||'',
-        photo:meta.avatar_url||meta.picture||meta.photo_url||''
-      };
-      try{
-        const r=await client.from('profiles').select('name,mobile,place').eq('id',user.id).maybeSingle();
-        if(r?.data?.name) fresh.name=String(r.data.name).trim();
-        if(r?.data) Object.assign(fresh,{mobile:r.data.mobile||'',place:r.data.place||''});
-      }catch(e){}
-      if(!fresh.name){
-        try{const p=JSON.parse(localStorage.getItem(PROFILE_CACHE_KEY)||'{}');fresh.name=String(p.name||'').trim()}catch(e){}
+      if(user?.id){
+        const client=window.sb?.from ? window.sb : (window.supabase?.createClient ? window.supabase.createClient('https://rdlliurzgwwfjscgwssa.supabase.co','sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc') : null);
+        if(client?.from){
+          let r=await client.from('profiles').select('name').eq('id',user.id).maybeSingle();
+          if(r.data?.name) name=String(r.data.name).trim();
+          if(!name){
+            r=await client.from('profiles').select('name').eq('user_id',user.id).maybeSingle();
+            if(r.data?.name) name=String(r.data.name).trim();
+          }
+        }
       }
-      if(fresh.name){
-        writeUserCache(fresh);
-        try{localStorage.setItem(PROFILE_CACHE_KEY,JSON.stringify({name:fresh.name,mobile:fresh.mobile||'',place:fresh.place||''}))}catch(e){}
-        paintProfile(fresh);
-      }
-    }catch(e){/* local cache remains the source for first paint */}
+    }catch(e){}
+    if(!name) name=String(meta.full_name||meta.name||meta.display_name||'').trim();
+    if(!name) name=String(localStorage.getItem('sagunProfileName')||'User').trim()||'User';
+    // Never use username or email as the displayed profile name.
+    const photo=meta.avatar_url||meta.picture||meta.photo_url||'';
+    const avatar=bar.querySelector('#sagunAvatar'), big=bar.querySelector('#sagunAvatarBig');
+    [avatar,big].forEach(el=>{if(!el)return;if(photo){el.innerHTML=`<img src="${photo.replace(/\"/g,'')}" alt="" referrerpolicy="no-referrer">`;}else el.textContent=(name.trim()[0]||'U').toUpperCase();});
+    bar.querySelector('#sagunProfileName').textContent=name; bar.querySelector('#sagunProfilePanelName').textContent=name; bar.querySelector('#sagunProfileEmail').textContent=user?.email||'';
   }
-  // Background sync only; never blocks the page.
-  setTimeout(syncProfileInBackground,0);
-
-  profileBtn.onclick=e=>{e.stopPropagation();const open=profilePanel.classList.toggle('open');profilePanel.setAttribute('aria-hidden',String(!open));panel.classList.remove('open');btn.setAttribute('aria-expanded','false');if(open)loadProfile()};
-  profilePanel.querySelectorAll('[data-profile-action]').forEach(b=>b.onclick=async()=>{const a=b.dataset.profileAction;if(a==='edit'||a==='account'||a==='delete'){location.href=(a==='edit'?'profile.html':a==='delete'?'delete-account.html':'security.html');return;} if(a==='logout') await logout();});
+  async function loadProfile(){
+    try{const client=window.sb?.auth?window.sb:(window.supabase?.createClient?window.supabase.createClient('https://rdlliurzgwwfjscgwssa.supabase.co','sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc'):null); if(client?.auth){const {data}=await client.auth.getUser(); await profileFallback(data?.user);}}catch(e){console.log('Profile:',e)}
+  }
+  profileBtn.onclick=e=>{e.stopPropagation();const open=profilePanel.classList.toggle('open');profilePanel.setAttribute('aria-hidden',String(!open));panel.classList.remove('open');btn.setAttribute('aria-expanded','false');if(open)paint(read())};
+  profilePanel.querySelectorAll('[data-profile-action]').forEach(b=>b.onclick=async()=>{const a=b.dataset.profileAction;if(a==='edit'||a==='account'||a==='delete'){location.href='settings.html#'+(a==='edit'?'profile':a==='delete'?'delete-account':'data-security');return;} if(a==='logout') await logout();});
   document.addEventListener('click',e=>{if(!bar.contains(e.target)){panel.classList.remove('open');btn.setAttribute('aria-expanded','false');if(quickPanel){quickPanel.classList.remove('open');quickBtn.setAttribute('aria-expanded','false')}profilePanel.classList.remove('open')}});
   bar.querySelector('#sagunBack').onclick=()=>{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1)history.back();else location.href='home.html'};
   async function logout(){try{if(window.sb&&window.sb.auth)await window.sb.auth.signOut();}catch(e){}try{window.SagunStore?.clearTransient?.();localStorage.removeItem('sagunActiveUserId');localStorage.removeItem('sagunActiveAccountType');localStorage.removeItem('sagunUserMode');localStorage.removeItem('sagunGuestSession');}catch(e){}location.href='login.html'}

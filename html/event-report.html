@@ -13,7 +13,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;font-family:Segoe UI,Arial,sans-serif}
 body{
-  background:linear-gradient(135deg,#8b0000 0%,#b91c2c 34%,#e28a00 70%,#ffd21c 100%) fixed!important;
+  background:linear-gradient(135deg,#fffaf0 0%,#fffdf8 48%,#f8f4ed 100%) fixed!important;
   color:#25202a;
 }
 .page{width:min(1380px,calc(100% - 28px));margin:18px auto 35px}
@@ -65,6 +65,20 @@ body{
   margin-top:15px;padding:11px 14px;border:1px solid #f1d79e;border-radius:14px;
   background:#fff8e6;color:#79551c;font-size:13px
 }
+
+.entry-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.entry-tools .tool-btn{border:1px solid #e5d8c9;background:#fffaf3;color:#7b122e;border-radius:12px;padding:9px 13px;font-weight:900;cursor:pointer;box-shadow:0 4px 12px rgba(80,30,20,.07)}
+.entry-tools .tool-btn:hover{transform:translateY(-1px);background:#fff}
+.entry-tools input,.entry-tools select{border:1px solid #e5d8c9;background:#fff;border-radius:12px;padding:9px 12px;outline:none;font-size:13px}
+.entry-tools input{min-width:230px;flex:1}
+.entry-tools .tool-btn.active{background:#7b122e;color:#fff}
+.graph-modal .modal-card{width:min(760px,100%)}
+.graph-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}
+.graph-stat{background:#fffaf1;border:1px solid #eadfcf;border-radius:15px;padding:14px;text-align:center}
+.graph-stat b{display:block;font-size:12px;color:#60718a}.graph-stat strong{display:block;color:#8b1231;font-size:22px;margin-top:5px}
+.graph-bars{margin-top:18px;display:grid;gap:10px}.g-row{display:grid;grid-template-columns:90px 1fr 70px;align-items:center;gap:10px;font-size:13px;font-weight:800}.g-track{height:18px;background:#f0e8dc;border-radius:999px;overflow:hidden}.g-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#8b1231,#d89a16)}
+@media(max-width:650px){.entry-tools input{min-width:150px}.graph-grid{grid-template-columns:1fr}.g-row{grid-template-columns:70px 1fr 55px}}
+
 .bar{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   margin:22px 0 10px
@@ -74,7 +88,7 @@ body{
   padding:7px 12px;border-radius:999px;background:#edf2f7;color:#60718a;font-weight:800;font-size:12px
 }
 .table-wrap{overflow:auto;border:1px solid #eadfe2;border-radius:16px}
-.entries{width:100%;border-collapse:collapse;min-width:760px}
+.entries{width:100%;border-collapse:collapse;min-width:860px}
 .entries th{
   background:#faf3e5;color:#7b122e;font-size:12px;text-align:left;
   padding:12px 13px;white-space:nowrap
@@ -107,8 +121,6 @@ body{
 @media(max-width:650px){
   .page{width:min(100% - 14px,1380px);margin:8px auto 20px}
   .report-brand{font-size:17px}
-  .top{padding:14px;border-radius:17px}
-  .icon{width:50px;height:50px;font-size:24px;border-radius:14px}
   .title h1{font-size:23px}
   .details{padding:14px;border-radius:17px}
   .info{grid-template-columns:1fr}
@@ -194,33 +206,742 @@ body{
   .modal-box .confirm-row{flex-direction:column}
 }
 
+
+/* Premium Event Report hero + action buttons */
+.report-hero{
+  margin-bottom:18px;
+  padding:22px 24px;
+  border-radius:24px;
+  border:2px solid rgba(245,213,125,.72);
+  background:linear-gradient(110deg,#78001f 0%,#a5003b 58%,#8c0c32 100%);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  box-shadow:0 16px 38px rgba(70,0,25,.25), inset 0 1px 0 rgba(255,255,255,.14);
+  position:relative;
+  overflow:hidden;
+}
+.report-hero:before{
+  content:"";
+  position:absolute;inset:7px;border:1px solid rgba(255,221,129,.24);
+  border-radius:19px;pointer-events:none;
+}
+.report-identity{display:flex;align-items:center;gap:16px;min-width:270px;position:relative;z-index:1}
+.report-icon{
+  width:68px;height:68px;border-radius:20px;display:grid;place-items:center;
+  font-size:35px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,221,129,.35);box-shadow:inset 0 0 20px rgba(255,214,99,.08);
+}
+.report-kicker{font-size:10px;letter-spacing:2px;font-weight:900;color:#ffd978;margin-bottom:4px}
+.report-hero h1{margin:0;font-size:30px;line-height:1.15;color:#fff}
+.report-hero p{margin:5px 0 0;color:#ffe9ef;font-size:13px}
+.report-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;position:relative;z-index:1}
+.report-btn{
+  min-width:145px;min-height:62px;padding:9px 13px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.65);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  box-shadow:0 8px 18px rgba(0,0,0,.16);
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+.report-btn:hover{transform:translateY(-2px);box-shadow:0 11px 22px rgba(0,0,0,.22)}
+.report-btn .action-icon{font-size:25px;line-height:1}
+.report-btn span:last-child{display:flex;flex-direction:column;text-align:left;line-height:1.15}
+.report-btn b{font-size:13px}.report-btn small{font-size:10px;margin-top:3px;opacity:.82}
+.report-btn.continue{background:linear-gradient(135deg,#16a34a,#08783a);color:#fff;border-color:#72e3a2}
+.report-btn.pdf{background:linear-gradient(135deg,#2585df,#0c58ad);color:#fff;border-color:#83c4ff}
+.report-btn.excel{background:linear-gradient(135deg,#50c878,#15803d);color:#fff;border-color:#a2efb7}
+.report-btn.delete{background:linear-gradient(135deg,#f04455,#bd1830);color:#fff;border-color:#ff9aa5}
+@media(max-width:900px){
+  .report-hero{align-items:stretch;flex-direction:column}
+  .report-actions{justify-content:stretch}
+  .report-btn{flex:1;min-width:150px}
+}
+@media(max-width:650px){
+  .report-hero{padding:16px;border-radius:18px}
+  .report-identity{min-width:0}
+  .report-icon{width:54px;height:54px;font-size:27px;border-radius:15px}
+  .report-hero h1{font-size:22px}
+  .report-actions{display:grid;grid-template-columns:1fr 1fr}
+  .report-btn{min-width:0;min-height:58px;padding:8px}
+  .report-btn b{font-size:11px}.report-btn small{font-size:9px}
+}
+
+
+/* Event report dashboard polish */
+.section-title{display:flex;align-items:center;gap:8px}
+.section-icon{display:inline-grid;place-items:center;width:31px;height:31px;border-radius:10px;background:#fff1d7;font-size:17px}
+.section-icon.small{width:28px;height:28px;font-size:15px}
+.info .box{position:relative;padding-left:48px;min-height:78px}
+.info .box:before{content:'📌';position:absolute;left:13px;top:16px;width:27px;height:27px;border-radius:9px;background:#fff3df;display:grid;place-items:center;font-size:15px}
+.info .box:nth-child(2):before{content:'📅'}
+.info .box:nth-child(3):before{content:'👤'}
+.info .box:nth-child(4):before{content:'👰'}
+.info .box:nth-child(5):before{content:'💵'}
+.info .box:nth-child(6):before{content:'💳'}
+.info .box:nth-child(7):before{content:'🪙'}
+.info .box:nth-child(8):before{content:'🙏'}
+.stat{display:flex;align-items:center;gap:11px}
+.stat-icon{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;background:#fff0dd;font-size:22px;flex:none;z-index:1}
+.stat-icon.cash{background:#e9f9ef}.stat-icon.upi{background:#eaf4ff}.stat-icon.total{background:#fff5d9}.stat-icon.gift{background:#fff0f3}
+.stat strong{font-size:23px}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:15px}
+.chart-card{border:1px solid #eadfe2;border-radius:18px;background:linear-gradient(180deg,#fff,#fffaf6);padding:16px;min-height:260px;box-shadow:0 7px 20px rgba(80,30,20,.05)}
+.chart-head{display:flex;justify-content:space-between;align-items:center}
+.chart-head h3{margin:0;color:#7b122e;font-size:16px}.chart-head small{display:block;color:#718096;margin-top:3px}
+.pie-wrap{display:flex;align-items:center;justify-content:center;gap:24px;min-height:205px}
+.pie-chart{width:160px;height:160px;border-radius:50%;background:conic-gradient(#24a968 0 100%,#dfe7f0 100%);position:relative;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.8),0 10px 25px rgba(60,30,20,.10)}
+.pie-chart:after{content:'';position:absolute;width:76px;height:76px;border-radius:50%;background:#fff}
+.pie-chart span{position:relative;z-index:2;font-weight:900;color:#7b122e;font-size:18px}
+.legend{display:grid;gap:10px;min-width:170px}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:#526071;font-weight:700}
+.legend-dot{width:12px;height:12px;border-radius:50%;flex:none}
+.legend-item b{color:#7b122e;margin-left:auto}
+.column-chart{height:205px;display:flex;align-items:flex-end;justify-content:space-around;gap:14px;padding:20px 12px 2px;border-bottom:1px solid #ddd7d0}
+.col-item{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px;flex:1}
+.col-value{font-size:11px;font-weight:900;color:#7b122e}
+.col-bar{width:min(58px,75%);min-height:4px;border-radius:10px 10px 3px 3px;background:linear-gradient(180deg,#8b1231,#d99a17);box-shadow:0 6px 12px rgba(120,20,45,.14)}
+.col-item:nth-child(2) .col-bar{background:linear-gradient(180deg,#3a9be8,#0d67b7)}
+.col-item:nth-child(3) .col-bar{background:linear-gradient(180deg,#39bd72,#138b4b)}
+.col-item:nth-child(4) .col-bar{background:linear-gradient(180deg,#e9aa32,#c67a0c)}
+.col-label{font-size:11px;color:#64748b;font-weight:800}
+@media(max-width:900px){.chart-grid{grid-template-columns:1fr}.pie-wrap{min-height:190px}}
+@media(max-width:650px){.pie-wrap{flex-direction:column;gap:12px}.pie-chart{width:140px;height:140px}.legend{width:100%;min-width:0}.info .box{padding-left:46px}.stat-icon{width:38px;height:38px;font-size:19px}.chart-card{padding:13px}}
+
+.view-entry-btn{border:1px solid #d7dfe8;background:#fff;border-radius:10px;padding:6px 10px;color:#315b8f;font-weight:800;cursor:pointer}.view-entry-btn:hover{background:#eef5ff}
 </style>
   <link rel="stylesheet" href="../css/process-ui.css" data-sagun-process-css="1">
+<style id="no-report-loading">#pageLoader,.page-loader,.loading-overlay,.loader-overlay{display:none!important}</style>
+<style id="event-delete-polish">
+body{background:linear-gradient(135deg,#fffaf0,#ffffff 55%,#f5f1e8)!important}
+.deleted-entry-row td{background:#f2f3f5!important;color:#7b818a!important;text-decoration:line-through}
+.deleted-entry-row td.status-cell,.deleted-entry-row td.action-cell{text-decoration:none}
+.status-badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 11px;border-radius:999px;font-size:11px;font-weight:900}
+.status-active{background:#def7e7;color:#14733a}
+.status-deleted{background:#e5e7eb;color:#6b7280}
+.delete-entry-btn{border:0;border-radius:10px;padding:7px 12px;background:linear-gradient(135deg,#ef4444,#c81e2f);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 5px 12px rgba(190,30,50,.18)}
+.delete-entry-btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+.deleted-action{border:0;border-radius:10px;padding:7px 12px;background:#e5e7eb;color:#6b7280;font-weight:800}
+.deleted-note{margin-top:14px;padding:12px 15px;border:1px solid #f0caca;border-radius:14px;background:#fff3f3;color:#8a2732;font-size:13px;line-height:1.5}
+.report-actions .pdf{background:linear-gradient(135deg,#ef4444,#b91c1c)!important}
+.report-actions .excel{background:linear-gradient(135deg,#34b66a,#16803c)!important}
+.report-actions .pdf .action-icon{font-size:0}
+.report-actions .pdf .action-icon:after{content:'📄';font-size:25px}
+.report-actions .excel .action-icon{font-size:0}
+.report-actions .excel .action-icon:after{content:'📊';font-size:25px}
+</style>
+
+<style id="event-report-ui-fix">
+/* Only the entries area scrolls; the whole report stays in place. */
+.entries-scroll{
+  max-height:420px;
+  overflow-y:auto;
+  overflow-x:auto;
+  border-radius:16px;
+  scrollbar-width:thin;
+}
+.entries-scroll table{min-width:900px}
+
+/* Centered delete confirmation popup */
+#deleteConfirmModal{
+  position:fixed!important;
+  inset:0!important;
+  z-index:100000!important;
+  display:none;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:24px!important;
+  background:rgba(30,10,20,.58)!important;
+  backdrop-filter:blur(5px);
+}
+#deleteConfirmModal.open{display:flex!important}
+#deleteConfirmModal .delete-modal-card{
+  width:min(500px,92vw);
+  background:#fff;
+  border-radius:22px;
+  box-shadow:0 25px 80px rgba(0,0,0,.32);
+  padding:26px;
+  text-align:center;
+  border:1px solid #f0d9df;
+  animation:deleteModalIn .16s ease-out;
+}
+#deleteConfirmModal .delete-modal-icon{
+  width:58px;height:58px;margin:0 auto 12px;border-radius:50%;
+  display:grid;place-items:center;background:#ffe7e7;color:#c51f32;font-size:28px;
+}
+#deleteConfirmModal h3{margin:4px 0 8px;color:#7d1235;font-size:22px}
+#deleteConfirmModal p{margin:0 auto 20px;line-height:1.6;color:#5d5360}
+#deleteConfirmModal .delete-modal-actions{display:flex;justify-content:center;gap:12px}
+#deleteConfirmModal button{
+  border:0;border-radius:11px;padding:11px 22px;font-weight:800;cursor:pointer;
+}
+#deleteConfirmModal .cancel-delete{background:#f1eef0;color:#4b4148}
+#deleteConfirmModal .confirm-delete{background:#d9273f;color:#fff}
+@keyframes deleteModalIn{from{transform:translateY(8px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+
+/* Graph popup: charts are hidden until the user clicks Graph. */
+#reportGraphModal{
+  position:fixed!important;inset:0!important;z-index:99999!important;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(30,10,20,.62);backdrop-filter:blur(5px);
+}
+#reportGraphModal.open{display:flex!important}
+#reportGraphModal .graph-modal-card{
+  width:min(1050px,95vw);max-height:90vh;overflow:auto;
+  background:#fff;border-radius:24px;padding:22px;
+  box-shadow:0 25px 80px rgba(0,0,0,.3)
+}
+.graph-modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.graph-modal-head button{border:0;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:800}
+</style>
+
+<style id="delete-popup-final">
+#deleteConfirmModal{
+ position:fixed!important; inset:0!important; z-index:2147483647!important;
+ display:none!important; align-items:center!important; justify-content:center!important;
+ background:rgba(18,8,14,.68)!important; backdrop-filter:blur(7px)!important;
+}
+#deleteConfirmModal.open{display:flex!important}
+#deleteConfirmModal .delete-modal-card{
+ width:min(460px,calc(100vw - 36px)); background:#fff!important;
+ border-radius:22px!important; padding:28px!important; text-align:center!important;
+ box-shadow:0 30px 100px rgba(0,0,0,.4)!important;
+}
+#deleteConfirmModal .delete-modal-icon{font-size:34px;margin-bottom:8px}
+#deleteConfirmModal h3{color:#7d1235!important;margin:8px 0}
+#deleteConfirmModal p{color:#555!important;line-height:1.55!important}
+#deleteConfirmModal .delete-modal-actions{display:flex!important;justify-content:center!important;gap:12px!important}
+#deleteConfirmModal button{min-width:110px!important;border:0!important;border-radius:10px!important;padding:11px 18px!important;font-weight:800!important;cursor:pointer!important}
+#deleteConfirmModal .cancel-delete{background:#eee!important;color:#333!important}
+#deleteConfirmModal .confirm-delete{background:#d9233e!important;color:#fff!important}
+</style>
+
+<style id="final-three-changes">
+.actions #continueBtn{
+  min-width:190px!important;
+  min-height:54px!important;
+  padding:12px 22px!important;
+  font-size:16px!important;
+  font-weight:900!important;
+  border-radius:14px!important;
+}
+.actions #continueBtn small{display:block;font-size:12px;font-weight:700;margin-top:3px;opacity:.85}
+
+/* Graph popup */
+#reportGraphModal{
+  position:fixed!important;inset:0!important;z-index:2147483646!important;
+  display:none!important;align-items:center!important;justify-content:center!important;
+  padding:22px!important;background:rgba(25,8,16,.68)!important;
+  backdrop-filter:blur(6px)!important;
+}
+#reportGraphModal.open{display:flex!important}
+#reportGraphModal .graph-modal-card{
+  width:min(1050px,94vw)!important;max-height:88vh!important;overflow:auto!important;
+  background:#fff!important;border-radius:24px!important;padding:24px!important;
+  box-shadow:0 28px 90px rgba(0,0,0,.35)!important;
+}
+.graph-modal-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.graph-modal-tabs button{
+  border:0;border-radius:11px;padding:11px 17px;font-weight:900;cursor:pointer;
+  background:#f1edf0;color:#7d1235;
+}
+.graph-modal-tabs button.active{background:#7d1235;color:#fff}
+.graph-pane{display:none}
+.graph-pane.active{display:block}
+</style>
+<style id="continue-entry-final-size">
+#continueBtn{min-width:210px!important;min-height:62px!important;padding:11px 20px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:10px!important}
+#continueBtn .action-icon{font-size:22px!important}
+#continueBtn b{font-size:16px!important}
+#continueBtn small{display:block!important;margin-top:3px!important;font-size:12px!important;font-weight:700!important;opacity:.82}
+</style><style id="graph-popup-final-css">
+.graph-popup-final{width:min(980px,94vw)!important;max-height:88vh!important;overflow:auto!important;padding:24px!important}
+.graph-popup-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px}
+.graph-popup-head h3{margin:0;color:#7d1235;font-size:23px}
+.graph-popup-head p{margin:5px 0 0;color:#6b7280}
+.graph-close{border:0;border-radius:10px;padding:9px 14px;background:#eee;color:#333;font-weight:800;cursor:pointer}
+.graph-tabs{display:flex;gap:10px;margin-bottom:16px}
+.graph-tabs button{border:0;border-radius:11px;padding:10px 17px;background:#f1edf0;color:#7d1235;font-weight:900;cursor:pointer}
+.graph-tabs button.active{background:#7d1235;color:#fff}
+.graph-pane-hidden{display:none!important}.graph-pane-active{display:block!important}
+.graph-pane-active .chart-card{margin:0!important;width:100%!important}
+.popup-chart-card{min-height:330px}.popup-chart-card .pie-wrap{min-height:245px}.popup-chart-card .column-chart{min-height:245px;height:245px}
+</style>
+<style id="recent-event-report-mobile-final">
+/* Mobile-first polish — based ONLY on this latest Event Report */
+@media (max-width: 650px){
+  html,body{width:100%;overflow-x:hidden}
+  .page{width:calc(100% - 10px)!important;margin:6px auto 14px!important}
+  .report-hero{
+    padding:13px!important;border-radius:17px!important;margin-bottom:10px!important;
+    gap:12px!important;
+  }
+  .report-identity{gap:10px!important;align-items:center!important}
+  .report-icon{width:48px!important;height:48px!important;font-size:24px!important;border-radius:14px!important}
+  .report-kicker{font-size:8px!important;letter-spacing:1.2px!important}
+  .report-hero h1{font-size:19px!important;line-height:1.2!important}
+  .report-hero p{font-size:11px!important;margin-top:3px!important}
+  .report-actions{grid-template-columns:1fr 1fr!important;gap:7px!important;width:100%!important}
+  .report-btn{
+    min-width:0!important;min-height:54px!important;height:auto!important;
+    padding:7px 6px!important;border-radius:12px!important;gap:6px!important;
+  }
+  .report-btn .action-icon{font-size:20px!important}
+  .report-btn b{font-size:10px!important}
+  .report-btn small{font-size:8px!important;margin-top:2px!important}
+  #continueBtn{min-width:0!important;min-height:54px!important;padding:7px 6px!important}
+  #continueBtn b{font-size:10px!important}
+  #continueBtn small{font-size:8px!important}
+
+  .details{padding:11px!important;border-radius:16px!important}
+  .section-title{font-size:16px!important;margin-bottom:10px!important}
+  .section-icon{width:28px!important;height:28px!important;font-size:15px!important}
+  .info{grid-template-columns:1fr 1fr!important;gap:7px!important}
+  .info .box{
+    min-height:66px!important;padding:9px 9px 9px 38px!important;border-radius:12px!important;
+  }
+  .info .box:before{
+    left:8px!important;top:12px!important;width:24px!important;height:24px!important;
+    font-size:13px!important;border-radius:8px!important
+  }
+  .info .box small{font-size:9px!important;margin-bottom:3px!important}
+  .info .box b{font-size:12px!important;line-height:1.25!important;word-break:break-word!important}
+
+  .stats{grid-template-columns:1fr 1fr!important;gap:7px!important;margin-top:8px!important}
+  .stat{min-height:68px!important;padding:9px!important;border-radius:12px!important;gap:7px!important}
+  .stat-icon{width:32px!important;height:32px!important;font-size:16px!important;border-radius:10px!important}
+  .stat span{font-size:9px!important}
+  .stat strong{font-size:17px!important;margin-top:2px!important}
+
+  .bar{
+    margin:14px 0 8px!important;gap:6px!important;align-items:flex-start!important;
+    flex-direction:column!important
+  }
+  .bar h2{font-size:16px!important}
+  .bar .section-icon.small{width:25px!important;height:25px!important;font-size:13px!important}
+  #loadStatus{font-size:9px!important;padding:5px 9px!important}
+
+  .entry-tools{
+    display:grid!important;grid-template-columns:1fr 1fr!important;
+    gap:7px!important;margin-bottom:9px!important
+  }
+  .entry-tools input{grid-column:1/-1!important;min-width:0!important;width:100%!important}
+  .entry-tools input,.entry-tools select,.entry-tools .tool-btn{
+    width:100%!important;min-height:40px!important;padding:8px 9px!important;
+    font-size:11px!important;border-radius:10px!important
+  }
+  .deleted-note{font-size:10px!important;line-height:1.45!important;padding:9px 10px!important;border-radius:11px!important}
+
+  /* Entries become readable cards instead of forcing a wide table on phones */
+  .table-wrap{border:0!important;overflow:visible!important}
+  .entries-scroll{max-height:none!important;overflow:visible!important;border:0!important}
+  .entries{min-width:0!important;width:100%!important;border-collapse:separate!important;border-spacing:0 7px!important}
+  .entries thead{display:none!important}
+  .entries tbody,.entries tr,.entries td{display:block!important;width:100%!important}
+  .entries tbody tr{
+    background:#fff!important;border:1px solid #eadfe2!important;border-radius:13px!important;
+    padding:8px 9px!important;box-shadow:0 4px 12px rgba(80,30,20,.05)!important;
+    position:relative!important
+  }
+  .entries tbody tr td{
+    border:0!important;padding:3px 0!important;font-size:11px!important;
+    background:transparent!important;white-space:normal!important
+  }
+  .entries tbody tr td:nth-child(1){
+    display:none!important
+  }
+  .entries tbody tr td:nth-child(2){
+    font-size:14px!important;font-weight:900!important;color:#7b1235!important;
+    padding-right:70px!important
+  }
+  .entries tbody tr td:nth-child(3):before{content:'📍 '!important}
+  .entries tbody tr td:nth-child(4):before{content:'💳 '!important}
+  .entries tbody tr td:nth-child(5):before{content:'💰 '!important}
+  .entries tbody tr td:nth-child(6):before{content:'🎁 '!important}
+  .entries tbody tr td:nth-child(7):before{content:'🕒 '!important}
+  .entries tbody tr td:nth-child(8){
+    position:absolute!important;top:8px!important;right:9px!important
+  }
+  .entries tbody tr td:nth-child(9){
+    display:flex!important;justify-content:flex-end!important;margin-top:4px!important
+  }
+  .delete-entry-btn,.deleted-action,.view-entry-btn{
+    min-height:34px!important;padding:7px 10px!important;font-size:10px!important
+  }
+  .deleted-entry-row{opacity:.78!important}
+  .deleted-entry-row td{text-decoration:none!important}
+
+  /* Graph popup fits phone screens */
+  #reportGraphModal,.modal.graph-modal{
+    padding:8px!important;align-items:center!important
+  }
+  #reportGraphModal .graph-modal-card,
+  .graph-popup-final{
+    width:100%!important;max-width:none!important;max-height:94vh!important;
+    padding:14px!important;border-radius:18px!important
+  }
+  .graph-popup-head{gap:8px!important;margin-bottom:10px!important}
+  .graph-popup-head h3{font-size:18px!important}
+  .graph-popup-head p{font-size:10px!important}
+  .graph-close{padding:8px 10px!important;font-size:10px!important}
+  .graph-tabs{gap:6px!important;margin-bottom:10px!important}
+  .graph-tabs button{flex:1!important;padding:9px 6px!important;font-size:10px!important}
+  .popup-chart-card{min-height:0!important;padding:10px!important}
+  .popup-chart-card .pie-wrap{min-height:0!important;gap:10px!important}
+  .popup-chart-card .pie-chart{width:125px!important;height:125px!important}
+  .popup-chart-card .pie-chart:after{width:62px!important;height:62px!important}
+  .popup-chart-card .pie-chart span{font-size:15px!important}
+  .popup-chart-card .legend{gap:7px!important;width:100%!important}
+  .popup-chart-card .legend-item{font-size:10px!important}
+  .popup-chart-card .column-chart{height:190px!important;min-height:190px!important;padding:15px 5px 2px!important;gap:7px!important}
+  .popup-chart-card .col-value{font-size:9px!important}
+  .popup-chart-card .col-label{font-size:9px!important}
+  .popup-chart-card .col-bar{width:min(42px,70%)!important}
+
+  #deleteConfirmModal .delete-modal-card,
+  #entryDeleteModal .modal-box,
+  #deleteModal .modal-box,
+  #entryViewModal .modal-box{
+    width:calc(100vw - 24px)!important;max-width:none!important;padding:17px!important;
+    border-radius:17px!important
+  }
+  #entryViewModal .info{grid-template-columns:1fr!important}
+  .modal-actions,.confirm-row{gap:7px!important}
+}
+@media (max-width:380px){
+  .info{grid-template-columns:1fr!important}
+  .report-actions{grid-template-columns:1fr 1fr!important}
+  .report-btn{min-height:51px!important}
+  .stats{grid-template-columns:1fr 1fr!important}
+  .popup-chart-card .pie-chart{width:112px!important;height:112px!important}
+}
+</style>
+
+<style id="mobile-premium-v2">
+@media (max-width:650px){
+  body{font-size:14px!important}
+  .page{width:calc(100% - 8px)!important;max-width:none!important;margin:5px auto 14px!important}
+  .report-hero{padding:12px!important;border-radius:16px!important;gap:10px!important;box-shadow:0 8px 20px rgba(70,0,25,.20)!important}
+  .report-identity{gap:9px!important}
+  .report-icon{width:46px!important;height:46px!important;min-width:46px!important;font-size:23px!important;border-radius:13px!important}
+  .report-kicker{font-size:7px!important;letter-spacing:1px!important}
+  .report-hero h1{font-size:18px!important;line-height:1.15!important}
+  .report-hero p{font-size:10px!important;line-height:1.25!important}
+  .report-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+  .report-btn,#continueBtn{min-height:52px!important;height:52px!important;padding:6px!important;border-radius:11px!important;gap:5px!important}
+  .report-btn .action-icon{font-size:19px!important}
+  .report-btn b,#continueBtn b{font-size:10px!important;line-height:1.05!important}
+  .report-btn small,#continueBtn small{font-size:7px!important;line-height:1.05!important}
+
+  .details{padding:10px!important;border-radius:15px!important;box-shadow:0 6px 18px rgba(67,10,25,.09)!important}
+  .section-title{font-size:15px!important;margin:0 0 8px!important}
+  .section-icon{width:27px!important;height:27px!important;font-size:14px!important}
+  .info{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+  .info .box{min-height:62px!important;padding:8px 7px 8px 34px!important;border-radius:11px!important}
+  .info .box:before{left:7px!important;top:10px!important;width:22px!important;height:22px!important;font-size:12px!important}
+  .info .box small{font-size:8px!important;margin-bottom:2px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  .info .box b{font-size:11px!important;line-height:1.2!important;word-break:break-word!important}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;margin-top:7px!important}
+  .stat{min-height:63px!important;padding:8px!important;border-radius:11px!important;gap:6px!important}
+  .stat-icon{width:29px!important;height:29px!important;font-size:15px!important;border-radius:9px!important}
+  .stat span{font-size:8px!important}
+  .stat strong{font-size:16px!important;margin-top:1px!important}
+  .stat:nth-child(5){grid-column:1/-1!important}
+
+  .bar{margin:12px 0 7px!important;gap:5px!important}
+  .bar h2{font-size:15px!important}
+  #loadStatus{font-size:8px!important;padding:4px 8px!important}
+  .entry-tools{grid-template-columns:1.15fr .85fr!important;gap:6px!important;margin-bottom:7px!important}
+  .entry-tools input,.entry-tools select,.entry-tools .tool-btn{min-height:38px!important;padding:7px 8px!important;font-size:10px!important;border-radius:9px!important}
+  .entry-tools input{grid-column:1/-1!important}
+  .deleted-note{font-size:9px!important;line-height:1.3!important;padding:8px 9px!important;margin-bottom:5px!important;border-radius:10px!important}
+
+  .entries{border-spacing:0 6px!important}
+  .entries tbody tr{padding:9px 9px 8px!important;border-radius:12px!important;box-shadow:0 3px 10px rgba(80,30,20,.045)!important}
+  .entries tbody tr td{font-size:10px!important;padding:2px 0!important;line-height:1.35!important}
+  .entries tbody tr td:nth-child(2){font-size:13px!important;padding-right:72px!important;margin-bottom:2px!important}
+  .entries tbody tr td:nth-child(3):before{content:'📍 '!important}
+  .entries tbody tr td:nth-child(4):before{content:'💳 '!important}
+  .entries tbody tr td:nth-child(5):before{content:'💰 '!important}
+  .entries tbody tr td:nth-child(6):before{content:'🎁 '!important}
+  .entries tbody tr td:nth-child(7):before{content:'🕒 '!important}
+  .entries tbody tr td:nth-child(8){top:8px!important;right:8px!important}
+  .status-badge{padding:4px 8px!important;font-size:8px!important}
+  .delete-entry-btn,.deleted-action,.view-entry-btn{min-height:31px!important;padding:6px 9px!important;font-size:9px!important}
+
+  .graph-popup-final{width:calc(100vw - 12px)!important;max-height:94vh!important;padding:12px!important;border-radius:16px!important}
+  .graph-popup-head h3{font-size:17px!important}.graph-popup-head p{font-size:9px!important}
+  .graph-tabs{gap:5px!important;margin-bottom:8px!important}.graph-tabs button{padding:8px 5px!important;font-size:9px!important}
+  .popup-chart-card{padding:9px!important;border-radius:12px!important}.popup-chart-card .pie-chart{width:118px!important;height:118px!important}.popup-chart-card .pie-chart:after{width:58px!important;height:58px!important}
+  .popup-chart-card .legend-item{font-size:9px!important}.popup-chart-card .column-chart{height:175px!important;min-height:175px!important}
+}
+@media (max-width:340px){
+  .page{width:calc(100% - 6px)!important}
+  .report-hero{padding:10px!important}.report-icon{width:43px!important;height:43px!important;min-width:43px!important}
+  .report-hero h1{font-size:17px!important}.report-hero p{font-size:9px!important}
+  .info{grid-template-columns:repeat(2,minmax(0,1fr))!important}.info .box{min-height:60px!important;padding-left:31px!important}.info .box:before{left:6px!important;width:20px!important;height:20px!important}.info .box b{font-size:10px!important}
+  .report-btn,#continueBtn{height:49px!important;min-height:49px!important}.report-btn .action-icon{font-size:17px!important}.report-btn b,#continueBtn b{font-size:9px!important}.report-btn small,#continueBtn small{font-size:6.5px!important}
+}
+</style>
+
+<style id="entry-name-one-row">
+/* Entry name stays on a single line on mobile */
+@media(max-width:650px){
+  .entry-card .entry-name, .entry-card .name, .entry-card [data-entry-name], .entries td:nth-child(2){
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+}
+</style>
+
+<style id="mobile-entry-row-final">
+/* Mobile: guest entries remain in normal table rows, not card boxes. */
+@media (max-width:650px){
+  .table-wrap{
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  .entries{
+    display:table!important;
+    width:100%!important;
+    min-width:860px!important;
+    border-collapse:collapse!important;
+    border-spacing:0!important;
+  }
+  .entries thead{
+    display:table-header-group!important;
+  }
+  .entries tbody{
+    display:table-row-group!important;
+  }
+  .entries tbody tr{
+    display:table-row!important;
+    width:auto!important;
+    padding:0!important;
+    background:transparent!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    position:static!important;
+  }
+  .entries tbody tr td{
+    display:table-cell!important;
+    width:auto!important;
+    border-top:1px solid #eee7e2!important;
+    padding:9px 10px!important;
+    font-size:12px!important;
+    line-height:1.35!important;
+    background:transparent!important;
+    white-space:nowrap!important;
+    position:static!important;
+    overflow:visible!important;
+  }
+  .entries tbody tr td:nth-child(1){
+    display:table-cell!important;
+  }
+  .entries tbody tr td:nth-child(2){
+    font-size:13px!important;
+    font-weight:900!important;
+    color:#7b1235!important;
+    padding-right:10px!important;
+    margin:0!important;
+    max-width:none!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+  .entries tbody tr td:nth-child(3):before,
+  .entries tbody tr td:nth-child(4):before,
+  .entries tbody tr td:nth-child(5):before,
+  .entries tbody tr td:nth-child(6):before,
+  .entries tbody tr td:nth-child(7):before{
+    content:none!important;
+  }
+  .entries tbody tr td:nth-child(8){
+    position:static!important;
+    top:auto!important;
+    right:auto!important;
+  }
+  .entries tbody tr td:nth-child(9){
+    display:table-cell!important;
+    margin:0!important;
+    text-align:center!important;
+  }
+  .entries th{
+    display:table-cell!important;
+    padding:9px 10px!important;
+    font-size:11px!important;
+    white-space:nowrap!important;
+  }
+  .deleted-entry-row td{
+    background:#f2f3f5!important;
+  }
+}
+</style>
+
+<style id="mobile-entry-row-v4">
+@media(max-width:650px){
+  /* Guest entries: normal horizontal table rows, starting from the Name side */
+  .table-wrap{
+    width:100%!important;overflow:hidden!important;border:1px solid #eadfe2!important;
+    border-radius:14px!important;
+  }
+  .entries-scroll{
+    width:100%!important;max-height:420px!important;
+    overflow-x:auto!important;overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:thin!important;
+    direction:ltr!important;
+    border:0!important;
+  }
+  .entries{
+    display:table!important;width:max-content!important;min-width:900px!important;
+    border-collapse:collapse!important;border-spacing:0!important;
+    table-layout:auto!important;
+  }
+  .entries thead{display:table-header-group!important}
+  .entries tbody{display:table-row-group!important}
+  .entries tr{display:table-row!important;background:transparent!important;box-shadow:none!important;border:0!important;padding:0!important}
+  .entries th,.entries td{
+    display:table-cell!important;position:static!important;
+    white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important;
+    vertical-align:middle!important;border-top:1px solid #eee7e2!important;
+    padding:8px 9px!important;line-height:1.25!important;
+  }
+  .entries th{font-size:10px!important;background:#faf3e5!important;color:#7b122e!important}
+  .entries td{font-size:11px!important;background:#fff!important}
+  .entries td:nth-child(1){width:28px!important;text-align:center!important}
+  .entries td:nth-child(2){font-size:12px!important;font-weight:900!important;color:#7b1235!important;min-width:105px!important}
+  .entries td:nth-child(3){min-width:105px!important}
+  .entries td:nth-child(4){min-width:62px!important}
+  .entries td:nth-child(5){min-width:72px!important}
+  .entries td:nth-child(6){min-width:72px!important}
+  .entries td:nth-child(7){min-width:125px!important}
+  .entries td:nth-child(8){min-width:62px!important}
+  .entries td:nth-child(9){min-width:76px!important;text-align:center!important}
+  .entries td:nth-child(3):before,.entries td:nth-child(4):before,.entries td:nth-child(5):before,.entries td:nth-child(6):before,.entries td:nth-child(7):before{content:none!important}
+  .entries td:nth-child(8),.entries td:nth-child(9){position:static!important;top:auto!important;right:auto!important}
+  .entries tbody tr td{margin:0!important;border-radius:0!important}
+  .entries tbody tr.deleted-entry-row td{background:#f2f3f5!important}
+}
+</style>
+
+<style id="event-report-topbar-beauty">
+/* Event Report — polished profile topbar */
+.sagun-topbar{height:44px!important;padding:0 10px!important;background:linear-gradient(135deg,#5b1230,#86183d 55%,#4b173d)!important;border-bottom:1px solid rgba(255,215,122,.72)!important;box-shadow:0 5px 18px rgba(55,8,28,.25)!important}
+.sagun-left,.sagun-right{gap:7px!important}.sagun-nav-btn{height:30px!important;padding:0 11px!important;border-color:rgba(255,215,122,.58)!important;background:rgba(255,255,255,.10)!important;font-size:12px!important;font-weight:800!important}.sagun-center{font-size:13px!important;font-weight:900!important;max-width:250px!important;color:#fff!important}.sagun-profile{margin-left:2px!important}.sagun-profile-btn{min-height:34px!important;padding:3px 9px 3px 5px!important;border:1px solid rgba(255,215,122,.65)!important;background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.08))!important;border-radius:20px!important;box-shadow:0 4px 10px rgba(0,0,0,.12)!important}.sagun-profile-name{display:inline-block!important;max-width:105px!important;color:#fff!important;font-size:12px!important;font-weight:900!important}.sagun-avatar{width:29px!important;height:29px!important;background:#fff!important;color:#7a0025!important;border:2px solid rgba(255,215,122,.8)!important}.sagun-profile-panel{top:calc(100% + 7px)!important;width:270px!important;border:1px solid #ead6a2!important;border-radius:16px!important;box-shadow:0 18px 45px rgba(35,8,20,.28)!important;padding:9px!important}.sagun-profile-head{padding:9px!important;background:linear-gradient(135deg,#fff9ec,#fff)!important;border-radius:12px!important;border-bottom:1px solid #eee1c8!important}.sagun-profile-head strong{color:#7b1235!important;font-size:15px!important}.sagun-profile-panel>button{padding:10px!important;font-size:12px!important}.sagun-profile-panel>button:hover{background:#fff6e5!important}
+@media(max-width:700px){
+ body{padding-top:44px!important}
+ .sagun-topbar{height:44px!important;padding:0 5px!important;grid-template-columns:auto 1fr auto!important}
+ .sagun-left{gap:4px!important}.sagun-nav-btn{height:30px!important;padding:0 8px!important;font-size:10px!important}
+ .sagun-center{font-size:11px!important;max-width:none!important;padding:0 5px!important}
+ .sagun-profile-name{display:inline-block!important;max-width:105px!important;font-size:10px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+ .sagun-profile-btn{min-height:32px!important;padding:2px 6px 2px 4px!important;gap:4px!important}.sagun-avatar{width:27px!important;height:27px!important}
+ .sagun-profile-panel{right:0!important;width:min(270px,calc(100vw - 12px))!important}
+}
+@media(max-width:380px){.sagun-nav-btn{padding:0 6px!important;font-size:9px!important}.sagun-center{font-size:10px!important}.sagun-profile-name{max-width:68px!important;font-size:9px!important;display:inline-block!important}.sagun-profile-btn>span:last-child{font-size:10px!important}}
+</style>
+<script id="event-report-topbar-profile-fix">
+(function(){
+  function readObj(keys){for(const k of keys){try{const v=JSON.parse(localStorage.getItem(k)||'null');if(v&&typeof v==='object')return v}catch(e){}}return {}}
+  function paint(){
+    const p=readObj(['sgunms_profile_v2','sgunms_profile_v1','userProfile','profile','currentUser','sagunUser']);
+    const name=String(p.name||p.full_name||p.fullName||p.display_name||p.username||'').trim();
+    const email=String(p.email||'').trim();
+    if(name){document.querySelectorAll('#sagunProfileName,#sagunProfilePanelName').forEach(x=>x.textContent=name);}
+    if(email){const x=document.getElementById('sagunProfileEmail');if(x)x.textContent=email;}
+  }
+  function start(){paint();setTimeout(paint,50);setTimeout(async()=>{try{const c=window.sb||window.supabaseClient;if(!c?.auth?.getUser)return;const r=await c.auth.getUser();const u=r?.data?.user;if(!u)return;const m=u.user_metadata||{};const name=String(m.full_name||m.name||m.display_name||'').trim();const email=String(u.email||'').trim();const x=document.getElementById('sagunProfileName'),y=document.getElementById('sagunProfilePanelName'),z=document.getElementById('sagunProfileEmail');if(name){if(x)x.textContent=name;if(y)y.textContent=name;}if(z&&email)z.textContent=email;}catch(e){}},180)}
+  if(document.getElementById('sagunTopbar'))start();else new MutationObserver((m,o)=>{if(document.getElementById('sagunTopbar')){o.disconnect();start();}}).observe(document.body,{childList:true});
+})();
+</script>
 </head>
 <body>
 <div class="page">
-  <div class="top">
-    <div class="title"><div class="icon" id="eventIcon">Event</div><div><h1 id="eventTitle">Event Details</h1><p id="eventSubtitle">Loading...</p></div></div>
-    <div class="actions">
-      <button class="btn" id="continueBtn">➕ Continue Entry</button>
-      <button class="btn secondary" id="pdfBtn">📄 PDF Report</button>
-      <button class="btn secondary" id="excelBtn">📊 Excel</button>
-      <button class="btn danger" id="deleteBtn">🗑️ Delete Event</button>
+  <section class="report-hero">
+  <div class="report-identity">
+    <div class="report-icon" id="eventIcon">🪔</div>
+    <div>
+      <div class="report-kicker">SAGUN MANAGEMENT SYSTEM</div>
+      <h1 id="eventTitle">Event Details</h1>
+      <p id="eventSubtitle">Event की पूरी जानकारी और collection report</p>
     </div>
   </div>
-  <section class="details">
-    <div class="section-title">Event Information</div>
+  <div class="report-actions">
+    <button class="report-btn continue" id="continueBtn">
+      <span class="action-icon">📝</span>
+      <span><b>Continue Entry</b><small>नई Entry जोड़ें</small></span>
+    </button>
+    <button class="report-btn pdf" id="pdfBtn">
+      <span class="action-icon">📄</span>
+      <span><b>PDF Report</b><small>PDF डाउनलोड</small></span>
+    </button>
+    <button class="report-btn excel" id="excelBtn">
+      <span class="action-icon">📊</span>
+      <span><b>Excel</b><small>Excel डाउनलोड</small></span>
+    </button>
+    <button class="report-btn delete" id="deleteBtn">
+      <span class="action-icon">🗑️</span>
+      <span><b>Delete Event</b><small>इवेंट हटाएँ</small></span>
+    </button>
+  </div>
+</section>
+<section class="details">
+    <div class="section-title"><span class="section-icon">ℹ️</span> Event Information</div>
     <div class="info" id="eventInfo"></div>
     <div class="stats">
-      <div class="stat"><span>Total Entries</span><strong id="totalEntries">0</strong></div>
-      <div class="stat"><span>Cash</span><strong id="cashTotal">₹0</strong></div>
-      <div class="stat"><span>UPI</span><strong id="upiTotal">₹0</strong></div>
-      <div class="stat"><span>Cash + UPI</span><strong id="moneyTotal">₹0</strong></div>
-      <div class="stat"><span>Gifts</span><strong id="giftTotal">0</strong></div>
+      <div class="stat"><div class="stat-icon">👥</div><div><span>Total Entries</span><strong id="totalEntries">0</strong></div></div>
+      <div class="stat"><div class="stat-icon cash">💵</div><div><span>Cash</span><strong id="cashTotal">₹0</strong></div></div>
+      <div class="stat"><div class="stat-icon upi">💳</div><div><span>UPI</span><strong id="upiTotal">₹0</strong></div></div>
+      <div class="stat"><div class="stat-icon total">🪙</div><div><span>Cash + UPI</span><strong id="moneyTotal">₹0</strong></div></div>
+      <div class="stat"><div class="stat-icon gift">🎁</div><div><span>Gifts</span><strong id="giftTotal">0</strong></div></div>
     </div>
-<div class="bar"><h2>इस Event की सभी Entries</h2><span id="loadStatus">Loading...</span></div>
-    <div class="table-wrap"><table class="entries"><thead><tr><th>#</th><th>नाम</th><th>गाँव / शहर</th><th>Payment</th><th>Amount</th><th>Gift</th><th>Date / Time</th></tr></thead><tbody id="entryBody"><tr><td colspan="7" class="empty">Entries loading...</td></tr></tbody></table></div>
+
+    <div class="chart-grid" id="alwaysCharts" style="display:none!important">
+      <div class="chart-card">
+        <div class="chart-head"><div><h3>🥧 Collection Summary</h3><small>इस Event की payment distribution</small></div></div>
+        <div class="pie-wrap">
+          <div class="pie-chart" id="pieChart"><span id="pieCenter">0%</span></div>
+          <div class="legend" id="pieLegend"></div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-head"><div><h3>📊 Entries & Collection</h3><small>Amount और entries का comparison</small></div></div>
+        <div class="column-chart" id="columnChart"></div>
+      </div>
+    </div>
+
+<div class="bar"><h2><span class="section-icon small">📋</span> इस Event की सभी Entries</h2><span id="loadStatus">Local data ready…</span></div>
+    <div class="entry-tools">
+      <input id="entrySearch" type="search" placeholder="🔎 नाम, गाँव / शहर, Payment खोजें...">
+      <select id="paymentFilter"><option value="all">सभी Payment</option><option value="cash">Cash</option><option value="upi">UPI</option><option value="gift">Gift</option></select>
+      <button type="button" class="tool-btn" id="clearEntryFilter">↺ Clear</button>
+      <button type="button" class="tool-btn" id="graphBtn">📊 Graph देखें</button>
+    </div>
+    <div class="deleted-note">ℹ️ <b>Delete Entry:</b> Delete करने के बाद entry इस report में दिखाई देती रहेगी और <b>Deleted</b> status दिखेगा। उसकी राशि active total से घट जाएगी। PDF/Excel report में original entry और Deleted status दोनों दिखाई देंगे।</div>
+    <div class="table-wrap"><div class="entries-scroll"><table class="entries"><thead><tr><th>#</th><th>नाम</th><th>गाँव / शहर</th><th>Payment</th><th>Amount</th><th>Gift</th><th>Date / Time</th><th>Status</th><th>Action</th></tr></thead><tbody id="entryBody"><tr><td colspan="9" class="empty">Entries तैयार हो रही हैं...</td></tr></tbody></table></div></div>
   </section>
+</div>
+
+<div class="modal graph-modal" id="graphModal">
+  <div class="modal-card graph-popup-final">
+    <div class="graph-popup-head">
+      <div><h3>📊 Event Graph</h3><p>इस Event की active entries का summary</p></div>
+      <button type="button" id="closeGraph" class="graph-close">✕ Close</button>
+    </div>
+    <div class="graph-tabs">
+      <button type="button" id="pieGraphTab" class="active">🥧 Pie Chart</button>
+      <button type="button" id="columnGraphTab">📊 Column Chart</button>
+    </div>
+    <div id="pieGraphPane" class="graph-pane-active"></div>
+    <div id="columnGraphPane" class="graph-pane-hidden"></div>
+  </div>
 </div>
 <div class="modal" id="deleteModal">
   <div class="modal-box">
@@ -230,10 +951,27 @@ body{
     <div class="confirm-row"><button class="cancel" id="cancelDelete">Cancel</button><button class="delete" id="confirmDelete">हाँ, Delete करें</button></div>
   </div>
 </div>
+
+<div class="modal" id="entryDeleteModal">
+  <div class="modal-box">
+    <div class="warn">🗑️ Entry Delete</div>
+    <h2>इस Entry को Delete करें?</h2>
+    <p>Entry report में रहेगी और <b>Deleted</b> दिखाई देगी। राशि active total से घट जाएगी। PDF/Excel में भी original entry और Deleted status दिखाई देगा।</p>
+    <div class="confirm-row"><button class="cancel" id="cancelEntryDelete">Cancel</button><button class="delete" id="confirmEntryDelete">🗑️ Delete करें</button></div>
+  </div>
+</div>
+<div class="modal" id="entryViewModal">
+  <div class="modal-box">
+    <div class="warn">👤 Entry Details</div>
+    <h2 id="entryViewTitle">Guest Entry</h2>
+    <div id="entryViewContent" class="info" style="grid-template-columns:1fr 1fr"></div>
+    <div class="confirm-row"><button class="cancel" id="closeEntryView">Close</button></div>
+  </div>
+</div>
 <script>
 const SB_URL='https://rdlliurzgwwfjscgwssa.supabase.co',SB_KEY='sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc';
 const sb=window.supabase.createClient(SB_URL,SB_KEY);
-let eventData=null,entries=[];
+let eventData=null,entries=[],filteredEntries=[];
 const icons={tilak:'🪔',barat:'🥁',reception:'🎉',birthday:'🎂',anniversary:'💐',engagement:'💍',mundan:'👶',griha_pravesh:'🏠','griha pravesh':'🏠',marriage:'💍',other:'🎉'};
 const pages={tilak:'tilak-entry.html',barat:'barat-entry.html',reception:'reception-entry.html',birthday:'birthday-entry.html',anniversary:'anniversary-entry.html',engagement:'engagement-entry.html',mundan:'generic-event-entry.html?type=Mundan',griha_pravesh:'griha-pravesh-entry.html','griha pravesh':'griha-pravesh-entry.html',marriage:'barat-entry.html',other:'generic-event-entry.html'};
 function read(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}
@@ -243,11 +981,12 @@ async function getActive(){
   const q=new URLSearchParams(location.search);
   const id=String(q.get('event_id')||q.get('eventId')||localStorage.getItem('currentEventId')||'').trim();
   let e=null;
-  try{const list=await allEvents();if(id)e=list.find(x=>String(x?.id||x?.eventId||x?.event_id||x?.key||'').trim()===id)||null;}catch(_){}
-  if(!e && id){
+  // LOCAL FIRST: use the active-event cache immediately.
+  if(id){
     const cached=read('sagunActiveEventData')||read('sagunActiveEvent');
     if(cached && String(cached.id||cached.eventId||cached.event_id||cached.key||'').trim()===id)e=cached;
   }
+  if(!e){try{const list=await allEvents();if(id)e=list.find(x=>String(x?.id||x?.eventId||x?.event_id||x?.key||'').trim()===id)||null;}catch(_){} }
   // Some event types keep their detailed setup separately. Merge it so the
   // report always shows the names saved during Event Setup.
   if(e){
@@ -284,25 +1023,423 @@ async function localEntries(e){
   return out.filter(x=>entryMatches(x,e));
 }
 async function cloudEntries(e){try{const {data:{user}}=await sb.auth.getUser();if(!user)return[];const id=String(e?.id||e?.eventId||e?.event_id||'');if(!id)return[];const {data,error}=await sb.from('guests').select('*').eq('user_id',user.id).eq('event_id',id).order('created_at',{ascending:false});if(error||!Array.isArray(data))return[];return data}catch(_){return[]}}
-function mergeEntries(local,cloud){const all=local.concat(cloud),seen=new Set();return all.filter(x=>{const k=String(x.id||x.timestamp||x.created_at||x.createdAt||'')+'|'+norm(x.name)+'|'+String(x.amount||0)+'|'+norm(x.village);if(seen.has(k))return false;seen.add(k);return true}).sort((a,b)=>new Date(b.created_at||b.createdAt||b.timestamp||0)-new Date(a.created_at||a.createdAt||a.timestamp||0))}
+function entryKey(x){
+ const id=String(x?.id||x?.guest_id||x?.entry_id||'').trim();
+ if(id)return 'id:'+id;
+ return 'sig:'+norm(x?.name)+'|'+norm(x?.village||x?.city)+'|'+norm(x?.payment_mode||x?.paymentMode||x?.type)+'|'+Number(x?.amount||0)+'|'+String(x?.created_at||x?.createdAt||x?.timestamp||'');
+}
+function deletedKey(eventId){return 'sgunms_deleted_entries_'+String(eventId||'')}
+function readDeleted(eventId){try{return new Set(JSON.parse(localStorage.getItem(deletedKey(eventId))||'[]'))}catch(e){return new Set()}}
+function saveDeleted(eventId,set){try{localStorage.setItem(deletedKey(eventId),JSON.stringify([...set]))}catch(e){}}
+function markDeletedFlags(list,eventId){const d=readDeleted(eventId);return list.map(x=>({...x,__deleted:d.has(entryKey(x))}))}
+function mergeEntries(local,cloud){
+ const all=local.concat(cloud),seen=new Set(),out=[];
+ all.forEach(x=>{const k=entryKey(x);if(seen.has(k))return;seen.add(k);out.push(x)});
+ const eid=eventData?.id||eventData?.eventId||eventData?.event_id||'';
+ return markDeletedFlags(out,eid).sort((a,b)=>new Date(b.created_at||b.createdAt||b.timestamp||0)-new Date(a.created_at||a.createdAt||a.timestamp||0))
+}
 function money(n){return '₹'+Number(n||0).toLocaleString('en-IN')}
-function render(){const e=eventData,t=typeOf(e);document.getElementById('eventIcon').textContent=icons[t]||'Event';const title=({tilak:'तिलक समारोह / Tilak',barat:'बरात समारोह / Barat',reception:'रिसेप्शन / Reception',birthday:'जन्मदिन समारोह / Birthday',anniversary:'सालगिरह / Anniversary',engagement:'सगाई समारोह / Engagement',griha_pravesh:'गृह प्रवेश समारोह / Griha Pravesh',mundan:'मुंडन समारोह / Mundan',naming:'नामकरण समारोह / Naming'}[t]||e.event_name||e.eventName||'समारोह');document.getElementById('eventTitle').textContent=title;document.getElementById('eventSubtitle').textContent='Event की पूरी जानकारी और collection report';let details=[];const groom=e.groom_name||e.groomName||e.dulha_name||e.dulhaName||((t==='tilak'||t==='reception')?e.person1:'')||'';const bride=e.bride_name||e.brideName||e.dulhan_name||e.dulhanName||((t==='barat')?e.person1:'')||e.person2||'';const cashInfo=entries.filter(x=>norm(x.payment_mode||x.paymentMode)==='cash').reduce((s,x)=>s+Number(x.amount||0),0);const upiInfo=entries.filter(x=>norm(x.payment_mode||x.paymentMode)==='upi').reduce((s,x)=>s+Number(x.amount||0),0);if(t==='tilak'||t==='barat'||t==='reception'||t==='marriage'){details=[['कार्यक्रम',t==='tilak'?'तिलक':t==='barat'?'बरात':t==='reception'?'Reception':'Marriage'],['दिनांक',eventDate(e)||'—'],['दूल्हा',groom||'—'],['दुल्हन',bride||'—'],['Cash Collection',money(cashInfo)],['UPI Collection',money(upiInfo)],['Cash + UPI',money(cashInfo+upiInfo)],['स्वागतकर्ता',e.welcome_name||'—']]}else if(t==='birthday'){details=[['समारोह','Birthday'],['नाम',e.birthday_name||e.name||e.person1||'—'],['जन्मदिन',eventDate(e)||'—'],['Cash Collection',money(cashInfo)],['UPI Collection',money(upiInfo)],['स्वागतकर्ता',e.welcome_name||'—']]}else if(t==='anniversary'){details=[['समारोह','Anniversary'],['पति',e.husband_name||e.groom_name||e.person1||'—'],['पत्नी',e.wife_name||e.bride_name||e.person2||'—'],['तारीख',eventDate(e)||'—'],['Cash Collection',money(cashInfo)],['UPI Collection',money(upiInfo)],['स्वागतकर्ता',e.welcome_name||'—']]}else{details=[['समारोह',title],['मुख्य नाम',e.name||e.person1||'—'],['दिनांक',eventDate(e)||'—'],['Cash Collection',money(cash)],['UPI Collection',money(upi)],['स्वागतकर्ता',e.welcome_name||'—']]};document.getElementById('eventInfo').innerHTML=details.map(x=>`<div class="box"><small>${x[0]}</small><b>${esc(x[1])}</b></div>`).join('');document.getElementById('continueBtn').textContent='Continue Entry';document.getElementById('entryBody').innerHTML=entries.length?entries.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name||'—')}</td><td>${esc(x.village||x.city||'—')}</td><td>${esc(x.payment_mode||x.paymentMode||x.type||'—')}</td><td>${money(x.amount)}</td><td>${esc(x.gift_description||x.giftDescription||'')}</td><td>${esc(new Date(x.created_at||x.createdAt||x.timestamp||Date.now()).toLocaleString('en-IN'))}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">इस Event में अभी कोई Entry नहीं है।</td></tr>';const cash=entries.filter(x=>norm(x.payment_mode||x.paymentMode)==='cash').reduce((s,x)=>s+Number(x.amount||0),0);const upi=entries.filter(x=>norm(x.payment_mode||x.paymentMode)==='upi').reduce((s,x)=>s+Number(x.amount||0),0);const gifts=entries.filter(x=>norm(x.payment_mode||x.paymentMode)==='gift'||norm(x.gift_type||x.giftType)==='gift').length;document.getElementById('totalEntries').textContent=entries.length;document.getElementById('cashTotal').textContent=money(cash);document.getElementById('upiTotal').textContent=money(upi);document.getElementById('moneyTotal').textContent=money(cash+upi);document.getElementById('giftTotal').textContent=gifts;document.getElementById('loadStatus').textContent=entries.length+' entries'}
+function paymentBaseMode(x){
+ const raw=norm(x?.payment_mode||x?.paymentMode||x?.type);
+ if(raw==='cash' || raw==='cash+gift' || raw==='gift+cash') return 'cash';
+ if(raw==='upi' || raw==='upi+gift' || raw==='gift+upi') return 'upi';
+ return raw;
+}
+function render(){
+ const e=eventData,t=typeOf(e);
+ document.getElementById('eventIcon').textContent=icons[t]||'Event';
+ const title=({tilak:'तिलक समारोह / Tilak',barat:'बरात समारोह / Barat',reception:'रिसेप्शन / Reception',birthday:'जन्मदिन समारोह / Birthday',anniversary:'सालगिरह / Anniversary',engagement:'सगाई समारोह / Engagement',griha_pravesh:'गृह प्रवेश समारोह / Griha Pravesh',mundan:'मुंडन समारोह / Mundan',naming:'नामकरण समारोह / Naming'}[t]||e.event_name||e.eventName||'समारोह');
+ document.getElementById('eventTitle').textContent=title;document.getElementById('eventSubtitle').textContent='Event की पूरी जानकारी और collection report';
+ let details=eventReportMeta().details;
+ document.getElementById('eventInfo').innerHTML=details.map(x=>`<div class="box"><small>${x[0]}</small><b>${esc(x[1])}</b></div>`).join('');
+ document.getElementById('continueBtn').innerHTML='<span class="action-icon">📝</span><span><b>Continue Entry</b><small>इसी Event की Entry जारी रखें</small></span>';
+ const activeEntries=entries.filter(x=>!x.__deleted);
+ const cash=activeEntries.filter(x=>paymentBaseMode(x)==='cash').reduce((s,x)=>s+Number(x.amount||0),0);
+ const upi=activeEntries.filter(x=>paymentBaseMode(x)==='upi').reduce((s,x)=>s+Number(x.amount||0),0);
+ const gifts=activeEntries.filter(x=>norm(x.payment_mode||x.paymentMode)==='gift'||norm(x.gift_type||x.giftType)==='gift').length;
+ document.getElementById('totalEntries').textContent=activeEntries.length;document.getElementById('cashTotal').textContent=money(cash);document.getElementById('upiTotal').textContent=money(upi);document.getElementById('moneyTotal').textContent=money(cash+upi);document.getElementById('giftTotal').textContent=gifts;
+ applyEntryFilters(false);
+}
+function renderEntryRows(){
+ const body=document.getElementById('entryBody');
+ body.innerHTML=filteredEntries.length?filteredEntries.map((x,i)=>{
+   const deleted=!!x.__deleted;
+   return `<tr class="${deleted?'deleted-entry-row':''}">
+   <td>${i+1}</td><td>${esc(x.name||'—')}</td><td>${esc(x.village||x.city||'—')}</td>
+   <td>${esc(x.payment_mode||x.paymentMode||x.type||'—')}</td><td>${money(x.amount)}</td>
+   <td>${esc(x.gift_description||x.giftDescription||'')}</td>
+   <td>${esc(new Date(x.created_at||x.createdAt||x.timestamp||Date.now()).toLocaleString('en-IN'))}</td>
+   <td class="status-cell"><span class="status-badge ${deleted?'status-deleted':'status-active'}">${deleted?'Deleted':'Active'}</span></td>
+   <td class="action-cell">${deleted?'<button class="deleted-action" type="button" disabled>✓ Deleted</button>':'<button class="delete-entry-btn" type="button" data-delete-entry="'+i+'">🗑️ Delete</button>'}</td>
+   </tr>`
+ }).join(''):'<tr><td colspan="9" class="empty">इस filter में कोई Entry नहीं मिली।</td></tr>';
+ document.getElementById('loadStatus').textContent=`${filteredEntries.filter(x=>!x.__deleted).length} active / ${entries.length} total`;
+  if(window.innerWidth<=650){const wrap=document.querySelector('.table-wrap');if(wrap)wrap.scrollLeft=0;}
+}
+function applyEntryFilters(focus){
+ const q=norm(document.getElementById('entrySearch')?.value||'');
+ const pay=norm(document.getElementById('paymentFilter')?.value||'all');
+ filteredEntries=entries.filter(x=>{
+   const text=[x.name,x.village,x.city,x.payment_mode,x.paymentMode,x.type,x.amount,x.gift_description,x.giftDescription].map(norm).join(' ');
+   const mode=norm(x.payment_mode||x.paymentMode||x.type);
+   const paymentOk=pay==='all'||mode===pay||(pay==='gift'&&norm(x.gift_type||x.giftType)==='gift');
+   return paymentOk&&(!q||text.includes(q));
+ });
+ renderEntryRows();
+ if(focus)updateGraph();
+}
+function updateGraph(){
+ const data=filteredEntries.filter(x=>!x.__deleted);let cash=0,upi=0,gift=0;
+ data.forEach(x=>{const m=norm(x.payment_mode||x.paymentMode||x.type);const a=Number(x.amount||0)||0;if(m==='cash')cash+=a;if(m==='upi')upi+=a;if(m==='gift'||norm(x.gift_type||x.giftType)==='gift')gift++;});
+ const totalMoney=cash+upi;
+ document.getElementById('gCount').textContent=data.length;
+ document.getElementById('gCash').textContent=money(cash);
+ document.getElementById('gUpi').textContent=money(upi);
+ const max=Math.max(cash,upi,gift,1);
+ document.getElementById('graphBars').innerHTML=[['Cash',cash,money(cash)],['UPI',upi,money(upi)],['Gift',gift,String(gift)]].map(([n,v,label])=>`<div class="g-row"><span>${n}</span><div class="g-track"><div class="g-fill" style="width:${Math.max(2,(v/max)*100)}%"></div></div><b>${label}</b></div>`).join('');
+
+ const pie=document.getElementById('pieChart'), center=document.getElementById('pieCenter'), legend=document.getElementById('pieLegend');
+ if(pie&&center&&legend){
+   const giftValue=gift; // gift count is shown as its own category
+   const sum=Math.max(totalMoney,0);
+   const cashPct=sum?cash/sum*100:0, upiPct=sum?upi/sum*100:0;
+   const cashEnd=cashPct, upiEnd=cashPct+upiPct;
+   pie.style.background=`conic-gradient(#24a968 0 ${cashEnd}%, #2d8eea ${cashEnd}% ${upiEnd}%, #e6a52d ${upiEnd}% 100%)`;
+   center.textContent=sum?`${Math.round(cashPct+upiPct)}%`:'0%';
+   legend.innerHTML=`<div class="legend-item"><i class="legend-dot" style="background:#24a968"></i>Cash <b>${money(cash)}</b></div><div class="legend-item"><i class="legend-dot" style="background:#2d8eea"></i>UPI <b>${money(upi)}</b></div><div class="legend-item"><i class="legend-dot" style="background:#e6a52d"></i>Gifts <b>${gift}</b></div>`;
+ }
+ const col=document.getElementById('columnChart');
+ if(col){
+   const vals=[['Entries',data.length],['Cash',cash],['UPI',upi],['Gifts',gift]];
+   const top=Math.max(...vals.map(v=>Number(v[1])||0),1);
+   col.innerHTML=vals.map(([label,v])=>{
+      const h=Math.max(4,((Number(v)||0)/top)*150);
+      const val=label==='Cash'||label==='UPI'?money(v):String(v);
+      return `<div class="col-item"><div class="col-value">${val}</div><div class="col-bar" style="height:${h}px"></div><div class="col-label">${label}</div></div>`;
+   }).join('');
+ }
+}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function reportRows(){return entries.map((x,i)=>[i+1,x.name||'',x.village||x.city||'',x.payment_mode||x.paymentMode||x.type||'',Number(x.amount||0),x.gift_description||x.giftDescription||'',new Date(x.created_at||x.createdAt||x.timestamp||Date.now()).toLocaleString('en-IN')])}
-function eventReportMeta(){const e=eventData||{};const t=typeOf(e);return {name:e.event_name||e.eventName||e.name||'Event',type:t,date:eventDate(e)||'',groom:e.groom_name||'',bride:e.bride_name||'',person1:e.person1||'',person2:e.person2||''}}
-function calcTotals(){let cash=0,upi=0,gifts=0;entries.forEach(x=>{const mode=norm(x.payment_mode||x.paymentMode||x.type);const amt=Number(x.amount||0)||0;if(mode==='cash')cash+=amt;else if(mode==='upi')upi+=amt;if(mode==='gift'||norm(x.gift_type||x.giftType)==='gift')gifts++});return {cash,upi,total:cash+upi,gifts}}
-function exportExcel(){if(!window.XLSX){alert('Excel library load नहीं हुई।');return}const m=eventReportMeta(),t=calcTotals();const rows=[['SAGUN MANAGEMENT SYSTEM'],['EVENT REPORT'],[],['Event Name',m.name],['Event Type',m.type],['Event Date',m.date],['Groom',m.groom],['Bride',m.bride],[],['SUMMARY'],['Total Entries',entries.length],['Cash',t.cash],['UPI',t.upi],['Cash + UPI',t.total],['Gifts',t.gifts],[],['ENTRIES'],['#','Name','Village / City','Payment','Amount','Gift / Description','Date / Time'],...reportRows()];const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:7},{wch:26},{wch:24},{wch:13},{wch:14},{wch:28},{wch:23}];ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:6}},{s:{r:1,c:0},e:{r:1,c:6}}];['A1','A2'].forEach(c=>{if(ws[c])ws[c].s={font:{bold:true,sz:c==='A1'?16:13},alignment:{horizontal:'center'}}});for(let r=18;r<=18+entries.length;r++){if(ws['E'+r])ws['E'+r].z='₹#,##0'}const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Event Report');XLSX.writeFile(wb,'Sagun_Event_Report_'+m.name.replace(/[^a-zA-Z0-9_-]+/g,'_').slice(0,30)+'.xlsx')}
-function pdfMoney(n){return 'Rs. '+Number(n||0).toLocaleString('en-IN')}
-function exportPdf(){if(!window.jspdf?.jsPDF){alert('PDF library load नहीं हुई।');return}const m=eventReportMeta(),t=calcTotals();const doc=new jspdf.jsPDF({unit:'mm',format:'a4'});const W=210;let y=18;doc.setFillColor(105,0,27);doc.rect(0,0,W,34,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(19);doc.text('SAGUN MANAGEMENT SYSTEM',14,13);doc.setFontSize(13);doc.text('EVENT REPORT',14,22);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('Event-wise collection and guest entries',14,28);y=43;doc.setTextColor(45,50,60);doc.setFont('helvetica','bold');doc.setFontSize(14);doc.text(String(m.name).slice(0,65),14,y);y+=7;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text('Type: '+String(m.type).replace('_',' ')+'   |   Date: '+(m.date||'-'),14,y);y+=10;const info=[['Total Entries',String(entries.length)],['Cash',pdfMoney(t.cash)],['UPI',pdfMoney(t.upi)],['Cash + UPI',pdfMoney(t.total)],['Gifts',String(t.gifts)]];let x=14;info.forEach((it,i)=>{doc.setFillColor(247,243,234);doc.roundedRect(x,y,34,20,3,3,'F');doc.setTextColor(105,11,38);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text(it[0],x+3,y+7);doc.setFontSize(10);doc.text(it[1],x+3,y+15);x+=37});y+=29;doc.setTextColor(105,11,38);doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('EVENT INFORMATION',14,y);y+=7;doc.setTextColor(55,61,72);doc.setFont('helvetica','normal');doc.setFontSize(9);const details=[['Event Type',m.type],['Event Date',m.date],['Groom',m.groom||'-'],['Bride',m.bride||'-']];details.forEach((d,i)=>{const col=i%2,row=Math.floor(i/2),xx=14+col*92,yy=y+row*9;doc.text(d[0]+': '+String(d[1]).slice(0,48),xx,yy)});y+=25;doc.setTextColor(105,11,38);doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('GUEST ENTRIES',14,y);y+=7;function header(){doc.setFillColor(105,0,27);doc.rect(14,y-5,182,7,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(7);doc.text('#',16,y);doc.text('Name',23,y);doc.text('Village / City',68,y);doc.text('Payment',111,y);doc.text('Amount',139,y);doc.text('Gift',166,y);y+=7;doc.setTextColor(45,50,60);doc.setFont('helvetica','normal');doc.setFontSize(7)}header();reportRows().forEach(r=>{if(y>280){doc.addPage();y=18;doc.setFillColor(105,0,27);doc.rect(0,0,W,10,'F');doc.setTextColor(255,255,255);doc.setFontSize(8);doc.text('SAGUN MANAGEMENT SYSTEM — EVENT REPORT',14,7);y=22;header()}const vals=[String(r[0]),String(r[1]).slice(0,25),String(r[2]).slice(0,24),String(r[3]).slice(0,10),pdfMoney(r[4]),String(r[5]).slice(0,15)];doc.text(vals[0],16,y);doc.text(vals[1],23,y);doc.text(vals[2],68,y);doc.text(vals[3],111,y);doc.text(vals[4],139,y);doc.text(vals[5],166,y);doc.setDrawColor(225,228,233);doc.line(14,y+2,196,y+2);y+=6});doc.setTextColor(120,126,136);doc.setFontSize(7);doc.text('Generated by Sagun Management System',14,291);doc.text('Page '+doc.internal.getNumberOfPages(),178,291);doc.save('Sagun_Event_Report_'+m.name.replace(/[^a-zA-Z0-9_-]+/g,'_').slice(0,30)+'.pdf')}
+function reportRows(){return entries.map((x,i)=>[i+1,x.name||'',x.village||x.city||'',x.payment_mode||x.paymentMode||x.type||'',Number(x.amount||0),x.gift_description||x.giftDescription||'',new Date(x.created_at||x.createdAt||x.timestamp||Date.now()).toLocaleString('en-IN'),x.__deleted?'Deleted':'Active'])}
+function eventReportMeta(){
+ const e=eventData||{},t=typeOf(e);
+ const val=(...keys)=>{for(const k of keys){const v=e?.[k];if(v!==undefined&&v!==null&&String(v).trim()!=='')return String(v).trim()}return '—'};
+ const groom=val('groom_name','groomName','dulha_name','dulhaName','person1');
+ const bride=val('bride_name','brideName','dulhan_name','dulhanName','person2');
+ const cash=entries.filter(x=>!x.__deleted&&paymentBaseMode(x)==='cash').reduce((a,x)=>a+Number(x.amount||0),0);
+ const upi=entries.filter(x=>!x.__deleted&&paymentBaseMode(x)==='upi').reduce((a,x)=>a+Number(x.amount||0),0);
+ const typeName=({tilak:'Tilak',barat:'Barat',reception:'Reception',engagement:'Engagement',birthday:'Birthday',anniversary:'Anniversary',griha_pravesh:'Griha Pravesh',mundan:'Mundan',naming:'Naming',marriage:'Marriage'}[t]||e.event_name||e.eventName||'Event');
+ const common=[['Event Type',typeName],['Event Date',eventDate(e)||'—']];
+ let person=[];
+ if(['tilak','barat','reception','engagement','marriage'].includes(t)){
+   person=[['Groom',groom],['Bride',bride]];
+ }else if(t==='birthday'){
+   person=[['Birthday Boy / Girl',val('birthday_name','name','person1','personName')],['Birthday Date',eventDate(e)||'—']];
+ }else if(t==='anniversary'){
+   person=[['Groom',val('husband_name','groom_name','groomName','dulha_name','dulhaName','person1')],['Bride',val('wife_name','bride_name','brideName','dulhan_name','dulhanName','person2')],['Anniversary Date',eventDate(e)||'—']];
+ }else if(t==='griha_pravesh'){
+   person=[['Head of Family',val('head_of_family','headOfFamily','griha_name','name','event_person','person1')]];
+ }else{
+   person=[['Main Person',val('name','person1','personName','event_person')]];
+ }
+ return {name:e.event_name||e.eventName||e.name||typeName,type:t,date:eventDate(e)||'',groom,bride,details:[...common,...person,['Cash Collection',money(cash)],['UPI Collection',money(upi)],['Cash + UPI',money(cash+upi)],['Welcome By',val('welcome_name','welcomeName','host_name','hostName')]]};
+}
+function calcTotals(){let cash=0,upi=0,gifts=0;entries.filter(x=>!x.__deleted).forEach(x=>{const mode=paymentBaseMode(x);const amt=Number(x.amount||0)||0;if(mode==='cash')cash+=amt;else if(mode==='upi')upi+=amt;if(mode==='gift'||norm(x.gift_type||x.giftType)==='gift')gifts++});return {cash,upi,total:cash+upi,gifts}}
+function exportExcel(){if(!window.XLSX){alert('Excel library load नहीं हुई।');return}const m=eventReportMeta(),t=calcTotals();const infoRows=m.details.map(d=>[d[0],d[1]]);const rows=[['SAGUN MANAGEMENT SYSTEM'],['EVENT REPORT'],[],['Event Name',m.name],...infoRows,[],['SUMMARY'],['Total Entries',entries.filter(x=>!x.__deleted).length],['Cash',t.cash],['UPI',t.upi],['Cash + UPI',t.total],['Gifts',t.gifts],[],['ENTRIES'],['#','Name','Village / City','Payment','Amount','Gift / Description','Date / Time','Status'],...reportRows()];const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:7},{wch:28},{wch:24},{wch:13},{wch:14},{wch:28},{wch:23},{wch:12}];const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Event Report');XLSX.writeFile(wb,'Sagun_Event_Report_'+m.name.replace(/[^a-zA-Z0-9_-]+/g,'_').slice(0,30)+'.xlsx')}
+function pdfMoney(n){return 'Rs '+Number(n||0).toLocaleString('en-IN')}
+function exportPdf(){
+ if(!window.jspdf?.jsPDF){alert('PDF library load nahi hui.');return}
+ const m=eventReportMeta(),t=calcTotals();
+ const doc=new jspdf.jsPDF({unit:'mm',format:'a4',compress:true});
+ const W=210,H=297,ML=14,MR=14,CONTENT=W-ML-MR;
+ const C={maroon:[105,0,27],maroon2:[139,18,49],cream:[250,246,238],cream2:[255,251,244],ink:[42,45,53],muted:[99,108,122],line:[231,224,217],green:[35,139,91],red:[176,58,67],gold:[199,145,38],white:[255,255,255]};
+ const clean=v=>String(v??'').replace(/[\u0000-\u001F]/g,' ').replace(/\s+/g,' ').trim()||'—';
+ const short=(v,n)=>clean(v).slice(0,n);
+ const money=n=>'Rs. '+Number(n||0).toLocaleString('en-IN');
+ const safeFile=String(m.name||'Event').replace(/[^a-zA-Z0-9_-]+/g,'_').slice(0,35)||'Event';
+ let y=14;
+ function fill(c){doc.setFillColor(...c)}
+ function text(c){doc.setTextColor(...c)}
+ function line(c){doc.setDrawColor(...c)}
+ function rounded(x,y,w,h,r,c){fill(c);doc.roundedRect(x,y,w,h,r,r,'F')}
+ function pageHeader(first=false){
+   if(first){
+     fill(C.maroon);doc.rect(0,0,W,42,'F');
+     fill(C.maroon2);doc.roundedRect(ML,9,42,24,6,6,'F');
+     text(C.white);doc.setFont('helvetica','bold');doc.setFontSize(13);doc.text('SAGUN',ML+7,20);doc.setFontSize(7);doc.text('MANAGEMENT',ML+5.5,27);doc.text('SYSTEM',ML+13,31);
+     doc.setFont('helvetica','bold');doc.setFontSize(20);doc.text('EVENT REPORT',62,18);
+     doc.setFont('helvetica','normal');doc.setFontSize(9);text([255,225,234]);doc.text('Event-wise collection and guest entries',62,26);
+     text(C.white);doc.setFontSize(8);doc.text('Generated Report',W-ML-30,18);doc.text(short(m.date||'',12),W-ML-30,25);
+     y=50;
+   }else{
+     fill(C.maroon);doc.rect(0,0,W,12,'F');text(C.white);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('SAGUN MANAGEMENT SYSTEM  |  EVENT REPORT',ML,8);y=19;
+   }
+ }
+ function footer(){
+   line(C.line);doc.setLineWidth(.35);doc.line(ML,H-10,W-MR,H-10);text(C.muted);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.text('Generated by Sagun Management System',ML,H-5);doc.text('Page '+doc.internal.getNumberOfPages(),W-MR-18,H-5)
+ }
+ function ensure(h){if(y+h>H-16){footer();doc.addPage();pageHeader(false);return true}return false}
+ function sectionTitle(label){text(C.maroon);doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text(label.toUpperCase(),ML,y);y+=6}
+ function statCard(x,w,label,value,accent){rounded(x,y,w,21,4,C.cream2);fill(accent);doc.roundedRect(x,y,2.2,21,1,1,'F');text(C.muted);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(label,x+6,y+7);text(C.ink);doc.setFontSize(10.5);doc.text(short(value,18),x+6,y+15)}
+ pageHeader(true);
+ // Event title
+ text(C.ink);doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text(short(m.name,42),ML,y); 
+ const eventType=short(m.details?.find(d=>d[0]==='Event Type')?.[1]||m.type,28);
+ text(C.muted);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('Type: '+eventType+'   |   Date: '+short(m.date||'—',20),ML,y+7);y+=14;
+ // Summary cards
+ const gap=4,sw=(CONTENT-gap*4)/5;
+ [['TOTAL ENTRIES',String(entries.filter(x=>!x.__deleted).length),C.maroon],['CASH',money(t.cash),C.green],['UPI',money(t.upi),[45,126,211]],['CASH + UPI',money(t.total),C.gold],['GIFTS',String(t.gifts),C.maroon2]].forEach((a,i)=>statCard(ML+i*(sw+gap),sw,a[0],a[1],a[2]));
+ y+=28;
+ // Event information
+ sectionTitle('Event Information');
+ const details=m.details||[];
+ const rows=[];
+ for(let i=0;i<details.length;i+=2) rows.push([details[i],details[i+1]]);
+ const bh=16;
+ rows.forEach(pair=>{
+   ensure(bh+3);
+   pair.forEach((d,col)=>{
+     if(!d)return;
+     const x=ML+col*(CONTENT/2+4),w=CONTENT/2-4;
+     rounded(x,y,w,bh,4,[255,255,255]);line(C.line);doc.setLineWidth(.35);doc.roundedRect(x,y,w,bh,4,4,'S');
+     text(C.muted);doc.setFont('helvetica','bold');doc.setFontSize(7);doc.text(short(d[0],24).toUpperCase(),x+6,y+6);
+     text(C.ink);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text(short(d[1],34),x+6,y+12);
+   });
+   y+=bh+4;
+ });
+ y+=3;
+ // Guest table
+ sectionTitle('Guest Entries');
+ const tableX=ML, widths=[9,35,38,23,25,27,25];
+ const headers=['#','Name','Village / City','Payment','Amount','Gift','Status'];
+ function tableHeader(){
+   fill(C.maroon);doc.roundedRect(tableX,y,CONTENT,8,2,2,'F');text(C.white);doc.setFont('helvetica','bold');doc.setFontSize(6.7);let x=tableX+3;headers.forEach((h,i)=>{doc.text(h,x,y+5.2);x+=widths[i]});y+=8;
+ }
+ tableHeader();
+ const rowsData=reportRows();
+ rowsData.forEach((r,idx)=>{
+   if(y>H-27){footer();doc.addPage();pageHeader(false);sectionTitle('Guest Entries');tableHeader()}
+   const deleted=String(r[7]||'')==='Deleted';
+   if(idx%2===0)fill([252,249,244]);else fill(C.white);doc.rect(tableX,y,CONTENT,8,'F');
+   if(deleted)fill([255,241,242]);
+   if(deleted)doc.rect(tableX,y,CONTENT,8,'F');
+   text(deleted?C.red:C.ink);doc.setFont('helvetica',deleted?'bold':'normal');doc.setFontSize(6.7);
+   const vals=[r[0],short(r[1],23),short(r[2],24),short(r[3],13),money(r[4]),short(r[5],16),deleted?'Deleted':'Active'];
+   let x=tableX+3;vals.forEach((v,i)=>{doc.text(String(v),x,y+5.2);x+=widths[i]});
+   line(C.line);doc.setLineWidth(.2);doc.line(tableX,y+8,W-MR,y+8);y+=8;
+ });
+ if(rowsData.length===0){text(C.muted);doc.setFontSize(8);doc.text('No guest entries found.',ML+4,y+6);y+=12}
+ const deletedCount=entries.filter(x=>x.__deleted).length;
+ if(deletedCount){
+   ensure(16);y+=4;rounded(ML,y,CONTENT,14,3,[255,248,232]);text([125,86,25]);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text('Deleted entries are shown for record keeping.',ML+6,y+6);doc.setFont('helvetica','normal');doc.text('Their amounts are excluded from active totals.',ML+6,y+11);y+=17;
+ }
+ footer();
+ doc.save('Sagun_Event_Report_'+safeFile+'.pdf');
+}
 async function doDelete(){const id=String(eventData.id||eventData.eventId||eventData.event_id||'');try{if(window.SagunStore)await window.SagunStore.deleteEvent(id)}catch(_){}try{const {data:{user}}=await sb.auth.getUser();if(user&&id){await sb.from('guests').delete().eq('user_id',user.id).eq('event_id',id);await sb.from('events').delete().eq('user_id',user.id).eq('id',id)}}catch(e){console.warn('Delete cloud:',e)}localStorage.removeItem('currentEventId');localStorage.removeItem('sgunmsActiveEvent');location.replace('home.html')}
-async function load(){eventData=await getActive();if(!eventData){location.replace('home.html');return}const id=String(eventData.id||eventData.eventId||eventData.event_id||'');localStorage.setItem('currentEventId',id);localStorage.setItem('sgunmsActiveEvent',JSON.stringify({id,type:typeOf(eventData)}));const local=await localEntries(eventData);const cloud=await cloudEntries(eventData);entries=mergeEntries(local,cloud);render()}
+async function load(){
+ eventData=await getActive();
+ if(!eventData){location.replace('home.html');return}
+ const id=String(eventData.id||eventData.eventId||eventData.event_id||'');
+ localStorage.setItem('currentEventId',id);localStorage.setItem('sgunmsActiveEvent',JSON.stringify({id,type:typeOf(eventData)}));
+ const local=await localEntries(eventData);
+ entries=mergeEntries(local,[]);
+ render();
+ updateGraph();
+ // Background cloud refresh: never block the first report render.
+ setTimeout(async()=>{const cloud=await cloudEntries(eventData);entries=mergeEntries(local,cloud);render();updateGraph()},50);
+}
 function setupForEntry(e){const t=typeOf(e);const d={...e,event_group:e.event_group||t,event_type:t,event_date:eventDate(e),welcome_name:e.welcome_name||''};if(t==='tilak'||t==='reception'){d.groom_name=e.groom_name||e.person1||'';d.bride_name=e.bride_name||e.person2||''}else if(t==='barat'){d.bride_name=e.bride_name||e.person1||'';d.groom_name=e.groom_name||e.person2||''}else if(t==='birthday'){d.name=e.name||e.birthday_name||e.person1||'';d.birthday_name=d.name;d.groom_name=d.name}else if(t==='anniversary'){d.husband_name=e.husband_name||e.groom_name||e.person1||'';d.wife_name=e.wife_name||e.bride_name||e.person2||'';d.groom_name=d.husband_name;d.bride_name=d.wife_name}else{d.name=e.name||e.person1||'';d.groom_name=d.name}return d}
+document.getElementById('entrySearch').addEventListener('input',()=>applyEntryFilters(true));
+document.getElementById('paymentFilter').addEventListener('change',()=>applyEntryFilters(true));
+document.getElementById('clearEntryFilter').onclick=()=>{document.getElementById('entrySearch').value='';document.getElementById('paymentFilter').value='all';applyEntryFilters(true)};
+function openEventGraph(){
+  const modal=document.getElementById('graphModal');
+  const piePane=document.getElementById('pieGraphPane');
+  const colPane=document.getElementById('columnGraphPane');
+  if(!modal||!piePane||!colPane)return;
+
+  const data=(filteredEntries||[]).filter(x=>!x.__deleted);
+  let cash=0, upi=0, gift=0;
+  data.forEach(x=>{
+    const m=norm(x.payment_mode||x.paymentMode||x.type);
+    const a=Number(x.amount||0)||0;
+    if(m==='cash')cash+=a;
+    if(m==='upi')upi+=a;
+    if(m==='gift'||norm(x.gift_type||x.giftType)==='gift')gift++;
+  });
+
+  const total=cash+upi;
+  const cashPct=total?cash/total*100:0;
+  const upiPct=total?upi/total*100:0;
+
+  piePane.innerHTML=`
+    <div class="chart-card popup-chart-card">
+      <div class="chart-head">
+        <div><h3>🥧 Collection Summary</h3><small>इस Event की payment distribution</small></div>
+      </div>
+      <div class="pie-wrap">
+        <div class="pie-chart" style="background:conic-gradient(#24a968 0 ${cashPct}%,#2d8eea ${cashPct}% ${cashPct+upiPct}%,#e6a52d ${cashPct+upiPct}% 100%)">
+          <span>${total?Math.round(cashPct+upiPct):0}%</span>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><i class="legend-dot" style="background:#24a968"></i><span>Cash</span><b>${money(cash)}</b></div>
+          <div class="legend-item"><i class="legend-dot" style="background:#2d8eea"></i><span>UPI</span><b>${money(upi)}</b></div>
+          <div class="legend-item"><i class="legend-dot" style="background:#e6a52d"></i><span>Gifts</span><b>${gift}</b></div>
+        </div>
+      </div>
+    </div>`;
+
+  const vals=[['Entries',data.length],['Cash',cash],['UPI',upi],['Gifts',gift]];
+  const top=Math.max(...vals.map(v=>Number(v[1])||0),1);
+  colPane.innerHTML=`
+    <div class="chart-card popup-chart-card">
+      <div class="chart-head">
+        <div><h3>📊 Entries & Collection</h3><small>Amount और entries का comparison</small></div>
+      </div>
+      <div class="column-chart">
+        ${vals.map(([label,v])=>{
+          const h=Math.max(4,((Number(v)||0)/top)*150);
+          const val=label==='Cash'||label==='UPI'?money(v):String(v);
+          return `<div class="col-item"><div class="col-value">${val}</div><div class="col-bar" style="height:${h}px"></div><div class="col-label">${label}</div></div>`;
+        }).join('')}
+      </div>
+    </div>`;
+
+  piePane.className='graph-pane-active';
+  colPane.className='graph-pane-hidden';
+  document.getElementById('pieGraphTab').classList.add('active');
+  document.getElementById('columnGraphTab').classList.remove('active');
+  modal.classList.add('show');
+}
+
+document.getElementById('graphBtn').onclick=openEventGraph;
+document.getElementById('closeGraph').onclick=()=>document.getElementById('graphModal').classList.remove('show');
+document.getElementById('pieGraphTab').onclick=()=>{
+  document.getElementById('pieGraphTab').classList.add('active');
+  document.getElementById('columnGraphTab').classList.remove('active');
+  document.getElementById('pieGraphPane').className='graph-pane-active';
+  document.getElementById('columnGraphPane').className='graph-pane-hidden';
+};
+document.getElementById('columnGraphTab').onclick=()=>{
+  document.getElementById('columnGraphTab').classList.add('active');
+  document.getElementById('pieGraphTab').classList.remove('active');
+  document.getElementById('columnGraphPane').className='graph-pane-active';
+  document.getElementById('pieGraphPane').className='graph-pane-hidden';
+};
+window.addEventListener('click',e=>{if(e.target===document.getElementById('graphModal'))document.getElementById('graphModal').classList.remove('show')});
+
+document.addEventListener('click',function(e){
+ const b=e.target.closest('.view-entry-btn');
+ if(!b)return;
+ const x=filteredEntries[Number(b.dataset.entryIndex)];
+ if(!x)return;
+ document.getElementById('entryViewTitle').textContent=(x.name||'Guest Entry')+' — Entry Details';
+ const rows=[
+  ['नाम',x.name||'—'],['गाँव / शहर',x.village||x.city||'—'],
+  ['Payment',x.payment_mode||x.paymentMode||x.type||'—'],['Amount',money(x.amount)],
+  ['Gift',x.gift_description||x.giftDescription||'—'],
+  ['Date / Time',new Date(x.created_at||x.createdAt||x.timestamp||Date.now()).toLocaleString('en-IN')]
+ ];
+ document.getElementById('entryViewContent').innerHTML=rows.map(r=>`<div class="box"><small>${esc(r[0])}</small><b>${esc(r[1])}</b></div>`).join('');
+ document.getElementById('entryViewModal').classList.add('show');
+});
+document.getElementById('closeEntryView').onclick=()=>document.getElementById('entryViewModal').classList.remove('show');
+window.addEventListener('click',e=>{if(e.target===document.getElementById('entryViewModal'))document.getElementById('entryViewModal').classList.remove('show')});
+
+
+let pendingEntryDelete=null;
+document.addEventListener('click',function(e){
+ const b=e.target.closest('.delete-entry-btn'); if(!b)return;
+ e.preventDefault();
+ const x=filteredEntries[Number(b.dataset.deleteEntry)]; if(!x)return;
+ pendingEntryDelete=x;
+ document.getElementById('entryDeleteModal').classList.add('show');
+});
+document.getElementById('cancelEntryDelete').onclick=()=>{
+  document.getElementById('entryDeleteModal').classList.remove('show');
+  pendingEntryDelete=null;
+};
+document.getElementById('confirmEntryDelete').onclick=async()=>{
+  const x=pendingEntryDelete;
+  document.getElementById('entryDeleteModal').classList.remove('show');
+  pendingEntryDelete=null;
+  if(!x)return;
+  const eid=eventData?.id||eventData?.eventId||eventData?.event_id||'';
+  const d=readDeleted(eid); d.add(entryKey(x)); saveDeleted(eid,d);
+  try{
+    const {data:{user}}=await sb.auth.getUser();
+    const id=String(x.id||x.guest_id||x.entry_id||'');
+    if(user&&id) await sb.from('guests').update({deleted:true,deleted_at:new Date().toISOString()}).eq('id',id).eq('user_id',user.id);
+  }catch(_){}
+  entries=markDeletedFlags(entries,eid);
+  render(); updateGraph();
+};
+
+
 document.getElementById('continueBtn').onclick=()=>{const id=String(eventData.id||eventData.eventId||eventData.event_id||'');const setup=setupForEntry(eventData);localStorage.setItem('eventSetupData',JSON.stringify(setup));localStorage.setItem('offlineSetupData',JSON.stringify(setup));localStorage.setItem('sagunSetup',JSON.stringify(setup));localStorage.setItem('currentEventId',id);localStorage.setItem('currentEventType',typeOf(eventData));localStorage.setItem('currentMarriageEvent',typeOf(eventData));location.href=(pages[typeOf(eventData)]||'generic-event-entry.html')+'?event_id='+encodeURIComponent(id)};document.getElementById('pdfBtn').onclick=exportPdf;document.getElementById('excelBtn').onclick=exportExcel;document.getElementById('deleteBtn').onclick=()=>document.getElementById('deleteModal').classList.add('show');document.getElementById('modalPdf').onclick=exportPdf;document.getElementById('modalExcel').onclick=exportExcel;document.getElementById('cancelDelete').onclick=()=>document.getElementById('deleteModal').classList.remove('show');document.getElementById('confirmDelete').onclick=doDelete;window.addEventListener('DOMContentLoaded',load);
 
 
 </script>
   <script src="../js/process-ui.js" data-sagun-process-js="1"></script>
 <script src="../js/topbar.js"></script>
-</body></html>
+<script id="event-report-user-desktop-mobile-final">
+(function(){
+  const KEYS=['sgunms_profile_v2','sgunms_profile_v1','userProfile','profile','currentUser','sagunUser'];
+  function obj(v){try{const x=JSON.parse(v||'null');return x&&typeof x==='object'?x:{}}catch(e){return {}}}
+  function cached(){for(const k of KEYS){const x=obj(localStorage.getItem(k));if(Object.keys(x).length)return x}return {}}
+  function apply(name,email,photo){
+    name=String(name||'').trim(); email=String(email||'').trim();
+    if(!name) return;
+    const els=document.querySelectorAll('#sagunProfileName,#sagunProfilePanelName');
+    els.forEach(el=>{el.textContent=name;el.title=name;el.style.display='inline-block';});
+    const emailEl=document.getElementById('sagunProfileEmail');if(emailEl&&email)emailEl.textContent=email;
+    const first=(name[0]||'U').toUpperCase();
+    document.querySelectorAll('#sagunAvatar,#sagunAvatarBig').forEach(el=>{
+      if(photo){el.innerHTML='<img src="'+String(photo).replace(/"/g,'')+'" alt="" referrerpolicy="no-referrer">';}
+      else if(!el.querySelector('img')) el.textContent=first;
+    });
+  }
+  async function refresh(){
+    const c=cached();
+    apply(c.full_name||c.name||c.fullName||c.display_name||c.username,c.email,c.avatar_url||c.photo_url||c.picture);
+    try{
+      const client=window.sb||window.supabaseClient;
+      if(!client?.auth?.getUser)return;
+      const r=await client.auth.getUser(),u=r?.data?.user;
+      if(!u)return;
+      const m=u.user_metadata||{};
+      let name=m.full_name||m.name||m.display_name||m.username||m.user_name||'';
+      let photo=m.avatar_url||m.picture||m.photo_url||'';
+      if(!name){
+        try{
+          const q=await client.from('profiles').select('full_name,name,display_name,avatar_url,photo_url').or('id.eq.'+u.id+',user_id.eq.'+u.id).maybeSingle();
+          if(!q.error&&q.data){name=q.data.full_name||q.data.name||q.data.display_name||'';photo=q.data.avatar_url||q.data.photo_url||'';}
+        }catch(e){}
+      }
+      if(!name)name=u.email?u.email.split('@')[0]:'User';
+      apply(name,u.email,photo);
+      try{localStorage.setItem('sgunms_profile_v2',JSON.stringify({name,email:u.email,avatar_url:photo,updatedAt:Date.now()}));}catch(e){}
+    }catch(e){}
+  }
+  function boot(){refresh();setTimeout(refresh,300);setTimeout(refresh,1200);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+  new MutationObserver(()=>{if(document.getElementById('sagunProfileName')&&!document.getElementById('sagunProfileName').textContent.trim())refresh();}).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
 
-<script>window.addEventListener('sagun:sync',function(){ if(typeof loadReport==='function') loadReport(); });</script>
+
+
+<script>
+(function(){
+  function resetEntryScroll(){
+    const box=document.querySelector('.entries-scroll');
+    if(box) box.scrollLeft=0;
+  }
+  window.addEventListener('load',resetEntryScroll);
+  const body=document.getElementById('entryBody');
+  if(body){new MutationObserver(function(){resetEntryScroll();}).observe(body,{childList:true});}
+})();
+</script>
+
+</body></html>

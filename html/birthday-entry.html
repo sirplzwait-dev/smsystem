@@ -2931,6 +2931,7 @@ async function submitBirthday(){
       birthdaySetupNameFallback();
 
   const row={
+    id:(crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+"-"+Math.random().toString(36).slice(2)),
     user_id:userId,
     name:name.toUpperCase(),
     village:village.toUpperCase(),
@@ -2958,7 +2959,7 @@ async function submitBirthday(){
   // Cloud sync is attempted, but local save is kept as the reliable fallback.
   if(navigator.onLine){
     try{
-      const r=await sb.from("guests").insert([row]);
+      const r=await sb.from("guests").upsert([row], {onConflict:"id"});
       if(r.error) console.warn("Birthday cloud sync:",r.error.message);
     }catch(e){console.warn(e);}
   }

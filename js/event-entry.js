@@ -117,10 +117,12 @@ async function insertGuest(userId, entry){
     gift_description:entry.gift_description
   };
 
-  let result = await sb.from("guests").insert([full]);
+  full.id = entry.id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+"-"+Math.random().toString(36).slice(2));
+  let result = await sb.from("guests").upsert([full], {onConflict:"id"});
   if(result.error){
     // Backward compatibility with older guests table.
-    result = await sb.from("guests").insert([{
+    result = await sb.from("guests").upsert([{
+      id:full.id,
       user_id:userId,name:entry.name,amount:entry.amount,
       state:"Bihar",district:"",village:entry.village,
       payment_mode:entry.payment_mode

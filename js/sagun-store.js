@@ -69,6 +69,19 @@
   const uuidRe=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   function idOf(x){return String(x?.id||x?.eventId||x?.event_id||x?.key||'').trim()}
   function entryId(x){return String(x?.id||x?.entry_id||'').trim()}
+  function entryFingerprint(x){
+    const norm=v=>String(v??'').trim().toLowerCase().replace(/\s+/g,' ');
+    return [norm(x?.user_id||x?.userId||x?.uid||''),norm(x?.event_id||x?.eventId||''),norm(x?.name||x?.guestName||''),norm(x?.village||x?.city||x?.guestVillage||''),Number(x?.amount??x?.cashAmount??x?.value??0)||0,norm(x?.payment_mode||x?.paymentMode||x?.mode||x?.type||''),norm(x?.gift_type||x?.giftType||''),norm(x?.gift_description||x?.giftDescription||x?.gift_item||x?.giftItem||''),norm(x?.event_type||x?.eventType||''),norm(x?.event_date||x?.eventDate||''),norm(x?.event_person||x?.eventPerson||''),norm(x?.event_person_2||x?.eventPerson2||'')].join('|');
+  }
+  function dedupeEntryRows(rows){const out=[],seen=new Set();for(const x of (Array.isArray(rows)?rows:[])){if(!x||typeof x!=='object')continue;const k=entryFingerprint(x);if(seen.has(k))continue;seen.add(k);out.push(x)}return out}
+  async function cleanupCloudDuplicateEntries(userId,rows){
+    const seen=new Map(),keep=[],dups=[];
+    const sorted=(Array.isArray(rows)?rows:[]).slice().sort((a,b)=>new Date(a?.created_at||0)-new Date(b?.created_at||0));
+    for(const row of sorted){const k=entryFingerprint(row);if(seen.has(k)){const id=entryId(row);if(id)dups.push(id)}else{seen.set(k,row);keep.push(row)}}
+    if(dups.length){const c=cloud();for(let i=0;i<dups.length;i+=100){try{await c.from('guests').delete().eq('user_id',userId).in('id',dups.slice(i,i+100))}catch(e){console.warn('Duplicate cleanup:',e)}}}
+    return keep;
+  }
+
   function eventListFromLegacy(scopeKey){
     const uid=scopeKey.startsWith('user:')?scopeKey.slice(5):'';
     if(uid)return arr('sagunEventHistory_'+uid).filter(x=>String(x?.user_id||x?.userId||'')===uid);
@@ -178,7 +191,7 @@
       if(!x||typeof x!=='object')continue;
       const y=normalize(x),id=entryId(y),eid=y.event_id;
       if(!eid)continue;
-      const dt=y.created_at||y.createdAt||y.timestamp||'';let minute='';try{const d=new Date(dt);if(!isNaN(d))minute=d.toISOString().slice(0,16)}catch(_){} const k=id?'id:'+id:'fp:'+eid+'|'+String(y.user_id||y.userId||'')+'|'+String(y.name||'').trim().toLowerCase()+'|'+String(y.village||y.city||'').trim().toLowerCase()+'|'+String(y.payment_mode||y.paymentMode||y.type||'').trim().toLowerCase()+'|'+String(y.amount||0)+'|'+String(y.gift_description||y.giftDescription||'').trim().toLowerCase()+'|'+minute;
+      const k=entryFingerprint(y);
       if(seen.has(k))continue; seen.add(k); out.push({...y});
     }
     return out;
@@ -194,7 +207,7 @@
     for(const x of (Array.isArray(rows)?rows:[])){
       const y={...x,event_id:String(x?.event_id||x?.eventId||'').trim(),eventId:String(x?.event_id||x?.eventId||'').trim()};
       if(!y.event_id)continue;
-      const dt=y.created_at||y.createdAt||y.timestamp||'';let minute='';try{const d=new Date(dt);if(!isNaN(d))minute=d.toISOString().slice(0,16)}catch(_){} const k=entryId(y)?'id:'+entryId(y):'fp:'+y.event_id+'|'+String(y.user_id||y.userId||'')+'|'+String(y.name||'').trim().toLowerCase()+'|'+String(y.village||y.city||'').trim().toLowerCase()+'|'+String(y.payment_mode||y.paymentMode||y.type||'').trim().toLowerCase()+'|'+String(y.amount||0)+'|'+String(y.gift_description||y.giftDescription||'').trim().toLowerCase()+'|'+minute;
+      const k=entryId(y)?'id:'+entryId(y):'fp:'+y.event_id+'|'+String(y.name||'').trim().toLowerCase()+'|'+String(y.amount||0)+'|'+String(y.created_at||'');
       if(seen.has(k))continue; seen.add(k); list.push(y);
     }
     p[scopeKey]=list; put(ENTRIES,p); return list;
@@ -243,7 +256,7 @@
           sb.from('guests').select('*').eq('user_id',userId).order('created_at',{ascending:false})
         ]);
         if(!er.error) saveCloudEvents(key,er.data||[]);
-        if(!gr.error) saveCloudEntries(key,gr.data||[]);
+        if(!gr.error){ const cleanRows=await cleanupCloudDuplicateEntries(userId,gr.data||[]); saveCloudEntries(key,cleanRows); }
         notifyChanged('all');
         try{window.dispatchEvent(new CustomEvent('sagun:cloud-hydrated',{detail:{userId}}));}catch(_){}
         return !er.error && !gr.error;
@@ -313,7 +326,7 @@
         await hydrateCloud(u.id); return true;
       }finally{syncRunning=false;}
     },
-    EVENTS_KEY:EVENTS,ENTRIES_KEY:ENTRIES};
+    EVENTS_KEY:EVENTS,ENTRIES_KEY:ENTRIES,entryFingerprint,dedupeEntryRows};
 
   // Start silent background sync after the UI is ready. Never block first paint.
   window.addEventListener('load',()=>setTimeout(()=>{scheduleBackgroundSync(1200);},1200));

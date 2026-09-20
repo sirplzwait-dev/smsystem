@@ -21,6 +21,13 @@ let reportData = [];
 let shagunChartInstance = null;
 let isChartVisible = false;
 
+function paymentBaseMode(mode){
+    const raw=String(mode||'').trim().toUpperCase();
+    if(raw==='CASH' || raw==='CASH+GIFT' || raw==='GIFT+CASH') return 'CASH';
+    if(raw==='UPI' || raw==='UPI+GIFT' || raw==='GIFT+UPI') return 'UPI';
+    return raw;
+}
+
 function safeLocalArray(key){
     try{
         const value = JSON.parse(localStorage.getItem(key) || "[]");
@@ -316,8 +323,9 @@ function renderSelectedChart() {
         let cash = 0, upi = 0;
         reportData.forEach(g => {
             let amt = Number(g.amount) || 0;
-            if(g.payment_mode === 'UPI') upi += amt;
-            else cash += amt;
+            const mode = paymentBaseMode(g.payment_mode);
+            if(mode === 'UPI') upi += amt;
+            else if(mode === 'CASH') cash += amt;
         });
         labels = ['Cash (कैश)', 'UPI (यूपीआई)'];
         dataValues = [cash, upi];
@@ -404,77 +412,36 @@ async function backupData(){
     a.click();
 }
 
-function exportExcel(){
-    const rows = reportData.map(g => ({
-        Name: g.name || "",
-        State: g.state || "",
-        District: g.district || "",
-        Village: g.village || "",
-        Event: eventLabel(g.event_type),
-        Mode: g.payment_mode || "Cash",
-        Amount: g.amount || 0
-    }));
-
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(rows);
-    XLSX.utils.book_append_sheet(wb, ws, "Report");
-    XLSX.writeFile(wb, "Shagun_Report.xlsx");
+function reportEventPeopleMeta(e){
+    const normalizeType=(value)=>{const raw=String(value||'').toLowerCase();if(raw.includes('tilak')||raw.includes('तिलक'))return'tilak';if(raw.includes('barat')||raw.includes('baraat')||raw.includes('बरात'))return'barat';if(raw.includes('reception')||raw.includes('रिसेप्शन'))return'reception';if(raw.includes('birthday')||raw.includes('जन्मदिन'))return'birthday';if(raw.includes('anniversary')||raw.includes('वर्षगांठ'))return'anniversary';if(raw.includes('engagement')||raw.includes('सगाई'))return'engagement';if(raw.includes('griha')||raw.includes('pravesh')||raw.includes('गृह प्रवेश'))return'griha_pravesh';return raw.trim()};
+    const t=normalizeType([e?.event_type,e?.eventType,e?.type,e?.event_name,e?.eventName,e?.name,e?.title].filter(Boolean).join(' '));
+    const val=(...keys)=>{for(const k of keys){const v=e?.[k];if(v!==undefined&&v!==null&&String(v).trim()!=='')return String(v).trim()}return'—'};
+    if(['tilak','barat','reception','engagement'].includes(t))return {type:t,label1:'Groom',person1:val('groom_name','groomName','dulha_name','dulhaName','person1'),label2:'Bride',person2:val('bride_name','brideName','dulhan_name','dulhanName','person2')};
+    if(t==='anniversary')return {type:t,label1:'Groom',person1:val('husband_name','groom_name','groomName','dulha_name','dulhaName','person1'),label2:'Bride',person2:val('wife_name','bride_name','brideName','dulhan_name','dulhanName','person2')};
+    if(t==='birthday')return {type:t,label1:'Birthday Boy / Girl',person1:val('birthday_name','name','person1','personName'),label2:'',person2:''};
+    if(t==='griha_pravesh')return {type:t,label1:'Head of Family',person1:val('head_of_family','headOfFamily','griha_name','name','event_person','person1'),label2:'',person2:''};
+    return {type:t,label1:'Main Person',person1:val('name','event_person','person1','personName'),label2:'',person2:''};
 }
+
+function exportExcel(){
+    const rows = reportData.map(g => {
+        const p=reportEventPeopleMeta(g);
+        return {Name:g.name||"",State:g.state||"",District:g.district||"",Village:g.village||"",Event:eventLabel(g.event_type),"Event Person":`${p.label1}: ${p.person1}${p.label2 ? ` | ${p.label2}: ${p.person2}` : ""}`,Mode:g.payment_mode||"Cash",Amount:g.amount||0};
+    });
+    const wb=XLSX.utils.book_new();const ws=XLSX.utils.json_to_sheet(rows);XLSX.utils.book_append_sheet(wb,ws,"Report");XLSX.writeFile(wb,"Shagun_Report.xlsx");
+}
+
 
 function exportPDF(){
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF("p", "mm", "a4");
-
-    let total = 0;
-    let cash = 0;
-    let upi = 0;
-
-    reportData.forEach(g => {
-        let amt = Number(g.amount) || 0;
-        total += amt;
-        if(g.payment_mode === "UPI") upi += amt;
-        else cash += amt;
-    });
-
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "bold");
-    doc.text("SHAGUN REPORT", 105, 15, {align: "center"});
-
-    doc.setFontSize(9);
-    doc.text(`Total Guests: ${reportData.length} | Cash: Rs.${cash.toLocaleString("en-IN")} | UPI: Rs.${upi.toLocaleString("en-IN")} | Total: Rs.${total.toLocaleString("en-IN")}`, 105, 22, {align: "center"});
-
-    const rows = reportData.map((g, i) => [
-        i + 1,
-        g.name || "",
-        g.state || "",
-        g.district || "",
-        g.village || "",
-        eventLabel(g.event_type),
-        g.payment_mode || "Cash",
-        g.amount || 0
-    ]);
-
-    doc.autoTable({
-        startY: 28,
-        head: [["SL", "NAME", "STATE", "DISTRICT", "VILLAGE", "EVENT", "MODE", "AMOUNT"]],
-        body: rows,
-        theme: "grid",
-        headStyles: { fillColor: [128, 0, 0], textColor: [255, 255, 255], halign: "center" },
-        styles: { fontSize: 8, cellPadding: 2, valign: "middle" },
-        columnStyles: {
-            0: { cellWidth: 10, halign: "center" },
-            1: { cellWidth: 45 },
-            2: { cellWidth: 25 },
-            3: { cellWidth: 30 },
-            4: { cellWidth: 25 },
-            5: { cellWidth: 28 },
-            6: { cellWidth: 18, halign: "center" },
-            7: { cellWidth: 22, halign: "right" }
-        }
-    });
-
+    const { jsPDF }=window.jspdf;const doc=new jsPDF("p","mm","a4");let total=0,cash=0,upi=0;
+    reportData.forEach(g=>{const amt=Number(g.amount)||0;total+=amt;if(String(g.payment_mode).toUpperCase()==="UPI")upi+=amt;else cash+=amt;});
+    doc.setFontSize(16);doc.setFont("helvetica","bold");doc.text("SHAGUN REPORT",105,15,{align:"center"});
+    doc.setFontSize(9);doc.text(`Total Guests: ${reportData.length} | Cash: Rs.${cash.toLocaleString("en-IN")} | UPI: Rs.${upi.toLocaleString("en-IN")} | Total: Rs.${total.toLocaleString("en-IN")}`,105,22,{align:"center"});
+    const rows=reportData.map((g,i)=>{const p=reportEventPeopleMeta(g);return [i+1,g.name||"",g.state||"",g.district||"",g.village||"",eventLabel(g.event_type),`${p.label1}: ${p.person1}${p.label2 ? ` | ${p.label2}: ${p.person2}` : ""}`,g.payment_mode||"Cash",g.amount||0];});
+    doc.autoTable({startY:28,head:[["SL","NAME","STATE","DISTRICT","VILLAGE","EVENT","EVENT PERSON","MODE","AMOUNT"]],body:rows,theme:"grid",headStyles:{fillColor:[128,0,0],textColor:[255,255,255],halign:"center"},styles:{fontSize:7,cellPadding:1.6,valign:"middle"},columnStyles:{0:{cellWidth:8,halign:"center"},1:{cellWidth:30},2:{cellWidth:18},3:{cellWidth:22},4:{cellWidth:20},5:{cellWidth:24},6:{cellWidth:35},7:{cellWidth:18},8:{cellWidth:18}}});
     doc.save("Shagun_Report.pdf");
 }
+
 
 window.onload = function(){
     loadReport();

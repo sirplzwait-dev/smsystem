@@ -31,50 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Fullscreen Loading Overlay */
-        #pageLoader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(135deg, #600000, #800000, #b38f00, #ffd700);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            color: #fff;
-            text-align: center;
-            font-family: 'Georgia', serif;
-            transition: opacity 0.5s ease;
-        }
-        .loader-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            border-top: 5px solid #FFD700;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .loader-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #FFD700;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        }
-        .loader-subtext {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-
-        .popup{
+.popup{
             display:none;
             position:fixed;
             top:0;
@@ -692,17 +649,15 @@ window.TEST_USER_ID = localStorage.getItem("test_user_id") || "offline-test-user
 </script>
 <link rel="stylesheet" href="../css/sgunms-global-background.css">
   <link rel="stylesheet" href="../css/process-ui.css">
+
+<style id="no-entry-loading-overlay">
+#pageLoader,.page-loader,.loading-overlay,.loader-overlay,
+.loader-text,.loader-subtext{display:none!important;visibility:hidden!important;opacity:0!important}
+</style>
+
 </head>
-<body>
-
-    <!-- Loading Overlay -->
-    <div id="pageLoader">
-        <div class="loader-spinner"></div>
-        <div class="loader-text">✨ समारोह विवरण लोड हो रहा है... ✨</div>
-        <div class="loader-subtext">कृपया थोड़ा इंतज़ार करें, दूल्हा-दुल्हन की जानकारी आ रही है।</div>
-    </div>
-
-    <!-- Top Navigation Bar -->
+<body class="entry-ready">
+<!-- Top Navigation Bar -->
     <div class="top-header-bar">
         <div class="top-logo">SAGUN SYSTEM</div>
         <div class="header-btns">
@@ -870,13 +825,12 @@ document.addEventListener("keydown", function(e){
 </script>
 
 <script>
-window.onload = async function() {
-    await loadSetup();
+window.onload = function() {
+    // Local cache first: page is usable immediately.
+    try { loadSetup(true); } catch(e) { console.warn(e); }
     updateMsg();
-
-    if(navigator.onLine){
-        syncData();
-    }
+    // Cloud sync is always background and never blocks first paint.
+    if(navigator.onLine) setTimeout(() => syncData().catch?.(()=>{}), 100);
 };
 
 window.addEventListener("online", () => {
@@ -1038,95 +992,70 @@ async function saveGuest() {
     document.getElementById('guestName').focus();
 }
 
-async function loadSetup(){
+async function loadSetup(backgroundOnly=false){
     let data = null;
-
     try {
-        const result = await sb.auth.getUser();
-        const user = result.data.user;
+        const localData = localStorage.getItem("offlineSetupData") ||
+                          localStorage.getItem("eventSetupData") ||
+                          localStorage.getItem("sagunSetup");
+        if(localData) data = JSON.parse(localData);
+    } catch(e) {}
 
-        if (user) {
-            const res = await sb.from("setup").select("*").eq("user_id", user.id).single();
-            if (res.data) {
-                data = res.data;
-                localStorage.setItem("offlineSetupData", JSON.stringify(data));
-            }
-        }
-    } catch (e) {
-        console.log("Network error or offline, loading from local storage.");
-    }
+    // Render cached setup immediately.
+    if(data) renderSetup(data);
 
-    if (!data) {
-        const localData = localStorage.getItem("offlineSetupData");
-        if (localData) {
-            data = JSON.parse(localData);
-        }
-    }
-
-    if (!data) {
-        console.log("No setup data found offline or online.");
-        document.getElementById("pageLoader").style.display = "none";
+    // No cache: show the page shell; cloud may fill it later.
+    if(backgroundOnly && !data) {
+        fetchSetupFromCloud();
         return;
     }
+    // Background cloud refresh even when cache exists.
+    fetchSetupFromCloud();
+}
 
+function renderSetup(data){
+    if(!data) return;
     document.getElementById("dateDisplay").innerHTML = "दिनांक : " + (data.event_date || "");
-
     const titleDisplay = document.getElementById("mainTitleText");
     const firstPhoto = document.getElementById("firstPhoto");
     const firstLabel = document.getElementById("firstLabel");
     const firstName = document.getElementById("firstName");
-    
     const secondPhoto = document.getElementById("secondPhoto");
     const secondLabel = document.getElementById("secondLabel");
     const secondName = document.getElementById("secondName");
-    // एक ही Entry Page: Tilak / Barat / Reception dynamic
     const eventType = "tilak";
-
     const eventConfig = {
-        sagai:     {title:"💍 शुभ सगाई / रोका", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
-        haldi:     {title:"🌼 शुभ हल्दी समारोह", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
-        mehndi:    {title:"🌿 शुभ मेहंदी समारोह", first:"bride", firstLabel:"आयुष्मती", second:"groom", secondLabel:"चिरंजीवी"},
-        sangeet:   {title:"🎶 शुभ संगीत समारोह", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
-        tilak:     {title:"🪔 शुभ तिलक", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
-        barat:     {title:"🥁 शुभ बरात", first:"bride", firstLabel:"आयुष्मती", second:"groom", secondLabel:"चिरंजीवी"},
-        reception: {title:"🎉 शुभ Reception", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
-        vidaai:    {title:"🚗 शुभ विदाई समारोह", first:"bride", firstLabel:"आयुष्मती", second:"groom", secondLabel:"चिरंजीवी"}
+        sagai:{title:"💍 शुभ सगाई / रोका",first:"groom",firstLabel:"चिरंजीवी",second:"bride",secondLabel:"आयुष्मती"},
+        haldi:{title:"🌼 शुभ हल्दी समारोह",first:"groom",firstLabel:"चिरंजीवी",second:"bride",secondLabel:"आयुष्मती"},
+        mehndi:{title:"🌿 शुभ मेहंदी समारोह",first:"bride",firstLabel:"आयुष्मती",second:"groom",secondLabel:"चिरंजीवी"},
+        sangeet:{title:"🎶 शुभ संगीत समारोह",first:"groom",firstLabel:"चिरंजीवी",second:"bride",secondLabel:"आयुष्मती"},
+        tilak:{title:"🪔 शुभ तिलक",first:"groom",firstLabel:"चिरंजीवी",second:"bride",secondLabel:"आयुष्मती"},
+        barat:{title:"🥁 शुभ बरात",first:"bride",firstLabel:"आयुष्मती",second:"groom",secondLabel:"चिरंजीवी"},
+        reception:{title:"🎉 शुभ Reception",first:"groom",firstLabel:"चिरंजीवी",second:"bride",secondLabel:"आयुष्मती"},
+        vidaai:{title:"🚗 शुभ विदाई समारोह",first:"bride",firstLabel:"आयुष्मती",second:"groom",secondLabel:"चिरंजीवी"}
     };
+    const cfg=eventConfig[eventType];
+    titleDisplay.innerHTML=cfg.title; document.title="🪔 शुभ तिलक | Sagun Management System";
+    const people={groom:{photo:data.groom_photo_url||"../assets/images/groom.jpg",name:data.groom_name||""},bride:{photo:data.bride_photo_url||"../assets/images/bride.jpg",name:data.bride_name||""}};
+    firstPhoto.src=people[cfg.first].photo; firstLabel.innerHTML=cfg.firstLabel; firstName.innerHTML=people[cfg.first].name;
+    secondPhoto.src=people[cfg.second].photo; secondLabel.innerHTML=cfg.secondLabel; secondName.innerHTML=people[cfg.second].name;
+    localStorage.setItem("currentMarriageEvent","tilak");
+    const welcomeBy=document.getElementById("welcomeByDisplay"); if(welcomeBy) welcomeBy.innerText=data.welcome_name?"— स्वागतकर्ता : "+data.welcome_name:"";
+    if(data.qr_url) document.getElementById("upiQrImage").src=data.qr_url;
+}
 
-    const cfg = eventConfig[eventType];
-    titleDisplay.innerHTML = cfg.title;
-    document.title = "🪔 शुभ तिलक | Sagun Management System";
-
-    const people = {
-        groom:{photo:data.groom_photo_url || "../assets/images/groom.jpg",name:data.groom_name || ""},
-        bride:{photo:data.bride_photo_url || "../assets/images/bride.jpg",name:data.bride_name || ""}
-    };
-    firstPhoto.src = people[cfg.first].photo;
-    firstLabel.innerHTML = cfg.firstLabel;
-    firstName.innerHTML = people[cfg.first].name;
-    secondPhoto.src = people[cfg.second].photo;
-    secondLabel.innerHTML = cfg.secondLabel;
-    secondName.innerHTML = people[cfg.second].name;
-
-    localStorage.setItem("currentMarriageEvent", "tilak");
-
-    // Setup से स्वागतकर्ता का नाम।
-    const welcomeBy = document.getElementById("welcomeByDisplay");
-    if(welcomeBy){
-        welcomeBy.innerText = data.welcome_name ? "— स्वागतकर्ता : " + data.welcome_name : "";
-    }
-
-    if(data.qr_url){
-        document.getElementById("upiQrImage").src = data.qr_url;
-    }
-
-    const loader = document.getElementById("pageLoader");
-    if(loader) {
-        loader.style.opacity = "0";
-        setTimeout(() => {
-            loader.style.display = "none";
-        }, 500);
-    }
+async function fetchSetupFromCloud(){
+    try{
+        const result=await sb.auth.getUser();
+        const user=result?.data?.user;
+        if(!user) return;
+        const res=await sb.from("setup").select("*").eq("user_id",user.id).maybeSingle();
+        if(res?.data){
+            localStorage.setItem("offlineSetupData",JSON.stringify(res.data));
+            localStorage.setItem("eventSetupData",JSON.stringify(res.data));
+            renderSetup(res.data);
+        }
+    }catch(e){ console.log("Background setup sync skipped"); }
 }
     
 async function syncData(){

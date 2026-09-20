@@ -43,6 +43,8 @@ async function loadData() {
     const { data, error } = await sb.from("guests").select("*").eq("user_id", currentUserId).order('created_at', { ascending: false });
     if(error) { console.error("Error:", error); return; }
 
+    const seen=new Set();
+    data=(data||[]).filter(g=>{const k=[g.event_id||g.eventId||'',g.name||'',g.village||'',Number(g.amount||0),g.payment_mode||g.paymentMode||'',g.gift_description||''].map(v=>String(v).trim().toLowerCase()).join('|');if(seen.has(k))return false;seen.add(k);return true;});
     let tbody = document.getElementById('tableBody');
     tbody.innerHTML = "";
     let total = 0;
