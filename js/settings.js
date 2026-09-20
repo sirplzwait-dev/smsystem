@@ -23,13 +23,41 @@ async function loadProfile(){
   $('userMode').textContent=guest?'Guest / Local mode':(user?'Logged-in account':'Account / Local session');
   $('sessionText').textContent=guest?'Guest session active':(user?'Logged-in session active':'Session information available in this browser');
 }
-function openPanel(id){
- document.querySelectorAll('.settings-panel').forEach(p=>p.classList.remove('open'));
- document.querySelectorAll('.settings-card').forEach(c=>c.classList.remove('active'));
- const p=$(id); if(!p)return; p.classList.add('open'); const c=document.querySelector('[data-panel="'+id+'"]'); if(c)c.classList.add('active'); p.scrollIntoView({behavior:'smooth',block:'nearest'});
+function openPanel(id, updateHash=true){
+  const p=$(id);
+  if(!p)return;
+  document.querySelectorAll('.settings-panel').forEach(function(x){
+    x.classList.remove('open');
+    x.style.setProperty('display','none','important');
+  });
+  document.querySelectorAll('.settings-card').forEach(function(c){c.classList.remove('active');});
+  p.classList.add('open');
+  p.style.setProperty('display','block','important');
+  const c=document.querySelector('[data-panel="'+id+'"]');
+  if(c)c.classList.add('active');
+  if(updateHash){
+    const map={profilePanel:'profile',securityPanel:'data-security',syncPanel:'sync',pwaPanel:'pwa',guestDataPanel:'guest-data'};
+    if(map[id]) history.replaceState(null,'','#'+map[id]);
+  }
+  p.scrollIntoView({behavior:'smooth',block:'start'});
 }
-document.querySelectorAll('.settings-card').forEach(c=>c.addEventListener('click',()=>openPanel(c.dataset.panel)));
-document.querySelectorAll('.close-panel').forEach(b=>b.addEventListener('click',()=>{b.closest('.settings-panel').classList.remove('open');document.querySelectorAll('.settings-card').forEach(c=>c.classList.remove('active'));}));
+document.querySelectorAll('.settings-card').forEach(function(c){
+  c.addEventListener('click',function(e){
+    e.preventDefault();
+    if(window.openSettingsPanel) window.openSettingsPanel(c.dataset.panel);
+    else openPanel(c.dataset.panel);
+  });
+});
+document.querySelectorAll('.close-panel').forEach(function(b){
+  b.addEventListener('click',function(){
+    const p=b.closest('.settings-panel');
+    if(p){
+      p.style.setProperty('display','none','important');
+      p.classList.remove('open');
+    }
+  });
+});
+
 $('saveProfile').addEventListener('click',()=>{const p={name:$('profileName').value.trim(),mobile:$('profileMobile').value.trim(),place:$('profilePlace').value.trim()};localStorage.setItem(PROFILE_KEY,JSON.stringify(p));$('userName').textContent=p.name||'Account User';$('profileStatus').textContent='✓ Saved';setTimeout(()=>$('profileStatus').textContent='',1800);});
 $('settingsLogout').addEventListener('click',async()=>{if(confirm('क्या आप Logout करना चाहते हैं?')){try{if(sb)await sb.auth.signOut();}catch(e){}try{localStorage.removeItem('guestMode');localStorage.removeItem('guestAuth');}catch(e){}location.href='login.html';}});
 
@@ -132,4 +160,11 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredIns
 $('installPwa').addEventListener('click',async()=>{if(!deferredInstall){$('pwaStatus').textContent='इस browser/device पर Install option अभी उपलब्ध नहीं है।';return;}deferredInstall.prompt();const r=await deferredInstall.userChoice;$('pwaStatus').textContent=r.outcome==='accepted'?'✓ SGUNMS install शुरू हो गया':'Install cancel किया गया';deferredInstall=null;});
 window.addEventListener('appinstalled',()=>{$('pwaStatus').textContent='✓ SGUNMS installed';deferredInstall=null;});
 loadProfile();
+// Open the requested settings panel when coming from the Home profile menu.
+try{
+  const hash=(location.hash||'').replace(/^#/,'');
+  const map={profile:'profilePanel','data-security':'securityPanel','sync:'syncPanel','pwa:'pwaPanel'};
+  const panelId=map[hash];
+  if(panelId) setTimeout(()=>openPanel(panelId),0);
+}catch(e){}
 })();

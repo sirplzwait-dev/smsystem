@@ -178,7 +178,7 @@
       if(!x||typeof x!=='object')continue;
       const y=normalize(x),id=entryId(y),eid=y.event_id;
       if(!eid)continue;
-      const k=id?'id:'+id:'fp:'+eid+'|'+String(y.name||'').trim().toLowerCase()+'|'+String(y.amount||0)+'|'+String(y.created_at||'');
+      const dt=y.created_at||y.createdAt||y.timestamp||'';let minute='';try{const d=new Date(dt);if(!isNaN(d))minute=d.toISOString().slice(0,16)}catch(_){} const k=id?'id:'+id:'fp:'+eid+'|'+String(y.user_id||y.userId||'')+'|'+String(y.name||'').trim().toLowerCase()+'|'+String(y.village||y.city||'').trim().toLowerCase()+'|'+String(y.payment_mode||y.paymentMode||y.type||'').trim().toLowerCase()+'|'+String(y.amount||0)+'|'+String(y.gift_description||y.giftDescription||'').trim().toLowerCase()+'|'+minute;
       if(seen.has(k))continue; seen.add(k); out.push({...y});
     }
     return out;
@@ -194,7 +194,7 @@
     for(const x of (Array.isArray(rows)?rows:[])){
       const y={...x,event_id:String(x?.event_id||x?.eventId||'').trim(),eventId:String(x?.event_id||x?.eventId||'').trim()};
       if(!y.event_id)continue;
-      const k=entryId(y)?'id:'+entryId(y):'fp:'+y.event_id+'|'+String(y.name||'').trim().toLowerCase()+'|'+String(y.amount||0)+'|'+String(y.created_at||'');
+      const dt=y.created_at||y.createdAt||y.timestamp||'';let minute='';try{const d=new Date(dt);if(!isNaN(d))minute=d.toISOString().slice(0,16)}catch(_){} const k=entryId(y)?'id:'+entryId(y):'fp:'+y.event_id+'|'+String(y.user_id||y.userId||'')+'|'+String(y.name||'').trim().toLowerCase()+'|'+String(y.village||y.city||'').trim().toLowerCase()+'|'+String(y.payment_mode||y.paymentMode||y.type||'').trim().toLowerCase()+'|'+String(y.amount||0)+'|'+String(y.gift_description||y.giftDescription||'').trim().toLowerCase()+'|'+minute;
       if(seen.has(k))continue; seen.add(k); list.push(y);
     }
     p[scopeKey]=list; put(ENTRIES,p); return list;

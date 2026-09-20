@@ -28,7 +28,7 @@
     'birthday-entry.html':'🎂 Birthday Entry','anniversary-entry.html':'💐 Anniversary Entry','engagement-entry.html':'💍 Engagement Entry',
     'griha-pravesh-entry.html':'🏠 Griha Pravesh Entry','generic-event-entry.html':'🎊 Event Entry','event-entry.html':'📝 Shagun Entry',
     'shagun.html':'🎁 Shagun','shagun-given.html':'📤 Shagun Diya','cash-counter.html':'💰 Cash Counter','cashbook.html':'📒 Cash Book',
-    'report.html':'📊 Reports','reminders.html':'🔔 Reminders','assistant.html':'🤖 AI Assistant','settings.html':'⚙️ Settings',
+    'report.html':'📊 Reports','reminders.html':'🔔 Reminders','assistant.html':'🤖 AI Assistant','settings.html':'⚙️ Settings','profile.html':'👤 Profile','security.html':'🔐 Security','data-sync.html':'☁️ Data & Sync','pwa.html':'📱 PWA','delete-guest.html':'🗑️ Delete Guest',
     'admin.html':'🛡️ Super Admin','admin-dashboard.html':'🛡️ Admin Dashboard','manual.html':'📖 Manual'
   };
   const title=titles[file]||document.title.replace(/\s*\|.*$/,'')||'SGUNMS';
@@ -37,17 +37,19 @@
   const menu=[
     ['home.html','🏠 Dashboard'],['family.html','👨‍👩‍👧 Family'],['events.html','🎉 Events'],['shagun.html','🎁 Shagun'],
     ['shagun-given.html','📤 Shagun Diya'],['cash-counter.html','💰 Cash Counter'],['cashbook.html','📒 Cash In / Cash Out'],
-    ['report.html','📊 Reports'],['reminders.html','🔔 Reminders'],['assistant.html','🤖 AI Assistant'],['settings.html','⚙️ Settings'],['admin.html','🛡️ Super Admin']
+    ['report.html','📊 Reports'],['reminders.html','🔔 Reminders'],['assistant.html','🤖 AI Assistant'],['admin.html','🛡️ Super Admin']
   ];
   const bar=document.createElement('nav');bar.id='sagunTopbar';bar.className='sagun-topbar';bar.setAttribute('aria-label','SGUNMS Navigation');
   const menuLinks=menu.map(([href,label])=>`<a href="${href}" class="${file===href?'active':''}">${label}</a>`).join('');
-  const showQuickTools=['tilak-entry.html','barat-entry.html','reception-entry.html'].includes(file);
+  const entryPages=['tilak-entry.html','barat-entry.html','reception-entry.html','birthday-entry.html','anniversary-entry.html','engagement-entry.html','griha-pravesh-entry.html','generic-event-entry.html','event-entry.html'];
+  const showQuickTools=entryPages.includes(file);
   const quickTools=showQuickTools?`<div class="sagun-quick-tools"><button class="sagun-quick-btn" id="sagunQuickBtn" type="button" aria-expanded="false">⚡ Tools</button><div class="sagun-quick-panel" id="sagunQuickPanel"><div class="sagun-quick-title">Quick Tools</div><button type="button" class="sagun-quick-link" data-tool="cash-counter.html">💰 Cash Counter</button><button type="button" class="sagun-quick-link" data-tool="cashbook.html">💵 Cash In / Out</button><button type="button" class="sagun-quick-link" data-tool="report.html">📊 Report</button><button type="button" id="sagunQuickClose" class="sagun-quick-close">✕ Close</button></div></div>`:'';
-  bar.innerHTML=`<div class="sagun-left"><a class="sagun-nav-btn" href="home.html">⌂ Home</a><button class="sagun-nav-btn" id="sagunBack" type="button">← Back</button></div><div class="sagun-center" title="${title}">${title}</div><div class="sagun-right"><a class="sagun-site" href="https://www.sgunms.in" target="_blank" rel="noopener">www.sgunms.in</a>${quickTools}<div class="sagun-tools"><button class="sagun-menu-btn" type="button" aria-expanded="false">☰ Menu</button><div class="sagun-menu-panel" role="menu">${menuLinks}<div class="sagun-menu-sep"></div><button type="button" class="sagun-logout" id="sagunLogout">🚪 Logout</button></div></div></div>`;
+  bar.innerHTML=`<div class="sagun-left"><a class="sagun-nav-btn" href="home.html">⌂ Home</a><button class="sagun-nav-btn" id="sagunBack" type="button">← Back</button></div><div class="sagun-center" title="${title}">${title}</div><div class="sagun-right">${quickTools}<div class="sagun-profile"><button type="button" class="sagun-profile-btn" id="sagunProfileBtn"><span class="sagun-avatar" id="sagunAvatar">U</span><span class="sagun-profile-name" id="sagunProfileName">User</span><span>▾</span></button><div class="sagun-profile-panel" id="sagunProfilePanel"><div class="sagun-profile-head"><span class="sagun-avatar big" id="sagunAvatarBig">U</span><div><strong id="sagunProfilePanelName">User</strong><small id="sagunProfileEmail"></small></div></div><button type="button" data-profile-action="edit">✏️ Profile Edit</button><button type="button" data-profile-action="account">⚙️ Account & Security</button><button type="button" data-profile-action="delete" class="danger">🗑️ Delete Account</button><button type="button" data-profile-action="logout">🚪 Logout</button></div></div></div>`;
   const trigger=document.createElement('div');trigger.className='sagun-topbar-trigger';trigger.setAttribute('aria-hidden','true');
   document.body.prepend(trigger);document.body.prepend(bar);
+  if(!document.getElementById('sagun-profile-style')){const st=document.createElement('style');st.id='sagun-profile-style';st.textContent=`.sagun-profile{position:relative;margin-left:8px}.sagun-profile-btn{display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);color:#fff;border-radius:22px;padding:4px 9px 4px 5px;font-weight:800;cursor:pointer}.sagun-avatar{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:#7a0025;font-weight:900;overflow:hidden}.sagun-avatar.big{width:46px;height:46px;font-size:18px}.sagun-avatar img{width:100%;height:100%;object-fit:cover}.sagun-profile-name{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sagun-profile-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);width:260px;background:#fff;color:#1f2937;border-radius:16px;box-shadow:0 16px 40px rgba(0,0,0,.22);padding:10px;z-index:99999}.sagun-profile-panel.open{display:block}.sagun-profile-head{display:flex;gap:10px;align-items:center;padding:8px;border-bottom:1px solid #e5e7eb;margin-bottom:6px}.sagun-profile-head strong{display:block;font-size:15px}.sagun-profile-head small{display:block;color:#64748b;font-size:11px;max-width:170px;overflow:hidden;text-overflow:ellipsis}.sagun-profile-panel>button{display:block;width:100%;border:0;background:#fff;text-align:left;padding:10px 9px;border-radius:9px;cursor:pointer;font-weight:700}.sagun-profile-panel>button:hover{background:#f3f4f6}.sagun-profile-panel>button.danger{color:#b91c1c}@media(max-width:700px){.sagun-profile-name{display:none}.sagun-profile-panel{right:-4px;width:245px}}`;document.head.appendChild(st)}
   const btn=bar.querySelector('.sagun-menu-btn'),panel=bar.querySelector('.sagun-menu-panel');let timer;
-  btn.onclick=e=>{e.stopPropagation();const open=panel.classList.toggle('open');btn.setAttribute('aria-expanded',String(open));bar.classList.remove('is-hidden');if(open)clearTimeout(timer);else hideSoon()};
+  if(btn && panel) btn.onclick=e=>{e.stopPropagation();const open=panel.classList.toggle('open');btn.setAttribute('aria-expanded',String(open));bar.classList.remove('is-hidden');if(open)clearTimeout(timer);else hideSoon()};
   const quickBtn=bar.querySelector('#sagunQuickBtn'),quickPanel=bar.querySelector('#sagunQuickPanel'),quickClose=bar.querySelector('#sagunQuickClose');
   // Quick tools open inside a compact modal on the same entry window.
   let toolZoom=1;
@@ -89,12 +91,84 @@
     quickClose.onclick=()=>{quickPanel.classList.remove('open');quickBtn.setAttribute('aria-expanded','false')};
     bar.querySelectorAll('.sagun-quick-link').forEach(b=>b.onclick=()=>openToolModal(b.dataset.tool,b.textContent.trim()));
   }
-  document.addEventListener('click',e=>{if(!bar.contains(e.target)){panel.classList.remove('open');btn.setAttribute('aria-expanded','false');if(quickPanel){quickPanel.classList.remove('open');quickBtn.setAttribute('aria-expanded','false')}}});
+  const profileBtn=bar.querySelector('#sagunProfileBtn'), profilePanel=bar.querySelector('#sagunProfilePanel');
+  const USER_CACHE_KEY='sgunms_user_cache_v1';
+  const PROFILE_CACHE_KEY='sgunms_profile_v1';
+  const SUPA_URL='https://rdlliurzgwwfjscgwssa.supabase.co';
+  const SUPA_KEY='sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc';
+  function readUserCache(){
+    try{
+      const a=JSON.parse(localStorage.getItem(USER_CACHE_KEY)||'null');
+      if(a&&typeof a==='object') return a;
+    }catch(e){}
+    try{
+      const p=JSON.parse(localStorage.getItem(PROFILE_CACHE_KEY)||'null');
+      if(p&&typeof p==='object') return p;
+    }catch(e){}
+    const n=String(localStorage.getItem('sagunProfileName')||'').trim();
+    return n?{name:n}:{};
+  }
+  function writeUserCache(data){try{localStorage.setItem(USER_CACHE_KEY,JSON.stringify({...data,updatedAt:Date.now()}))}catch(e){}}
+  function paintProfile(data){
+    const guest=localStorage.getItem('guestMode')==='true'||localStorage.getItem('guestAuth')==='true';
+    const name=String(data?.name||'').trim() || (guest?'Guest User':'Account User');
+    const photo=String(data?.photo||'').trim();
+    const avatar=bar.querySelector('#sagunAvatar'),big=bar.querySelector('#sagunAvatarBig');
+    [avatar,big].forEach(el=>{
+      if(!el)return;
+      if(photo) el.innerHTML=`<img src="${photo.replace(/"/g,'')}" alt="" referrerpolicy="no-referrer">`;
+      else el.textContent=(name[0]||'U').toUpperCase();
+    });
+    bar.querySelector('#sagunProfileName').textContent=name;
+    bar.querySelector('#sagunProfilePanelName').textContent=name;
+    bar.querySelector('#sagunProfileEmail').textContent=data?.email||'';
+    const welcome=document.getElementById('homeWelcomeName');
+    if(welcome && name && name!=='Account User') welcome.textContent=name;
+    const header=document.getElementById('headerUserName');
+    if(header && name && name!=='Account User') header.textContent='👤 '+name;
+  }
+  // FIRST: paint from local cache immediately. No Supabase wait.
+  paintProfile(readUserCache());
+
+  async function syncProfileInBackground(){
+    try{
+      const client=window.sb?.auth ? window.sb : (window.supabase?.createClient ? window.supabase.createClient(SUPA_URL,SUPA_KEY) : null);
+      if(!client?.auth) return;
+      const sessionRes=await client.auth.getSession();
+      const user=sessionRes?.data?.session?.user;
+      if(!user) return;
+      const meta=user.user_metadata||{};
+      let fresh={
+        name:String(meta.full_name||meta.name||'').trim(),
+        email:user.email||'',
+        photo:meta.avatar_url||meta.picture||meta.photo_url||''
+      };
+      try{
+        const r=await client.from('profiles').select('name,mobile,place').eq('id',user.id).maybeSingle();
+        if(r?.data?.name) fresh.name=String(r.data.name).trim();
+        if(r?.data) Object.assign(fresh,{mobile:r.data.mobile||'',place:r.data.place||''});
+      }catch(e){}
+      if(!fresh.name){
+        try{const p=JSON.parse(localStorage.getItem(PROFILE_CACHE_KEY)||'{}');fresh.name=String(p.name||'').trim()}catch(e){}
+      }
+      if(fresh.name){
+        writeUserCache(fresh);
+        try{localStorage.setItem(PROFILE_CACHE_KEY,JSON.stringify({name:fresh.name,mobile:fresh.mobile||'',place:fresh.place||''}))}catch(e){}
+        paintProfile(fresh);
+      }
+    }catch(e){/* local cache remains the source for first paint */}
+  }
+  // Background sync only; never blocks the page.
+  setTimeout(syncProfileInBackground,0);
+
+  profileBtn.onclick=e=>{e.stopPropagation();const open=profilePanel.classList.toggle('open');profilePanel.setAttribute('aria-hidden',String(!open));panel.classList.remove('open');btn.setAttribute('aria-expanded','false');if(open)loadProfile()};
+  profilePanel.querySelectorAll('[data-profile-action]').forEach(b=>b.onclick=async()=>{const a=b.dataset.profileAction;if(a==='edit'||a==='account'||a==='delete'){location.href=(a==='edit'?'profile.html':a==='delete'?'delete-account.html':'security.html');return;} if(a==='logout') await logout();});
+  document.addEventListener('click',e=>{if(!bar.contains(e.target)){panel.classList.remove('open');btn.setAttribute('aria-expanded','false');if(quickPanel){quickPanel.classList.remove('open');quickBtn.setAttribute('aria-expanded','false')}profilePanel.classList.remove('open')}});
   bar.querySelector('#sagunBack').onclick=()=>{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1)history.back();else location.href='home.html'};
   async function logout(){try{if(window.sb&&window.sb.auth)await window.sb.auth.signOut();}catch(e){}try{window.SagunStore?.clearTransient?.();localStorage.removeItem('sagunActiveUserId');localStorage.removeItem('sagunActiveAccountType');localStorage.removeItem('sagunUserMode');localStorage.removeItem('sagunGuestSession');}catch(e){}location.href='login.html'}
-  bar.querySelector('#sagunLogout').onclick=logout;
   // Keep navigation permanently visible. No auto-hide timers or triggers.
   clearTimeout(timer);
   bar.classList.remove('is-hidden');
   trigger.style.display='none';
 })();
+

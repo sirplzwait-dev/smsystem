@@ -17,19 +17,6 @@ body{
   color:#25202a;
 }
 .page{width:min(1380px,calc(100% - 28px));margin:18px auto 35px}
-.report-nav{
-  min-height:70px;background:#fff;border:1px solid #eadfe2;border-radius:20px;
-  display:flex;align-items:center;justify-content:space-between;padding:12px 18px;
-  box-shadow:0 10px 28px rgba(67,10,25,.12);margin-bottom:14px
-}
-.report-brand{font-size:22px;font-weight:900;color:#8b1231;letter-spacing:.3px}
-.report-nav-actions{display:flex;gap:9px}
-.report-nav-actions button,.actions button{
-  border:1px solid #eadfe2;background:#fff;color:#77152d;border-radius:13px;
-  padding:11px 18px;font-weight:800;font-size:14px;cursor:pointer;
-  transition:.18s ease
-}
-.report-nav-actions button:hover,.actions button:hover{transform:translateY(-1px)}
 .top{
   background:linear-gradient(110deg,#8b002d,#a90035 62%,#9b1435);
   color:#fff;border-radius:22px;padding:18px 22px;display:flex;
@@ -108,11 +95,18 @@ body{
   .info{grid-template-columns:repeat(2,minmax(0,1fr))}
   .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+/* Premium Event Report action buttons */
+.actions{gap:10px;align-items:center}
+.actions .btn{min-height:46px;padding:11px 18px;border:1px solid rgba(255,255,255,.55);border-radius:14px;font-size:14px;font-weight:900;letter-spacing:.1px;box-shadow:0 7px 16px rgba(70,0,25,.14);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
+.actions .btn:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(70,0,25,.20);filter:brightness(1.02)}
+.actions .btn:active{transform:translateY(0)}
+.actions #continueBtn{background:linear-gradient(135deg,#fff,#fff8fb);color:#7b122e}
+.actions #pdfBtn{background:linear-gradient(135deg,#fff9e5,#fff3c7);color:#7b122e}
+.actions #excelBtn{background:linear-gradient(135deg,#fffdf3,#fff6d7);color:#7b122e}
+.actions #deleteBtn{background:linear-gradient(135deg,#ef3348,#cf1e38);color:#fff;border-color:#ef3348;box-shadow:0 8px 18px rgba(207,30,56,.22)}
 @media(max-width:650px){
   .page{width:min(100% - 14px,1380px);margin:8px auto 20px}
-  .report-nav{border-radius:15px;padding:10px 12px;min-height:58px}
   .report-brand{font-size:17px}
-  .report-nav-actions button{padding:8px 10px;font-size:12px}
   .top{padding:14px;border-radius:17px}
   .icon{width:50px;height:50px;font-size:24px;border-radius:14px}
   .title h1{font-size:23px}
@@ -205,15 +199,13 @@ body{
 </head>
 <body>
 <div class="page">
-  <div class="report-nav"><div class="report-brand">🎉 SAGUN SYSTEM</div><div class="report-nav-actions"><button type="button" onclick="location.href='home.html'">🏠 Home</button><button type="button" onclick="history.length>1?history.back():location.href='home.html'">↩ Back</button><button type="button" id="reportLogout">🚪 Logout</button></div></div>
-
   <div class="top">
     <div class="title"><div class="icon" id="eventIcon">Event</div><div><h1 id="eventTitle">Event Details</h1><p id="eventSubtitle">Loading...</p></div></div>
     <div class="actions">
-      <button class="btn" id="continueBtn">Continue Entry</button>
-      <button class="btn secondary" id="pdfBtn">PDF Report</button>
-      <button class="btn secondary" id="excelBtn">Excel</button>
-      <button class="btn danger" id="deleteBtn">Delete Event</button>
+      <button class="btn" id="continueBtn">➕ Continue Entry</button>
+      <button class="btn secondary" id="pdfBtn">📄 PDF Report</button>
+      <button class="btn secondary" id="excelBtn">📊 Excel</button>
+      <button class="btn danger" id="deleteBtn">🗑️ Delete Event</button>
     </div>
   </div>
   <section class="details">
@@ -307,9 +299,10 @@ async function load(){eventData=await getActive();if(!eventData){location.replac
 function setupForEntry(e){const t=typeOf(e);const d={...e,event_group:e.event_group||t,event_type:t,event_date:eventDate(e),welcome_name:e.welcome_name||''};if(t==='tilak'||t==='reception'){d.groom_name=e.groom_name||e.person1||'';d.bride_name=e.bride_name||e.person2||''}else if(t==='barat'){d.bride_name=e.bride_name||e.person1||'';d.groom_name=e.groom_name||e.person2||''}else if(t==='birthday'){d.name=e.name||e.birthday_name||e.person1||'';d.birthday_name=d.name;d.groom_name=d.name}else if(t==='anniversary'){d.husband_name=e.husband_name||e.groom_name||e.person1||'';d.wife_name=e.wife_name||e.bride_name||e.person2||'';d.groom_name=d.husband_name;d.bride_name=d.wife_name}else{d.name=e.name||e.person1||'';d.groom_name=d.name}return d}
 document.getElementById('continueBtn').onclick=()=>{const id=String(eventData.id||eventData.eventId||eventData.event_id||'');const setup=setupForEntry(eventData);localStorage.setItem('eventSetupData',JSON.stringify(setup));localStorage.setItem('offlineSetupData',JSON.stringify(setup));localStorage.setItem('sagunSetup',JSON.stringify(setup));localStorage.setItem('currentEventId',id);localStorage.setItem('currentEventType',typeOf(eventData));localStorage.setItem('currentMarriageEvent',typeOf(eventData));location.href=(pages[typeOf(eventData)]||'generic-event-entry.html')+'?event_id='+encodeURIComponent(id)};document.getElementById('pdfBtn').onclick=exportPdf;document.getElementById('excelBtn').onclick=exportExcel;document.getElementById('deleteBtn').onclick=()=>document.getElementById('deleteModal').classList.add('show');document.getElementById('modalPdf').onclick=exportPdf;document.getElementById('modalExcel').onclick=exportExcel;document.getElementById('cancelDelete').onclick=()=>document.getElementById('deleteModal').classList.remove('show');document.getElementById('confirmDelete').onclick=doDelete;window.addEventListener('DOMContentLoaded',load);
 
-const reportLogout=document.getElementById('reportLogout');if(reportLogout)reportLogout.onclick=async()=>{reportLogout.disabled=true;try{await sb.auth.signOut()}catch(e){}location.href='login.html'};
+
 </script>
   <script src="../js/process-ui.js" data-sagun-process-js="1"></script>
+<script src="../js/topbar.js"></script>
 </body></html>
 
 <script>window.addEventListener('sagun:sync',function(){ if(typeof loadReport==='function') loadReport(); });</script>

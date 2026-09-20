@@ -25,31 +25,31 @@
     </section>
 
     <section class="settings-cards">
-      <button class="settings-card profile-card" data-panel="profilePanel">
+      <button type="button" class="settings-card profile-card" data-panel="profilePanel" onclick="window.openSettingsPanel && window.openSettingsPanel('profilePanel')">
         <div class="card-top"><span class="card-icon">👤</span><span class="card-arrow">›</span></div>
         <b>Profile</b><small class="card-subtitle">नाम और basic account information</small>
         <span class="card-divider"></span><span class="card-label">अंदर क्या मिलेगा</span>
         <span class="card-points">नाम, Mobile, Village / City<br>Profile update और Account Delete</span>
       </button>
-      <button class="settings-card security-card" data-panel="securityPanel">
+      <button type="button" class="settings-card security-card" data-panel="securityPanel" onclick="window.openSettingsPanel && window.openSettingsPanel('securityPanel')">
         <div class="card-top"><span class="card-icon">🔐</span><span class="card-arrow">›</span></div>
         <b>Security</b><small class="card-subtitle">Password, session और logout</small>
         <span class="card-divider"></span><span class="card-label">अंदर क्या मिलेगा</span>
         <span class="card-points">Current session status<br>Password reset और Logout</span>
       </button>
-      <button class="settings-card sync-card" data-panel="syncPanel">
+      <button type="button" class="settings-card sync-card" data-panel="syncPanel" onclick="window.openSettingsPanel && window.openSettingsPanel('syncPanel')">
         <div class="card-top"><span class="card-icon">☁️</span><span class="card-arrow">›</span></div>
         <b>Data & Sync</b><small class="card-subtitle">Backup, restore और local data</small>
         <span class="card-divider"></span><span class="card-label">अंदर क्या मिलेगा</span>
         <span class="card-points">Backup Data और Restore Data<br>Local data management</span>
       </button>
-      <button class="settings-card pwa-card" data-panel="pwaPanel">
+      <button type="button" class="settings-card pwa-card" data-panel="pwaPanel" onclick="window.openSettingsPanel && window.openSettingsPanel('pwaPanel')">
         <div class="card-top"><span class="card-icon">📱</span><span class="card-arrow">›</span></div>
         <b>PWA</b><small class="card-subtitle">Home Screen पर app install करें</small>
         <span class="card-divider"></span><span class="card-label">अंदर क्या मिलेगा</span>
         <span class="card-points">SGUNMS को app की तरह install करें<br>Mobile / Desktop access</span>
       </button>
-      <button class="settings-card danger-card" data-panel="guestDataPanel">
+      <button type="button" class="settings-card danger-card" data-panel="guestDataPanel" onclick="window.openSettingsPanel && window.openSettingsPanel('guestDataPanel')">
         <div class="card-top"><span class="card-icon">🗑️</span><span class="card-arrow">›</span></div>
         <b>Delete Guest Details</b><small class="card-subtitle">Guest का पूरा local data हटाएँ</small>
         <span class="card-divider"></span><span class="card-label">अंदर क्या मिलेगा</span>
@@ -57,7 +57,7 @@
       </button>
     </section>
 
-    <section id="profilePanel" class="settings-panel">
+    <section id="profilePanel" class="settings-panel" style="display:none!important;">
       <div class="panel-head"><div><span class="panel-kicker">👤 PROFILE</span><h2>Profile Information</h2></div><button class="close-panel">×</button></div>
       <div class="form-grid">
         <label>नाम<input id="profileName" type="text" placeholder="अपना नाम"></label>
@@ -72,7 +72,7 @@
       <div id="accountDeleteStatus" class="sync-status"></div>
     </section>
 
-    <section id="guestDataPanel" class="settings-panel danger-panel">
+    <section id="guestDataPanel" class="settings-panel danger-panel" style="display:none!important;">
       <div class="panel-head"><div><span class="panel-kicker">🗑️ GUEST DATA</span><h2>Delete Guest Details</h2></div><button class="close-panel">×</button></div>
       <p class="panel-note">Guest mode में इस device पर saved Events, Guest Entries, Cash/UPI/Gift details, Profile और local app data को permanently हटाया जा सकता है।</p>
       <div class="guest-delete-warning">⚠️ <b>सावधान:</b> Delete करने के बाद यह data वापस नहीं आएगा। जरूरत हो तो पहले Backup Data ले लें।</div>
@@ -80,20 +80,20 @@
       <div id="guestDeleteStatus" class="sync-status"></div>
     </section>
 
-    <section id="securityPanel" class="settings-panel">
+    <section id="securityPanel" class="settings-panel" style="display:none!important;">
       <div class="panel-head"><div><span class="panel-kicker">🔐 SECURITY</span><h2>Security & Session</h2></div><button class="close-panel">×</button></div>
       <div class="security-row"><div><b>Current Session</b><small id="sessionText">Checking…</small></div><span class="status-dot"></span></div>
       <div class="action-row"><a class="sg-btn alt" href="forgot-password.html">🔑 Change / Reset Password</a><button class="sg-btn danger" id="settingsLogout">🚪 Logout</button></div>
     </section>
 
-    <section id="syncPanel" class="settings-panel">
+    <section id="syncPanel" class="settings-panel" style="display:none!important;">
       <div class="panel-head"><div><span class="panel-kicker">☁️ DATA & SYNC</span><h2>Backup & Restore</h2></div><button class="close-panel">×</button></div>
       <p class="panel-note">आपके browser में रखे SGUNMS local data का backup JSON file में लें और जरूरत पर restore करें।</p>
       <div class="action-row"><button class="sg-btn" id="exportData">⬇️ Backup Data</button><label class="sg-btn alt file-btn">⬆️ Restore Data<input id="importData" type="file" accept="application/json"></label><button class="sg-btn danger" id="clearLocal">🗑️ Clear Local Data</button></div>
       <div id="syncStatus" class="sync-status"></div>
     </section>
 
-    <section id="pwaPanel" class="settings-panel">
+    <section id="pwaPanel" class="settings-panel" style="display:none!important;">
       <div class="panel-head"><div><span class="panel-kicker">📱 PWA</span><h2>Install SGUNMS</h2></div><button class="close-panel">×</button></div>
       <p class="panel-note">अगर browser installation support करता है तो SGUNMS को mobile/desktop app की तरह install कर सकते हैं।</p>
       <button class="sg-btn" id="installPwa">📲 Install SGUNMS</button>
@@ -149,5 +149,90 @@
 })();
 </script>
   <script src="../js/process-ui.js"></script>
+
+<script id="settings-independent-controller">
+(function(){
+  'use strict';
+
+  const panelIds=['profilePanel','securityPanel','syncPanel','pwaPanel','guestDataPanel'];
+
+  function closeAll(){
+    panelIds.forEach(function(id){
+      const p=document.getElementById(id);
+      if(p){
+        p.classList.remove('open');
+        p.style.setProperty('display','none','important');
+        p.setAttribute('aria-hidden','true');
+      }
+    });
+    document.querySelectorAll('.settings-card').forEach(function(c){
+      c.classList.remove('active');
+      c.setAttribute('aria-expanded','false');
+    });
+  }
+
+  window.openSettingsPanel=function(id){
+    if(!panelIds.includes(id)) return;
+    closeAll();
+
+    const p=document.getElementById(id);
+    if(!p) return;
+
+    p.classList.add('open');
+    p.style.setProperty('display','block','important');
+    p.setAttribute('aria-hidden','false');
+
+    const card=document.querySelector('.settings-card[data-panel="'+id+'"]');
+    if(card){
+      card.classList.add('active');
+      card.setAttribute('aria-expanded','true');
+    }
+
+    const reverse={
+      profilePanel:'profile',
+      securityPanel:'data-security',
+      syncPanel:'sync',
+      pwaPanel:'pwa',
+      guestDataPanel:'guest-data'
+    };
+    if(reverse[id]){
+      history.replaceState(null,'','#'+reverse[id]);
+    }
+
+    setTimeout(function(){
+      p.scrollIntoView({behavior:'smooth',block:'start'});
+    },30);
+  };
+
+  document.addEventListener('click',function(e){
+    const close=e.target.closest && e.target.closest('.close-panel');
+    if(close){
+      const p=close.closest('.settings-panel');
+      if(p){
+        closeAll();
+        history.replaceState(null,'',location.pathname+location.search);
+      }
+    }
+  });
+
+  function openFromHash(){
+    const hash=(location.hash||'').replace(/^#/,'');
+    const map={
+      profile:'profilePanel',
+      'data-security':'securityPanel',
+      sync:'syncPanel',
+      pwa:'pwaPanel',
+      'guest-data':'guestDataPanel'
+    };
+    if(map[hash]) window.openSettingsPanel(map[hash]);
+  }
+
+  // Ensure all panels are hidden before any user interaction.
+  closeAll();
+  openFromHash();
+  window.addEventListener('hashchange',openFromHash);
+})();
+</script>
+
 </body>
 </html>

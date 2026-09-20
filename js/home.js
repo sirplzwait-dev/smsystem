@@ -13,27 +13,68 @@ function homeSearch(value){
   });
 }
 
+function getCachedHomeName(){
+  try{
+    const guest = localStorage.getItem('guestMode')==='true' || localStorage.getItem('guestAuth')==='true' || localStorage.getItem('sagunUserMode')==='guest';
+    if(guest) return 'Guest';
+    const raw = localStorage.getItem('sgunms_profile_v1');
+    if(raw){
+      const p=JSON.parse(raw);
+      if(p?.name && String(p.name).trim()) return String(p.name).trim();
+    }
+    const direct=localStorage.getItem('userName');
+    if(direct && String(direct).trim() && !String(direct).includes('@')) return String(direct).trim();
+  }catch(_){}
+  return '';
+}
+
+function cleanDisplayName(name){
+  return String(name||'').trim().replace(/\s+(?:Ji)+$/i,'').trim();
+}
+
+function paintHomeName(name){
+  const n=cleanDisplayName(name) || 'User';
+  const el=document.querySelector('.userName');
+  if(el) el.textContent='👤 '+n+' Ji';
+  const welcome=document.getElementById('homeWelcomeName');
+  if(welcome) welcome.textContent=n+' Ji';
+}
+
+// Paint the locally saved profile name immediately; network auth runs in background.
+(function(){
+  const cached=getCachedHomeName();
+  if(cached) paintHomeName(cached);
+})();
+
 async function loadUserProfile(){
   try{
-    if(!sagunHomeClient)return;
+    if(!sagunHomeClient) return;
     const {data:{user}}=await sagunHomeClient.auth.getUser();
-    if(!user)return;
+    if(!user){ paintHomeName('Guest'); return; }
     localStorage.setItem('sagunActiveUserId',user.id);
-    let displayName=user.email ? user.email.split('@')[0] : 'User';
+
+    // Keep the UI responsive: cached profile is already painted above.
+    let displayName='';
     try{
       const {data}=await sagunHomeClient.from('profiles').select('name').eq('id',user.id).maybeSingle();
-      if(data?.name) displayName=data.name;
-      else{
+      if(data?.name) displayName=String(data.name).trim();
+      if(!displayName){
         const r=await sagunHomeClient.from('profiles').select('name').eq('user_id',user.id).maybeSingle();
-        if(r.data?.name) displayName=r.data.name;
+        if(r.data?.name) displayName=String(r.data.name).trim();
       }
     }catch(_){}
-    const el=document.querySelector('.userName');
-    if(el) el.textContent=displayName;
-    const welcome=document.getElementById('homeWelcomeName');
-    if(welcome) welcome.textContent=displayName;
+    if(!displayName){
+      const meta=user.user_metadata||{};
+      displayName=String(meta.full_name||meta.name||meta.display_name||'').trim();
+    }
+    // Never use username/email as the displayed name.
+    if(displayName){
+      try{ localStorage.setItem('sgunms_profile_v1',JSON.stringify({name:displayName})); }catch(_){}
+      paintHomeName(displayName);
+    }
   }catch(e){ console.log('Home profile:',e); }
 }
+
 
 /* Kept for compatibility with older inline calls. They intentionally do not
    touch Event/Entry totals, which are calculated by home.html from SagunStore. */

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security | SGUNMS</title>
+<link rel="stylesheet" href="../css/topbar.css">
+<link rel="stylesheet" href="../css/modules.css">
+<link rel="stylesheet" href="../css/sgunms-global-background.css">
+<style>
+:root{--maroon:#7d1235;--gold:#d7a61b;--ink:#1f2937;--muted:#64748b;--card:#fff;--soft:#fff8ef}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#fffaf2,#f7f7f8 55%,#fff5f0);min-height:100vh}
+.settings-single{max-width:980px;margin:0 auto;padding:34px 20px 60px}
+.settings-single .hero{background:linear-gradient(135deg,#fff8ee,#fffdf9);border:1px solid #ead7bd;border-radius:26px;padding:30px;box-shadow:0 18px 50px rgba(60,40,20,.09);position:relative;overflow:hidden}
+.settings-single .hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-60px;top:-60px;background:rgba(215,166,27,.10)}
+.kicker{display:inline-flex;align-items:center;gap:7px;color:#9a3b17;font-size:12px;font-weight:900;letter-spacing:2px}
+.hero h1{font-size:36px;line-height:1.1;margin:10px 0 8px}
+.hero p{margin:0;color:#667085;font-size:15px}
+.panel-card{margin-top:22px;background:#fff;border:1px solid #eadfd5;border-radius:22px;padding:28px;box-shadow:0 14px 40px rgba(31,41,55,.08)}
+.panel-title{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.panel-icon{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;background:#fff3dd;font-size:27px}
+.panel-title h2{margin:0;font-size:23px}.panel-title small{color:var(--muted)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form-grid label{display:flex;flex-direction:column;gap:8px;font-weight:800;font-size:14px}
+.form-grid .full{grid-column:1/-1}
+input{width:100%;padding:13px 14px;border:1px solid #ddd5cc;border-radius:13px;font-size:15px;outline:none;background:#fff}
+input:focus{border-color:#b77b25;box-shadow:0 0 0 3px rgba(183,123,37,.12)}
+.action-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.sg-btn{border:0;border-radius:12px;padding:12px 17px;background:var(--maroon);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 7px 18px rgba(125,18,53,.16)}
+.sg-btn.alt{background:#f4eee8;color:#5b3b27}.sg-btn.danger{background:#b4232d}.sg-btn:disabled{opacity:.6;cursor:not-allowed}
+.status{min-height:22px;margin-top:12px;color:#25753d;font-weight:700}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.info-box{padding:17px;border-radius:16px;background:#faf7f3;border:1px solid #eee3d8}
+.info-box b{display:block;margin-bottom:5px}.info-box small{color:var(--muted)}
+.warning{padding:16px;border-radius:15px;background:#fff4f4;border:1px solid #f2c5ca;color:#7b1e2b;line-height:1.55;margin-bottom:18px}
+.back-link{display:inline-flex;margin-top:18px;text-decoration:none;color:var(--maroon);font-weight:800}
+@media(max-width:700px){.settings-single{padding:20px 12px 40px}.hero h1{font-size:28px}.panel-card{padding:20px}.form-grid,.info-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}}
+</style>
+</head>
+<body>
+<main class="settings-single">
+<section class="hero">
+<span class="kicker">⚙️ SGUNMS SECURITY</span>
+<h1>🔐 Security</h1>
+<p>Password, session और logout controls</p>
+</section>
+<section class="panel-card">
+
+<div class="panel-title"><div class="panel-icon">🔐</div><div><h2>Security & Session</h2><small>Account session और password controls</small></div></div>
+<div class="info-grid">
+<div class="info-box"><b>Current Session</b><small id="sessionText">Checking…</small></div>
+<div class="info-box"><b>Account</b><small id="securityAccount">Checking…</small></div>
+</div>
+<div class="action-row">
+<a class="sg-btn alt" href="forgot-password.html">🔑 Change / Reset Password</a>
+<button class="sg-btn danger" id="settingsLogout">🚪 Logout</button>
+</div>
+
+</section>
+<a class="back-link" href="home.html">← Home पर वापस जाएँ</a>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/topbar.js"></script>
+<script src="../js/settings-pages.js"></script>
+</body>
+</html>

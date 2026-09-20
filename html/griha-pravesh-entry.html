@@ -10,8 +10,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;font-family:Arial,"Noto Sans Devanagari",sans-serif}
 body{min-height:100vh;overflow:hidden;background:#5b1807}
-.page{position:relative;min-height:100vh;background:linear-gradient(180deg,#0000 0%,#0000 68%,#0005 100%),url('../assets/griha-pravesh-bg.png') center/cover no-repeat;display:flex;align-items:flex-end;justify-content:center;padding:0 18px 14px}
-.guest-btn{position:relative;z-index:4;width:min(170px,42vw);height:34px;min-height:34px;padding:2px 10px;border:1.5px solid #f6d477;border-radius:18px;background:linear-gradient(180deg,#a51c0d,#690b05);box-shadow:0 5px 18px #0008,inset 0 1px #fff6;color:#ffe9a3;font-size:14px;font-weight:800;cursor:pointer;letter-spacing:.1px;transition:transform .2s,filter .2s;line-height:1}
+.page{position:relative;min-height:calc(100vh - var(--nav-h,40px));height:calc(100vh - var(--nav-h,40px));background:linear-gradient(180deg,#0000 0%,#0000 68%,#0005 100%),url('../assets/griha-pravesh-bg.png') center/cover no-repeat;display:flex;align-items:flex-end;justify-content:center;padding:0 18px 14px;overflow:hidden}
+.guest-btn{position:relative;z-index:4;width:min(190px,52vw);height:38px;min-height:38px;padding:2px 10px;border:1.5px solid #f6d477;border-radius:18px;background:linear-gradient(180deg,#a51c0d,#690b05);box-shadow:0 5px 18px #0008,inset 0 1px #fff6;color:#ffe9a3;font-size:14px;font-weight:800;cursor:pointer;letter-spacing:.1px;transition:transform .2s,filter .2s;line-height:1}
 .guest-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
 .guest-btn span{display:none}
 .bell{position:fixed;top:11%;z-index:3;width:34px;height:34px;border-radius:7px 7px 15px 15px;background:linear-gradient(90deg,#a96d08,#ffd96a,#a96d08);box-shadow:0 3px 8px #0008;transform-origin:50% 0;animation:bellSwing 1.5s ease-in-out infinite}
@@ -20,9 +20,10 @@ body{min-height:100vh;overflow:hidden;background:#5b1807}
 .bell.left{left:7%}.bell.right{right:7%;animation-delay:.35s}
 @keyframes bellSwing{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
 .modal{position:fixed;inset:0;background:#180600aa;backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
-.modal.show{display:flex}.card{width:min(480px,100%);background:linear-gradient(145deg,#fffaf0,#fff1d5);border:2px solid #d9a62e;border-radius:24px;box-shadow:0 20px 70px #0009;padding:26px}.card h2{margin:0;text-align:center;color:#8d1609;font-size:28px}.sub{text-align:center;color:#76533b;margin:6px 0 22px}.field{margin:14px 0}.field label{display:block;font-weight:700;color:#552518;margin-bottom:6px}.field input{width:100%;padding:14px;border:1px solid #d4b16a;border-radius:12px;background:#fff;font-size:16px;outline:none}.field input:focus{border-color:#9e1c0e;box-shadow:0 0 0 3px #9e1c0e18}.actions{display:flex;gap:10px;margin-top:20px}.actions button{flex:1;padding:13px;border:0;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer}.cancel{background:#eee0ca;color:#5b3424}.save{background:#9d180b;color:#fff}.status{text-align:center;min-height:20px;color:#23751f;font-weight:700;margin:12px 0 0}.loader{position:fixed;inset:0;z-index:20;background:#fff8ec;display:flex;align-items:center;justify-content:center;color:#8d1609;font-weight:700}.hidden{display:none!important}
+.modal.show{display:flex}.card{width:min(480px,100%);background:linear-gradient(145deg,#fffaf0,#fff1d5);border:2px solid #d9a62e;border-radius:24px;box-shadow:0 20px 70px #0009;padding:26px}.card h2{margin:0;text-align:center;color:#8d1609;font-size:28px}.sub{text-align:center;color:#76533b;margin:6px 0 22px}.field{margin:14px 0}.field label{display:block;font-weight:700;color:#552518;margin-bottom:6px}.field input,.field select{width:100%;padding:14px;border:1px solid #d4b16a;border-radius:12px;background:#fff;font-size:16px;outline:none}.field select{cursor:pointer}.field input:focus,.field select:focus{border-color:#9e1c0e;box-shadow:0 0 0 3px #9e1c0e18}.field input:focus{border-color:#9e1c0e;box-shadow:0 0 0 3px #9e1c0e18}.actions{display:flex;gap:10px;margin-top:20px}.actions button{flex:1;padding:13px;border:0;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer}.cancel{background:#eee0ca;color:#5b3424}.save{background:#9d180b;color:#fff}.status{text-align:center;min-height:20px;color:#23751f;font-weight:700;margin:12px 0 0}.loader{position:fixed;inset:0;z-index:20;background:#fff8ec;display:flex;align-items:center;justify-content:center;color:#8d1609;font-weight:700}.hidden{display:none!important}
+.optional{font-size:.8em;opacity:.75;font-weight:500}
 .sound-control{position:fixed;right:18px;bottom:18px;z-index:12;width:112px;height:32px;border:1px solid #f1d27a;border-radius:16px;background:#6f0b05eF;color:#ffe9a3;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px #0007}.sound-control.off{background:#3b241c;color:#f5e7d0;border-color:#c8ad8f}.sound-control:active{transform:scale(.97)}
-@media(max-width:600px){.page{padding:0 12px 12px}.guest-btn{width:150px;height:32px;min-height:32px;font-size:13px;padding:2px 8px}.guest-btn span{font-size:9px}.bell{width:28px;height:28px;top:10%}.bell.left{left:4%}.bell.right{right:4%}.card{padding:21px}.card h2{font-size:24px}}
+@media(max-width:600px){.page{padding:0 12px 12px}.guest-btn{width:170px;height:36px;min-height:36px;font-size:13px;padding:2px 8px}.guest-btn span{font-size:9px}.bell{width:28px;height:28px;top:10%}.bell.left{left:4%}.bell.right{right:4%}.card{padding:21px}.card h2{font-size:24px}}
 </style>
   <link rel="stylesheet" href="../css/topbar.css">
 <link rel="stylesheet" href="../css/premium-calendar.css">
@@ -47,6 +48,9 @@ body{min-height:100vh;overflow:hidden;background:#5b1807}
     <p class="sub">गृह प्रवेश समारोह में आपका स्वागत है</p>
     <div class="field"><label for="guestName">अतिथि का नाम</label><input id="guestName" type="text" placeholder="नाम दर्ज करें" autocomplete="name"></div>
     <div class="field"><label for="guestVillage">गाँव / शहर</label><input id="guestVillage" type="text" placeholder="गाँव / शहर दर्ज करें"></div>
+    <div class="field"><label for="entryType">शगुन का प्रकार <span class="optional">(Optional)</span></label><select id="entryType"><option value="">— चुनें —</option><option value="Gift">🎁 Gift</option><option value="Cash">💵 Cash</option><option value="Cash+Gift">💵🎁 Gift + Cash</option></select></div>
+    <div class="field hidden" id="cashField"><label for="cashAmount">Cash राशि ₹</label><input id="cashAmount" type="number" min="0" step="1" inputmode="numeric" placeholder="Cash राशि दर्ज करें"></div>
+    <div class="field hidden" id="giftField"><label for="giftDescription">Gift का विवरण</label><input id="giftDescription" type="text" placeholder="जैसे कपड़े, बर्तन, सामान आदि"></div>
     <div class="actions"><button class="cancel" id="cancelBtn">बंद करें</button><button class="save" id="saveBtn">✓ Entry Save करें</button></div>
     <p class="status" id="status"></p>
   </section>
@@ -54,9 +58,19 @@ body{min-height:100vh;overflow:hidden;background:#5b1807}
 
 <script>
 const sb=window.supabase.createClient("https://rdlliurzgwwfjscgwssa.supabase.co","sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");
-const modal=document.getElementById('entryModal'),nameEl=document.getElementById('guestName'),villageEl=document.getElementById('guestVillage'),statusEl=document.getElementById('status');
+const modal=document.getElementById('entryModal'),nameEl=document.getElementById('guestName'),villageEl=document.getElementById('guestVillage'),typeEl=document.getElementById('entryType'),cashField=document.getElementById('cashField'),cashEl=document.getElementById('cashAmount'),giftField=document.getElementById('giftField'),giftEl=document.getElementById('giftDescription'),statusEl=document.getElementById('status');
 function openEntry(){modal.classList.add('show');setTimeout(()=>nameEl.focus(),80)}
 function closeEntry(){modal.classList.remove('show');statusEl.textContent=''}
+function updateEntryFields(){
+  const type=typeEl.value;
+  const showCash=type==='Cash'||type==='Cash+Gift';
+  const showGift=type==='Gift'||type==='Cash+Gift';
+  cashField.classList.toggle('hidden',!showCash);
+  giftField.classList.toggle('hidden',!showGift);
+  if(!showCash) cashEl.value='';
+  if(!showGift) giftEl.value='';
+}
+typeEl.addEventListener('change',updateEntryFields);
 // गृह प्रवेश शंख ध्वनि: पहली interaction पर शुरू होगी और हर 1 मिनट में बजेगी
 const mangalAudio=document.getElementById('mangalAudio');
 const soundControl=document.getElementById('soundControl');
@@ -95,15 +109,21 @@ soundControl.onclick=(e)=>{
   e.stopPropagation();
   if(soundEnabled) stopMangalDhwanि(); else enableMangalDhwanि();
 };
+document.getElementById('guestBtn').onclick=openEntry;
 document.getElementById('cancelBtn').onclick=closeEntry;
 document.addEventListener('pointerdown',()=>startMangalDhwanि(),{once:true,passive:true});
 modal.addEventListener('click',e=>{if(e.target===modal)closeEntry()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeEntry()});
 async function saveGuest(){
  const name=nameEl.value.trim().toUpperCase(),village=villageEl.value.trim().toUpperCase();
+ const entryType=typeEl.value;
+ const cashAmount=Number(cashEl.value||0);
+ const giftDescription=giftEl.value.trim();
  if(!name)return Swal.fire('त्रुटि','कृपया अतिथि का नाम दर्ज करें।','error');
  if(!village)return Swal.fire('त्रुटि','कृपया गाँव / शहर दर्ज करें।','error');
- let userId='';
+ // Sagun Type, Gift और Cash सभी optional हैं।
+ // केवल Name और Village/City required हैं।
+  let userId='';
  try{const {data:{user}}=await sb.auth.getUser();if(user)userId=user.id}catch(e){}
  const eventId=String(localStorage.getItem('currentEventId')||new URLSearchParams(location.search).get('event_id')||'').trim();
  if(!eventId){return Swal.fire('त्रुटि','यह Entry किसी Event से जुड़ी नहीं है। कृपया Event को दोबारा खोलें।','error');}
@@ -112,6 +132,10 @@ async function saveGuest(){
    user_id:userId,
    name,
    village,
+   gift_type:entryType,
+   payment_mode:entryType,
+   amount:cashAmount,
+   gift_description:giftDescription,
    event_type:'griha_pravesh',
    event_id:eventId,
    eventId:eventId,
@@ -121,14 +145,17 @@ async function saveGuest(){
    timestamp:new Date().toISOString()
  };
  try{
+   // Entry तुरंत local में सुरक्षित करें; cloud sync background में चलेगा।
+   const local=JSON.parse(localStorage.getItem('offlineGuests')||'[]');
+   local.unshift(record);
+   localStorage.setItem('offlineGuests',JSON.stringify(local));
+
    if(window.SagunStore && typeof window.SagunStore.addEntry==='function'){
-     await window.SagunStore.addEntry(record);
-   }else{
-     const local=JSON.parse(localStorage.getItem('offlineGuests')||'[]');
-     local.unshift(record);localStorage.setItem('offlineGuests',JSON.stringify(local));
+     Promise.resolve(window.SagunStore.addEntry(record)).catch(e=>console.warn('Background sync:',e));
    }
+
    statusEl.textContent='✓ '+name+' जी की Entry सुरक्षित हो गई।';
-   nameEl.value='';villageEl.value='';nameEl.focus();
+   nameEl.value='';villageEl.value='';typeEl.value='';cashEl.value='';giftEl.value='';updateEntryFields();nameEl.focus();
  }catch(e){
    console.error('Griha Pravesh entry save:',e);
    Swal.fire('त्रुटि','Entry save नहीं हो सकी। कृपया फिर कोशिश करें।','error');

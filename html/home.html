@@ -220,13 +220,13 @@
 
 
 /* Other Tools cards - visual enhancement only */
-.other-tools-section .quick{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.other-tools-section .quick{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .other-tools-section .quick a{min-height:116px;padding:18px 20px;border-radius:20px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
 .other-tools-section .quick a:after{content:'›';position:absolute;right:18px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;font-size:28px;line-height:1;color:currentColor;box-shadow:0 3px 10px rgba(20,25,40,.08)}
 .other-tools-section .quick a:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(30,35,50,.12)}
 .other-tools-section .quick a:nth-child(1){background:linear-gradient(135deg,#eaf4ff,#d7eaff);border-color:#a9d0ff;color:#183b67}
 .other-tools-section .quick a:nth-child(2){background:linear-gradient(135deg,#fff4df,#ffe2b3);border-color:#ffc56d;color:#8a3000}
-.other-tools-section .quick a:nth-child(3){background:linear-gradient(135deg,#fff0f6,#ffd8e8);border-color:#ff9fc3;color:#9b1748}
+.other-tools-section .quick a:nth-child(3){background:linear-gradient(135deg,#fff0f6,#ffd8e8);border-color:#ff9fc3;color:#9b1748}.other-tools-section .quick a:nth-child(4){background:linear-gradient(135deg,#f2efff,#e3dcff);border-color:#c8baff;color:#4c2c8a}
 .other-tools-section .quick a span{width:58px;height:58px;border-radius:16px;background:rgba(255,255,255,.82);display:grid;place-items:center;font-size:30px;margin:0 0 10px;border:1px solid rgba(255,255,255,.8);box-shadow:0 4px 12px rgba(20,25,40,.06)}
 .other-tools-section .quick a{font-size:18px}
 .other-tools-section .quick a small{font-size:12px;margin-top:5px;color:inherit;opacity:.78}
@@ -274,9 +274,9 @@
 </head>
 
 <body>
-<div class="header"><div class="headerLeft"><div class="logo">🎉 SAGUN SYSTEM</div></div><div class="headerRight"><span class="userName" id="headerUserName">👤 Loading...</span><button class="logoutBtn" id="pageLogoutBtn" type="button">🚪 Logout</button></div></div>
+<div class="header"><div class="headerLeft"><div class="logo">🎉 SAGUN SYSTEM</div></div><div class="headerRight"><span class="userName" id="headerUserName">👤 Loading...</span></div></div>
 <div class="main"><div class="sidebar" id="sidebar"><a href="home.html" class="active"><i class="fa-solid fa-house"></i> Dashboard</a></div><div class="content">
-<div class="home-top"><div class="welcome"><h1>Dashboard</h1><p>Welcome Back, <span id="homeWelcomeName">User</span> 👋</p></div><div class="home-actions"><input class="search" placeholder="Search..." oninput="homeSearch(this.value)"><button class="action-btn" onclick="location.reload()">↻</button><button class="action-btn gold" onclick="location.href='reminders.html'">🔔</button></div></div>
+<div class="home-top"><div class="welcome"><h1>Dashboard</h1><p><span id="homeGreeting">Good Morning</span>, <span id="homeWelcomeName">User</span> Ji 👋</p></div><div class="home-actions"><input class="search" placeholder="Search..." oninput="homeSearch(this.value)"><button class="action-btn" onclick="location.reload()">↻</button></div></div>
 
 <section class="section new-event-area">
   <div class="section-head">
@@ -297,49 +297,31 @@
 </section>
 <div class="cards dashboard-summary"><div class="card"><h3>👥 Total Guests / Entries</h3><h1 id="totalGuests">0</h1></div><div class="card"><h3>🎉 Total Events</h3><h1 id="totalEvents">0</h1></div><div class="card"><h3>💵 Total Cash</h3><h1 id="totalCash">₹0</h1></div><div class="card"><h3>📱 Total UPI</h3><h1 id="totalUPI">₹0</h1></div><div class="card"><h3>💰 Cash + UPI</h3><h1 id="totalCashUPI">₹0</h1></div><div class="card"><h3>🎁 Total Gifts</h3><h1 id="totalGifts">0</h1></div></div><div id="cashBalance" class="hidden-data">₹0</div><div id="upiCollection" class="hidden-data">₹0</div><div id="totalShagun" class="hidden-data">₹0</div><div id="cashIn" class="hidden-data">₹0</div><div id="cashOut" class="hidden-data">₹0</div><div id="todayEntry" class="hidden-data">0</div>
 
-<section class="section tools-section other-tools-section"><div class="section-head"><div><h2>🧰 Other Tools</h2><p>Family, reminders और Shagun management</p></div></div><div class="quick"><a href="family.html"><span>👨‍👩‍👧</span>Family<small>Members & Relations</small></a><a href="reminders.html"><span>🔔</span>Reminder<small>Birthday & Anniversary</small></a><a href="shagun-given.html"><span>🎁</span>Shagun Diya<small>Outgoing entries</small></a></div></section><section class="section tools-section home-settings-section"><div class="section-head"><div><h2>⚙️ Settings</h2><p>Account और app controls</p></div></div><div class="quick home-settings-quick">
-<a href="settings.html"><span>⚙️</span><b>Settings</b><small>Account preferences</small><em>Account controls, app preferences और general settings</em></a>
-<a href="assistant.html"><span>🤖</span><b>AI Assistant</b><small>Ask about your data</small><em>अपने Events, Entries और data के बारे में पूछें</em></a>
-<a href="settings.html#profile"><span>👤</span><b>Profile</b><small>Profile details</small><em>नाम और अपनी profile information update करें</em></a>
-<a href="settings.html#data-security"><span>🔐</span><b>Data & Security</b><small>Security & PWA</small><em>Data security, backup और PWA controls</em></a>
-</div></section>
+<section class="section tools-section other-tools-section"><div class="section-head"><div><h2>🧰 Other Tools</h2><p>Family, reminders और Shagun management</p></div></div><div class="quick"><a href="family.html"><span>👨‍👩‍👧</span>Family<small>Members & Relations</small></a><a href="reminders.html"><span>🔔</span>Reminder<small>Birthday & Anniversary</small></a><a href="shagun-given.html"><span>🎁</span>Shagun Diya<small>Outgoing entries</small></a><a href="assistant.html"><span>🤖</span>AI Assistant<small>Smart Family & Event Assistant</small></a></div></section>
 <div class="hidden-data"><div id="sagunEventsGrid"></div><div id="eventStorageNote"></div><div id="eventWiseGrid"></div><div id="recentBody"></div></div>
 </div></div>
+<script src="../js/user-cache.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
 (function(){
-  async function setLoggedInUserName(){
+  setTimeout(async function(){
     try{
-      if(!window.supabase || !window.supabase.createClient) return;
-      const client=window.supabase.createClient(
-        "https://rdlliurzgwwfjscgwssa.supabase.co",
-        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
-      );
-      const {data:{user}}=await client.auth.getUser();
-      if(!user) return;
-
+      if(!window.supabase?.createClient)return;
+      const c=window.supabase.createClient("https://rdlliurzgwwfjscgwssa.supabase.co","sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");
+      const {data:{session}}=await c.auth.getSession();
+      const user=session?.user;if(!user)return;
       const meta=user.user_metadata||{};
-      const name=meta.full_name||meta.name||meta.display_name||
-                 meta.user_name||meta.username||
-                 (user.email ? user.email.split("@")[0] : "User");
-
-      const welcome=document.getElementById("homeWelcomeName");
-      if(welcome) welcome.textContent=name;
-
-      const header=document.getElementById("headerUserName");
-      if(header) header.textContent="👤 "+name;
-    }catch(e){
-      console.log("User name load:",e);
-    }
-  }
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",setLoggedInUserName);
-  }else{
-    setLoggedInUserName();
-  }
+      let name=String(meta.full_name||meta.name||'').trim();
+      try{const r=await c.from('profiles').select('name').eq('id',user.id).maybeSingle();if(r?.data?.name)name=String(r.data.name).trim()}catch(e){}
+      if(!name)return;
+      localStorage.setItem('sgunms_user_cache_v1',JSON.stringify({name,email:user.email||'',photo:meta.avatar_url||meta.picture||'',updatedAt:Date.now()}));
+      const w=document.getElementById('homeWelcomeName');if(w)w.textContent=name;
+      const h=document.getElementById('headerUserName');if(h)h.textContent='👤 '+name;
+    }catch(e){}
+  },0);
 })();
 </script>
 
@@ -347,51 +329,7 @@
     <script src="../js/sagun-store.js"></script>
     <script src="../js/home.js" defer></script>
   <script src="../js/topbar.js"></script>
-<script>
-/* Home-only topbar: Menu/Guest count removed; keep direct Logout. */
-(function(){
-  function setupHomeTopbar(){
-    const bar=document.getElementById('sagunTopbar');
-    if(!bar) return;
-    const right=bar.querySelector('.sagun-right');
-    const tools=bar.querySelector('.sagun-tools');
-    if(!right) return;
-    if(tools) tools.remove();
-    const oldGuest=right.querySelector('#homeTopbarGuest');
-    if(oldGuest) oldGuest.remove();
-    if(!right.querySelector('#homeTopbarLogout')){
-      const btn=document.createElement('button');
-      btn.id='homeTopbarLogout';
-      btn.type='button';
-      btn.className='home-topbar-logout';
-      btn.textContent='🚪 Logout';
-      btn.onclick=async function(){
-        btn.disabled=true;
-        try{
-          if(window.supabase && window.supabase.createClient){
-            const client=window.supabase.createClient('https://rdlliurzgwwfjscgwssa.supabase.co','sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc');
-            await client.auth.signOut();
-          }
-        }catch(e){console.log('Logout:',e)}
-        try{
-          localStorage.removeItem('currentEventType');
-          localStorage.removeItem('selectedEventType');
-          localStorage.removeItem('pendingEventType');
-        }catch(e){}
-        location.href='login.html';
-      };
-      right.appendChild(btn);
-    }
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setupHomeTopbar);
-  else setupHomeTopbar();
-})();
-</script>
-<style>
-.home-topbar-logout{border:1px solid rgba(255,255,255,.65);background:#fff;color:#72001f;border-radius:18px;padding:7px 13px;font-weight:900;cursor:pointer;white-space:nowrap}
-.home-topbar-logout:hover{background:#ffeef2}
-@media(max-width:700px){.home-topbar-logout{font-size:11px;padding:6px 9px}.sagun-site{display:none!important}}
-</style>
+
 
 <style>
 #eventDetailModal{display:none!important}.event-detail-overlay{position:fixed;inset:0;background:rgba(20,10,15,.58);backdrop-filter:blur(4px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:18px}.event-detail-panel{width:min(720px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.35);position:relative}.event-detail-close{position:absolute;right:14px;top:12px;width:40px;height:40px;border:0;border-radius:50%;background:#f7eeee;color:#800000;font-size:18px;cursor:pointer}.event-detail-head{display:flex;gap:14px;align-items:center;padding-right:42px}.event-detail-icon{width:58px;height:58px;border-radius:16px;background:#fff4e0;display:flex;align-items:center;justify-content:center;font-size:30px}.event-detail-head h2{margin:0 0 5px;color:#800000;font-size:21px}.event-detail-head div{color:#666;font-size:13px;margin-top:2px}.event-detail-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:18px 0}.event-detail-stats div{padding:12px 8px;border:1px solid #eee0d0;border-radius:12px;text-align:center;background:#fffaf4}.event-detail-stats span{display:block;font-size:11px;color:#777}.event-detail-stats b{display:block;color:#800000;margin-top:4px;font-size:15px}.event-detail-title{font-weight:800;color:#800000;margin:8px 0 10px}.event-entry-list{display:flex;flex-direction:column;gap:7px}.event-entry-row{display:grid;grid-template-columns:30px minmax(0,1fr) auto auto;gap:9px;align-items:center;padding:10px;border:1px solid #eee;border-radius:11px;background:#fff}.event-entry-no{font-weight:800;color:#999;text-align:center}.event-entry-main{min-width:0}.event-entry-main b{display:block;color:#333}.event-entry-main span{display:block;color:#777;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}.event-entry-mode{font-size:11px;padding:4px 7px;border-radius:7px;background:#f2f7ff;color:#245b9c;font-weight:700}.event-entry-row>strong{color:#198754;white-space:nowrap}.event-no-entries{text-align:center;padding:25px;color:#888;border:1px dashed #ddd;border-radius:12px}.event-detail-actions{margin-top:14px;text-align:right}.event-detail-report{border:0;border-radius:10px;padding:11px 15px;background:#800000;color:#fff;font-weight:800;cursor:pointer}@media(max-width:600px){.event-detail-overlay{padding:8px}.event-detail-panel{padding:14px;border-radius:16px}.event-detail-stats{grid-template-columns:repeat(2,1fr)}.event-entry-row{grid-template-columns:26px minmax(0,1fr) auto}.event-entry-row>strong{grid-column:2;grid-row:2}.event-entry-mode{grid-column:3;grid-row:1}}
@@ -873,16 +811,7 @@ function openHomeEvent(page){window.location.href=page;}</script>
 </div>
 <div id="deleteSuccessToast" class="delete-success-toast">✅ Event successfully deleted</div>
 
-<script>
-(function(){
- const b=document.getElementById('pageLogoutBtn');
- if(!b)return;
- b.onclick=async()=>{
-  try{if(window.supabase&&window.supabase.createClient){const c=window.supabase.createClient('https://rdlliurzgwwfjscgwssa.supabase.co','sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc');await c.auth.signOut();}}catch(e){}
-  location.href='login.html';
- };
-})();
-</script>
+
 
 <!-- HOME FINAL FIX: no Menu/Guest in topbar; Event count on New Event card -->
 <script>
@@ -899,12 +828,6 @@ function openHomeEvent(page){window.location.href=page;}</script>
   window.addEventListener("pageshow",()=>setTimeout(updateEventCountFromCards,200));
 })();
 </script>
-<style>
-.home-topbar-logout{border:1px solid rgba(255,255,255,.65)!important;background:#fff!important;color:#72001f!important;border-radius:18px!important;padding:7px 13px!important;font-weight:900!important;cursor:pointer!important;white-space:nowrap!important}
-.home-topbar-logout:hover{background:#ffeef2!important}
-
-@media(max-width:700px){.home-topbar-logout{font-size:11px!important;padding:6px 9px!important}}
-</style>
 
 
 <script>
@@ -975,11 +898,7 @@ function openHomeEvent(page){window.location.href=page;}</script>
     bar.querySelectorAll('.sagun-tools,.sagun-menu,#homeTopbarGuest,#homeTopbarGuestCount,[id*="Guest"],[class*="guest"]').forEach(el=>el.remove());
     const right=bar.querySelector('.sagun-right'); if(!right)return;
     right.querySelectorAll('button').forEach(btn=>{const t=(btn.textContent||'').toLowerCase();if(t.includes('menu')||t.includes('guest')||t.includes('☰'))btn.remove();});
-    if(!right.querySelector('#homeTopbarLogout')){
-      const b=document.createElement('button');b.id='homeTopbarLogout';b.className='home-topbar-logout';b.type='button';b.textContent='🚪 Logout';
-      b.onclick=async()=>{try{const c=window.supabase.createClient(SUPA_URL,SUPA_KEY);await c.auth.signOut();}catch(e){} location.href='login.html';};
-      right.appendChild(b);
-    }
+
   }
   function run(){cleanHomeTopbar();hideGuestNotice();}
   document.addEventListener('DOMContentLoaded',run);
