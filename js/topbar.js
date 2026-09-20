@@ -138,7 +138,10 @@
       if(photo) el.innerHTML=`<img src="${photo.replace(/\"/g,'')}" alt="" referrerpolicy="no-referrer">`;
       else el.textContent=(name[0]||'U').toUpperCase();
     });
-    bar.querySelector('#sagunProfileName').textContent=name;
+    const mobileFirstName = window.matchMedia && window.matchMedia('(max-width: 700px)').matches
+      ? (name.split(/\s+/)[0] || name)
+      : name;
+    bar.querySelector('#sagunProfileName').textContent=mobileFirstName;
     bar.querySelector('#sagunProfilePanelName').textContent=name;
     bar.querySelector('#sagunProfileEmail').textContent=data?.email||'';
   }
@@ -184,6 +187,19 @@
 
   // Background sync starts immediately; it never blocks the topbar.
   syncProfileInBackground();
+
+  // Mobile only: keep the compact topbar readable and show only the first name.
+  try{
+    const mq=window.matchMedia('(max-width: 700px)');
+    const repaintMobileName=()=>{
+      const el=bar.querySelector('#sagunProfileName');
+      const full=String(bar.querySelector('#sagunProfilePanelName')?.textContent||'User').trim();
+      if(el) el.textContent=mq.matches ? (full.split(/\s+/)[0]||full) : full;
+    };
+    mq.addEventListener?.('change',repaintMobileName);
+    window.addEventListener('resize',repaintMobileName);
+    repaintMobileName();
+  }catch(e){}
 
   profileBtn.onclick=e=>{e.stopPropagation();const open=profilePanel.classList.toggle('open');profilePanel.setAttribute('aria-hidden',String(!open));panel.classList.remove('open');btn.setAttribute('aria-expanded','false');};
   profilePanel.querySelectorAll('[data-profile-action]').forEach(b=>b.onclick=async()=>{const a=b.dataset.profileAction;if(a==='edit'||a==='account'||a==='delete'){location.href=(a==='edit'?'profile.html':a==='delete'?'delete-account.html':'security.html');return;} if(a==='logout') await logout();});

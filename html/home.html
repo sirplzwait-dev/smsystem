@@ -56,11 +56,7 @@
 
 
 /* Clean event cards */
-#dynamicHomeEvents{display:contents}
-.new-event-area > .event-grid{display:grid;grid-template-columns:repeat(5,minmax(205px,1fr));gap:12px;align-items:stretch}
-.new-event-area > .event-grid > .new-event-card{min-width:0;width:auto}
-.new-event-area > .event-grid > #dynamicHomeEvents{display:contents}
-#dynamicHomeEvents .event-card-premium{min-width:0;width:auto}
+#dynamicHomeEvents{display:grid;grid-template-columns:repeat(4,minmax(250px,1fr));gap:12px;align-items:stretch}
 .event-card-premium{
  min-height:190px;border-radius:18px;padding:18px;cursor:pointer;position:relative;overflow:hidden;
  border:1px solid #eadfd5;box-shadow:0 6px 18px rgba(35,25,20,.07);
@@ -109,35 +105,8 @@
 .event-modal-actions{padding:15px 20px;background:#fafafa;border-top:1px solid #eee;display:flex;justify-content:flex-end;gap:10px}
 .modal-close-btn,.continue-entry-btn{border:0;border-radius:11px;padding:11px 16px;font-weight:800;cursor:pointer}
 .modal-close-btn{background:#eef0f3;color:#4b5563}.continue-entry-btn{background:linear-gradient(135deg,#72001f,#a70c35);color:#fff;box-shadow:0 6px 14px rgba(114,0,31,.2)}
-@media(max-width:1200px){
- .new-event-area > .event-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-}
-@media(max-width:700px){
- .new-event-area > .event-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
- .new-event-area > .event-grid > .new-event-card{min-height:175px}
- .event-card-premium{min-height:175px!important;padding:13px!important;min-width:0!important}
- .event-card-title{font-size:15px}
- .event-card-date,.event-card-person{font-size:11px;overflow-wrap:anywhere}
- .event-card-footer{left:13px;right:13px;bottom:11px;gap:5px!important}
- .home-event-report-btn,.home-event-delete-btn{padding:5px 6px;font-size:9px}
-}
-@media(max-width:430px){
- .new-event-area > .event-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
- .event-card-premium,.new-event-area > .event-grid > .new-event-card{min-height:165px!important}
- .new-event-title{font-size:16px}
- .new-event-text{font-size:10px}
- .event-card-title{font-size:14px}
- .event-card-footer{font-size:9px}
- .home-event-report-btn,.home-event-delete-btn{font-size:8px;padding:4px 5px}
-}
-@media(max-width:700px){
- .new-event-area .event-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
- .event-card-premium{min-height:175px;padding:13px;min-width:0}
- .event-card-title{font-size:15px}
- .detail-stats{grid-template-columns:repeat(2,1fr)}
- .event-modal-actions{flex-direction:column-reverse}
- .modal-close-btn,.continue-entry-btn{width:100%}
-}
+@media(max-width:900px){.new-event-area .event-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.new-event-area .event-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.event-card-premium{min-height:175px;padding:13px}.event-card-title{font-size:16px}.detail-stats{grid-template-columns:repeat(2,1fr)}.event-modal-actions{flex-direction:column-reverse}.modal-close-btn,.continue-entry-btn{width:100%}}
 
 
 .delete-event-btn{border:1px solid #e6b8b8;border-radius:11px;padding:11px 14px;font-weight:800;cursor:pointer;background:#fff0f0;color:#a40022;margin-right:auto}
@@ -220,13 +189,13 @@
 
 
 /* Other Tools cards - visual enhancement only */
-.other-tools-section .quick{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.other-tools-section .quick{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .other-tools-section .quick a{min-height:116px;padding:18px 20px;border-radius:20px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
 .other-tools-section .quick a:after{content:'›';position:absolute;right:18px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;font-size:28px;line-height:1;color:currentColor;box-shadow:0 3px 10px rgba(20,25,40,.08)}
 .other-tools-section .quick a:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(30,35,50,.12)}
 .other-tools-section .quick a:nth-child(1){background:linear-gradient(135deg,#eaf4ff,#d7eaff);border-color:#a9d0ff;color:#183b67}
 .other-tools-section .quick a:nth-child(2){background:linear-gradient(135deg,#fff4df,#ffe2b3);border-color:#ffc56d;color:#8a3000}
-.other-tools-section .quick a:nth-child(3){background:linear-gradient(135deg,#fff0f6,#ffd8e8);border-color:#ff9fc3;color:#9b1748}.other-tools-section .quick a:nth-child(4){background:linear-gradient(135deg,#f2efff,#e3dcff);border-color:#c8baff;color:#4c2c8a}
+.other-tools-section .quick a:nth-child(3){background:linear-gradient(135deg,#fff0f6,#ffd8e8);border-color:#ff9fc3;color:#9b1748}
 .other-tools-section .quick a span{width:58px;height:58px;border-radius:16px;background:rgba(255,255,255,.82);display:grid;place-items:center;font-size:30px;margin:0 0 10px;border:1px solid rgba(255,255,255,.8);box-shadow:0 4px 12px rgba(20,25,40,.06)}
 .other-tools-section .quick a{font-size:18px}
 .other-tools-section .quick a small{font-size:12px;margin-top:5px;color:inherit;opacity:.78}
@@ -234,25 +203,6 @@
 </style><style>
 .home-entry-amount{font-weight:900;color:#8b102c;margin-left:8px;white-space:nowrap}
 .event-card-footer{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:wrap!important}
-  /* Event delete progress UI */
-  .delete-ok-btn:disabled{pointer-events:none;}
-  .delete-spinner{
-    display:inline-block;width:15px;height:15px;margin-right:7px;
-    border:2px solid rgba(255,255,255,.45);border-top-color:#fff;
-    border-radius:50%;vertical-align:-3px;animation:deleteSpin .7s linear infinite;
-  }
-  .delete-progress{
-    padding:12px 14px;border-radius:12px;background:#fff8e8;
-    border:1px solid #f0d58a;color:#6b4b00;text-align:center;
-    animation:deletePulse 1.2s ease-in-out infinite;
-  }
-  .delete-progress-dot{
-    display:inline-block;width:8px;height:8px;border-radius:50%;
-    background:#dc2626;margin-right:7px;animation:deleteDot .8s ease-in-out infinite;
-  }
-  @keyframes deleteSpin{to{transform:rotate(360deg)}}
-  @keyframes deletePulse{50%{opacity:.72}}
-  @keyframes deleteDot{50%{transform:scale(1.5);opacity:.45}}
 </style>
 
 <style id="home-settings-card-polish">
@@ -271,12 +221,125 @@
 @media(max-width:520px){.home-settings-quick{grid-template-columns:1fr}.home-settings-quick a{min-height:125px}}
 </style>
 <link rel="stylesheet" href="../css/sgunms-global-background.css">
+
+<style id="home-event-card-text-final-fix">
+/* Event card text organization only */
+.event-card-premium{display:flex!important;flex-direction:column!important;min-height:205px!important;box-sizing:border-box!important;}
+.event-card-top{flex:0 0 auto!important;}
+.event-card-title{flex:0 0 auto!important;margin-top:10px!important;line-height:1.25!important;min-height:40px!important;display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important;}
+.event-card-date{flex:0 0 auto!important;margin-top:6px!important;line-height:1.3!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+.event-card-person{flex:0 0 auto!important;margin-top:6px!important;min-height:34px!important;line-height:1.35!important;display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important;}
+.event-card-footer{position:static!important;left:auto!important;right:auto!important;bottom:auto!important;margin-top:auto!important;padding-top:8px!important;width:100%!important;box-sizing:border-box!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;grid-template-rows:auto auto!important;gap:5px 6px!important;align-items:center!important;}
+.event-card-footer>span:first-child{grid-column:1!important;grid-row:1!important;min-width:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+.home-entry-amount{grid-column:2!important;grid-row:1!important;margin-left:0!important;white-space:nowrap!important;}
+.home-event-report-btn{grid-column:1!important;grid-row:2!important;justify-self:start!important;}
+.home-event-delete-btn{grid-column:2!important;grid-row:2!important;justify-self:end!important;}
+@media(max-width:700px){
+ .event-card-premium{min-height:190px!important;padding:13px!important;}
+ .event-card-title{font-size:16px!important;min-height:39px!important;}
+ .event-card-date,.event-card-person{font-size:10px!important;}
+ .event-card-person{min-height:28px!important;}
+ .event-card-footer{width:100%!important;gap:4px 5px!important;}
+ .home-event-report-btn,.home-event-delete-btn{font-size:9px!important;padding:4px 6px!important;}
+}
+</style>
+
+<style id="home-date-name-position-final">
+/* Only move event name and date slightly upward; no other layout/logic changes. */
+.event-card-title{margin-top:6px!important;}
+.event-card-date{margin-top:3px!important;}
+@media(max-width:700px){
+  .event-card-title{margin-top:6px!important;}
+  .event-card-date{margin-top:3px!important;}
+}
+</style>
+
+<style id="home-event-card-overlap-final">
+/* Final card text alignment: prevent person text from touching footer. */
+#dynamicHomeEvents .event-card-premium{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:205px!important;
+  box-sizing:border-box!important;
+  padding:16px!important;
+}
+#dynamicHomeEvents .event-card-top{flex:0 0 auto!important;}
+#dynamicHomeEvents .event-card-title{
+  flex:0 0 auto!important;
+  margin-top:6px!important;
+  min-height:0!important;
+  max-height:48px!important;
+  line-height:1.22!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  overflow:hidden!important;
+}
+#dynamicHomeEvents .event-card-date{
+  flex:0 0 auto!important;
+  margin-top:4px!important;
+  line-height:1.25!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+#dynamicHomeEvents .event-card-person{
+  flex:0 0 auto!important;
+  margin-top:4px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  line-height:1.35!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  overflow:hidden!important;
+}
+#dynamicHomeEvents .event-card-footer{
+  position:static!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  flex:0 0 auto!important;
+  margin-top:auto!important;
+  padding-top:8px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  grid-template-rows:auto auto!important;
+  gap:5px 6px!important;
+  align-items:center!important;
+}
+#dynamicHomeEvents .event-card-footer>span:first-child{
+  grid-column:1!important;grid-row:1!important;
+  min-width:0!important;white-space:nowrap!important;
+  overflow:hidden!important;text-overflow:ellipsis!important;
+}
+#dynamicHomeEvents .event-card-footer .home-entry-amount{
+  grid-column:2!important;grid-row:1!important;
+  margin-left:0!important;white-space:nowrap!important;
+}
+#dynamicHomeEvents .event-card-footer .home-event-report-btn{
+  grid-column:1!important;grid-row:2!important;justify-self:start!important;
+}
+#dynamicHomeEvents .event-card-footer .home-event-delete-btn{
+  grid-column:2!important;grid-row:2!important;justify-self:end!important;
+}
+@media(max-width:700px){
+  #dynamicHomeEvents .event-card-premium{min-height:190px!important;padding:12px!important;}
+  #dynamicHomeEvents .event-card-title{font-size:15px!important;margin-top:5px!important;max-height:38px!important;}
+  #dynamicHomeEvents .event-card-date{font-size:10px!important;margin-top:3px!important;}
+  #dynamicHomeEvents .event-card-person{font-size:10px!important;margin-top:3px!important;min-height:28px!important;max-height:28px!important;}
+  #dynamicHomeEvents .event-card-footer{gap:4px 5px!important;padding-top:7px!important;}
+}
+</style>
+
 </head>
 
 <body>
 <div class="header"><div class="headerLeft"><div class="logo">🎉 SAGUN SYSTEM</div></div><div class="headerRight"><span class="userName" id="headerUserName">👤 Loading...</span></div></div>
 <div class="main"><div class="sidebar" id="sidebar"><a href="home.html" class="active"><i class="fa-solid fa-house"></i> Dashboard</a></div><div class="content">
-<div class="home-top"><div class="welcome"><h1>Dashboard</h1><p><span id="homeGreeting">Good Morning</span>, <span id="homeWelcomeName">User</span> Ji 👋</p></div><div class="home-actions"><input class="search" placeholder="Search..." oninput="homeSearch(this.value)"><button class="action-btn" onclick="location.reload()">↻</button></div></div>
+<div class="home-top"><div class="welcome"><h1>Dashboard</h1><p>Welcome Back, <span id="homeWelcomeName">User</span> 👋</p></div><div class="home-actions"><input class="search" placeholder="Search..." oninput="homeSearch(this.value)"><button class="action-btn" onclick="location.reload()">↻</button><button class="action-btn gold" onclick="location.href='reminders.html'">🔔</button></div></div>
 
 <section class="section new-event-area">
   <div class="section-head">
@@ -297,7 +360,12 @@
 </section>
 <div class="cards dashboard-summary"><div class="card"><h3>👥 Total Guests / Entries</h3><h1 id="totalGuests">0</h1></div><div class="card"><h3>🎉 Total Events</h3><h1 id="totalEvents">0</h1></div><div class="card"><h3>💵 Total Cash</h3><h1 id="totalCash">₹0</h1></div><div class="card"><h3>📱 Total UPI</h3><h1 id="totalUPI">₹0</h1></div><div class="card"><h3>💰 Cash + UPI</h3><h1 id="totalCashUPI">₹0</h1></div><div class="card"><h3>🎁 Total Gifts</h3><h1 id="totalGifts">0</h1></div></div><div id="cashBalance" class="hidden-data">₹0</div><div id="upiCollection" class="hidden-data">₹0</div><div id="totalShagun" class="hidden-data">₹0</div><div id="cashIn" class="hidden-data">₹0</div><div id="cashOut" class="hidden-data">₹0</div><div id="todayEntry" class="hidden-data">0</div>
 
-<section class="section tools-section other-tools-section"><div class="section-head"><div><h2>🧰 Other Tools</h2><p>Family, reminders और Shagun management</p></div></div><div class="quick"><a href="family.html"><span>👨‍👩‍👧</span>Family<small>Members & Relations</small></a><a href="reminders.html"><span>🔔</span>Reminder<small>Birthday & Anniversary</small></a><a href="shagun-given.html"><span>🎁</span>Shagun Diya<small>Outgoing entries</small></a><a href="assistant.html"><span>🤖</span>AI Assistant<small>Smart Family & Event Assistant</small></a></div></section>
+<section class="section tools-section other-tools-section"><div class="section-head"><div><h2>🧰 Other Tools</h2><p>Family, reminders और Shagun management</p></div></div><div class="quick"><a href="family.html"><span>👨‍👩‍👧</span>Family<small>Members & Relations</small></a><a href="reminders.html"><span>🔔</span>Reminder<small>Birthday & Anniversary</small></a><a href="shagun-given.html"><span>🎁</span>Shagun Diya<small>Outgoing entries</small></a></div></section><section class="section tools-section home-settings-section"><div class="section-head"><div><h2>⚙️ Settings</h2><p>Account और app controls</p></div></div><div class="quick home-settings-quick">
+<a href="settings.html"><span>⚙️</span><b>Settings</b><small>Account preferences</small><em>Account controls, app preferences और general settings</em></a>
+<a href="assistant.html"><span>🤖</span><b>AI Assistant</b><small>Ask about your data</small><em>अपने Events, Entries और data के बारे में पूछें</em></a>
+<a href="settings.html#profile"><span>👤</span><b>Profile</b><small>Profile details</small><em>नाम और अपनी profile information update करें</em></a>
+<a href="settings.html#data-security"><span>🔐</span><b>Data & Security</b><small>Security & PWA</small><em>Data security, backup और PWA controls</em></a>
+</div></section>
 <div class="hidden-data"><div id="sagunEventsGrid"></div><div id="eventStorageNote"></div><div id="eventWiseGrid"></div><div id="recentBody"></div></div>
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -324,12 +392,6 @@
       const welcome=document.getElementById("homeWelcomeName");
       if(welcome) welcome.textContent=name;
 
-      const greeting=document.getElementById("homeGreeting");
-      if(greeting){
-        const hour=new Date().getHours();
-        greeting.textContent = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
-      }
-
       const header=document.getElementById("headerUserName");
       if(header) header.textContent="👤 "+name;
     }catch(e){
@@ -348,7 +410,6 @@
     <script src="../js/sagun-store.js"></script>
     <script src="../js/home.js" defer></script>
   <script src="../js/topbar.js"></script>
-
 
 <style>
 #eventDetailModal{display:none!important}.event-detail-overlay{position:fixed;inset:0;background:rgba(20,10,15,.58);backdrop-filter:blur(4px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:18px}.event-detail-panel{width:min(720px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.35);position:relative}.event-detail-close{position:absolute;right:14px;top:12px;width:40px;height:40px;border:0;border-radius:50%;background:#f7eeee;color:#800000;font-size:18px;cursor:pointer}.event-detail-head{display:flex;gap:14px;align-items:center;padding-right:42px}.event-detail-icon{width:58px;height:58px;border-radius:16px;background:#fff4e0;display:flex;align-items:center;justify-content:center;font-size:30px}.event-detail-head h2{margin:0 0 5px;color:#800000;font-size:21px}.event-detail-head div{color:#666;font-size:13px;margin-top:2px}.event-detail-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:18px 0}.event-detail-stats div{padding:12px 8px;border:1px solid #eee0d0;border-radius:12px;text-align:center;background:#fffaf4}.event-detail-stats span{display:block;font-size:11px;color:#777}.event-detail-stats b{display:block;color:#800000;margin-top:4px;font-size:15px}.event-detail-title{font-weight:800;color:#800000;margin:8px 0 10px}.event-entry-list{display:flex;flex-direction:column;gap:7px}.event-entry-row{display:grid;grid-template-columns:30px minmax(0,1fr) auto auto;gap:9px;align-items:center;padding:10px;border:1px solid #eee;border-radius:11px;background:#fff}.event-entry-no{font-weight:800;color:#999;text-align:center}.event-entry-main{min-width:0}.event-entry-main b{display:block;color:#333}.event-entry-main span{display:block;color:#777;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}.event-entry-mode{font-size:11px;padding:4px 7px;border-radius:7px;background:#f2f7ff;color:#245b9c;font-weight:700}.event-entry-row>strong{color:#198754;white-space:nowrap}.event-no-entries{text-align:center;padding:25px;color:#888;border:1px dashed #ddd;border-radius:12px}.event-detail-actions{margin-top:14px;text-align:right}.event-detail-report{border:0;border-radius:10px;padding:11px 15px;background:#800000;color:#fff;font-weight:800;cursor:pointer}@media(max-width:600px){.event-detail-overlay{padding:8px}.event-detail-panel{padding:14px;border-radius:16px}.event-detail-stats{grid-template-columns:repeat(2,1fr)}.event-entry-row{grid-template-columns:26px minmax(0,1fr) auto}.event-entry-row>strong{grid-column:2;grid-row:2}.event-entry-mode{grid-column:3;grid-row:1}}
@@ -429,24 +490,10 @@ function openHomeEvent(page){window.location.href=page;}</script>
    const info=e=>{const t=type(e),g=String(e?.groom_name||e?.groomName||e?.person1||e?.mainPerson||e?.personName||'').trim(),b=String(e?.bride_name||e?.brideName||e?.person2||'').trim(),m=String(e?.birthday_name||e?.birthdayName||e?.mainPerson||e?.personName||e?.name||'').trim();if(['tilak','barat','reception','engagement'].includes(t))return{n:t[0].toUpperCase()+t.slice(1),p:[g&&'Dulha: '+g,b&&'Dulhan: '+b].filter(Boolean).join(' • ')};if(t==='birthday')return{n:'Birthday',p:m};if(t==='anniversary')return{n:'Anniversary',p:[g&&'Husband: '+g,b&&'Wife: '+b].filter(Boolean).join(' • ')};return{n:t==='griha_pravesh'?'Griha Pravesh':t==='mundan'?'Mundan':String(e?.event_name||e?.eventName||e?.name||e?.title||'Event'),p:m||[g,b].filter(Boolean).join(' • ')};};
    let events=[];try{if(window.SagunStore?.getEvents)events=await window.SagunStore.getEvents()||[]}catch(e){console.warn(e)}
    if(seq!==homeRenderSeq)return;
-   const seen=new Set();events=events.filter(e=>{const k=id(e);if(!k||seen.has(k))return false;seen.add(k);return true});
-   // Same Event can exist in more than one local/cloud cache with different IDs.
-   // Hide only exact visual duplicates (same type + date + displayed people/name).
-   const visualSeen=new Set();
-   events=events.filter(e=>{
-     const t=type(e);
-     const d=String(e?.event_date||e?.eventDate||e?.date||e?.startDate||"").trim().toLowerCase();
-     const g=String(e?.groom_name||e?.groomName||e?.person1||e?.mainPerson||"").trim().toLowerCase();
-     const b=String(e?.bride_name||e?.brideName||e?.person2||"").trim().toLowerCase();
-     const n=String(e?.birthday_name||e?.birthdayName||e?.event_name||e?.eventName||e?.name||e?.title||"").trim().toLowerCase();
-     const key=[t,d,g,b,n].join("|");
-     if(visualSeen.has(key)) return false;
-     visualSeen.add(key); return true;
-   });
-   events.sort((a,b)=>new Date(b?.created_at||b?.createdAt||0)-new Date(a?.created_at||a?.createdAt||0));
+   const seen=new Set();events=events.filter(e=>{const k=id(e);if(!k||seen.has(k))return false;seen.add(k);return true});events.sort((a,b)=>new Date(b?.created_at||b?.createdAt||0)-new Date(a?.created_at||a?.createdAt||0));
    eventCache.push(...events); const total=document.getElementById('totalEvents');if(total)total.textContent=events.length;const badge=document.getElementById('homeEventCountBadge');if(badge)badge.textContent=events.length+' Event'+(events.length===1?'':'s');
    if(!events.length){box.innerHTML='<div class="sagun-event-empty">अभी कोई Event नहीं है। <b>Add Event</b> से Event बनाइए।</div>';updateEventCountFromCards?.();return;}
-   box.innerHTML=''; events.forEach(e=>{const ei=info(e),eid=id(e),date=e?.event_date||e?.eventDate||e?.date||'Date not set',card=document.createElement('div');card.className='event-card-premium type-'+type(e).replace(/\s+/g,'-');card.tabIndex=0;const go=()=>{localStorage.setItem('currentEventId',eid);localStorage.setItem('sgunmsActiveEvent',JSON.stringify(e));location.href='event-report.html?event_id='+encodeURIComponent(eid)};card.onclick=go;card.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();go()}};card.innerHTML='<div class="event-card-top"><span class="event-open">›</span></div><div class="event-card-title">'+esc(ei.n)+'</div><div class="event-card-date">Date: '+esc(date)+'</div>'+(ei.p?'<div class="event-card-person">'+esc(ei.p)+'</div>':'')+'<div class="event-card-footer"><span class="home-entry-count">0 Entries</span><span class="home-entry-amount">₹0</span><button type="button" class="home-event-report-btn">Report</button><button type="button" class="home-event-delete-btn">Delete</button></div>';card.querySelector('.home-event-report-btn').onclick=ev=>{ev.stopPropagation();go()};card.querySelector('.home-event-delete-btn').onclick=ev=>{ev.stopPropagation();const i=eventCache.indexOf(e);if(window.openDeleteConfirm)window.openDeleteConfirm(i)};box.appendChild(card)});
+   box.innerHTML=''; events.forEach(e=>{const ei=info(e),eid=id(e),date=e?.event_date||e?.eventDate||e?.date||'Date not set',card=document.createElement('div');card.className='event-card-premium type-'+type(e).replace(/\s+/g,'-');card.tabIndex=0;const go=()=>{localStorage.setItem('currentEventId',eid);localStorage.setItem('sgunmsActiveEvent',JSON.stringify(e));location.href='event-report.html?event_id='+encodeURIComponent(eid)};card.onclick=go;card.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();go()}};const eventEmoji={tilak:'🪔',barat:'🥁',reception:'🎉',birthday:'🎂',anniversary:'💐',engagement:'💍',mundan:'👶',griha_pravesh:'🏠'}[type(e)]||'🎊';card.innerHTML='<div class="event-card-top"><span class="event-big-icon">'+eventEmoji+'</span><span class="event-open">›</span></div><div class="event-card-title">'+esc(ei.n)+'</div><div class="event-card-date">📅 '+esc(date)+'</div>'+(ei.p?'<div class="event-card-person">👤 '+esc(ei.p)+'</div>':'')+'<div class="event-card-footer"><span class="home-entry-count">👥 0 Entries</span><span class="home-entry-amount">₹0</span><button type="button" class="home-event-report-btn">📊 Report</button><button type="button" class="home-event-delete-btn">🗑️ Delete</button></div>';card.querySelector('.home-event-report-btn').onclick=ev=>{ev.stopPropagation();go()};card.querySelector('.home-event-delete-btn').onclick=ev=>{ev.stopPropagation();const i=eventCache.indexOf(e);if(window.openDeleteConfirm)window.openDeleteConfirm(i)};box.appendChild(card)});
    let entries=[];try{if(window.SagunStore?.getEntries)entries=await window.SagunStore.getEntries()||[]}catch(e){console.warn(e)}
    if(seq!==homeRenderSeq)return;
    const amount=x=>Number(x?.amount??x?.cashAmount??x?.upiAmount??x?.value??0)||0,mode=x=>String(x?.payment_mode||x?.paymentMode||x?.mode||x?.type||'CASH').toUpperCase();let tg=0,tc=0,tu=0,gg=0;
@@ -613,7 +660,9 @@ function openHomeEvent(page){window.location.href=page;}</script>
    let cloud=[];
    try{const c=window.supabase?.createClient?.("https://rdlliurzgwwfjscgwssa.supabase.co","sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");if(c){const {data:{user}}=await c.auth.getUser();if(user){const r=await c.from("guests").select("*").eq("user_id",user.id).limit(5000);if(!r.error)cloud=r.data||[]}}}catch(_){}
    const activeUid=String(localStorage.getItem("sagunActiveUserId")||"").trim();
+   const isDeleted=g=>g?.__deleted===true||g?.deleted===true||g?.is_deleted===true||!!g?.deleted_at;
    const rows=local.concat(cloud).filter(g=>{
+     if(isDeleted(g))return false;
      const owner=String(g?.user_id||g?.userId||g?.owner_id||g?.ownerId||"").trim();
      return !activeUid || !owner || owner===activeUid;
    });
@@ -635,7 +684,7 @@ function openHomeEvent(page){window.location.href=page;}</script>
      const matched=[];
      rows.forEach(g=>{
        if(!match(g,e))return;
-       const key=String(g?.id||g?.entry_id||g?.created_at||g?.createdAt||g?.timestamp||"")+"|"+String(g?.name||g?.guestName||"").trim().toLowerCase()+"|"+String(g?.amount||g?.cashAmount||g?.upiAmount||g?.giftAmount||g?.value||0)+"|"+String(g?.payment_mode||g?.paymentMode||g?.mode||g?.type||"").toLowerCase();
+       const key=String(g?.id||g?.guest_id||g?.entry_id||g?.created_at||g?.createdAt||g?.timestamp||"")+"|"+String(g?.name||g?.guestName||"").trim().toLowerCase()+"|"+String(g?.amount||g?.cashAmount||g?.upiAmount||g?.giftAmount||g?.value||0)+"|"+String(g?.payment_mode||g?.paymentMode||g?.mode||g?.type||"").toLowerCase();
        if(used.has(key))return;
        used.add(key); matched.push(g);
      });
@@ -643,10 +692,11 @@ function openHomeEvent(page){window.location.href=page;}</script>
      matched.forEach(g=>{
        const amount=Number(g.amount||g.cashAmount||g.upiAmount||g.giftAmount||g.value||0)||0;
        const mode=String(g.payment_mode||g.paymentMode||g.mode||g.type||"CASH").toUpperCase();
+       const isGift=mode.includes("GIFT") || !!g.gift_item || !!g.giftItem || !!g.gift_description || !!g.giftDescription;
        total+=amount; allCount++;
-       if(mode.includes("GIFT") || g.gift_item || g.giftItem || g.gift_description || g.giftDescription) allGifts++;
-       else if(mode.includes("UPI")) allUpi+=amount;
-       else allCash+=amount;
+       if(isGift) allGifts++;
+       if(mode.includes("UPI")) allUpi+=amount;
+       else if(mode.includes("CASH")) allCash+=amount;
      });
      const card=cards[i]; if(!card)return;
      const countEl=card.querySelector(".home-entry-count"); if(countEl)countEl.textContent="👥 "+matched.length+" Entries";
@@ -738,35 +788,7 @@ function openHomeEvent(page){window.location.href=page;}</script>
 
   window.executeDeleteEvent=async function(){
     const e=pendingEventDelete; if(!e)return;
-
-    // तुरंत UI में "Delete हो रहा है" दिखाएँ — cloud/local delete पूरा होने का इंतजार नहीं।
-    const modal=document.getElementById("deleteEventConfirmModal");
-    const okBtn=modal?.querySelector(".delete-ok-btn");
-    const cancelBtn=modal?.querySelector(".delete-cancel-btn");
-    const title=modal?.querySelector(".delete-confirm-title");
-    const msg=modal?.querySelector(".delete-confirm-text");
-    const icon=modal?.querySelector(".delete-warning-icon");
-
-    if(okBtn){
-      okBtn.disabled=true;
-      okBtn.innerHTML='<span class="delete-spinner"></span> Delete हो रहा है...';
-      okBtn.style.opacity="0.9";
-      okBtn.style.cursor="wait";
-    }
-    if(cancelBtn){
-      cancelBtn.disabled=true;
-      cancelBtn.style.opacity="0.55";
-      cancelBtn.style.cursor="not-allowed";
-    }
-    if(title) title.textContent="⏳ Event Delete हो रहा है...";
-    if(icon) icon.textContent="⏳";
-    if(msg) msg.innerHTML='<div class="delete-progress"><span class="delete-progress-dot"></span> Event, entries और collection हटाए जा रहे हैं...<br><small>कृपया इस window को बंद न करें।</small></div>';
-
-    // अगले browser paint तक UI को दिखने दें, फिर deletion शुरू करें।
-    await new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,80)));
-
-    const e2=pendingEventDelete; if(!e2)return;
-    const eid=String(e2.id||e2.eventId||e2.event_id||e2.key||"").trim();
+    const eid=String(e.id||e.eventId||e.event_id||e.key||"").trim();
     const uid=String(localStorage.getItem("sagunActiveUserId")||"").trim();
     const client=(()=>{try{return window.supabase?.createClient?.("https://rdlliurzgwwfjscgwssa.supabase.co","sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc")}catch(_){return null}})();
 
@@ -830,7 +852,16 @@ function openHomeEvent(page){window.location.href=page;}</script>
 </div>
 <div id="deleteSuccessToast" class="delete-success-toast">✅ Event successfully deleted</div>
 
-
+<script>
+(function(){
+ const b=document.getElementById('pageLogoutBtn');
+ if(!b)return;
+ b.onclick=async()=>{
+  try{if(window.supabase&&window.supabase.createClient){const c=window.supabase.createClient('https://rdlliurzgwwfjscgwssa.supabase.co','sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc');await c.auth.signOut();}}catch(e){}
+  location.href='login.html';
+ };
+})();
+</script>
 
 <!-- HOME FINAL FIX: no Menu/Guest in topbar; Event count on New Event card -->
 <script>
@@ -933,6 +964,41 @@ function openHomeEvent(page){window.location.href=page;}</script>
 @media(max-width:1100px){.dashboard-summary{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:700px){.dashboard-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}.tools-section .quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
+
+<style id="home-colorful-event-cards-only">
+#dynamicHomeEvents{display:contents!important}
+.event-card-premium{min-height:190px!important;border-radius:20px!important;padding:16px!important;position:relative!important;overflow:hidden!important;border:1px solid rgba(120,80,20,.12)!important;box-shadow:0 7px 20px rgba(25,30,45,.07)!important;transition:transform .2s,box-shadow .2s!important}
+.event-card-premium:hover{transform:translateY(-4px)!important;box-shadow:0 15px 30px rgba(25,30,45,.13)!important}
+.type-tilak{background:linear-gradient(145deg,#fff0d6,#fffaf2)!important;border-color:#ffd59a!important}.type-barat{background:linear-gradient(145deg,#e8f4ff,#f8fbff)!important;border-color:#bddcff!important}.type-reception{background:linear-gradient(145deg,#ffeaf3,#fff8fb)!important;border-color:#ffc5dc!important}.type-birthday{background:linear-gradient(145deg,#fff6cf,#fffdf3)!important;border-color:#f5df8a!important}.type-anniversary{background:linear-gradient(145deg,#f4eaff,#fcf8ff)!important;border-color:#dec5ff!important}.type-engagement{background:linear-gradient(145deg,#e4faf5,#f8fffd)!important;border-color:#b5eadf!important}.type-mundan{background:linear-gradient(145deg,#eaf9ed,#fbfffb)!important;border-color:#bfe8c7!important}.type-griha-pravesh{background:linear-gradient(145deg,#e9f0ff,#fafbff)!important;border-color:#c5d5ff!important}
+.event-card-premium:before{content:""!important;position:absolute!important;left:0!important;right:0!important;top:0!important;height:6px!important;background:linear-gradient(90deg,#ff8a00,#e91e63,#7c4dff)!important}
+.event-card-top{display:flex!important;justify-content:space-between!important;align-items:center!important}.event-big-icon{width:52px!important;height:52px!important;border-radius:16px!important;background:rgba(255,255,255,.88)!important;display:grid!important;place-items:center!important;font-size:29px!important;box-shadow:0 5px 12px rgba(30,35,50,.08)!important}.event-open{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.8);font-size:25px!important;color:#7b0826!important}.event-card-title{margin-top:13px!important;font-size:19px!important;font-weight:800!important;color:#5f0922!important}.event-card-date,.event-card-person{margin-top:8px!important;font-size:12px!important;color:#5f6878!important;line-height:1.35!important}.event-card-footer{position:absolute!important;left:16px!important;right:16px!important;bottom:13px!important;padding-top:9px!important;border-top:1px solid rgba(120,80,20,.13)!important;display:flex!important;align-items:center!important;gap:6px!important;font-size:10px!important;font-weight:800!important;color:#5f0922!important}.home-event-report-btn,.home-event-delete-btn{border-radius:9px!important;padding:5px 7px!important;font-size:10px!important;font-weight:800!important}.home-event-report-btn{background:#fff7e8!important;border-color:#efd59d!important;color:#7a4a00!important}.home-event-delete-btn{background:#fff0f3!important;border-color:#f2c1ce!important;color:#a40032!important}
+
+@media(max-width:700px){.event-card-premium{min-height:178px!important;padding:12px!important;border-radius:17px!important}.event-big-icon{width:43px!important;height:43px!important;border-radius:13px!important;font-size:24px!important}.event-open{width:26px;height:26px;font-size:21px!important}.event-card-title{font-size:15px!important;margin-top:10px!important}.event-card-date,.event-card-person{font-size:10px!important;margin-top:6px!important}.event-card-footer{left:12px!important;right:12px!important;bottom:10px!important;gap:4px!important;font-size:9px!important}.home-event-report-btn,.home-event-delete-btn{font-size:9px!important;padding:4px 5px!important}.home-entry-amount{margin-left:auto!important}}
+</style>
+
+
+
+
+<style id="home-final-name-date-position">
+/* Final: only move event name and date upward */
+#dynamicHomeEvents .event-card-premium .event-card-title{
+  margin-top:5px!important;
+  line-height:1.2!important;
+}
+#dynamicHomeEvents .event-card-premium .event-card-date{
+  margin-top:2px!important;
+  line-height:1.25!important;
+}
+#dynamicHomeEvents .event-card-premium .event-card-person{
+  margin-top:4px!important;
+  line-height:1.3!important;
+}
+@media(max-width:700px){
+  #dynamicHomeEvents .event-card-premium .event-card-title{margin-top:5px!important;}
+  #dynamicHomeEvents .event-card-premium .event-card-date{margin-top:2px!important;}
+  #dynamicHomeEvents .event-card-premium .event-card-person{margin-top:3px!important;}
+}
+</style>
 </body>
 </html><style>
 /* New Event + created Events: keep them together in one row on desktop */
@@ -940,108 +1006,5 @@ function openHomeEvent(page){window.location.href=page;}</script>
 .new-event-area .event-grid{grid-template-columns:repeat(5,minmax(0,1fr));}
 @media(max-width:1100px){.new-event-area .event-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
 @media(max-width:700px){.home-event-count-badge{font-size:10px;padding:3px 8px;margin-left:5px;}}
-@media(max-width:700px){.new-event-area .event-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
-</style>
-
-<style id="mobile-single-column-event-cards">
-
-/* Mobile event cards - single column, full width, bordered premium look */
-@media (max-width:700px){
-  .new-event-area{
-    padding:14px 10px 18px !important;
-    overflow:hidden !important;
-  }
-
-  .new-event-area .event-grid{
-    display:grid !important;
-    grid-template-columns:1fr !important;
-    width:100% !important;
-    gap:12px !important;
-    overflow:visible !important;
-  }
-
-  .new-event-area #dynamicHomeEvents{
-    display:contents !important;
-  }
-
-  .new-event-area .new-event-card,
-  .new-event-area .event-card-premium{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-    margin:0 !important;
-    box-sizing:border-box !important;
-  }
-
-  .new-event-area .new-event-card{
-    min-height:155px !important;
-    border:2px dashed #c8942f !important;
-    border-radius:20px !important;
-  }
-
-  .new-event-area .event-card-premium{
-    min-height:165px !important;
-    padding:16px !important;
-    border:2px solid #ead6c7 !important;
-    border-top:5px solid #8a0a2d !important;
-    border-radius:20px !important;
-    box-shadow:0 7px 20px rgba(60,30,25,.10) !important;
-  }
-
-  .new-event-area .event-card-premium:hover{
-    transform:none !important;
-  }
-
-  .new-event-area .event-card-title{
-    font-size:18px !important;
-    padding-right:10px !important;
-  }
-
-  .new-event-area .event-card-date,
-  .new-event-area .event-card-person{
-    font-size:12px !important;
-  }
-
-  .new-event-area .event-card-footer{
-    left:16px !important;
-    right:16px !important;
-    bottom:12px !important;
-    padding-top:9px !important;
-    gap:6px !important;
-  }
-
-  .new-event-area .home-event-report-btn,
-  .new-event-area .home-event-delete-btn{
-    padding:5px 9px !important;
-  }
-}
-
-/* Slightly stronger desktop event borders too */
-@media(min-width:701px){
-  .event-card-premium{
-    border:1.5px solid #e4cfc2 !important;
-  }
-}
-
-</style>
-
-<style id="mobile-event-text-up">
-@media(max-width:700px){
-  .new-event-area .event-card-top{
-    margin-top:-3px !important;
-  }
-  .new-event-area .event-card-title{
-    margin-top:2px !important;
-  }
-  .new-event-area .event-card-date,
-  .new-event-area .event-card-person{
-    margin-top:6px !important;
-  }
-  .new-event-area .new-event-title{
-    margin-top:4px !important;
-  }
-  .new-event-area .new-event-text{
-    margin-top:2px !important;
-  }
-}
+@media(max-width:700px){.new-event-area .event-grid{grid-template-columns:1fr!important;gap:10px!important;}}
 </style>
