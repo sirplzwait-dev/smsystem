@@ -8,6 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="../js/sagun-store.js"></script>
 <style>
 *{box-sizing:border-box}
@@ -501,6 +502,46 @@ body{background:linear-gradient(135deg,#fffaf0,#ffffff 55%,#f5f1e8)!important}
 }
 </style>
 </style>
+
+<style id="event-report-print-fix">
+.report-actions .print{
+  background:linear-gradient(135deg,#7c3aed,#5b21b6)!important;
+  color:#fff;border-color:#c4b5fd;
+}
+@media print{
+  @page{size:A4 portrait;margin:9mm 8mm}
+  html,body{width:210mm!important;min-height:297mm!important;background:#fff!important}
+  body{font-family:Arial,"Noto Sans",sans-serif!important;color:#111!important}
+  .page{width:100%!important;margin:0!important;padding:0!important;max-width:none!important}
+  .report-hero{
+    margin:0 0 7mm!important;padding:8mm 7mm!important;border-radius:5mm!important;
+    box-shadow:none!important;break-inside:avoid;page-break-inside:avoid;
+    -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;
+  }
+  .report-actions,.entry-tools,.deleted-note,.modal,.back-btn,.topbar,
+  #graphBtn,#clearEntryFilter{display:none!important}
+  .details{box-shadow:none!important;border:0!important;padding:0!important}
+  .info{grid-template-columns:repeat(2,1fr)!important;gap:3mm!important}
+  .info .box{padding:3mm!important;break-inside:avoid;page-break-inside:avoid}
+  .stats{grid-template-columns:repeat(5,1fr)!important;gap:2.5mm!important;margin:5mm 0!important}
+  .stat{padding:3mm!important;box-shadow:none!important;break-inside:avoid}
+  .stat strong{font-size:14px!important}
+  .bar{margin-top:4mm!important;break-after:avoid}
+  .table-wrap{overflow:visible!important}
+  .entries-scroll{max-height:none!important;height:auto!important;overflow:visible!important}
+  table.entries{width:100%!important;border-collapse:collapse!important;font-size:8px!important}
+  table.entries th,table.entries td{padding:2.2mm 1.5mm!important;border:1px solid #d7d7d7!important}
+  table.entries thead{display:table-header-group!important}
+  table.entries tr{break-inside:avoid!important;page-break-inside:avoid!important}
+  table.entries .action-cell,table.entries th:last-child{display:none!important}
+  .chart-grid{display:none!important}
+  #loadStatus{font-size:9px!important}
+  .section-title{font-size:13px!important}
+  .report-hero h1{font-size:21px!important}
+  .report-hero p{font-size:10px!important}
+}
+</style>
+
 </head>
 <body>
 <div class="page">
@@ -521,6 +562,10 @@ body{background:linear-gradient(135deg,#fffaf0,#ffffff 55%,#f5f1e8)!important}
     <button class="report-btn pdf" id="pdfBtn">
       <span class="action-icon">📄</span>
       <span><b>PDF Report</b><small>PDF डाउनलोड</small></span>
+    </button>
+    <button class="report-btn print" id="printBtn">
+      <span class="action-icon">🖨️</span>
+      <span><b>Print Report</b><small>Print / Save PDF</small></span>
     </button>
     <button class="report-btn excel" id="excelBtn">
       <span class="action-icon">📊</span>
@@ -858,7 +903,95 @@ function eventReportMeta(){
 function calcTotals(){let cash=0,upi=0,gifts=0;entries.filter(x=>!x.__deleted).forEach(x=>{const mode=norm(x.payment_mode||x.paymentMode||x.type);const amt=Number(x.amount||0)||0;if(mode==='cash')cash+=amt;else if(mode==='upi')upi+=amt;if(mode==='gift'||norm(x.gift_type||x.giftType)==='gift')gifts++});return {cash,upi,total:cash+upi,gifts}}
 function exportExcel(){if(!window.XLSX){alert('Excel library load नहीं हुई।');return}const m=eventReportMeta(),t=calcTotals();const rows=[['SAGUN MANAGEMENT SYSTEM'],['EVENT REPORT'],[],['Event Name',m.name],['Event Type',m.type],...m.details,[],['SUMMARY'],['Total Entries',entries.filter(x=>!x.__deleted).length],['Cash',t.cash],['UPI',t.upi],['Cash + UPI',t.total],['Gifts',t.gifts],[],['ENTRIES'],['#','Name','Village / City','Payment','Amount','Gift / Description','Date / Time','Status'],...reportRows()];const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:7},{wch:26},{wch:24},{wch:13},{wch:14},{wch:28},{wch:23}];ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:6}},{s:{r:1,c:0},e:{r:1,c:6}}];['A1','A2'].forEach(c=>{if(ws[c])ws[c].s={font:{bold:true,sz:c==='A1'?16:13},alignment:{horizontal:'center'}}});for(let r=18;r<=18+entries.length;r++){if(ws['E'+r])ws['E'+r].z='₹#,##0'}const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Event Report');XLSX.writeFile(wb,'Sagun_Event_Report_'+m.name.replace(/[^a-zA-Z0-9_-]+/g,'_').slice(0,30)+'.xlsx')}
 function pdfMoney(n){return 'Rs. '+Number(n||0).toLocaleString('en-IN')}
-function exportPdf(){if(!window.jspdf?.jsPDF){alert('PDF library load नहीं हुई।');return}const m=eventReportMeta(),t=calcTotals();const doc=new jspdf.jsPDF({unit:'mm',format:'a4'});const W=210;let y=18;doc.setFillColor(105,0,27);doc.rect(0,0,W,34,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(19);doc.text('SAGUN MANAGEMENT SYSTEM',14,13);doc.setFontSize(13);doc.text('EVENT REPORT',14,22);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('Event-wise collection and guest entries',14,28);y=43;doc.setTextColor(45,50,60);doc.setFont('helvetica','bold');doc.setFontSize(14);doc.text(String(m.name).slice(0,65),14,y);y+=7;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text('Type: '+String(m.type).replace('_',' ')+'   |   Date: '+(m.date||'-'),14,y);y+=10;const info=[['Total Entries',String(entries.filter(x=>!x.__deleted).length)],['Cash',pdfMoney(t.cash)],['UPI',pdfMoney(t.upi)],['Cash + UPI',pdfMoney(t.total)],['Gifts',String(t.gifts)]];let x=14;info.forEach((it,i)=>{doc.setFillColor(247,243,234);doc.roundedRect(x,y,34,20,3,3,'F');doc.setTextColor(105,11,38);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text(it[0],x+3,y+7);doc.setFontSize(10);doc.text(it[1],x+3,y+15);x+=37});y+=29;doc.setTextColor(105,11,38);doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('EVENT INFORMATION',14,y);y+=7;doc.setTextColor(55,61,72);doc.setFont('helvetica','normal');doc.setFontSize(9);const details=m.details;details.forEach((d,i)=>{const col=i%2,row=Math.floor(i/2),xx=14+col*92,yy=y+row*9;doc.text(String(d[0])+': '+String(d[1]).slice(0,48),xx,yy)});y+=Math.max(25,Math.ceil(details.length/2)*9+8);doc.setTextColor(105,11,38);doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('GUEST ENTRIES',14,y);y+=7;function header(){doc.setFillColor(105,0,27);doc.rect(14,y-5,182,7,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(7);doc.text('#',16,y);doc.text('Name',23,y);doc.text('Village / City',68,y);doc.text('Payment',111,y);doc.text('Amount',139,y);doc.text('Gift',160,y);doc.text('Status',178,y);y+=7;doc.setTextColor(45,50,60);doc.setFont('helvetica','normal');doc.setFontSize(7)}header();reportRows().forEach(r=>{if(y>280){doc.addPage();y=18;doc.setFillColor(105,0,27);doc.rect(0,0,W,10,'F');doc.setTextColor(255,255,255);doc.setFontSize(8);doc.text('SAGUN MANAGEMENT SYSTEM — EVENT REPORT',14,7);y=22;header()}const vals=[String(r[0]),String(r[1]).slice(0,22),String(r[2]).slice(0,20),String(r[3]).slice(0,9),pdfMoney(r[4]),String(r[5]).slice(0,12),String(r[7]||'Active')];doc.text(vals[0],16,y);doc.text(vals[1],23,y);doc.text(vals[2],65,y);doc.text(vals[3],105,y);doc.text(vals[4],130,y);doc.text(vals[5],157,y);doc.text(vals[6],178,y);doc.setDrawColor(225,228,233);doc.line(14,y+2,196,y+2);y+=6});const deletedCount=entries.filter(x=>x.__deleted).length;if(deletedCount){doc.setTextColor(160,60,60);doc.setFontSize(8);doc.text('Note: Deleted entries are shown with original data and marked Deleted; their amounts are excluded from active totals.',14,282)}doc.setTextColor(120,126,136);doc.setFontSize(7);doc.text('Generated by Sagun Management System',14,291);doc.text('Page '+doc.internal.getNumberOfPages(),178,291);doc.save('Sagun_Event_Report_'+m.name.replace(/[^a-zA-Z0-9_-]+/g,'_').slice(0,30)+'.pdf')}
+async function exportPdf(){
+  const safeName=String((eventData&& (eventData.event_name||eventData.eventName||eventData.name))||'Event')
+    .replace(/[^\w\-]+/g,'_').slice(0,40)||'Event';
+
+  // Use the browser's rendered report for PDF so Hindi/Unicode, cards and tables
+  // look exactly like the on-screen report.
+  if(!window.html2canvas || !window.jspdf?.jsPDF){
+    window.print();
+    return;
+  }
+
+  const root=document.querySelector('.page');
+  if(!root){window.print();return}
+
+  const action=document.querySelector('.report-actions');
+  const tools=document.querySelector('.entry-tools');
+  const note=document.querySelector('.deleted-note');
+  const chart=document.getElementById('alwaysCharts');
+  const scroll=document.querySelector('.entries-scroll');
+  const old={
+    action:action?.style.display,tools:tools?.style.display,note:note?.style.display,
+    chart:chart?.style.display,scrollMax:scroll?.style.maxHeight,scrollOverflow:scroll?.style.overflow,
+    bodyOverflow:document.body.style.overflow
+  };
+
+  try{
+    if(action)action.style.display='none';
+    if(tools)tools.style.display='none';
+    if(note)note.style.display='none';
+    if(chart)chart.style.display='none';
+    if(scroll){scroll.style.maxHeight='none';scroll.style.height='auto';scroll.style.overflow='visible';}
+    document.body.style.overflow='visible';
+
+    // Wait for the browser to reflow before capturing.
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
+    const canvas=await html2canvas(root,{
+      scale:2,
+      useCORS:true,
+      backgroundColor:'#ffffff',
+      logging:false,
+      windowWidth:root.scrollWidth,
+      windowHeight:root.scrollHeight
+    });
+
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:'p',unit:'mm',format:'a4',compress:true});
+    const pageW=210,pageH=297;
+    const margin=7;
+    const imgW=pageW-margin*2;
+    const pxPerMm=canvas.width/imgW;
+    const sliceH=Math.floor((pageH-margin*2)*pxPerMm);
+    let offset=0, page=0;
+
+    while(offset<canvas.height){
+      const h=Math.min(sliceH,canvas.height-offset);
+      const slice=document.createElement('canvas');
+      slice.width=canvas.width;
+      slice.height=h;
+      const sctx=slice.getContext('2d');
+      sctx.fillStyle='#fff';sctx.fillRect(0,0,slice.width,slice.height);
+      sctx.drawImage(canvas,0,offset,canvas.width,h,0,0,canvas.width,h);
+
+      if(page>0)doc.addPage();
+      const imgH=h/pxPerMm;
+      doc.addImage(slice.toDataURL('image/jpeg',.94),'JPEG',margin,margin,imgW,imgH,undefined,'FAST');
+
+      // Footer on each PDF page.
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(7);
+      doc.setTextColor(110,110,110);
+      doc.text('Sagun Management System - Event Report',margin,pageH-3);
+      doc.text('Page '+(page+1),pageW-margin,pageH-3,{align:'right'});
+
+      offset+=h;page++;
+    }
+    doc.save('Sagun_Event_Report_'+safeName+'.pdf');
+  }catch(err){
+    console.error('PDF export:',err);
+    window.print();
+  }finally{
+    if(action)action.style.display=old.action;
+    if(tools)tools.style.display=old.tools;
+    if(note)note.style.display=old.note;
+    if(chart)chart.style.display=old.chart;
+    if(scroll){scroll.style.maxHeight=old.scrollMax;scroll.style.overflow=old.scrollOverflow;}
+    document.body.style.overflow=old.bodyOverflow;
+  }
+}
 async function doDelete(){const id=String(eventData.id||eventData.eventId||eventData.event_id||'');try{if(window.SagunStore)await window.SagunStore.deleteEvent(id)}catch(_){}try{const {data:{user}}=await sb.auth.getUser();if(user&&id){await sb.from('guests').delete().eq('user_id',user.id).eq('event_id',id);await sb.from('events').delete().eq('user_id',user.id).eq('id',id)}}catch(e){console.warn('Delete cloud:',e)}localStorage.removeItem('currentEventId');localStorage.removeItem('sgunmsActiveEvent');location.replace('home.html')}
 async function load(){
  eventData=await getActive();
@@ -963,7 +1096,8 @@ document.getElementById('confirmEntryDelete').onclick=async()=>{
 };
 
 
-document.getElementById('continueBtn').onclick=()=>{const id=String(eventData.id||eventData.eventId||eventData.event_id||'');const setup=setupForEntry(eventData);localStorage.setItem('eventSetupData',JSON.stringify(setup));localStorage.setItem('offlineSetupData',JSON.stringify(setup));localStorage.setItem('sagunSetup',JSON.stringify(setup));localStorage.setItem('currentEventId',id);localStorage.setItem('currentEventType',typeOf(eventData));localStorage.setItem('currentMarriageEvent',typeOf(eventData));location.href=(pages[typeOf(eventData)]||'generic-event-entry.html')+'?event_id='+encodeURIComponent(id)};document.getElementById('pdfBtn').onclick=exportPdf;document.getElementById('excelBtn').onclick=exportExcel;document.getElementById('deleteBtn').onclick=()=>document.getElementById('deleteModal').classList.add('show');document.getElementById('modalPdf').onclick=exportPdf;document.getElementById('modalExcel').onclick=exportExcel;document.getElementById('cancelDelete').onclick=()=>document.getElementById('deleteModal').classList.remove('show');document.getElementById('confirmDelete').onclick=doDelete;window.addEventListener('DOMContentLoaded',load);
+document.getElementById('continueBtn').onclick=()=>{const id=String(eventData.id||eventData.eventId||eventData.event_id||'');const setup=setupForEntry(eventData);localStorage.setItem('eventSetupData',JSON.stringify(setup));localStorage.setItem('offlineSetupData',JSON.stringify(setup));localStorage.setItem('sagunSetup',JSON.stringify(setup));localStorage.setItem('currentEventId',id);localStorage.setItem('currentEventType',typeOf(eventData));localStorage.setItem('currentMarriageEvent',typeOf(eventData));location.href=(pages[typeOf(eventData)]||'generic-event-entry.html')+'?event_id='+encodeURIComponent(id)};document.getElementById('pdfBtn').onclick=exportPdf;
+document.getElementById('printBtn').onclick=()=>window.print();document.getElementById('excelBtn').onclick=exportExcel;document.getElementById('deleteBtn').onclick=()=>document.getElementById('deleteModal').classList.add('show');document.getElementById('modalPdf').onclick=exportPdf;document.getElementById('modalExcel').onclick=exportExcel;document.getElementById('cancelDelete').onclick=()=>document.getElementById('deleteModal').classList.remove('show');document.getElementById('confirmDelete').onclick=doDelete;window.addEventListener('DOMContentLoaded',load);
 
 
 </script>

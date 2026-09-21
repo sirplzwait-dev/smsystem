@@ -54,6 +54,11 @@
 
     <link rel="stylesheet" href="css/index.css"">
 <link rel="stylesheet" href="css/process-ui.css">
+
+<style id="soft-pink-theme-only">
+/* Soft pink replacement for the existing red/maroon accents */
+</style>
+
 </head>
 
 <body>
@@ -74,7 +79,7 @@
             🔔 <span data-en="Notice" data-hi="सूचना">सूचना</span>
         </button>
         <div class="lang-switch" style="display:inline-flex; gap:2px; background:rgba(255,255,255,0.2); padding:2px; border-radius:20px;">
-            <button onclick="setLanguage('en')" id="langEnBtn" style="background:#FFD700; color:#800000; border:none; padding:4px 10px; border-radius:15px; font-weight:bold; font-size:11px; cursor:pointer;">EN</button>
+            <button onclick="setLanguage('en')" id="langEnBtn" style="background:#FFD700; color:#c85f82; border:none; padding:4px 10px; border-radius:15px; font-weight:bold; font-size:11px; cursor:pointer;">EN</button>
             <button onclick="setLanguage('hi')" id="langHiBtn" style="background:transparent; color:#fff; border:none; padding:4px 10px; border-radius:15px; font-weight:bold; font-size:11px; cursor:pointer;">हिंदी</button>
         </div>
         <div class="menu-btn" onclick="toggleMenu()">☰</div>
@@ -108,8 +113,8 @@
             आप सभी से अनुरोध है कि वेबसाइट का उपयोग करें। यदि आपको किसी प्रकार की कोई समस्या, गलती, कमी या कोई सुझाव मिले, तो कृपया हमें अवश्य बताएं। आपके सुझाव हमारे लिए बहुत महत्वपूर्ण हैं और वेबसाइट को बेहतर बनाने में मदद करेंगे।
         </p>
         
-        <div style="background: #fff8f2; padding: 12px 15px; border-radius: 10px; border-left: 4px solid #ff4500; margin: 15px 0;">
-            <p style="margin: 0; font-weight: 600; color: #800000;">⚠️ <span data-en="Important Details:" data-hi="महत्वपूर्ण बिंदु:">महत्वपूर्ण बिंदु:</span></p>
+        <div style="background: #fff8f2; padding: 12px 15px; border-radius: 10px; border-left: 4px solid #e98eaa; margin: 15px 0;">
+            <p style="margin: 0; font-weight: 600; color: #c85f82;">⚠️ <span data-en="Important Details:" data-hi="महत्वपूर्ण बिंदु:">महत्वपूर्ण बिंदु:</span></p>
             <ul style="margin-top: 5px; margin-bottom: 0;">
                 <li data-en="The official launch of this website will take place on <b>02 October 2026</b>. All demo data entered before this date will be permanently deleted." data-hi="<b>02 अक्टूबर 2026</b> को इस वेबसाइट का आधिकारिक शुभारंभ (Official Launch) किया जाएगा। इस तिथि से पहले वेबसाइट पर दर्ज किया गया सभी डेमो डेटा स्थायी रूप से हटा दिया जाएगा।">
                     <b>02 अक्टूबर 2026</b> को इस वेबसाइट का आधिकारिक शुभारंभ (Official Launch) किया जाएगा। इस तिथि से पहले वेबसाइट पर दर्ज किया गया सभी डेमो डेटा स्थायी रूप से हटा दिया जाएगा।
@@ -120,7 +125,7 @@
             </ul>
         </div>
 
-        <p style="text-align: center; font-weight: 600; color: #800000; margin-top: 15px;" data-en="Thank you for your cooperation, suggestions, and trust! 🙏" data-hi="आपके सहयोग, सुझाव और विश्वास के लिए हार्दिक धन्यवाद। 🙏">
+        <p style="text-align: center; font-weight: 600; color: #c85f82; margin-top: 15px;" data-en="Thank you for your cooperation, suggestions, and trust! 🙏" data-hi="आपके सहयोग, सुझाव और विश्वास के लिए हार्दिक धन्यवाद। 🙏">
             आपके सहयोग, सुझाव और विश्वास के लिए हार्दिक धन्यवाद। 🙏
         </p>
     </div>
@@ -542,7 +547,7 @@
 <section id="developer" class="developer" data-aos="fade-up">
 <div class="developer-box">
     <div class="developer-img">
-        <img src="assets/images/developer.jpg"" alt="Shashi Kushwaha">
+        <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20160%20160%22%3E%0A%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2276%22%20fill%3D%22%23fde7f0%22%2F%3E%0A%3Ccircle%20cx%3D%2280%22%20cy%3D%2257%22%20r%3D%2227%22%20fill%3D%22%23f2b9a2%22%2F%3E%0A%3Cpath%20d%3D%22M52%2055c2-24%2054-30%2058%203-8-8-17-12-29-12-10%200-20%203-29%209z%22%20fill%3D%22%235b4350%22%2F%3E%0A%3Cpath%20d%3D%22M39%20139c5-29%2021-44%2041-44s36%2015%2041%2044%22%20fill%3D%22%23e88bab%22%2F%3E%0A%3Cpath%20d%3D%22M58%2099l22%2022%2022-22%22%20fill%3D%22%23fff%22%2F%3E%0A%3Ccircle%20cx%3D%2270%22%20cy%3D%2259%22%20r%3D%223%22%20fill%3D%22%234b3b43%22%2F%3E%0A%3Ccircle%20cx%3D%2290%22%20cy%3D%2259%22%20r%3D%223%22%20fill%3D%22%234b3b43%22%2F%3E%0A%3Cpath%20d%3D%22M70%2074c6%205%2014%205%2020%200%22%20fill%3D%22none%22%20stroke%3D%22%23a65b6d%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E" alt="Profile Avatar">
     </div>
     <div class="developer-content">
         <h4 class="section-tag" data-en="DEVELOPER" data-hi="डेवलपर">DEVELOPER</h4>
