@@ -169,10 +169,9 @@
       // Fetch the saved profile name only in the background.
       try{
         if(client.from){
-          let r=await client.from('profiles').select('name,avatar_url,photo_url').eq('id',user.id).maybeSingle();
-          if(!r.data) r=await client.from('profiles').select('name,avatar_url,photo_url').eq('user_id',user.id).maybeSingle();
+          let r=await client.from('profiles').select('name').eq('id',user.id).maybeSingle();
+          if(!r.data) r=await client.from('profiles').select('name').eq('user_id',user.id).maybeSingle();
           if(r.data?.name) name=String(r.data.name).trim();
-          if(!photo) photo=String(r.data.avatar_url||r.data.photo_url||'').trim();
         }
       }catch(e){}
 
@@ -201,7 +200,7 @@
     repaintMobileName();
   }catch(e){}
 
-  profileBtn.onclick=e=>{e.stopPropagation();const open=profilePanel.classList.toggle('open');profilePanel.setAttribute('aria-hidden',String(!open));panel.classList.remove('open');btn.setAttribute('aria-expanded','false');};
+  profileBtn.onclick=e=>{e.stopPropagation();const open=profilePanel.classList.toggle('open');profilePanel.setAttribute('aria-hidden',String(!open));if(panel) panel.classList.remove('open');if(btn) btn.setAttribute('aria-expanded','false');};
   profilePanel.querySelectorAll('[data-profile-action]').forEach(b=>b.onclick=async()=>{const a=b.dataset.profileAction;if(a==='edit'||a==='account'||a==='delete'){location.href=(a==='edit'?'profile.html':a==='delete'?'delete-account.html':'security.html');return;} if(a==='logout') await logout();});
   // Close the profile menu whenever the user clicks/taps anywhere outside the profile area.
   // Capture phase makes this reliable even if another page handler stops propagation.
@@ -219,8 +218,8 @@
       profileBtn.setAttribute('aria-expanded','false');
     }
     if(!bar.contains(e.target)){
-      panel.classList.remove('open');
-      btn.setAttribute('aria-expanded','false');
+      if(panel) panel.classList.remove('open');
+      if(btn) btn.setAttribute('aria-expanded','false');
       if(quickPanel){quickPanel.classList.remove('open');quickBtn.setAttribute('aria-expanded','false')}
     }
   },true);
