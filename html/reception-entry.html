@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">🎉 शुभ Reception | Sagun Management System</title>
+    <title id="pageTitle">Sagun Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -651,8 +651,7 @@ window.TEST_USER_ID = localStorage.getItem("test_user_id") || "offline-test-user
   <link rel="stylesheet" href="../css/process-ui.css">
 </head>
 <body>
-<div class="loader-text">✨ समारोह विवरण लोड हो रहा है... ✨</div>
-        <div class="loader-subtext">कृपया थोड़ा इंतज़ार करें, दूल्हा-दुल्हन की जानकारी आ रही है।</div>
+
     </div>
 
     <!-- Top Navigation Bar -->
@@ -914,10 +913,10 @@ function ensureActiveEventId(){
     if(!id){
       try{
         const setup=JSON.parse(localStorage.getItem("eventSetupData")||localStorage.getItem("offlineSetupData")||localStorage.getItem("sagunSetup")||"{}");
-        const targetType='reception'; const targetDate=String(setup.event_date||"").trim();
+        const targetType='barat'; const targetDate=String(setup.event_date||"").trim();
         const p1=String(setup.groom_name||setup.bride_name||setup.name||setup.first_name||"").trim().toLowerCase();
         const all=[]; ["sagunEventHistory","sagunEvents","sgunmsEvents","sagunEventsData","events"].forEach(k=>{try{const v=JSON.parse(localStorage.getItem(k)||"null");const a=Array.isArray(v)?v:(v&&Array.isArray(v.events)?v.events:(v&&Array.isArray(v.data)?v.data:[]));if(Array.isArray(a))all.push(...a)}catch(e){}});
-        const hit=all.find(e=>{const raw=[e.event_type,e.eventType,e.type,e.event_name,e.eventName,e.name,e.title].filter(Boolean).join(" ").toLowerCase();const t=raw.includes("reception")||('reception'==="barat"&&raw.includes("baraat"));const d=!targetDate||String(e.event_date||e.eventDate||e.date||"").trim()===targetDate;const p=!p1||[e.person1,e.person2,e.groom_name,e.bride_name,e.name].filter(Boolean).some(x=>String(x).trim().toLowerCase().includes(p1)||p1.includes(String(x).trim().toLowerCase()));return t&&d&&p});
+        const hit=all.find(e=>{const raw=[e.event_type,e.eventType,e.type,e.event_name,e.eventName,e.name,e.title].filter(Boolean).join(" ").toLowerCase();const t=raw.includes("barat")||('barat'==="barat"&&raw.includes("baraat"));const d=!targetDate||String(e.event_date||e.eventDate||e.date||"").trim()===targetDate;const p=!p1||[e.person1,e.person2,e.groom_name,e.bride_name,e.name].filter(Boolean).some(x=>String(x).trim().toLowerCase().includes(p1)||p1.includes(String(x).trim().toLowerCase()));return t&&d&&p});
         if(hit) id=String(hit.id||hit.eventId||hit.event_id||"");
       }catch(e){}
     }
@@ -966,7 +965,7 @@ async function saveGuest() {
        district:dist,
        village:village,
        payment_mode:mode,
-       event_type:"reception",
+       event_type:(localStorage.getItem("currentMarriageEvent") || "barat"),
        event_id:eventId,
        event_date:eventSetup.event_date || "",
        event_person:eventSetup.groom_name || eventSetup.bride_name || "",
@@ -1039,7 +1038,7 @@ function renderSetupData(data){
     const secondLabel = document.getElementById("secondLabel");
     const secondName = document.getElementById("secondName");
     // एक ही Entry Page: Tilak / Barat / Reception dynamic
-    const eventType = "reception";
+    const eventType = "barat";
 
     const eventConfig = {
         sagai:     {title:"💍 शुभ सगाई / रोका", first:"groom", firstLabel:"चिरंजीवी", second:"bride", secondLabel:"आयुष्मती"},
@@ -1052,9 +1051,9 @@ function renderSetupData(data){
         vidaai:    {title:"🚗 शुभ विदाई समारोह", first:"bride", firstLabel:"आयुष्मती", second:"groom", secondLabel:"चिरंजीवी"}
     };
 
-    const cfg = eventConfig[eventType];
+    const cfg = eventConfig[eventType] || eventConfig.tilak;
     titleDisplay.innerHTML = cfg.title;
-    document.title = "🎉 शुभ Reception | Sagun Management System";
+    document.title = cfg.title.replace(/<[^>]*>/g, "") + " | Sagun Management System";
 
     const people = {
         groom:{photo:data.groom_photo_url || "../assets/images/groom.jpg",name:data.groom_name || ""},
@@ -1067,7 +1066,7 @@ function renderSetupData(data){
     secondLabel.innerHTML = cfg.secondLabel;
     secondName.innerHTML = people[cfg.second].name;
 
-    localStorage.setItem("currentMarriageEvent", "reception");
+    localStorage.setItem("currentMarriageEvent", "barat");
 
     // Setup से स्वागतकर्ता का नाम।
     const welcomeBy = document.getElementById("welcomeByDisplay");

@@ -375,6 +375,146 @@ input[type="text"]::placeholder{color:#b39aa7!important}
 <link rel="stylesheet" href="../css/premium-calendar.css">
 <link rel="stylesheet" href="../css/sgunms-global-background.css">
   <link rel="stylesheet" href="../css/process-ui.css">
+
+<style id="sgunms-calendar-final-compact">
+#sgunmsCalendarOverlay{
+  position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.18); z-index:2147483000;
+}
+#sgunmsCalendarOverlay.open{display:flex}
+#sgunmsCalendarBox{
+  width:300px !important; max-width:calc(100vw - 24px) !important;
+  max-height:410px !important; overflow:hidden !important;
+  box-sizing:border-box; padding:12px !important; border-radius:16px !important;
+  background:#fff !important; box-shadow:0 16px 45px rgba(0,0,0,.25) !important;
+  font-family:Arial,sans-serif;
+}
+#sgunmsCalendarBox .sc-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px}
+#sgunmsCalendarBox .sc-title{font-size:15px;font-weight:800;color:#6d0b0b}
+#sgunmsCalendarBox select{width:auto!important;min-width:78px!important;padding:5px 6px!important;margin:0!important;font-size:11px!important;border:1px solid #d4af37!important;border-radius:7px!important}
+#sgunmsCalendarBox .sc-nav{display:flex;gap:4px}
+#sgunmsCalendarBox .sc-nav button,#sgunmsCalendarBox .sc-actions button{
+  border:0!important;border-radius:7px!important;padding:5px 8px!important;
+  min-height:28px!important;font-size:11px!important;background:#800000!important;color:#fff!important;
+  box-shadow:none!important;transform:none!important;
+}
+#sgunmsCalendarBox .sc-week,#sgunmsCalendarBox .sc-days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+#sgunmsCalendarBox .sc-week div{font-size:9px;font-weight:800;text-align:center;color:#8b6a45;padding:3px 0}
+#sgunmsCalendarBox .sc-day{
+  height:28px;display:flex;align-items:center;justify-content:center;border-radius:7px;
+  font-size:11px;cursor:pointer;background:#faf7f2;color:#4a3527;
+}
+#sgunmsCalendarBox .sc-day:hover{background:#f2dfb2}
+#sgunmsCalendarBox .sc-day.empty{background:transparent;cursor:default}
+#sgunmsCalendarBox .sc-day.today{outline:1px solid #d4af37}
+#sgunmsCalendarBox .sc-day.selected{background:#800000;color:#fff;font-weight:800}
+#sgunmsCalendarBox .sc-actions{display:flex;justify-content:space-between;gap:5px;margin-top:8px}
+#sgunmsCalendarBox .sc-actions button{flex:1}
+#sgunmsCalendarBox .sc-actions .clear{background:#777!important}
+#sgunmsCalendarBox .sc-actions .close{background:#333!important}
+/* Colorful calendar */
+#sgunmsCalendarBox{background:linear-gradient(145deg,#fffdf8,#fff5f7)!important;border:2px solid #d4af37!important}
+#sgunmsCalendarBox .sc-head:first-child{background:linear-gradient(135deg,#7d0d2b,#b51f4b);padding:7px 8px;border-radius:11px;color:#fff}
+#sgunmsCalendarBox .sc-head:first-child .sc-title{color:#fff}
+#sgunmsCalendarBox .sc-nav button{background:#d4af37!important;color:#6d0b0b!important;font-weight:900}
+#sgunmsCalendarBox select{background:#fff8e8!important;color:#6d0b0b!important;font-weight:800}
+#sgunmsCalendarBox .sc-week div:nth-child(1){color:#b51f4b}
+#sgunmsCalendarBox .sc-week div:nth-child(2){color:#9a5a00}
+#sgunmsCalendarBox .sc-week div:nth-child(3){color:#7b3f98}
+#sgunmsCalendarBox .sc-week div:nth-child(4){color:#147a62}
+#sgunmsCalendarBox .sc-week div:nth-child(5){color:#b05a00}
+#sgunmsCalendarBox .sc-week div:nth-child(6){color:#2868a8}
+#sgunmsCalendarBox .sc-week div:nth-child(7){color:#b51f4b}
+#sgunmsCalendarBox .sc-day{background:#fff4cf!important;color:#4a3527;border:1px solid rgba(212,175,55,.25);font-weight:700}
+#sgunmsCalendarBox .sc-day:nth-child(7n+1),#sgunmsCalendarBox .sc-day:nth-child(7n){background:#ffe5ec!important;color:#8b1838}
+#sgunmsCalendarBox .sc-day:nth-child(7n+2),#sgunmsCalendarBox .sc-day:nth-child(7n+3){background:#fff0c7!important}
+#sgunmsCalendarBox .sc-day:nth-child(7n+4),#sgunmsCalendarBox .sc-day:nth-child(7n+5){background:#e7f6ef!important;color:#23634f}
+#sgunmsCalendarBox .sc-day:nth-child(7n+6){background:#e7efff!important;color:#28568f}
+#sgunmsCalendarBox .sc-day:hover{background:#ffd86b!important;color:#6d0b0b!important;transform:scale(1.04)}
+#sgunmsCalendarBox .sc-day.today{outline:2px solid #d4af37!important;box-shadow:0 0 0 2px rgba(212,175,55,.18)}
+#sgunmsCalendarBox .sc-day.selected{background:linear-gradient(135deg,#8b102d,#c21f4f)!important;color:#fff!important;border-color:#8b102d!important;box-shadow:0 4px 10px rgba(139,16,45,.25)}
+#sgunmsCalendarBox .sc-day.empty{background:transparent!important;border:0!important}
+#sgunmsCalendarBox .sc-actions #scToday{background:#f2b632!important;color:#6d0b0b!important;font-weight:900}
+#sgunmsCalendarBox .sc-actions .clear{background:#6c757d!important}
+#sgunmsCalendarBox .sc-actions .close{background:#8b102d!important}
+@media(max-width:600px){
+  #sgunmsCalendarBox{width:286px!important;padding:10px!important}
+  #sgunmsCalendarBox .sc-day{height:26px;font-size:10px}
+  #sgunmsCalendarBox .sc-title{font-size:14px}
+}
+</style>
+<script>
+(function(){
+  const months=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+  let activeInput=null, view=new Date();
+
+  function ensure(){
+    if(document.getElementById('sgunmsCalendarOverlay')) return;
+    const ov=document.createElement('div'); ov.id='sgunmsCalendarOverlay';
+    ov.innerHTML='<div id="sgunmsCalendarBox" role="dialog" aria-label="Calendar">'+
+      '<div class="sc-head"><div class="sc-title">📅 तारीख चुनें</div><div class="sc-nav"><button type="button" id="scPrev">‹</button><button type="button" id="scNext">›</button></div></div>'+
+      '<div class="sc-head"><select id="scMonth"></select><select id="scYear"></select></div>'+
+      '<div class="sc-week"><div>रवि</div><div>सोम</div><div>मंगल</div><div>बुध</div><div>गुरु</div><div>शुक्र</div><div>शनि</div></div>'+
+      '<div class="sc-days" id="scDays"></div>'+
+      '<div class="sc-actions"><button type="button" id="scToday">आज</button><button type="button" class="clear" id="scClear">साफ</button><button type="button" class="close" id="scClose">बंद</button></div>'+
+      '</div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click',e=>{if(e.target===ov) closeCal()});
+    scPrev.onclick=()=>{view.setMonth(view.getMonth()-1);render()};
+    scNext.onclick=()=>{view.setMonth(view.getMonth()+1);render()};
+    scMonth.onchange=()=>{view.setMonth(+scMonth.value);render()};
+    scYear.onchange=()=>{view.setFullYear(+scYear.value);render()};
+    scToday.onclick=()=>{const d=new Date(); setDate(d); closeCal()};
+    scClear.onclick=()=>{if(activeInput){activeInput.value='';activeInput.dispatchEvent(new Event('change',{bubbles:true}))} closeCal()};
+    scClose.onclick=closeCal;
+  }
+  function setDate(d){
+    if(!activeInput)return;
+    const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+    activeInput.value=y+'-'+m+'-'+day;
+    activeInput.dispatchEvent(new Event('input',{bubbles:true}));
+    activeInput.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+  function openCal(input){
+    ensure(); activeInput=input;
+    const v=input.value;
+    view=v?new Date(v+'T00:00:00'):new Date();
+    if(Number.isNaN(view.getTime())) view=new Date();
+    render(); sgunmsCalendarOverlay.classList.add('open');
+  }
+  function closeCal(){const ov=document.getElementById('sgunmsCalendarOverlay');if(ov)ov.classList.remove('open');activeInput=null}
+  function render(){
+    const y=view.getFullYear(),m=view.getMonth();
+    scMonth.innerHTML=months.map((x,i)=>'<option value="'+i+'" '+(i===m?'selected':'')+'>'+x+'</option>').join('');
+    let ys=''; for(let yy=y-100;yy<=y+20;yy++) ys+='<option value="'+yy+'" '+(yy===y?'selected':'')+'>'+yy+'</option>';
+    scYear.innerHTML=ys;
+    const first=new Date(y,m,1).getDay(),last=new Date(y,m+1,0).getDate();
+    let h='';
+    for(let i=0;i<first;i++)h+='<div class="sc-day empty"></div>';
+    const today=new Date(), val=activeInput&&activeInput.value;
+    for(let d=1;d<=last;d++){
+      const ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+      const td=(today.getFullYear()===y&&today.getMonth()===m&&today.getDate()===d)?' today':'';
+      const sel=(val===ds)?' selected':'';
+      h+='<div class="sc-day'+td+sel+'" data-date="'+ds+'">'+d+'</div>';
+    }
+    scDays.innerHTML=h;
+    scDays.querySelectorAll('.sc-day[data-date]').forEach(el=>el.onclick=()=>{setDate(new Date(el.dataset.date+'T00:00:00'));closeCal()});
+  }
+  document.addEventListener('click',function(e){
+    const input=e.target.closest('input.custom-calendar[type="date"]');
+    if(input){
+      e.preventDefault(); e.stopPropagation();
+      try{input.showPicker=undefined}catch(_){}
+      openCal(input);
+    }
+  },true);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape') closeCal();
+  });
+})();
+</script>
+
 </head>
 <body>
 
@@ -500,11 +640,6 @@ input[type="text"]::placeholder{color:#b39aa7!important}
         <h3>🏠 गृह प्रवेश Details</h3>
         <label>👤 गृह स्वामी / परिवार का नाम</label>
         <input type="text" id="grihaName" placeholder="नाम लिखें">
-        <label>📸 परिवार / गृह की फोटो</label>
-        <div class="image-upload-wrapper" style="width:120px;height:120px;" onclick="document.getElementById('grihaPhoto').click()">
-            <img id="grihaPreview" src="https://placehold.co/120x120?text=Photo">
-        </div>
-        <input type="file" id="grihaPhoto" accept="image/*" style="display:none">
         <label>📅 गृह प्रवेश की तिथि</label>
         <input type="date" id="grihaDate" class="custom-calendar" placeholder="तारीख चुनें">
         <label>🙏 स्वागत करता का नाम</label>
@@ -674,7 +809,6 @@ document.getElementById('firstPhoto').onchange=e=>openCrop(e.target.files[0],'fi
 document.getElementById('secondPhoto').onchange=e=>openCrop(e.target.files[0],'secondPreview');
 document.getElementById('qrPhoto').onchange=e=>openCrop(e.target.files[0],'qrPreview');
 document.getElementById('birthdayPhoto').onchange=e=>openCrop(e.target.files[0],'birthdayPreview');
-document.getElementById('grihaPhoto').onchange=e=>openCrop(e.target.files[0],'grihaPreview');
 
 async function fileData(file){
   if(!file)return "";
@@ -793,8 +927,7 @@ async function saveGrihaPravesh(){
   const welcome=document.getElementById("grihaWelcome").value.trim();
   if(!name)return Swal.fire("नाम भरें","गृह स्वामी / परिवार का नाम लिखें।","warning");
   if(!date)return Swal.fire("तारीख चुनें","गृह प्रवेश की तारीख चुनें।","warning");
-  const photo=await fileData(cropped.grihaPreview);
-  const data={event_group:"griha_pravesh",event_type:"griha_pravesh",name,griha_name:name,event_date:date,welcome_name:welcome,photo_url:photo,first_photo_url:photo,saved_at:new Date().toISOString()};
+  const data={event_group:"griha_pravesh",event_type:"griha_pravesh",name,griha_name:name,event_date:date,welcome_name:welcome,saved_at:new Date().toISOString()};
   await saveCanonicalEvent(data);
   localStorage.setItem("eventSetupData",JSON.stringify(data));
   localStorage.setItem("sagunSetup",JSON.stringify(data));
