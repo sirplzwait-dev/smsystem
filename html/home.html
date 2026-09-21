@@ -496,8 +496,10 @@ function openHomeEvent(page){window.location.href=page;}</script>
    box.innerHTML=''; events.forEach(e=>{const ei=info(e),eid=id(e),date=e?.event_date||e?.eventDate||e?.date||'Date not set',card=document.createElement('div');card.className='event-card-premium type-'+type(e).replace(/\s+/g,'-');card.tabIndex=0;const go=()=>{localStorage.setItem('currentEventId',eid);localStorage.setItem('sgunmsActiveEvent',JSON.stringify(e));location.href='event-report.html?event_id='+encodeURIComponent(eid)};card.onclick=go;card.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();go()}};const eventEmoji={tilak:'🪔',barat:'🥁',reception:'🎉',birthday:'🎂',anniversary:'💐',engagement:'💍',mundan:'👶',griha_pravesh:'🏠'}[type(e)]||'🎊';card.innerHTML='<div class="event-card-top"><span class="event-big-icon">'+eventEmoji+'</span><span class="event-open">›</span></div><div class="event-card-title">'+esc(ei.n)+'</div><div class="event-card-date">📅 '+esc(date)+'</div>'+(ei.p?'<div class="event-card-person">👤 '+esc(ei.p)+'</div>':'')+'<div class="event-card-footer"><span class="home-entry-count">👥 0 Entries</span><span class="home-entry-amount">₹0</span><button type="button" class="home-event-report-btn">📊 Report</button><button type="button" class="home-event-delete-btn">🗑️ Delete</button></div>';card.querySelector('.home-event-report-btn').onclick=ev=>{ev.stopPropagation();go()};card.querySelector('.home-event-delete-btn').onclick=ev=>{ev.stopPropagation();const i=eventCache.indexOf(e);if(window.openDeleteConfirm)window.openDeleteConfirm(i)};box.appendChild(card)});
    let entries=[];try{if(window.SagunStore?.getEntries)entries=await window.SagunStore.getEntries()||[]}catch(e){console.warn(e)}
    if(seq!==homeRenderSeq)return;
-   const amount=x=>Number(x?.amount??x?.cashAmount??x?.upiAmount??x?.value??0)||0,mode=x=>String(x?.payment_mode||x?.paymentMode||x?.mode||x?.type||'CASH').toUpperCase();let tg=0,tc=0,tu=0,gg=0;
-   events.forEach((e,i)=>{const eid=id(e),rows=entries.filter(g=>String(g?.event_id||g?.eventId||'').trim()===eid);let sum=0;rows.forEach(g=>{const a=amount(g),m=mode(g);tg++;sum+=a;if(m.includes('GIFT')||g?.gift_description||g?.giftDescription)gg++;else if(m.includes('UPI'))tu+=a;else tc+=a});const c=box.children[i];if(c){c.querySelector('.home-entry-count').textContent=rows.length+' Entries';c.querySelector('.home-entry-amount').textContent='₹'+sum.toLocaleString('en-IN')}});
+   const amount=x=>Number(x?.amount??x?.cashAmount??x?.upiAmount??x?.value??0)||0,mode=x=>String(x?.payment_mode||x?.paymentMode||x?.mode||x?.type||'').trim().toUpperCase();
+   const isDeleted=g=>g?.__deleted===true||g?.deleted===true||g?.is_deleted===true||!!g?.deleted_at;
+   let tg=0,tc=0,tu=0,gg=0;
+   events.forEach((e,i)=>{const eid=id(e),rows=entries.filter(g=>String(g?.event_id||g?.eventId||'').trim()===eid&&!isDeleted(g));let sum=0;rows.forEach(g=>{const a=amount(g),m=mode(g);tg++;const isGift=m==='GIFT'||!!g?.gift_item||!!g?.giftItem||!!g?.gift_description||!!g?.giftDescription;if(isGift)gg++;if(m==='UPI'){tu+=a;sum+=a}else if(m==='CASH'){tc+=a;sum+=a}});const c=box.children[i];if(c){c.querySelector('.home-entry-count').textContent=rows.length+' Entries';c.querySelector('.home-entry-amount').textContent='₹'+sum.toLocaleString('en-IN')}});
    const set=(x,v)=>{const el=document.getElementById(x);if(el)el.textContent=v},money=v=>'₹'+Number(v||0).toLocaleString('en-IN');set('totalGuests',tg);set('totalEvents',events.length);set('totalCash',money(tc));set('totalUPI',money(tu));set('totalCashUPI',money(tc+tu));set('totalGifts',gg);
  }
 
@@ -653,56 +655,36 @@ function openHomeEvent(page){window.location.href=page;}</script>
    const cards=[...document.querySelectorAll("#dynamicHomeEvents .event-card-premium")];
    if(!cards.length)return;
    const idOf=e=>String(e?.id||e?.eventId||e?.event_id||e?.key||"").trim();
-   const typeOf=e=>{const raw=[e?.sub_event_type,e?.subEventType,e?.event_sub_type,e?.eventSubType,e?.event_type,e?.eventType,e?.type,e?.event_name,e?.eventName,e?.name,e?.title].filter(Boolean).join(" ").toLowerCase();if(raw.includes("tilak")||raw.includes("तिलक"))return"tilak";if(raw.includes("barat")||raw.includes("baraat")||raw.includes("बरात"))return"barat";if(raw.includes("reception")||raw.includes("रिसेप्शन"))return"reception";if(raw.includes("birthday")||raw.includes("जन्मदिन"))return"birthday";if(raw.includes("anniversary")||raw.includes("वर्षगांठ"))return"anniversary";if(raw.includes("engagement")||raw.includes("सगाई"))return"engagement";if(raw.includes("mundan")||raw.includes("मुंडन"))return"mundan";if(raw.includes("griha")||raw.includes("pravesh")||raw.includes("गृह प्रवेश"))return"griha_pravesh";if(raw.includes("marriage")||raw.includes("शादी")||raw.includes("विवाह"))return"marriage";return"other"};
-   const norm=v=>String(v??"").trim().toLowerCase().replace(/\s+/g," ");
-   const date=v=>{const x=norm(v);let m=x.match(/^(\d{2})[-\/.](\d{2})[-\/.](\d{4})$/);return m?`${m[3]}-${m[2]}-${m[1]}`:x};
-   const local=[];["offlineGuests","eventEntries","sagunEntries","birthdayEntries","birthdayGuests","guestEntries"].forEach(k=>{try{const a=JSON.parse(localStorage.getItem(k)||"[]");if(Array.isArray(a))local.push(...a)}catch(_){} });
-   let cloud=[];
-   try{const c=window.supabase?.createClient?.("https://rdlliurzgwwfjscgwssa.supabase.co","sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc");if(c){const {data:{user}}=await c.auth.getUser();if(user){const r=await c.from("guests").select("*").eq("user_id",user.id).limit(5000);if(!r.error)cloud=r.data||[]}}}catch(_){}
-   const activeUid=String(localStorage.getItem("sagunActiveUserId")||"").trim();
-   const isDeleted=g=>g?.__deleted===true||g?.deleted===true||g?.is_deleted===true||!!g?.deleted_at;
-   const rows=local.concat(cloud).filter(g=>{
-     if(isDeleted(g))return false;
-     const owner=String(g?.user_id||g?.userId||g?.owner_id||g?.ownerId||"").trim();
-     return !activeUid || !owner || owner===activeUid;
-   });
-   const personFields=e=>[e?.person1,e?.person2,e?.groom_name,e?.bride_name,e?.event_person,e?.event_person_2,e?.birthday_name,e?.name,e?.personName,e?.groomName,e?.brideName].filter(Boolean).map(norm);
-   const match=(g,e)=>{
-     const gid=norm(g?.event_id||g?.eventId||g?.eventID||g?.event); const eid=idOf(e);
-     if(gid&&eid&&gid===norm(eid))return true;
-     const gt=typeOf(g),et=typeOf(e);
-     if(gt!==et && !((gt==="tilak"||gt==="barat"||gt==="reception")&&(et==="marriage"||et==="wedding")) && !((et==="tilak"||et==="barat"||et==="reception")&&(gt==="marriage"||gt==="wedding"))) return false;
-     const gd=date(g?.event_date||g?.eventDate||g?.date),ed=date(e?.event_date||e?.eventDate||e?.date);
-     if(gd&&ed&&gd!==ed)return false;
-     const ep=personFields(e),gp=personFields(g);
-     if(ep.length&&gp.length&&!ep.some(a=>gp.some(b=>a===b||a.includes(b)||b.includes(a))))return false;
-     return true;
+   const readSummary=eid=>{
+     try{
+       const raw=localStorage.getItem("sgunms_event_report_summary_"+eid);
+       if(!raw)return null;
+       const x=JSON.parse(raw);
+       return x&&String(x.eventId||"")===String(eid)?x:null;
+     }catch(_){return null}
    };
-   const used=new Set();
-   let allCount=0, allCash=0, allUpi=0, allGifts=0;
+
+   // Event Report is the single source of truth for an Event.
+   // Home Event cards consume only the Event Report summary; they do not
+   // recalculate from localStorage/Supabase guest lists.
+   let allCount=0,allCash=0,allUpi=0,allGifts=0;
    eventCache.forEach((e,i)=>{
-     const matched=[];
-     rows.forEach(g=>{
-       if(!match(g,e))return;
-       const key=String(g?.id||g?.guest_id||g?.entry_id||g?.created_at||g?.createdAt||g?.timestamp||"")+"|"+String(g?.name||g?.guestName||"").trim().toLowerCase()+"|"+String(g?.amount||g?.cashAmount||g?.upiAmount||g?.giftAmount||g?.value||0)+"|"+String(g?.payment_mode||g?.paymentMode||g?.mode||g?.type||"").toLowerCase();
-       if(used.has(key))return;
-       used.add(key); matched.push(g);
-     });
-     let total=0;
-     matched.forEach(g=>{
-       const amount=Number(g.amount||g.cashAmount||g.upiAmount||g.giftAmount||g.value||0)||0;
-       const mode=String(g.payment_mode||g.paymentMode||g.mode||g.type||"CASH").toUpperCase();
-       const isGift=mode.includes("GIFT") || !!g.gift_item || !!g.giftItem || !!g.gift_description || !!g.giftDescription;
-       total+=amount; allCount++;
-       if(isGift) allGifts++;
-       if(mode.includes("UPI")) allUpi+=amount;
-       else if(mode.includes("CASH")) allCash+=amount;
-     });
-     const card=cards[i]; if(!card)return;
-     const countEl=card.querySelector(".home-entry-count"); if(countEl)countEl.textContent="👥 "+matched.length+" Entries";
-     const amtEl=card.querySelector(".home-entry-amount"); if(amtEl)amtEl.textContent="₹"+total.toLocaleString("en-IN");
+     const eid=idOf(e), summary=readSummary(eid), card=cards[i];
+     const count=Number(summary?.entries||0);
+     const cash=Number(summary?.cash||0);
+     const upi=Number(summary?.upi||0);
+     const total=Number(summary?.total ?? (cash+upi))||0;
+     const gifts=Number(summary?.gifts||0);
+     if(card){
+       const countEl=card.querySelector(".home-entry-count");
+       if(countEl)countEl.textContent="👥 "+count+" Entries";
+       const amtEl=card.querySelector(".home-entry-amount");
+       if(amtEl)amtEl.textContent="₹"+total.toLocaleString("en-IN");
+     }
+     allCount+=count; allCash+=cash; allUpi+=upi; allGifts+=gifts;
    });
-   const setTotal=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
+
+   const setTotal=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
    const moneyTotal=v=>"₹"+Number(v||0).toLocaleString("en-IN");
    setTotal("totalGuests",allCount);
    setTotal("totalEvents",eventCache.length);
@@ -933,10 +915,10 @@ function openHomeEvent(page){window.location.href=page;}</script>
       rows.forEach(g=>{
         total++;
         const amount=Number(g.amount||g.cashAmount||g.giftAmount||0);
-        const mode=String(g.payment_mode||g.paymentMode||g.mode||g.type||'').toLowerCase();
-        if(mode.includes('upi')) upi+=amount;
-        else if(mode.includes('cash')) cash+=amount;
-        if(mode.includes('gift') || g.gift_item || g.giftItem || g.gift_description || g.giftDescription) gifts++;
+        const mode=String(g.payment_mode||g.paymentMode||g.mode||g.type||'').trim().toLowerCase();
+        if(mode==='upi') upi+=amount;
+        else if(mode==='cash') cash+=amount;
+        if(mode==='gift' || g.gift_item || g.giftItem || g.gift_description || g.giftDescription) gifts++;
       });
       const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
       set('totalGuests',total); set('totalCash',money(cash)); set('totalUPI',money(upi)); set('totalCashUPI',money(cash+upi)); set('totalGifts',gifts);
@@ -999,6 +981,7 @@ function openHomeEvent(page){window.location.href=page;}</script>
   #dynamicHomeEvents .event-card-premium .event-card-person{margin-top:3px!important;}
 }
 </style>
+<!-- HOME EVENT TOTAL SYNC: Home card/summary uses the same active Cash/UPI rule as Event Report. -->
 </body>
 </html><style>
 /* New Event + created Events: keep them together in one row on desktop */
