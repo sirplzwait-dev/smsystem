@@ -7,7 +7,7 @@
 <title>Sagun Management System | Newta & Shagun Management | Wedding Guest Management</title>
 
 <meta name="description" content="Sagun Management System is India's smart digital platform to manage Newta, Shagun, wedding guests, cash & UPI gifts, reminders, PDF reports, Excel export and complete wedding records securely.">
-<meta name="keywords" content="Sagun Management System, Newta, Newta Online, Shagun, Shagun Register, Wedding Guest Management, Wedding Management Software, Marriage Management, Digital Newta, UPI Shagun">
+<meta name="keywords" content="Sagun Management System, Newta, Newta Online, Shagun, Shagun Register, Wedding Guest Management, Family & Event Management Software, Marriage Management, Digital Newta, UPI Shagun">
 <meta name="author" content="Shashi Kushwaha">
 <meta property="og:image" content="https://sgunms.in/../assets/images/appicon.ico">
 <meta name="twitter:image" content="https://sgunms.in/../assets/images/appicon.ico">
@@ -20,7 +20,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://sgunms.in/">
 
-<link rel="icon" href="assets/images/appicon.ico"" type="image/x-icon">
+<link rel="icon" href="assets/images/appicon.ico" type="image/x-icon">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Sagun Management System">
@@ -59,15 +59,616 @@
 /* Soft pink replacement for the existing red/maroon accents */
 </style>
 
+<style id="soft-pink-yellow-theme">
+/* Background theme: red areas -> light pink, maroon areas -> light yellow */
+:root{
+  --soft-pink:#fde7ef;
+  --light-pink:#fff1f6;
+  --light-yellow:#fff8d9;
+  --yellow-border:#f1d66b;
+}
+/* Common section/background surfaces */
+body{background:var(--light-pink) !important;}
+header, footer{background:var(--soft-pink) !important;}
+.problem-box, .solution-box, .preview-card, .feature-box, .why-card,
+.about-main-box, .about-feature-item, .faq-card, .contact-card{
+  background:var(--light-pink) !important;
+}
+/* Replace dark maroon surfaces with a light yellow surface */
+.notice-content, .notice-modal .notice-content{
+  background:var(--light-yellow) !important;
+}
+/* Preserve readable accents while removing dark maroon appearance */
+.section-tag, .section-title, h1, h2, h3, h4{
+  text-shadow:none;
+}
+/* Explicit light-yellow highlight areas */
+.badge, .solution-badge, .quote, .coming-soon-badge{
+  background:var(--light-yellow) !important;
+  border-color:var(--yellow-border) !important;
+}
+/* Soft pink buttons/accents */
+.start-btn, .about-btn, .login-btn{
+  background:var(--soft-pink) !important;
+  border-color:#e8a6bc !important;
+}
+</style>
+
+
+<style id="soft-visible-theme">
+/* Soft, high-contrast pastel theme */
+:root{--soft-pink:#fde8f0;--soft-pink-2:#fff3f7;--soft-yellow:#fff8d9;--hero-bg:#eaf4ff;--text:#3f3440;--heading:#6b3f55;--border:#e8c9d5;}
+body{background:#fffdfb !important;color:var(--text) !important;}
+header{background:#fff0f5 !important;color:var(--text) !important;border-bottom:1px solid var(--border) !important;}
+header a,nav a{color:#573747 !important;}
+.hero{background:var(--hero-bg) !important;color:var(--text) !important;border:1px solid #cfe0ef !important;}
+.hero h1,.hero h2,.hero h3,.hero p{color:var(--text) !important;}
+.problem-solution-section{background:#fffaf0 !important;}
+.problem-box{background:var(--soft-pink-2) !important;color:var(--text) !important;border:1px solid var(--border) !important;}
+.solution-box{background:var(--soft-yellow) !important;color:var(--text) !important;border:1px solid #eadf9f !important;}
+.preview,.features,.why,.about,.developer,.faq,.contact{background:#fffdfb !important;color:var(--text) !important;}
+.preview-card,.feature-box,.why-card,.about-main-box,.about-feature-item,.faq-card,.contact-card,.developer-box{background:#fff7fa !important;color:var(--text) !important;border-color:var(--border) !important;}
+.section-title,h1,h2,h3,h4{color:var(--heading) !important;}
+p,li,.section-text,.feature-info p,.why-info p,.about-feature-item p,.faq-content-box p{color:var(--text) !important;}
+.section-tag,.badge,.solution-badge{color:#9a5470 !important;}
+footer{background:#fff8df !important;color:var(--text) !important;border-top:1px solid #eadf9f !important;}
+footer a,footer p,footer h2,footer h3{color:#55483a !important;}
+.notice-content,.legal-content{background:#fffdf8 !important;color:var(--text) !important;}
+.notice-content h2,.legal-content h2,.notice-content h3,.legal-content h3{color:var(--heading) !important;}
+.start-btn,.about-btn{background:#d98aaa !important;color:#fff !important;}
+.demo-btn{background:#fff !important;color:#7c5064 !important;border:1px solid #d9b8c5 !important;}
+</style>
+<style id="final-ui-polish">
+.top-login-highlight{background:linear-gradient(135deg,#e98eaa,#d96f93)!important;color:#fff!important;border:1px solid rgba(255,255,255,.55)!important;box-shadow:0 5px 14px rgba(180,70,110,.25)!important;font-weight:700!important;padding:7px 14px!important;border-radius:9px!important;display:inline-flex!important;align-items:center!important;gap:6px!important;transform:none!important}.top-login-highlight:hover{background:linear-gradient(135deg,#d96f93,#c85f82)!important;color:#fff!important;transform:translateY(-1px)!important}.developer-box{align-items:center!important}.developer-img{flex:0 0 105px!important;width:105px!important;max-width:105px!important}.developer-avatar-small{width:92px!important;height:92px!important;display:block!important;margin:auto!important;border-radius:50%!important}.developer-content h2{font-size:clamp(22px,3vw,30px)!important;margin:4px 0!important}.developer-content h3{font-size:13px!important;line-height:1.45!important;margin:5px 0 9px!important}.developer-content p{font-size:13px!important;line-height:1.55!important;margin:5px 0 10px!important}.developer-content .quote{font-size:12px!important;line-height:1.45!important;padding:9px 12px!important}.developer-content .section-tag{font-size:10px!important;letter-spacing:1.5px!important}@media(max-width:700px){.developer-img{flex-basis:78px!important;width:78px!important;max-width:78px!important}.developer-avatar-small{width:68px!important;height:68px!important}.developer-content h2{font-size:22px!important}.developer-content h3,.developer-content p{font-size:12px!important}.top-login-highlight{padding:6px 11px!important}}</style>
+<style id="premium-card-hover">
+.preview-card,.feature-box,.why-card,.about-feature-item,.contact-card,.faq-card{transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease,background .28s ease;}
+.preview-card,.feature-box,.why-card,.about-feature-item,.contact-card{border:1px solid rgba(190,120,145,.14)!important;box-shadow:0 8px 24px rgba(95,65,75,.08)!important;border-radius:18px!important;}
+.preview-card:hover,.feature-box:hover,.why-card:hover,.about-feature-item:hover,.contact-card:hover{transform:translateY(-7px);box-shadow:0 16px 34px rgba(95,65,75,.16)!important;border-color:rgba(220,125,155,.38)!important;}
+.preview-card img{transition:transform .35s ease,filter .35s ease;}.preview-card:hover img{transform:scale(1.025);}
+.feature-icon,.why-icon{transition:transform .25s ease;}.feature-box:hover .feature-icon,.why-card:hover .why-icon{transform:scale(1.08) rotate(-2deg);}
+.faq-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(95,65,75,.13)!important;border-color:rgba(220,125,155,.3)!important;}
+.hero-buttons a,.about-btn,.start-btn,.demo-btn{transition:transform .22s ease,box-shadow .22s ease,filter .22s ease;}.hero-buttons a:hover,.about-btn:hover,.start-btn:hover,.demo-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(80,60,70,.15);filter:brightness(1.03);}
+@media(max-width:700px){.preview-card,.feature-box,.why-card,.about-feature-item,.contact-card{border-radius:15px!important;}.preview-card:hover,.feature-box:hover,.why-card:hover,.about-feature-item:hover,.contact-card:hover{transform:translateY(-3px);}}
+</style>
+<style id="sagun-project-premium">
+:root{--sg-pink:#e98cab;--sg-pink-dark:#c96788;--sg-yellow:#fff4c7;--sg-cream:#fffaf2;--sg-ink:#40343b;--sg-line:#ead7dc;--sg-blue:#eef7ff;}
+/* Sagun project visual language */
+.preview-card,.feature-box,.why-card,.contact-card,.faq-card,.about-feature-item{position:relative;overflow:hidden;background:linear-gradient(145deg,#fff,#fff8fb)!important;border:1px solid var(--sg-line)!important;box-shadow:0 5px 18px rgba(84,54,64,.07)!important;}
+.preview-card:before,.feature-box:before,.why-card:before,.contact-card:before,.faq-card:before,.about-feature-item:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--sg-pink),#f5d777);opacity:.65;transition:height .25s ease,opacity .25s ease;}
+.preview-card:hover,.feature-box:hover,.why-card:hover,.contact-card:hover,.faq-card:hover,.about-feature-item:hover{transform:translateY(-6px)!important;box-shadow:0 18px 35px rgba(84,54,64,.13)!important;border-color:#e4b7c5!important;}
+.preview-card:hover:before,.feature-box:hover:before,.why-card:hover:before,.contact-card:hover:before,.faq-card:hover:before,.about-feature-item:hover:before{height:5px;opacity:1;}
+.feature-icon,.why-icon{width:48px!important;height:48px!important;border-radius:14px!important;background:linear-gradient(145deg,#fff1f6,#fff8df)!important;border:1px solid #efd6c9!important;display:flex!important;align-items:center!important;justify-content:center!important;box-shadow:0 5px 12px rgba(100,60,70,.08)!important;}
+.feature-box:hover .feature-icon,.why-card:hover .why-icon{transform:translateY(-2px) scale(1.06)!important;box-shadow:0 9px 18px rgba(100,60,70,.13)!important;}
+.preview-card h3,.feature-box h3,.why-card h3,.contact-card h3,.faq-card summary{color:#674153!important;}
+.preview-card p,.preview-card li,.feature-box p,.why-card p,.contact-card p,.faq-content-box p{color:var(--sg-ink)!important;}
+.hero{background:linear-gradient(135deg,#eef7ff 0%,#fff5f8 58%,#fff8dc 100%)!important;border:0!important;box-shadow:inset 0 -1px 0 rgba(120,100,100,.08);}
+.hero .person-card{background:rgba(255,255,255,.82)!important;border:1px solid rgba(215,170,185,.4)!important;box-shadow:0 12px 30px rgba(80,55,65,.12)!important;}
+.hero .heart{filter:drop-shadow(0 5px 8px rgba(200,90,120,.18));}
+.problem-box{background:linear-gradient(145deg,#fff5f8,#fff)!important;}
+.solution-box{background:linear-gradient(145deg,#fff9df,#fffdf4)!important;}
+.section-tag{color:var(--sg-pink-dark)!important;}
+.start-btn,.about-btn{background:linear-gradient(135deg,var(--sg-pink),var(--sg-pink-dark))!important;box-shadow:0 7px 18px rgba(201,103,136,.22)!important;}
+.login-btn.top-login-highlight{background:linear-gradient(135deg,#c96788,#b95779)!important;box-shadow:0 7px 18px rgba(185,87,121,.25)!important;}
+.notice-header-btn{border-radius:10px!important;}
+.developer-box{background:linear-gradient(145deg,#fff,#fff7fa)!important;border:1px solid var(--sg-line)!important;box-shadow:0 12px 30px rgba(84,54,64,.09)!important;}
+.developer-img{flex:0 0 88px!important;width:88px!important;max-width:88px!important;}
+.developer-avatar-small{width:76px!important;height:76px!important;}
+.developer-content h2{font-size:25px!important;}
+.developer-content h3{font-size:12px!important;}
+.developer-content p{font-size:12px!important;line-height:1.5!important;}
+@media(max-width:700px){.developer-img{flex-basis:65px!important;width:65px!important;max-width:65px!important}.developer-avatar-small{width:58px!important;height:58px!important}.developer-content h2{font-size:21px!important}.feature-icon,.why-icon{width:42px!important;height:42px!important}.preview-card:hover,.feature-box:hover,.why-card:hover,.contact-card:hover,.faq-card:hover,.about-feature-item:hover{transform:translateY(-3px)!important}}
+</style>
+
+<style id="sagun-event-background-band">
+/* Soft event-themed background inspired by the reference banner */
+html, body { background:#fffaf6 !important; }
+body{
+  position:relative;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";
+  position:absolute;
+  z-index:-2;
+  left:0; right:0; top:0;
+  height:330px;
+  background:
+    linear-gradient(105deg,rgba(255,238,244,.92) 0%,rgba(255,248,250,.84) 35%,rgba(255,250,239,.90) 68%,rgba(248,250,238,.88) 100%);
+  border-bottom:1px solid rgba(224,184,170,.16);
+  pointer-events:none;
+}
+body::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  top:0; left:0; right:0;
+  height:330px;
+  opacity:.20;
+  pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='980' height='250' viewBox='0 0 980 250'%3E%3Cg fill='none' stroke='%23d98c91' stroke-width='2' opacity='.72'%3E%3Cpath d='M58 92c-9-21 7-38 27-34 2-22 35-22 38 0 21-5 37 14 27 34-11 22-79 22-92 0z'/%3E%3Cpath d='M66 92h74v34H66z'/%3E%3Cpath d='M66 104h74M66 115h74M91 92v34M116 92v34'/%3E%3Cpath d='M176 111c0-31 46-43 64-17 18-26 64-14 64 17 0 36-64 62-64 62s-64-26-64-62z'/%3E%3Ccircle cx='442' cy='112' r='25'/%3E%3Ccircle cx='442' cy='112' r='12'/%3E%3Cpath d='M442 137c-18 16-18 39 0 50 18-11 18-34 0-50z'/%3E%3Cpath d='M573 91c-7-13 2-28 17-25 1-14 22-14 24 0 15-3 24 11 17 25-7 14-51 14-58 0z'/%3E%3Cpath d='M578 91h54v27h-54zM578 100h54M596 91v27M614 91v27'/%3E%3Cpath d='M748 74c-16 8-20 28-7 41 13 12 33 7 41-9 8 16 28 21 41 9 13-13 9-33-7-41-15-8-27 1-34 13-7-12-19-21-34-13z'/%3E%3Cpath d='M870 89c-18 10-28 27-25 45 3 17 17 29 34 32-3-17 2-34 15-46-8-13-12-24-24-31z'/%3E%3Cpath d='M894 87c14 6 28 20 31 36 4 17-5 35-20 43-1-18-9-32-23-43 7-14 8-25 12-36z'/%3E%3C/g%3E%3Cg fill='%23e6a1a7' opacity='.55'%3E%3Ccircle cx='28' cy='54' r='4'/%3E%3Ccircle cx='330' cy='47' r='5'/%3E%3Ccircle cx='505' cy='65' r='4'/%3E%3Ccircle cx='680' cy='46' r='5'/%3E%3Ccircle cx='947' cy='58' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:980px 250px;
+  background-position:center top;
+  background-repeat:repeat-x;
+}
+/* Keep the actual content crisp over the decorative band */
+header, main, section, footer { position:relative; }
+header{background:linear-gradient(90deg,rgba(255,255,255,.94),rgba(255,239,246,.88),rgba(255,250,239,.92)) !important;backdrop-filter:blur(5px);}
+.hero{background:linear-gradient(135deg,rgba(255,246,249,.92),rgba(255,250,238,.90)) !important;}
+@media(max-width:700px){
+  body::before,body::after{height:270px;}
+  body::after{background-size:720px 185px;opacity:.14;}
+}
+</style>
+
+
+<style id="solution-premium-section">
+.solution-redesign{position:relative!important;overflow:hidden!important;padding:30px!important;border:1px solid rgba(224,184,150,.5)!important;border-radius:26px!important;background:linear-gradient(135deg,#fffaf4 0%,#fff6f8 48%,#fffdf2 100%)!important;box-shadow:0 18px 45px rgba(105,72,55,.11)!important;}
+.solution-redesign:before{content:"";position:absolute;inset:auto -90px -110px auto;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(238,166,185,.18),transparent 68%);pointer-events:none;}
+.solution-redesign:after{content:"🎂   💍   🎁   🌸   🎉";position:absolute;left:22px;bottom:13px;font-size:19px;letter-spacing:5px;opacity:.10;pointer-events:none;}
+.solution-head{display:flex;justify-content:space-between;align-items:center;gap:25px;position:relative;z-index:1;margin-bottom:20px;}
+.solution-badge{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #f0d6df;color:#b95e7e;padding:7px 13px;border-radius:999px;font-size:12px;font-weight:700;box-shadow:0 5px 15px rgba(110,70,80,.08);}
+.solution-badge span{font-size:14px;color:#d88aa2;}
+.solution-redesign h2{margin:10px 0 5px!important;color:#693e52!important;font-size:clamp(25px,3vw,35px)!important;letter-spacing:-.5px;}
+.solution-redesign .solution-intro{margin:0!important;max-width:700px;color:#5c4a50;font-size:14px;line-height:1.6;}
+.solution-visual{display:flex;align-items:center;gap:8px;padding:12px 15px;border-radius:18px;background:rgba(255,255,255,.72);border:1px solid rgba(231,204,189,.7);box-shadow:0 8px 20px rgba(90,65,65,.06);white-space:nowrap;}
+.solution-visual span{width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#fff,#fff1f5);font-size:20px;}
+.solution-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;position:relative;z-index:1;}
+.solution-feature{display:flex;align-items:center;gap:12px;min-height:78px;padding:12px 14px;border-radius:17px;background:rgba(255,255,255,.86);border:1px solid rgba(224,202,188,.62);box-shadow:0 6px 18px rgba(91,68,48,.045);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease;}
+.solution-feature:hover{transform:translateY(-4px);background:#fff;box-shadow:0 13px 28px rgba(91,68,48,.12);border-color:#e4b4c3;}
+.solution-feature-wide{grid-column:1/-1;}
+.solution-feature-icon{width:45px;height:45px;min-width:45px;display:grid;place-items:center;border-radius:14px;font-size:21px;border:1px solid rgba(220,190,180,.55);box-shadow:0 5px 12px rgba(90,65,70,.06);transition:transform .25s ease;}
+.solution-feature:hover .solution-feature-icon{transform:scale(1.08) rotate(-3deg);}
+.solution-feature-icon.family{background:#fff0f5}.solution-feature-icon.tree{background:#f1f8ec}.solution-feature-icon.relation{background:#f0f5ff}.solution-feature-icon.reminder{background:#fff7df}.solution-feature-icon.event{background:#fff0e8}.solution-feature-icon.money{background:#f1f9e9}.solution-feature-icon.history{background:#fff0f4}
+.solution-feature h3{margin:0 0 3px;color:#503d45;font-size:14px;font-weight:700;}
+.solution-feature p{margin:0;color:#6b5c61;font-size:11.8px;line-height:1.5;}
+.solution-bottom{position:relative;z-index:1;margin-top:15px;padding:11px 15px;border-radius:14px;text-align:center;background:linear-gradient(90deg,rgba(255,238,245,.9),rgba(255,249,225,.9));border:1px solid rgba(226,198,180,.55);color:#76505e;font-size:12px;}
+@media(max-width:760px){.solution-redesign{padding:20px!important;border-radius:20px!important}.solution-head{display:block}.solution-visual{margin-top:14px;justify-content:center;padding:9px}.solution-visual span{width:34px;height:34px;font-size:17px}.solution-grid{grid-template-columns:1fr!important;gap:9px}.solution-feature,.solution-feature-wide{grid-column:auto;min-height:66px;padding:10px 11px}.solution-feature-icon{width:39px;height:39px;min-width:39px;font-size:18px}.solution-feature h3{font-size:13px}.solution-feature p{font-size:11px}.solution-bottom{font-size:11px}}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="HEADER-LIGHT-RED-FINAL">
+/* ==============================
+   FINAL HEADER — LIGHT RED THEME
+   Fixed at very top while scrolling
+   ============================== */
+html, body{
+  margin:0 !important;
+  padding:0 !important;
+}
+
+body{
+  padding-top:74px !important;
+}
+
+body > header,
+header.header,
+header{
+  position:fixed !important;
+  top:0 !important;
+  bottom:auto !important;
+  left:0 !important;
+  right:0 !important;
+  width:100% !important;
+  height:74px !important;
+  margin:0 !important;
+  padding:0 !important;
+  z-index:999999 !important;
+  box-sizing:border-box !important;
+
+  /* LIGHT RED / SOFT ROSE */
+  background:linear-gradient(
+    90deg,
+    #fff3f3 0%,
+    #ffe8e8 50%,
+    #fff1f1 100%
+  ) !important;
+
+  border-bottom:1px solid #f0caca !important;
+  box-shadow:0 4px 18px rgba(180,70,70,.14) !important;
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+}
+
+header.header > .container,
+header > .container{
+  height:74px !important;
+  min-height:74px !important;
+  margin:0 auto !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  box-sizing:border-box !important;
+}
+
+/* Logo */
+header .logo h2{
+  color:#793d3d !important;
+}
+header .logo p{
+  color:#9a6666 !important;
+}
+
+/* Notice button */
+header .notice-header-btn{
+  background:#ffe0a8 !important;
+  color:#7b4b20 !important;
+  border:1px solid #efc477 !important;
+  box-shadow:0 4px 10px rgba(170,105,30,.12) !important;
+}
+
+/* Language toggle */
+header .lang-switch{
+  background:#fffafa !important;
+  border:1px solid #edc7c7 !important;
+  box-shadow:0 3px 10px rgba(160,70,70,.10) !important;
+}
+
+/* Navigation */
+header nav#navMenu{
+  position:static !important;
+  top:auto !important;
+  left:auto !important;
+  right:auto !important;
+  margin-left:auto !important;
+  display:flex !important;
+  align-items:center !important;
+  flex-direction:row !important;
+  gap:5px !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  transform:none !important;
+}
+
+header nav#navMenu a{
+  color:#673f3f !important;
+  background:#fffafa !important;
+  border:1px solid transparent !important;
+  border-radius:10px !important;
+  box-shadow:none !important;
+  white-space:nowrap !important;
+}
+
+header nav#navMenu a:hover,
+header nav#navMenu a.nav-active{
+  color:#a33f3f !important;
+  background:#ffe4e4 !important;
+  border-color:#efc2c2 !important;
+  box-shadow:0 3px 9px rgba(170,60,60,.10) !important;
+}
+
+header nav#navMenu a.login-btn{
+  color:#fff !important;
+  background:linear-gradient(135deg,#d96565,#bd4b4b) !important;
+  border:0 !important;
+  border-radius:999px !important;
+  box-shadow:0 5px 14px rgba(180,65,65,.24) !important;
+}
+
+header nav#navMenu a.login-btn:hover{
+  color:#fff !important;
+  background:linear-gradient(135deg,#cc5555,#ad3f3f) !important;
+}
+
+/* Never show hamburger */
+header .menu-btn{
+  display:none !important;
+}
+
+/* Prevent an old hero/header margin from pushing things down */
+.hero{
+  margin-top:0 !important;
+}
+
+@media(max-width:900px){
+  body{
+    padding-top:62px !important;
+  }
+
+  body > header,
+  header.header,
+  header{
+    height:62px !important;
+  }
+
+  header.header > .container,
+  header > .container{
+    height:62px !important;
+    min-height:62px !important;
+  }
+
+  header nav#navMenu{
+    position:absolute !important;
+    top:62px !important;
+    left:8px !important;
+    right:8px !important;
+    display:none !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    margin:0 !important;
+    padding:9px !important;
+    background:#fff7f7 !important;
+    border:1px solid #edcccc !important;
+    border-radius:14px !important;
+    box-shadow:0 14px 30px rgba(120,50,50,.16) !important;
+  }
+
+  header nav#navMenu.show{
+    display:flex !important;
+  }
+
+  header nav#navMenu a{
+    width:100% !important;
+    box-sizing:border-box !important;
+  }
+}
+</style>
+
+
+<style id="FINAL-NAV-SPACING-HOVER">
+header.header nav#navMenu{
+    gap:10px !important;
+    align-items:center !important;
+}
+
+header.header nav#navMenu a{
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    min-height:40px !important;
+    padding:9px 15px !important;
+    margin:0 !important;
+    border-radius:12px !important;
+    border:1px solid transparent !important;
+    background:rgba(255,255,255,.72) !important;
+    color:#633f3f !important;
+    font-size:12px !important;
+    font-weight:700 !important;
+    text-decoration:none !important;
+    white-space:nowrap !important;
+    transition:
+        background .22s ease,
+        color .22s ease,
+        border-color .22s ease,
+        transform .22s ease,
+        box-shadow .22s ease !important;
+}
+
+header.header nav#navMenu a:hover{
+    background:#ffe1e1 !important;
+    color:#a33f3f !important;
+    border-color:#efbebe !important;
+    transform:translateY(-2px) !important;
+    box-shadow:0 6px 14px rgba(170,65,65,.14) !important;
+}
+
+header.header nav#navMenu a.nav-active{
+    background:#ffd9d9 !important;
+    color:#9e3737 !important;
+    border-color:#eeb4b4 !important;
+    box-shadow:0 4px 11px rgba(170,65,65,.12) !important;
+}
+
+header.header nav#navMenu a.login-btn{
+    padding:9px 19px !important;
+    border-radius:999px !important;
+    background:linear-gradient(135deg,#d76565,#bd4b4b) !important;
+    color:#fff !important;
+    border-color:transparent !important;
+    box-shadow:0 5px 14px rgba(180,65,65,.22) !important;
+}
+
+header.header nav#navMenu a.login-btn:hover{
+    background:linear-gradient(135deg,#c95454,#aa3d3d) !important;
+    color:#fff !important;
+    transform:translateY(-2px) scale(1.02) !important;
+    box-shadow:0 8px 18px rgba(170,55,55,.27) !important;
+}
+
+@media(max-width:1350px){
+    header.header nav#navMenu{
+        gap:7px !important;
+    }
+    header.header nav#navMenu a{
+        padding-left:11px !important;
+        padding-right:11px !important;
+        font-size:11px !important;
+    }
+}
+
+@media(max-width:900px){
+    header.header nav#navMenu{
+        gap:4px !important;
+    }
+    header.header nav#navMenu a{
+        min-height:40px !important;
+        padding:9px 12px !important;
+        justify-content:flex-start !important;
+    }
+}
+</style>
+
+
+<style id="REAL-NAV-FIX">
+/* FINAL REAL NAV FIX — actual header has no .header class */
+header nav#navMenu{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:14px !important;
+    margin-left:auto !important;
+    padding:0 !important;
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    position:static !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    transform:none !important;
+}
+
+header nav#navMenu > a{
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    min-height:42px !important;
+    padding:9px 14px !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+    border:1px solid #efcfcf !important;
+    border-radius:12px !important;
+    background:#fffafa !important;
+    color:#673f3f !important;
+    font-size:12px !important;
+    font-weight:700 !important;
+    line-height:1 !important;
+    text-decoration:none !important;
+    white-space:nowrap !important;
+    transition:all .22s ease !important;
+}
+
+header nav#navMenu > a:hover{
+    background:#ffe0e0 !important;
+    color:#a43e3e !important;
+    border-color:#e9b6b6 !important;
+    transform:translateY(-2px) !important;
+    box-shadow:0 7px 15px rgba(170,65,65,.15) !important;
+}
+
+header nav#navMenu > a.nav-active{
+    background:#ffd4d4 !important;
+    color:#9b3535 !important;
+    border-color:#e5aaaa !important;
+    box-shadow:0 5px 12px rgba(160,55,55,.13) !important;
+}
+
+header nav#navMenu > a.login-btn{
+    min-height:42px !important;
+    padding:9px 20px !important;
+    border:0 !important;
+    border-radius:999px !important;
+    background:linear-gradient(135deg,#d96666,#bd4b4b) !important;
+    color:#fff !important;
+    box-shadow:0 6px 16px rgba(180,65,65,.24) !important;
+}
+
+header nav#navMenu > a.login-btn:hover{
+    background:linear-gradient(135deg,#ca5555,#aa3e3e) !important;
+    color:#fff !important;
+    transform:translateY(-2px) scale(1.02) !important;
+    box-shadow:0 9px 20px rgba(165,55,55,.28) !important;
+}
+
+/* User Manual has an old inline yellow color; override it too. */
+header nav#navMenu > a[href*="manual.html"]{
+    color:#673f3f !important;
+}
+
+/* Keep the actual header fixed at the top. */
+body > header{
+    position:fixed !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    z-index:999999 !important;
+}
+
+/* Responsive */
+@media (max-width:1350px){
+    header nav#navMenu{
+        gap:9px !important;
+    }
+    header nav#navMenu > a{
+        padding-left:10px !important;
+        padding-right:10px !important;
+        font-size:11px !important;
+    }
+}
+
+@media (max-width:900px){
+    header nav#navMenu{
+        position:absolute !important;
+        top:100% !important;
+        left:8px !important;
+        right:8px !important;
+        width:auto !important;
+        display:none !important;
+        flex-direction:column !important;
+        align-items:stretch !important;
+        gap:4px !important;
+        padding:10px !important;
+        margin:0 !important;
+        background:#fff7f7 !important;
+        border:1px solid #edcccc !important;
+        border-radius:14px !important;
+        box-shadow:0 14px 30px rgba(120,50,50,.16) !important;
+    }
+    header nav#navMenu.show{
+        display:flex !important;
+    }
+    header nav#navMenu > a{
+        width:100% !important;
+        justify-content:flex-start !important;
+    }
+    header nav#navMenu > a.login-btn{
+        justify-content:center !important;
+    }
+}
+</style>
+
+
+<style id="LANGUAGE-TOGGLE-COLOR-FINAL">
+header .lang-switch{
+    background:#eefaf8 !important;
+    border:1px solid #b8ded8 !important;
+    padding:4px !important;
+    border-radius:999px !important;
+    box-shadow:0 4px 12px rgba(45,130,120,.12) !important;
+}
+header .lang-switch button{
+    background:transparent !important;
+    color:#39756f !important;
+    border:0 !important;
+    border-radius:999px !important;
+    font-weight:800 !important;
+    transition:all .22s ease !important;
+}
+header .lang-switch button:hover{
+    background:#d8f1ed !important;
+    color:#23635d !important;
+    transform:translateY(-1px) !important;
+}
+header .lang-switch button#langEnBtn[style*="linear-gradient"],
+header .lang-switch button#langHiBtn[style*="linear-gradient"]{
+    color:#fff !important;
+}
+</style>
+
 </head>
 
 <body>
-
 <!-- ================= HEADER ================= -->
 <header>
 <div class="container">
     <div class="logo">
-        <img src="assets/images/appicon.ico"" alt="Logo">
+        <img src="assets/images/appicon.ico" alt="Logo">
         <div>
             <h2>sagun System</h2>
             <p>Smart Wedding</p>
@@ -75,16 +676,16 @@
     </div>
     
     <div style="display:flex; align-items:center; gap:8px;">
-        <button class="notice-header-btn" onclick="openNoticeModal()">
-            🔔 <span data-en="Notice" data-hi="सूचना">सूचना</span>
-        </button>
         <div class="lang-switch" style="display:inline-flex; gap:2px; background:rgba(255,255,255,0.2); padding:2px; border-radius:20px;">
-            <button onclick="setLanguage('en')" id="langEnBtn" style="background:#FFD700; color:#c85f82; border:none; padding:4px 10px; border-radius:15px; font-weight:bold; font-size:11px; cursor:pointer;">EN</button>
-            <button onclick="setLanguage('hi')" id="langHiBtn" style="background:transparent; color:#fff; border:none; padding:4px 10px; border-radius:15px; font-weight:bold; font-size:11px; cursor:pointer;">हिंदी</button>
+            <button onclick="setLanguage('en')" id="langEnBtn" style="background:#FFD700; color:#c85f82; border:none; padding:4px 10px; border-radius:15px; font-weight:bold; font-size:11px; cursor:pointer;">English में देखें</button>
+            <button onclick="setLanguage('hi')" id="langHiBtn" style="background:transparent; color:#fff; border:none; padding:4px 10px; border-radius:15px; font-weight:bold; font-size:11px; cursor:pointer;">हिंदी में देखें</button>
         </div>
-        <div class="menu-btn" onclick="toggleMenu()">☰</div>
+        
     </div>
 
+    <button id="mobileMenuBtn" class="mobile-menu-btn" type="button" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileMenu()">
+        ⋮
+    </button>
     <nav id="navMenu">
         <a href="index.html" onclick="toggleMenu()" data-en="Home" data-hi="होम">Home</a>
         <a href="#preview" onclick="toggleMenu()" data-en="Preview" data-hi="झलक">Preview</a>
@@ -93,67 +694,49 @@
         <a href="#developer" onclick="toggleMenu()" data-en="Developer" data-hi="डेवलपर">Developer</a>
         <a href="#faq" onclick="toggleMenu()" data-en="FAQ" data-hi="सामान्य प्रश्न">FAQ</a>
         <a href="html/manual.html" style="color: #FFD700; font-weight: 600;" onclick="toggleMenu()" data-en="<i class='fas fa-book-open'></i> User Manual" data-hi="<i class='fas fa-book-open'></i> यूजर मैनुअल"><i class="fas fa-book-open"></i> User Manual</a>
-        <a href="utility.html" style="color: #FFD700; font-weight: 600;" onclick="toggleMenu()" data-en="<i class='fas fa-tools'></i> Utility Tools" data-hi="<i class='fas fa-tools'></i> यूटिलिटी टूल"><i class="fas fa-tools"></i> Utility Tools</a>
         <a href="#contact" onclick="toggleMenu()" data-en="Contact" data-hi="संपर्क">Contact</a>
-        <a href="html/login.html" class="login-btn" data-en="Login" data-hi="लॉगिन">Login</a>
+        <a href="html/login.html" class="login-btn top-login-highlight" data-en="Login" data-hi="लॉगिन"><i class="fas fa-right-to-bracket"></i> Login</a>
     </nav>
 </div>
 </header>
-
-<!-- ================= WEBSITE NOTICE MODAL ================= -->
-<div id="websiteNoticeModal" class="notice-modal">
-    <div class="notice-content">
-        <span class="close-notice" onclick="closeNoticeModal()">&times;</span>
-        <h2>🚧 <span data-en="Important Notice" data-hi="महत्वपूर्ण सूचना">महत्वपूर्ण सूचना</span></h2>
-        
-        <p data-en="This website is currently running in a <b>Demo Version</b>." data-hi="यह वेबसाइट वर्तमान में <b>डेमो (Demo) संस्करण</b> में चल रही है।">
-            यह वेबसाइट वर्तमान में <b>डेमो (Demo) संस्करण</b> में चल रही है।
-        </p>
-        <p data-en="We request you all to use the website. If you encounter any issues, errors, shortcomings, or have suggestions, please let us know. Your feedback is valuable and helps us improve." data-hi="आप सभी से अनुरोध है कि वेबसाइट का उपयोग करें। यदि आपको किसी प्रकार की कोई समस्या, गलती, कमी या कोई सुझाव मिले, तो कृपया हमें अवश्य बताएं। आपके सुझाव हमारे लिए बहुत महत्वपूर्ण हैं और वेबसाइट को बेहतर बनाने में मदद करेंगे।">
-            आप सभी से अनुरोध है कि वेबसाइट का उपयोग करें। यदि आपको किसी प्रकार की कोई समस्या, गलती, कमी या कोई सुझाव मिले, तो कृपया हमें अवश्य बताएं। आपके सुझाव हमारे लिए बहुत महत्वपूर्ण हैं और वेबसाइट को बेहतर बनाने में मदद करेंगे।
-        </p>
-        
-        <div style="background: #fff8f2; padding: 12px 15px; border-radius: 10px; border-left: 4px solid #e98eaa; margin: 15px 0;">
-            <p style="margin: 0; font-weight: 600; color: #c85f82;">⚠️ <span data-en="Important Details:" data-hi="महत्वपूर्ण बिंदु:">महत्वपूर्ण बिंदु:</span></p>
-            <ul style="margin-top: 5px; margin-bottom: 0;">
-                <li data-en="The official launch of this website will take place on <b>02 October 2026</b>. All demo data entered before this date will be permanently deleted." data-hi="<b>02 अक्टूबर 2026</b> को इस वेबसाइट का आधिकारिक शुभारंभ (Official Launch) किया जाएगा। इस तिथि से पहले वेबसाइट पर दर्ज किया गया सभी डेमो डेटा स्थायी रूप से हटा दिया जाएगा।">
-                    <b>02 अक्टूबर 2026</b> को इस वेबसाइट का आधिकारिक शुभारंभ (Official Launch) किया जाएगा। इस तिथि से पहले वेबसाइट पर दर्ज किया गया सभी डेमो डेटा स्थायी रूप से हटा दिया जाएगा।
-                </li>
-                <li data-en="From <b>02 October 2026</b> onwards, all information entered on the website will be considered real and permanent records." data-hi="<b>02 अक्टूबर 2026</b> से वेबसाइट पर दर्ज की जाने वाली सभी जानकारी वास्तविक (Real) और स्थायी रिकॉर्ड मानी जाएगी।">
-                    <b>02 अक्टूबर 2026</b> से वेबसाइट पर दर्ज की जाने वाली सभी जानकारी वास्तविक (Real) और स्थायी रिकॉर्ड मानी जाएगी।
-                </li>
-            </ul>
-        </div>
-
-        <p style="text-align: center; font-weight: 600; color: #c85f82; margin-top: 15px;" data-en="Thank you for your cooperation, suggestions, and trust! 🙏" data-hi="आपके सहयोग, सुझाव और विश्वास के लिए हार्दिक धन्यवाद। 🙏">
-            आपके सहयोग, सुझाव और विश्वास के लिए हार्दिक धन्यवाद। 🙏
-        </p>
-    </div>
-</div>
-
 <!-- ================= HERO ================= -->
 <section class="hero" data-aos="fade-up">
 <div class="hero-left">
     <div class="badge" data-en="👋 Bye Bye Paper Register!" data-hi="👋 बाय-बाय पेपर रजिस्टर!">👋 Bye Bye Paper Register!</div>
-    <h1 data-en="sagun Management System" data-hi="सगुन मैनेजमेंट सिस्टम">sagun Management System</h1>
-    <p data-en="Welcome to the ultimate digital platform designed to completely revolutionize traditional Indian wedding management. Effortlessly track wedding guests, manage detailed shagun entries, handle cash and secure UPI payments, generate real-time financial reports, and maintain complete digital records with absolute peace of mind." data-hi="पारंपरिक भारतीय विवाह प्रबंधन में पूरी तरह से क्रांति लाने के लिए डिज़ाइन किए गए अंतिम डिजिटल प्लेटफॉर्म में आपका स्वागत है। शादी के मेहमानों को आसानी से ट्रैक करें, विस्तृत शगुन प्रविष्टियों का प्रबंधन करें, नकद और सुरक्षित UPI भुगतान संभालें, वास्तविक समय की वित्तीय रिपोर्ट तैयार करें, और पूर्ण मन की शांति के साथ संपूर्ण डिजिटल रिकॉर्ड बनाए रखें।">
-        Welcome to the ultimate digital platform designed to completely revolutionize traditional Indian wedding management. Effortlessly track wedding guests, manage detailed shagun entries, handle cash and secure UPI payments, generate real-time financial reports, and maintain complete digital records with absolute peace of mind.
+
+    <div class="free-register-line">🎉 <strong>100% FREE</strong> — अभी Register करें और Sagun Management System का इस्तेमाल शुरू करें</div>
+
+    <h1 data-en="Sagun Management System" data-hi="सगुन मैनेजमेंट सिस्टम">Sagun Management System</h1>
+
+    <p class="hero-description"
+       data-en="Welcome to the ultimate digital platform designed to completely revolutionize traditional family &amp; event management. Effortlessly track guests, manage detailed Shagun entries, handle Cash and UPI payments, generate real-time financial reports, and maintain complete digital records with absolute peace of mind. Organize your family relationships, remember important birthdays and anniversaries, manage multiple events, keep family history digitally, and access your records anytime in one simple and secure place. From weddings and engagements to birthdays, anniversaries, Tilak, Barat, Reception and other family celebrations, Sagun Management System helps you manage every important moment with ease, accuracy, and convenience."
+       data-hi="पारंपरिक परिवार और इवेंट मैनेजमेंट को आसान बनाने के लिए बनाया गया यह डिजिटल प्लेटफॉर्म मेहमानों, Shagun entries, Cash और UPI payments, real-time reports और डिजिटल रिकॉर्ड को एक ही जगह व्यवस्थित करता है। परिवार के रिश्तों को संभालें, जरूरी birthdays और anniversaries याद रखें, multiple events manage करें, family history डिजिटल रूप से रखें और अपने records को आसानी से access करें। शादी, engagement, birthday, anniversary, Tilak, Barat, Reception और अन्य पारिवारिक समारोहों को सरल, व्यवस्थित और सुविधाजनक तरीके से manage करें।">
+      Welcome to the ultimate digital platform designed to completely revolutionize traditional family &amp; event management. Effortlessly track guests, manage detailed Shagun entries, handle Cash and UPI payments, generate real-time financial reports, and maintain complete digital records with absolute peace of mind. Organize your family relationships, remember important birthdays and anniversaries, manage multiple events, keep family history digitally, and access your records anytime in one simple and secure place. From weddings and engagements to birthdays, anniversaries, Tilak, Barat, Reception and other family celebrations, Sagun Management System helps you manage every important moment with ease, accuracy, and convenience.
     </p>
+
+    <div class="sagun-benefits-line">
+      <span>🎉 <b>100% Free</b></span>
+      <i>•</i>
+      <span>🔒 <b>Privacy First</b></span>
+      <i>•</i>
+      <span>🛡️ <b>Secure</b></span>
+      <i>•</i>
+      <span>✨ <b>Simple to Use</b></span>
+    </div>
+
     <div class="hero-buttons">
         <a href="html/register.html" class="start-btn" data-en="🚀 Get Started Now" data-hi="🚀 अभी शुरू करें">🚀 Get Started Now</a>
         <a href="html/manual.html" class="demo-btn" data-en="📖 Read User Manual" data-hi="📖 यूजर मैनुअल पढ़ें">📖 Read User Manual</a>
     </div>
 </div>
-<div class="hero-right">
-    <div class="person-card">
-        <img src="assets/images/groom.jpg"" alt="Groom">
-        <p data-en="🤵 Groom" data-hi="🤵 दूल्हा">🤵 Groom</p>
-    </div>
-    <div class="heart">❤️</div>
-    <div class="person-card">
-        <img src="assets/images/bride.jpg"" alt="Bride">
-        <p data-en="👰 Bride" data-hi="👰 दुल्हन">👰 Bride</p>
-    </div>
+
+<div class="hero-right sagun-intro-card">
+    <h3 data-en="✨ Sagun Management System" data-hi="✨ सगुन मैनेजमेंट सिस्टम">✨ Sagun Management System</h3>
+    <p data-en="📒 Replace your traditional diary and register with a simple digital system." data-hi="📒 पारंपरिक डायरी और रजिस्टर की जगह आसान डिजिटल सिस्टम अपनाएं।">📒 Replace your traditional diary and register with a simple digital system.</p>
+    <p data-en="👥 Manage guests, family members and event records in one place." data-hi="👥 मेहमानों, परिवार के सदस्यों और इवेंट रिकॉर्ड को एक ही जगह संभालें।">👥 Manage guests, family members and event records in one place.</p>
+    <p data-en="💰 Record Cash, UPI and Shagun entries quickly and accurately." data-hi="💰 Cash, UPI और Shagun की एंट्री जल्दी और सही तरीके से दर्ज करें।">💰 Record Cash, UPI and Shagun entries quickly and accurately.</p>
+    <p data-en="📊 Get clear reports, totals and event-wise collection details anytime." data-hi="📊 कभी भी साफ रिपोर्ट, टोटल और इवेंट-वाइज कलेक्शन की जानकारी पाएं।">📊 Get clear reports, totals and event-wise collection details anytime.</p>
+    <p data-en="🔔 Keep important family events, birthdays and anniversaries organized." data-hi="🔔 परिवार के जरूरी इवेंट, जन्मदिन और एनिवर्सरी को व्यवस्थित रखें।">🔔 परिवार के जरूरी इवेंट, जन्मदिन और एनिवर्सरी को व्यवस्थित रखें।</p>
 </div>
 </section>
 
@@ -176,23 +759,51 @@
             </ul>
         </div>
 
-        <div class="solution-box">
-            <span class="solution-badge" data-en="🎯 Now there is a solution..." data-hi="🎯 अब समाधान है...">🎯 अब समाधान है...</span>
-            <h2 data-en="Sagun Management System" data-hi="Sagun Management System">Sagun Management System</h2>
-            <p class="solution-intro" data-en="A Smart Digital Family Management Platform where you can—" data-hi="एक ऐसा Smart Digital Family Management Platform जहाँ आप—">एक ऐसा Smart Digital Family Management Platform जहाँ आप—</p>
-            
-            <ul class="solution-list">
-                <li data-en="✅ Maintain complete records of all relatives." data-hi="✅ सभी रिश्तेदारों का पूरा रिकॉर्ड रख सकते हैं।">✅ सभी रिश्तेदारों का पूरा रिकॉर्ड रख सकते हैं।</li>
-                <li data-en="✅ Build comprehensive Family Trees." data-hi="✅ Family Tree बना सकते हैं।">✅ Family Tree बना सकते हैं।</li>
-                <li data-en="✅ Keep track of relationship tags (Chacha, Mama, Phupha, Mausi, Jija, Sala, etc.)." data-hi="✅ रिश्तों की पहचान (चाचा, मामा, फूफा, मौसी, जीजा, साला आदि) सुरक्षित रख सकते हैं।">✅ रिश्तों की पहचान (चाचा, मामा, फूफा, मौसी, जीजा, साला आदि) सुरक्षित रख सकते हैं।</li>
-                <li data-en="✅ Receive smart reminders for birthdays, anniversaries, and milestones." data-hi="✅ जन्मदिन, सालगिरह और अन्य महत्वपूर्ण तिथियों के लिए Reminder पा सकते हैं।">✅ जन्मदिन, सालगिरह और अन्य महत्वपूर्ण तिथियों के लिए Reminder पा सकते हैं।</li>
-                <li data-en="✅ Record all ceremonies including Weddings, Tilak, Reception, Mundan, and Griha Pravesh." data-hi="✅ शादी, तिलक, रिसेप्शन, मुंडन, गृह प्रवेश सहित सभी कार्यक्रमों का रिकॉर्ड रख सकते हैं।">✅ शादी, तिलक, रिसेप्शन, मुंडन, गृह प्रवेश सहित सभी कार्यक्रमों का रिकॉर्ड रख सकते हैं।</li>
-                <li data-en="✅ Securely track Shagun, Cash, UPI, and gifts forever." data-hi="✅ शगुन, Cash, UPI और उपहार का पूरा हिसाब हमेशा के लिए सुरक्षित रख सकते हैं।">✅ शगुन, Cash, UPI और उपहार का पूरा हिसाब हमेशा के लिए सुरक्षित रख सकते हैं।</li>
-                <li data-en="✅ Safeguard your family's digital history for upcoming generations." data-hi="✅ आने वाली पीढ़ियों के लिए पूरे परिवार का डिजिटल इतिहास सुरक्षित रख सकते हैं।">✅ आने वाली पीढ़ियों के लिए पूरे परिवार का डिजिटल इतिहास सुरक्षित रख सकते हैं।</li>
-            </ul>
+        <div class="solution-box solution-redesign">
+            <div class="solution-head">
+                <div>
+                    <span class="solution-badge"><span>✦</span> अब समाधान है...</span>
+                    <h2>Sagun Management System</h2>
+                    <p class="solution-intro">एक Smart Digital Family & Event Management Platform जहाँ परिवार, रिश्ते, यादें और सभी कार्यक्रम एक ही जगह व्यवस्थित रहें।</p>
+                </div>
+                <div class="solution-visual" aria-hidden="true">
+                    <span>👨‍👩‍👧‍👦</span><span>💍</span><span>🎂</span><span>🎉</span><span>🎁</span>
+                </div>
+            </div>
 
-            <div class="ps-footer-quote">
-                <p data-en="❤️ \"Today's diary can get lost tomorrow, but Sagun Management System keeps your relationships and memories safe forever.\"" data-hi="❤️ \"आज की डायरी कल खो सकती है, लेकिन Sagun Management System आपके रिश्तों और यादों को हमेशा सुरक्षित रखता है।\"">❤️ "आज की डायरी कल खो सकती है, लेकिन Sagun Management System आपके रिश्तों और यादों को हमेशा सुरक्षित रखता है।"</p>
+            <div class="solution-grid">
+                <div class="solution-feature">
+                    <div class="solution-feature-icon family">👨‍👩‍👧‍👦</div>
+                    <div><h3>परिवार का रिकॉर्ड</h3><p>सभी रिश्तेदारों और परिवार के सदस्यों की जानकारी एक जगह सुरक्षित रखें।</p></div>
+                </div>
+                <div class="solution-feature">
+                    <div class="solution-feature-icon tree">🌳</div>
+                    <div><h3>Family Tree</h3><p>परिवार की पीढ़ियों और सदस्यों का सुंदर Family Tree तैयार करें।</p></div>
+                </div>
+                <div class="solution-feature">
+                    <div class="solution-feature-icon relation">🤝</div>
+                    <div><h3>रिश्तों की पहचान</h3><p>चाचा, मामा, फूफा, मौसी, जीजा, साला जैसे रिश्तों को व्यवस्थित रखें।</p></div>
+                </div>
+                <div class="solution-feature">
+                    <div class="solution-feature-icon reminder">🔔</div>
+                    <div><h3>Smart Reminders</h3><p>जन्मदिन, सालगिरह और दूसरी महत्वपूर्ण तारीखें समय पर याद रखें।</p></div>
+                </div>
+                <div class="solution-feature">
+                    <div class="solution-feature-icon event">🎉</div>
+                    <div><h3>सभी Events</h3><p>शादी, Engagement, Anniversary, Tilak, Barat, Reception और अन्य कार्यक्रमों का रिकॉर्ड रखें।</p></div>
+                </div>
+                <div class="solution-feature">
+                    <div class="solution-feature-icon money">💰</div>
+                    <div><h3>Shagun • Cash • UPI</h3><p>शगुन, Cash, UPI और उपहार का पूरा हिसाब सुरक्षित रखें।</p></div>
+                </div>
+                <div class="solution-feature solution-feature-wide">
+                    <div class="solution-feature-icon history">💖</div>
+                    <div><h3>परिवार की Digital History</h3><p>आज की जानकारी को आने वाली पीढ़ियों के लिए व्यवस्थित डिजिटल इतिहास के रूप में सुरक्षित रखें।</p></div>
+                </div>
+            </div>
+
+            <div class="solution-bottom">
+                <span>✨</span> <strong>एक जगह — परिवार, रिश्ते, यादें और हर महत्वपूर्ण कार्यक्रम</strong> <span>❤️</span>
             </div>
         </div>
 
@@ -374,7 +985,7 @@
         <div class="feature-info">
             <h3 data-en="Family Management" data-hi="फैमिली मैनेजमेंट">Family Management</h3>
             <p data-en="Family Tree, joint family records, relative directory, and legal documents." data-hi="फैमिली ट्री, संयुक्त परिवार का रिकॉर्ड, रिश्तेदारों की जानकारी और दस्तावेज।">Family Tree, joint family records, relative directory, and legal documents.</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            
         </div>
     </div>
     <div class="feature-box">
@@ -382,7 +993,7 @@
         <div class="feature-info">
             <h3 data-en="Relationship Manager" data-hi="रिलेशनशिप मैनेजर">Relationship Manager</h3>
             <p data-en="Automatically identify relationships like Chacha, Mama, Mausi, Phupha, and Sasural side." data-hi="चाचा, मामा, मौसी, फूफा और ससुराल पक्ष का रिश्ता अपने आप पता चले।">Automatically identify relationships like Chacha, Mama, Mausi, Phupha, and Sasural side.</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            
         </div>
     </div>
     <div class="feature-box">
@@ -390,7 +1001,7 @@
         <div class="feature-info">
             <h3 data-en="Multi-Event Management" data-hi="मल्टी-इवेंट मैनेजमेंट">Multi-Event Management</h3>
             <p data-en="Manage Weddings, Tilak, Reception, Birthdays, Anniversaries, Mundan, and Shradh." data-hi="शादी, तिलक, रिसेप्शन, जन्मदिन, एनिवर्सरी, मुंडन और श्राद्ध का प्रबंधन।">Manage Weddings, Tilak, Reception, Birthdays, Anniversaries, Mundan, and Shradh.</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            
         </div>
     </div>
     <div class="feature-box">
@@ -398,7 +1009,7 @@
         <div class="feature-info">
             <h3 data-en="Historical Records" data-hi="ऐतिहासिक रिकॉर्ड">Historical Records</h3>
             <p data-en="Chronological event history across years available forever in your account." data-hi="सालों-साल का पारिवारिक इतिहास हमेशा के लिए सुरक्षित उपलब्ध रहे।">Chronological event history across years available forever in your account.</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            
         </div>
     </div>
     <div class="feature-box">
@@ -406,7 +1017,7 @@
         <div class="feature-info">
             <h3 data-en="Smart Reminders" data-hi="स्मार्ट रिमाइंडर">Smart Reminders</h3>
             <p data-en="Automated alerts for Birthdays, Anniversaries, Marriage Dates, and Shradh Tithis." data-hi="जन्मदिन, विवाह वर्षगांठ और श्राद्ध तिथियों के लिए ऑटोमैटिक रिमाइंडर।">Automated alerts for Birthdays, Anniversaries, Marriage Dates, and Shradh Tithis.</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            
         </div>
     </div>
     <div class="feature-box">
@@ -414,7 +1025,7 @@
         <div class="feature-info">
             <h3 data-en="SGUNMS AI Assistant" data-hi="SGUNMS एआई असिस्टेंट">SGUNMS AI Assistant</h3>
             <p data-en="Smart AI helper to answer queries about past shagun amounts and guest attendance." data-hi="शगुन राशि और पिछले मेहमानों की उपस्थिति से जुड़े सवालों के जवाब देने वाला स्मार्ट AI।">Smart AI helper to answer queries about past shagun amounts and guest attendance.</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            
         </div>
     </div>
     <div class="feature-box">
@@ -422,7 +1033,7 @@
         <div class="feature-info">
             <h3 data-en="Cloud + Offline Sync" data-hi="क्लाउड + ऑफलाइन सिंक">Cloud + Offline Sync</h3>
             <p data-en="Works offline without internet and automatically syncs when connected back." data-hi="बिना इंटरनेट के ऑफलाइन काम करेगा और ऑनलाइन होने पर स्वतः सिंक हो जाएगा।">Works offline without internet and automatically syncs when connected back.</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            
         </div>
     </div>
     <div class="feature-box">
@@ -430,7 +1041,7 @@
         <div class="feature-info">
             <h3 data-en="Cross-Platform Apps" data-hi="क्रॉस-प्लेटफॉर्म ऐप्स">Cross-Platform Apps</h3>
             <p data-en="Available across Android, iPhone, Windows, and Web Progressive App formats." data-hi="एंड्रॉइड, आईफोन, विंडोज और वेब फॉर्मेट में उपलब्ध।">Available across Android, iPhone, Windows, and Web Progressive App formats.</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            
         </div>
     </div>
 </div>
@@ -509,12 +1120,12 @@
 <div class="about-container">
     <h4 class="section-tag" data-en="ABOUT US" data-hi="हमारे बारे में">ABOUT US</h4>
     <h2 class="section-title" data-en="About sagun Management System" data-hi="सगुन मैनेजमेंट सिस्टम के बारे में">About sagun Management System</h2>
-    <p class="section-text" data-en="Empowering digital transformations for modern Indian weddings and family milestones." data-hi="आधुनिक भारतीय शादियों और पारिवारिक मील के पत्थर के लिए डिजिटल परिवर्तन को सशक्त बनाना।">Empowering digital transformations for modern Indian weddings and family milestones.</p>
+    <p class="section-text" data-en="Empowering digital transformations for modern family events and important milestones." data-hi="आधुनिक भारतीय शादियों और पारिवारिक मील के पत्थर के लिए डिजिटल परिवर्तन को सशक्त बनाना।">Empowering digital transformations for modern family events and important milestones.</p>
 
     <div class="about-main-box">
         <h3 data-en="✨ Revolutionizing Wedding Management Digitally" data-hi="✨ डिजिटल रूप से विवाह प्रबंधन में क्रांति लाना">✨ Revolutionizing Wedding Management Digitally</h3>
-        <p data-en="<b>sagun Management System (SMS)</b> is a state-of-the-art digital wedding platform conceptualized and developed to eliminate the hassles and discrepancies of traditional paper-based record-keeping during marriages and family events. From managing guest arrivals seamlessly to recording every single cash, gift, or UPI shagun entry accurately, our system brings 100% transparency, speed, and absolute security to your celebrations." data-hi="<b>सगुन मैनेजमेंट सिस्टम (SMS)</b> एक अत्याधुनिक डिजिटल वेडिंग प्लेटफॉर्म है, जिसे विवाह और पारिवारिक कार्यक्रमों के दौरान पारंपरिक कागजी रिकॉर्ड-कीपिंग की परेशानियों और विसंगतियों को खत्म करने के लिए वैचारिक रूप से विकसित किया गया है। मेहमानों के आगमन को सुचारू रूप से प्रबंधित करने से लेकर हर एक नकद, उपहार या UPI शगुन प्रविष्टि को सटीक रूप से रिकॉर्ड करने तक, हमारा सिस्टम आपके समारोहों में 100% पारदर्शिता, गति और पूर्ण सुरक्षा लाता है।">
-            <b>sagun Management System (SMS)</b> is a state-of-the-art digital wedding platform conceptualized and developed to eliminate the hassles and discrepancies of traditional paper-based record-keeping during marriages and family events. From managing guest arrivals seamlessly to recording every single cash, gift, or UPI shagun entry accurately, our system brings 100% transparency, speed, and absolute security to your celebrations.
+        <p data-en="<b>sagun Management System (SMS)</b> is a state-of-the-art digital family & event platform conceptualized and developed to eliminate the hassles and discrepancies of traditional paper-based record-keeping during family events and celebrations. From managing guest arrivals seamlessly to recording every single cash, gift, or UPI shagun entry accurately, our system brings 100% transparency, speed, and absolute security to your celebrations." data-hi="<b>सगुन मैनेजमेंट सिस्टम (SMS)</b> एक अत्याधुनिक डिजिटल वेडिंग प्लेटफॉर्म है, जिसे विवाह और पारिवारिक कार्यक्रमों के दौरान पारंपरिक कागजी रिकॉर्ड-कीपिंग की परेशानियों और विसंगतियों को खत्म करने के लिए वैचारिक रूप से विकसित किया गया है। मेहमानों के आगमन को सुचारू रूप से प्रबंधित करने से लेकर हर एक नकद, उपहार या UPI शगुन प्रविष्टि को सटीक रूप से रिकॉर्ड करने तक, हमारा सिस्टम आपके समारोहों में 100% पारदर्शिता, गति और पूर्ण सुरक्षा लाता है।">
+            <b>sagun Management System (SMS)</b> is a state-of-the-art digital family & event platform conceptualized and developed to eliminate the hassles and discrepancies of traditional paper-based record-keeping during family events and celebrations. From managing guest arrivals seamlessly to recording every single cash, gift, or UPI shagun entry accurately, our system brings 100% transparency, speed, and absolute security to your celebrations.
         </p>
 
         <div class="about-highlight-grid">
@@ -547,14 +1158,14 @@
 <section id="developer" class="developer" data-aos="fade-up">
 <div class="developer-box">
     <div class="developer-img">
-        <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20160%20160%22%3E%0A%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2276%22%20fill%3D%22%23fde7f0%22%2F%3E%0A%3Ccircle%20cx%3D%2280%22%20cy%3D%2257%22%20r%3D%2227%22%20fill%3D%22%23f2b9a2%22%2F%3E%0A%3Cpath%20d%3D%22M52%2055c2-24%2054-30%2058%203-8-8-17-12-29-12-10%200-20%203-29%209z%22%20fill%3D%22%235b4350%22%2F%3E%0A%3Cpath%20d%3D%22M39%20139c5-29%2021-44%2041-44s36%2015%2041%2044%22%20fill%3D%22%23e88bab%22%2F%3E%0A%3Cpath%20d%3D%22M58%2099l22%2022%2022-22%22%20fill%3D%22%23fff%22%2F%3E%0A%3Ccircle%20cx%3D%2270%22%20cy%3D%2259%22%20r%3D%223%22%20fill%3D%22%234b3b43%22%2F%3E%0A%3Ccircle%20cx%3D%2290%22%20cy%3D%2259%22%20r%3D%223%22%20fill%3D%22%234b3b43%22%2F%3E%0A%3Cpath%20d%3D%22M70%2074c6%205%2014%205%2020%200%22%20fill%3D%22none%22%20stroke%3D%22%23a65b6d%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E" alt="Profile Avatar">
+        <img class="developer-avatar-small" src="data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='58' fill='%23fff7ea'/%3E%3Ccircle cx='60' cy='45' r='22' fill='%23f2b9a2'/%3E%3Cpath d='M38 43c2-20 42-25 44 3-7-7-14-10-23-10-8 0-15 2-21 7z' fill='%235b4350'/%3E%3Cpath d='M27 108c5-25 17-37 33-37s28 12 33 37' fill='%23e88bab'/%3E%3Cpath d='M45 76l15 14 15-14' fill='%23fff'/%3E%3Ccircle cx='52' cy='47' r='2.5' fill='%234b3b43'/%3E%3Ccircle cx='68' cy='47' r='2.5' fill='%234b3b43'/%3E%3Cpath d='M51 59c5 4 13 4 18 0' fill='none' stroke='%23a65b6d' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" alt="Profile Avatar">
     </div>
     <div class="developer-content">
         <h4 class="section-tag" data-en="DEVELOPER" data-hi="डेवलपर">DEVELOPER</h4>
         <h2 data-en="Shashi Kushwaha" data-hi="शशि कुशवाहा">Shashi Kushwaha</h2>
         <h3 data-en="Primary Government Teacher | Former Computer Teacher | BCA, D.El.Ed, CTET" data-hi="प्राथमिक सरकारी शिक्षक | पूर्व कंप्यूटर शिक्षक | BCA, D.El.Ed, CTET">Primary Government Teacher | Former Computer Teacher | BCA, D.El.Ed, CTET</h3>
-        <p data-en="Hello! I am Shashi Kushwaha, based in Sasamusa, Gopalganj, Bihar. I am a professional educator currently working as a primary government teacher, and I have also served as a computer teacher in the past. Professionally qualified with a BCA, D.El.Ed, and CTET certification, I developed the <b>sagun Management System</b> to digitize and simplify traditional Indian wedding management." data-hi="नमस्ते! मैं शशि कुशवाहा हूँ, ससामूसा, गोपालगंज, बिहार का निवासी। मैं वर्तमान में प्राथमिक सरकारी शिक्षक के रूप में कार्यरत हूँ और पहले कंप्यूटर शिक्षक के रूप में भी सेवा दे चुका हूँ। BCA, D.El.Ed और CTET की योग्यताओं के साथ, मैंने पारंपरिक भारतीय विवाह प्रबंधन को डिजिटल बनाने के लिए <b>सगुन मैनेजमेंट सिस्टम</b> विकसित किया है।">
-            Hello! I am Shashi Kushwaha, based in Sasamusa, Gopalganj, Bihar. I am a professional educator currently working as a primary government teacher, and I have also served as a computer teacher in the past. Professionally qualified with a BCA, D.El.Ed, and CTET certification, I developed the <b>sagun Management System</b> to digitize and simplify traditional Indian wedding management.
+        <p data-en="Hello! I am Shashi Kushwaha, based in Sasamusa, Gopalganj, Bihar. I am a professional educator currently working as a primary government teacher, and I have also served as a computer teacher in the past. Professionally qualified with a BCA, D.El.Ed, and CTET certification, I developed the <b>sagun Management System</b> to digitize and simplify traditional family & event management." data-hi="नमस्ते! मैं शशि कुशवाहा हूँ, ससामूसा, गोपालगंज, बिहार का निवासी। मैं वर्तमान में प्राथमिक सरकारी शिक्षक के रूप में कार्यरत हूँ और पहले कंप्यूटर शिक्षक के रूप में भी सेवा दे चुका हूँ। BCA, D.El.Ed और CTET की योग्यताओं के साथ, मैंने पारंपरिक भारतीय विवाह प्रबंधन को डिजिटल बनाने के लिए <b>सगुन मैनेजमेंट सिस्टम</b> विकसित किया है।">
+            Hello! I am Shashi Kushwaha, based in Sasamusa, Gopalganj, Bihar. I am a professional educator currently working as a primary government teacher, and I have also served as a computer teacher in the past. Professionally qualified with a BCA, D.El.Ed, and CTET certification, I developed the <b>sagun Management System</b> to digitize and simplify traditional family & event management.
         </p>
         <div class="quote" data-en="&ldquo;Technology should serve humanity by bringing ease, transparency, and joy to our cherished family traditions.&rdquo;" data-hi="&ldquo;प्रौद्योगिकी को हमारी मूल्यवान पारिवारिक परंपराओं में आसानी, पारदर्शिता और खुशी लाकर मानवता की सेवा करनी चाहिए।&rdquo;">
             &ldquo;Technology should serve humanity by bringing ease, transparency, and joy to our cherished family traditions.&rdquo;
@@ -647,7 +1258,7 @@
 <div class="footer-container">
     <div>
         <h2 data-en="sagun Management System" data-hi="सगुन मैनेजमेंट सिस्टम">sagun Management System</h2>
-        <p data-en="Smart Digital Wedding Management Platform designed for effortless record-keeping." data-hi="आसान रिकॉर्ड-कीपिंग के लिए डिज़ाइन किया गया स्मार्ट डिजिटल वेडिंग मैनेजमेंट प्लेटफॉर्म।">Smart Digital Wedding Management Platform designed for effortless record-keeping.</p>
+        <p data-en="Smart Digital Family & Event Management Platform designed for effortless record-keeping." data-hi="आसान रिकॉर्ड-कीपिंग के लिए डिज़ाइन किया गया स्मार्ट डिजिटल वेडिंग मैनेजमेंट प्लेटफॉर्म।">Smart Digital Family & Event Management Platform designed for effortless record-keeping.</p>
     </div>
     <div>
         <h3 data-en="Quick Links" data-hi="त्वरित लिंक">Quick Links</h3>
@@ -726,5 +1337,1067 @@
 <script src="js/visitor.js""></script>
     <script src="js/index.js"" defer></script>
 <script src="js/process-ui.js"></script>
+
+<script id="FINAL-LANGUAGE-NAV-STATE">
+(function(){
+  function paintLanguage(lang){
+    const en=document.getElementById('langEnBtn');
+    const hi=document.getElementById('langHiBtn');
+    if(!en || !hi) return;
+    const active='linear-gradient(135deg,#d15d86,#bc4c75)';
+    const inactive='#fff7f4';
+    const activeText='#fff';
+    const inactiveText='#714f45';
+    if(lang==='hi'){
+      hi.style.setProperty('background',active,'important');
+      hi.style.setProperty('color',activeText,'important');
+      en.style.setProperty('background',inactive,'important');
+      en.style.setProperty('color',inactiveText,'important');
+    }else{
+      en.style.setProperty('background',active,'important');
+      en.style.setProperty('color',activeText,'important');
+      hi.style.setProperty('background',inactive,'important');
+      hi.style.setProperty('color',inactiveText,'important');
+    }
+  }
+
+  function setActiveNav(){
+    const links=document.querySelectorAll('#navMenu a');
+    const hash=(location.hash||'').toLowerCase();
+    links.forEach(a=>a.classList.remove('nav-active'));
+    links.forEach(a=>{
+      const href=(a.getAttribute('href')||'').toLowerCase();
+      if((hash && href.endsWith(hash)) || (!hash && (href==='index.html'||href==='#home'))){
+        a.classList.add('nav-active');
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    const lang=localStorage.getItem('selectedLang') || 'hi';
+    paintLanguage(lang);
+    setActiveNav();
+
+    const en=document.getElementById('langEnBtn');
+    const hi=document.getElementById('langHiBtn');
+    if(en) en.addEventListener('click',function(){setTimeout(function(){paintLanguage('en')},30);});
+    if(hi) hi.addEventListener('click',function(){setTimeout(function(){paintLanguage('hi')},30);});
+  });
+  window.addEventListener('hashchange',setActiveNav);
+})();
+</script>
+
+
+<script id="SCROLL-ACTIVE-NAV">
+document.addEventListener("DOMContentLoaded", function () {
+    const navLinks = document.querySelectorAll("#navMenu a[href*='#']");
+    const sections = [];
+
+    navLinks.forEach(link => {
+        const href = link.getAttribute("href") || "";
+        const hashIndex = href.indexOf("#");
+        if (hashIndex !== -1 && href.substring(hashIndex + 1)) {
+            const id = href.substring(hashIndex + 1);
+            const section = document.getElementById(id);
+            if (section) sections.push({link, section});
+        }
+    });
+
+    function updateActiveNav() {
+        const header = document.querySelector("body > header");
+        const headerHeight = header ? header.offsetHeight : 0;
+        const marker = window.scrollY + headerHeight + 90;
+
+        let current = null;
+
+        sections.forEach(item => {
+            const top = item.section.getBoundingClientRect().top + window.scrollY;
+            if (top <= marker) current = item;
+        });
+
+        navLinks.forEach(link => link.classList.remove("nav-active"));
+
+        if (current) {
+            current.link.classList.add("nav-active");
+        } else {
+            const home = [...navLinks].find(link =>
+                (link.getAttribute("href") || "").endsWith("#home")
+            );
+            if (home) home.classList.add("nav-active");
+        }
+    }
+
+    window.addEventListener("scroll", updateActiveNav, {passive:true});
+    window.addEventListener("resize", updateActiveNav);
+    window.addEventListener("hashchange", updateActiveNav);
+    updateActiveNav();
+});
+</script>
+
+
+<script id="LANGUAGE-SELECTED-FINAL">
+(function(){
+    function updateLanguageSelected(){
+        const en = document.getElementById("langEnBtn");
+        const hi = document.getElementById("langHiBtn");
+        if(!en || !hi) return;
+
+        const lang = localStorage.getItem("selectedLang") || "hi";
+
+        const activeBg = "linear-gradient(135deg,#248f83,#176e65)";
+        const inactiveBg = "#e4f5f2";
+
+        if(lang === "hi"){
+            hi.style.setProperty("background", activeBg, "important");
+            hi.style.setProperty("color", "#fff", "important");
+            hi.style.setProperty("box-shadow", "0 3px 9px rgba(35,125,115,.25)", "important");
+
+            en.style.setProperty("background", inactiveBg, "important");
+            en.style.setProperty("color", "#39756f", "important");
+            en.style.removeProperty("box-shadow");
+        }else{
+            en.style.setProperty("background", activeBg, "important");
+            en.style.setProperty("color", "#fff", "important");
+            en.style.setProperty("box-shadow", "0 3px 9px rgba(35,125,115,.25)", "important");
+
+            hi.style.setProperty("background", inactiveBg, "important");
+            hi.style.setProperty("color", "#39756f", "important");
+            hi.style.removeProperty("box-shadow");
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+        updateLanguageSelected();
+
+        const en = document.getElementById("langEnBtn");
+        const hi = document.getElementById("langHiBtn");
+
+        if(en) en.addEventListener("click", function(){
+            setTimeout(updateLanguageSelected, 20);
+        });
+
+        if(hi) hi.addEventListener("click", function(){
+            setTimeout(updateLanguageSelected, 20);
+        });
+    });
+})();
+</script>
+
+
+<script id="LANGUAGE-SELECTED-VISIBLE">
+(function(){
+  function showSelectedLanguage(){
+    const en=document.getElementById("langEnBtn");
+    const hi=document.getElementById("langHiBtn");
+    if(!en || !hi) return;
+
+    const lang=localStorage.getItem("selectedLang") || "hi";
+    const active="linear-gradient(135deg,#248f83,#176e65)";
+    const inactive="#e4f5f2";
+
+    en.style.setProperty("background", lang==="en" ? active : inactive, "important");
+    en.style.setProperty("color", lang==="en" ? "#fff" : "#39756f", "important");
+    en.style.setProperty("border", lang==="en" ? "2px solid #145f58" : "2px solid transparent", "important");
+    en.style.setProperty("font-weight","900","important");
+    en.style.setProperty("box-shadow", lang==="en" ? "0 3px 10px rgba(23,110,101,.35)" : "none", "important");
+
+    hi.style.setProperty("background", lang==="hi" ? active : inactive, "important");
+    hi.style.setProperty("color", lang==="hi" ? "#fff" : "#39756f", "important");
+    hi.style.setProperty("border", lang==="hi" ? "2px solid #145f58" : "2px solid transparent", "important");
+    hi.style.setProperty("font-weight","900","important");
+    hi.style.setProperty("box-shadow", lang==="hi" ? "0 3px 10px rgba(23,110,101,.35)" : "none", "important");
+  }
+
+  document.addEventListener("DOMContentLoaded",function(){
+    showSelectedLanguage();
+    const en=document.getElementById("langEnBtn");
+    const hi=document.getElementById("langHiBtn");
+    if(en) en.addEventListener("click",()=>setTimeout(showSelectedLanguage,50));
+    if(hi) hi.addEventListener("click",()=>setTimeout(showSelectedLanguage,50));
+  });
+})();
+</script>
+
+
+<style id="MOBILE-THREE-DOT-MENU-FINAL">
+.mobile-menu-btn{
+  display:none !important;
+  border:1px solid #efcfcf !important;
+  background:#fffafa !important;
+  color:#8f4444 !important;
+  width:38px !important;
+  height:38px !important;
+  padding:0 !important;
+  margin:0 !important;
+  border-radius:11px !important;
+  font-size:27px !important;
+  line-height:30px !important;
+  font-weight:900 !important;
+  cursor:pointer !important;
+  box-shadow:0 4px 10px rgba(150,60,60,.10) !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+.mobile-menu-btn:hover{
+  background:#ffe1e1 !important;
+  border-color:#e7baba !important;
+}
+@media (max-width:768px){
+  header > .container{
+    display:flex !important;
+    align-items:center !important;
+    gap:7px !important;
+  }
+  header > .container > div:nth-child(2){
+    margin-left:auto !important;
+  }
+  .mobile-menu-btn{
+    display:inline-flex !important;
+    flex:0 0 38px !important;
+    order:3 !important;
+  }
+  header nav#navMenu{
+    display:none !important;
+    position:absolute !important;
+    top:100% !important;
+    left:8px !important;
+    right:8px !important;
+    width:auto !important;
+    max-height:calc(100vh - 75px) !important;
+    overflow:auto !important;
+  }
+  header nav#navMenu.show{
+    display:flex !important;
+  }
+}
+</style>
+<script id="MOBILE-THREE-DOT-MENU-JS">
+function toggleMobileMenu(){
+  const nav=document.getElementById('navMenu');
+  const btn=document.getElementById('mobileMenuBtn');
+  if(!nav || !btn) return;
+  const open=nav.classList.toggle('show');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+window.addEventListener('resize', function(){
+  if(window.innerWidth > 768){
+    const nav=document.getElementById('navMenu');
+    const btn=document.getElementById('mobileMenuBtn');
+    if(nav) nav.classList.remove('show');
+    if(btn) btn.setAttribute('aria-expanded','false');
+  }
+});
+</script>
+
+
+
+<style id="LANG-TOGGLE-RIGHT-FINAL">
+@media (min-width:769px){
+  header .lang-switch{
+    margin-left:12px !important;
+    transform:translateX(10px) !important;
+  }
+}
+@media (max-width:768px){
+  header .lang-switch{
+    margin-left:6px !important;
+    transform:translateX(6px) !important;
+  }
+}
+</style>
+
+
+<style id="MOBILE-MENU-PRETTY-FINAL">
+@media (max-width:768px){
+  header nav#navMenu{
+    position:absolute !important;
+    top:calc(100% + 6px) !important;
+    right:8px !important;
+    left:auto !important;
+    width:210px !important;
+    max-width:calc(100vw - 16px) !important;
+    padding:7px !important;
+    margin:0 !important;
+    display:none !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:4px !important;
+    background:rgba(255,250,250,.98) !important;
+    border:1px solid #efcaca !important;
+    border-radius:14px !important;
+    box-shadow:0 10px 28px rgba(90,40,40,.16) !important;
+    z-index:1000000 !important;
+  }
+  header nav#navMenu.show{
+    display:flex !important;
+    animation:mobileMenuIn .16s ease-out !important;
+  }
+  header nav#navMenu a{
+    width:100% !important;
+    min-height:34px !important;
+    padding:7px 10px !important;
+    box-sizing:border-box !important;
+    border-radius:9px !important;
+    font-size:13px !important;
+    justify-content:flex-start !important;
+    white-space:nowrap !important;
+  }
+  header nav#navMenu a:hover,
+  header nav#navMenu a.nav-active{
+    transform:none !important;
+  }
+}
+@keyframes mobileMenuIn{
+  from{opacity:0;transform:translateY(-5px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+</style>
+<script id="MOBILE-MENU-OUTSIDE-CLICK">
+(function(){
+  function setupMobileMenu(){
+    const nav=document.getElementById('navMenu');
+    const btn=document.getElementById('mobileMenuBtn');
+    if(!nav || !btn || btn.dataset.outsideReady) return;
+    btn.dataset.outsideReady='1';
+
+    document.addEventListener('click',function(e){
+      if(window.innerWidth>768) return;
+      if(!nav.classList.contains('show')) return;
+      if(nav.contains(e.target) || btn.contains(e.target)) return;
+      nav.classList.remove('show');
+      btn.setAttribute('aria-expanded','false');
+    });
+
+    nav.addEventListener('click',function(e){
+      const link=e.target.closest('a');
+      if(link){
+        nav.classList.remove('show');
+        btn.setAttribute('aria-expanded','false');
+      }
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',setupMobileMenu);
+  }else{
+    setupMobileMenu();
+  }
+})();
+</script>
+
+
+<style id="MOBILE-MENU-HOVER-HIGHLIGHT-FINAL">
+@media (max-width:768px){
+  header nav#navMenu a{
+    transition:background .15s ease,color .15s ease,border-color .15s ease,box-shadow .15s ease !important;
+    border:1px solid transparent !important;
+  }
+  header nav#navMenu a:hover,
+  header nav#navMenu a:focus-visible{
+    background:linear-gradient(135deg,#ffe1e1,#ffd1d1) !important;
+    color:#9a3f4a !important;
+    border-color:#efb4bd !important;
+    box-shadow:0 3px 9px rgba(190,80,90,.15) !important;
+  }
+  header nav#navMenu a.nav-active{
+    background:linear-gradient(135deg,#d96b76,#bd505c) !important;
+    color:#fff !important;
+    border-color:#a9414c !important;
+    box-shadow:0 4px 10px rgba(170,60,70,.22) !important;
+    font-weight:800 !important;
+  }
+  header nav#navMenu a.nav-active:hover,
+  header nav#navMenu a.nav-active:focus-visible{
+    background:linear-gradient(135deg,#c95b67,#ad4652) !important;
+    color:#fff !important;
+  }
+}
+</style>
+
+
+<style id="SAGUN-HERO-INTRO-FINAL">
+.sagun-intro-card{
+  min-width:0 !important;
+  padding:24px !important;
+  border-radius:22px !important;
+  background:rgba(255,255,255,.86) !important;
+  border:1px solid #efd2dc !important;
+  box-shadow:0 12px 30px rgba(90,55,70,.10) !important;
+}
+.sagun-intro-card h3{
+  margin:0 0 14px !important;
+  color:#75465b !important;
+  font-size:22px !important;
+}
+.sagun-intro-card p{
+  margin:8px 0 !important;
+  padding:9px 11px !important;
+  border-radius:10px !important;
+  background:#fff8fa !important;
+  border:1px solid #f1dce3 !important;
+  color:#55434b !important;
+  line-height:1.45 !important;
+}
+@media (max-width:768px){
+  .sagun-intro-card{
+    width:100% !important;
+    box-sizing:border-box !important;
+    padding:16px !important;
+    border-radius:17px !important;
+  }
+  .sagun-intro-card h3{font-size:18px !important;margin-bottom:10px !important;}
+  .sagun-intro-card p{font-size:12px !important;margin:6px 0 !important;padding:7px 9px !important;}
+}
+</style>
+
+
+<style id="SAGUN-INTRO-FIT-FINAL">
+.sagun-intro-card{
+  width:100% !important;
+  max-width:560px !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+}
+.sagun-intro-card h3{
+  text-align:center !important;
+  margin-bottom:12px !important;
+}
+.sagun-intro-card p{
+  width:100% !important;
+  box-sizing:border-box !important;
+  display:block !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+  word-break:normal !important;
+  line-height:1.35 !important;
+}
+@media (min-width:769px){
+  .sagun-intro-card{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+  }
+  .sagun-intro-card p{
+    margin:5px 0 !important;
+    min-height:0 !important;
+  }
+}
+@media (max-width:768px){
+  .sagun-intro-card{
+    max-width:100% !important;
+    padding:14px !important;
+  }
+  .sagun-intro-card p{
+    margin:5px 0 !important;
+    font-size:12px !important;
+    line-height:1.35 !important;
+  }
+}
+</style>
+
+
+<style id="FREE-LINE-BELOW-BYE-BYE-FINAL">
+.free-register-line{
+  display:block !important;
+  width:max-content !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+  margin:10px 0 0 !important;
+  padding:8px 16px !important;
+  border-radius:12px !important;
+  background:linear-gradient(135deg,#fff4c7,#ffe6a6) !important;
+  border:1px solid #edcf83 !important;
+  color:#6f5317 !important;
+  font-family:inherit !important;
+  font-size:14px !important;
+  font-weight:700 !important;
+  line-height:1.35 !important;
+  box-shadow:0 5px 14px rgba(150,110,35,.10) !important;
+}
+.free-register-line strong{
+  color:#c04461 !important;
+  font-size:16px !important;
+  font-weight:900 !important;
+  letter-spacing:.2px !important;
+}
+@media(max-width:768px){
+  .free-register-line{
+    width:100% !important;
+    font-size:11px !important;
+    padding:7px 10px !important;
+    margin-top:8px !important;
+  }
+  .free-register-line strong{font-size:13px !important;}
+}
+</style>
+
+
+<style id="FREE-PRIVACY-SECURE-FINAL">
+.free-privacy-secure{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  margin:12px 0 0 !important;
+  width:100% !important;
+}
+.free-privacy-secure span{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:7px 12px !important;
+  border-radius:999px !important;
+  background:linear-gradient(135deg,#fff8fb,#fff0f4) !important;
+  border:1px solid #efd1da !important;
+  color:#684653 !important;
+  font-size:12px !important;
+  font-weight:800 !important;
+  box-shadow:0 4px 10px rgba(110,60,75,.08) !important;
+}
+.free-privacy-secure span:first-child{
+  background:linear-gradient(135deg,#fff6cf,#ffeab0) !important;
+  color:#795d16 !important;
+  border-color:#ead28b !important;
+}
+@media(max-width:768px){
+  .free-privacy-secure{
+    gap:5px !important;
+    margin-top:8px !important;
+  }
+  .free-privacy-secure span{
+    padding:5px 8px !important;
+    font-size:10px !important;
+  }
+}
+</style>
+
+
+
+<style id="HERO-DESCRIPTION-BENEFITS-FINAL">
+.hero-left{min-width:0 !important;}
+.hero-description{
+  margin-bottom:0 !important;
+  overflow-wrap:anywhere !important;
+}
+.sagun-benefits-line{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex-wrap:wrap !important;
+  gap:7px !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  margin:14px 0 16px !important;
+  padding:8px 10px !important;
+  border-radius:13px !important;
+  background:linear-gradient(135deg,#fffafb,#fff3f7) !important;
+  border:1px solid #efd2dc !important;
+  box-shadow:0 5px 14px rgba(100,55,70,.07) !important;
+  color:#704757 !important;
+  font-size:12px !important;
+  line-height:1.3 !important;
+}
+.sagun-benefits-line span{white-space:nowrap !important;}
+.sagun-benefits-line b{font-weight:900 !important;}
+.sagun-benefits-line i{font-style:normal !important;color:#c17b8c !important;font-weight:900 !important;}
+.sagun-intro-card{overflow:hidden !important;}
+@media(max-width:768px){
+ .sagun-benefits-line{gap:4px !important;margin:9px 0 12px !important;padding:7px 5px !important;font-size:10px !important;}
+}
+</style>
+
+
+<style id="MOBILE-HERO-STACK-FINAL">
+@media (max-width:768px){
+  /* Keep the complete hero in a single mobile column */
+  .hero,
+  .hero-section,
+  .hero-content,
+  .hero-inner,
+  .hero-grid{
+    grid-template-columns:1fr !important;
+    display:grid !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  /* If the actual hero uses flex, stack it too */
+  .hero,
+  .hero-section,
+  .hero-content,
+  .hero-inner{
+    flex-direction:column !important;
+    align-items:stretch !important;
+  }
+
+  /* Text and intro card each get the full mobile width */
+  .hero-left,
+  .hero-right,
+  .sagun-intro-card{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+    grid-column:1 / -1 !important;
+  }
+
+  .sagun-intro-card{
+    display:block !important;
+    overflow:hidden !important;
+    padding:14px !important;
+  }
+
+  .sagun-intro-card h3{
+    width:100% !important;
+    text-align:center !important;
+    margin:0 0 10px !important;
+  }
+
+  .sagun-intro-card p{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+    white-space:normal !important;
+    word-break:normal !important;
+    overflow-wrap:anywhere !important;
+    margin:6px 0 !important;
+    padding:8px 9px !important;
+    line-height:1.35 !important;
+  }
+
+  .sagun-benefits-line{
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+
+  /* Keep hero buttons from creating horizontal overflow */
+  .hero-buttons,
+  .hero-actions,
+  .hero-cta{
+    width:100% !important;
+    max-width:100% !important;
+    flex-wrap:wrap !important;
+  }
+
+  /* Prevent any horizontal page overflow */
+  body, html{
+    max-width:100% !important;
+    overflow-x:hidden !important;
+  }
+}
+</style>
+
+
+<style id="PROBLEM-SECTION-BEAUTIFUL-HOVER">
+/* Beautiful problem/question section */
+.problem-section,
+#problem,
+.problem,
+section[id*="problem"]{
+  position:relative !important;
+}
+
+.problem-section .problem-card,
+#problem .problem-card,
+.problem .problem-card{
+  background:linear-gradient(145deg,#fffafb,#fff5f7) !important;
+  border:1px solid #efd5de !important;
+  border-radius:22px !important;
+  box-shadow:0 10px 28px rgba(100,55,75,.08) !important;
+}
+
+.problem-section li,
+#problem li,
+.problem li,
+section[id*="problem"] li{
+  position:relative !important;
+  margin:9px 0 !important;
+  padding:12px 14px 12px 17px !important;
+  border:1px solid #f0dbe2 !important;
+  border-radius:13px !important;
+  background:rgba(255,255,255,.82) !important;
+  color:#5f4b54 !important;
+  line-height:1.45 !important;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease,
+             border-color .18s ease, color .18s ease !important;
+  cursor:default !important;
+}
+
+.problem-section li:hover,
+#problem li:hover,
+.problem li:hover,
+section[id*="problem"] li:hover{
+  transform:translateX(6px) translateY(-2px) !important;
+  background:linear-gradient(135deg,#fff0f4,#ffe4eb) !important;
+  border-color:#e8afbf !important;
+  color:#7e3f55 !important;
+  box-shadow:0 7px 18px rgba(170,75,105,.13) !important;
+}
+
+.problem-section li::first-letter,
+#problem li::first-letter,
+.problem li::first-letter,
+section[id*="problem"] li::first-letter{
+  font-size:1.05em !important;
+}
+
+@media(max-width:768px){
+  .problem-section li,
+  #problem li,
+  .problem li,
+  section[id*="problem"] li{
+    margin:7px 0 !important;
+    padding:10px 11px !important;
+    border-radius:11px !important;
+    font-size:12px !important;
+    line-height:1.4 !important;
+  }
+  .problem-section li:hover,
+  #problem li:hover,
+  .problem li:hover,
+  section[id*="problem"] li:hover{
+    transform:translateY(-1px) !important;
+  }
+}
+</style>
+
+
+<style id="PROBLEM-LIST-ACTUAL-FINAL">
+/* Actual structure: .problem-box > .problem-list */
+.problem-solution-section .problem-box{
+  padding:26px !important;
+  border-radius:24px !important;
+  background:linear-gradient(145deg,#fff8fa 0%,#fff 100%) !important;
+  border:1px solid #efd2dc !important;
+  box-shadow:0 12px 30px rgba(110,55,75,.10) !important;
+}
+.problem-solution-section .problem-box h2{
+  margin-bottom:10px !important;
+  color:#754457 !important;
+}
+.problem-solution-section .problem-box .ps-subtitle{
+  color:#765f69 !important;
+  margin-bottom:16px !important;
+}
+.problem-solution-section .problem-box ul.problem-list{
+  list-style:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:11px !important;
+}
+.problem-solution-section .problem-box ul.problem-list li{
+  list-style:none !important;
+  margin:0 !important;
+  padding:13px 15px !important;
+  min-height:52px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  border-radius:14px !important;
+  background:#fff !important;
+  border:1px solid #efd9e1 !important;
+  color:#5d4a54 !important;
+  font-size:14px !important;
+  line-height:1.45 !important;
+  box-shadow:0 4px 11px rgba(110,55,75,.06) !important;
+  transition:all .2s ease !important;
+  cursor:pointer !important;
+}
+.problem-solution-section .problem-box ul.problem-list li:hover{
+  transform:translateY(-3px) !important;
+  background:linear-gradient(135deg,#fff0f5,#ffe4ec) !important;
+  border-color:#e4aebe !important;
+  color:#873f57 !important;
+  box-shadow:0 9px 20px rgba(175,75,105,.16) !important;
+}
+.problem-solution-section .problem-box ul.problem-list li::first-letter{
+  font-size:1.15em !important;
+}
+@media(max-width:768px){
+  .problem-solution-section .problem-box{
+    padding:15px !important;
+    border-radius:18px !important;
+  }
+  .problem-solution-section .problem-box ul.problem-list{
+    grid-template-columns:1fr !important;
+    gap:7px !important;
+  }
+  .problem-solution-section .problem-box ul.problem-list li{
+    min-height:0 !important;
+    padding:10px 11px !important;
+    font-size:12px !important;
+    line-height:1.4 !important;
+  }
+  .problem-solution-section .problem-box ul.problem-list li:hover{
+    transform:translateY(-1px) !important;
+  }
+}
+</style>
+
+
+<style id="TOP-BOTTOM-ARROWS-FINAL">
+#pageTopBottomBtn{
+  position:fixed !important;
+  right:22px !important;
+  bottom:82px !important;
+  width:46px !important;
+  height:46px !important;
+  display:none !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:1px solid #d99aaa !important;
+  border-radius:50% !important;
+  background:linear-gradient(135deg,#d9657b,#bd4e63) !important;
+  color:#fff !important;
+  font-size:23px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+  cursor:pointer !important;
+  z-index:999999 !important;
+  box-shadow:0 7px 18px rgba(150,55,75,.25) !important;
+  transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease !important;
+}
+#pageTopBottomBtn.show{
+  display:flex !important;
+}
+#pageTopBottomBtn:hover{
+  transform:translateY(-3px) !important;
+  box-shadow:0 10px 22px rgba(150,55,75,.32) !important;
+}
+@media(max-width:768px){
+  #pageTopBottomBtn{
+    right:14px !important;
+    bottom:72px !important;
+    width:40px !important;
+    height:40px !important;
+    font-size:20px !important;
+  }
+}
+</style>
+<script id="TOP-BOTTOM-ARROWS-FINAL-JS">
+(function(){
+  function setupTopBottom(){
+    // Remove old arrow buttons if they exist, so only one reliable button remains.
+    document.querySelectorAll(
+      '#backToTop,#backToTopBtn,#scrollTopBtn,#scrollToTop,' +
+      '#topBtn,#bottomBtn,.back-to-top,.backToTop,.scroll-top,.scroll-bottom,' +
+      '[data-scroll-top],[data-scroll-bottom]'
+    ).forEach(function(el){
+      if(el.id !== 'pageTopBottomBtn') el.remove();
+    });
+
+    let btn=document.getElementById('pageTopBottomBtn');
+    if(!btn){
+      btn=document.createElement('button');
+      btn.id='pageTopBottomBtn';
+      btn.type='button';
+      btn.setAttribute('aria-label','Go to bottom');
+      btn.title='Go to bottom';
+      document.body.appendChild(btn);
+    }
+
+    function update(){
+      const scrollTop=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const max=Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+      ) - window.innerHeight;
+
+      if(max <= 40){
+        btn.classList.remove('show');
+        return;
+      }
+      btn.classList.add('show');
+
+      if(scrollTop < max/2){
+        btn.textContent='↓';
+        btn.setAttribute('aria-label','Go to bottom');
+        btn.title='Go to bottom';
+      }else{
+        btn.textContent='↑';
+        btn.setAttribute('aria-label','Go to top');
+        btn.title='Go to top';
+      }
+    }
+
+    btn.addEventListener('click',function(){
+      const scrollTop=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const max=Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+      ) - window.innerHeight;
+
+      window.scrollTo({
+        top: scrollTop < max/2 ? max : 0,
+        behavior:'smooth'
+      });
+    });
+
+    window.addEventListener('scroll',update,{passive:true});
+    window.addEventListener('resize',update);
+    setTimeout(update,100);
+    setTimeout(update,500);
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',setupTopBottom);
+  }else{
+    setupTopBottom();
+  }
+})();
+</script>
+
+
+<style id="TOP-BOTTOM-ARROW-BEAUTIFUL-FINAL">
+#pageTopBottomBtn{
+  width:48px !important;
+  height:48px !important;
+  border-radius:16px !important;
+  border:1px solid rgba(255,255,255,.65) !important;
+  background:linear-gradient(145deg,#e87991,#bd5269) !important;
+  color:#fff !important;
+  font-size:25px !important;
+  font-weight:900 !important;
+  font-family:Arial,sans-serif !important;
+  box-shadow:0 8px 20px rgba(155,58,80,.25), inset 0 1px 0 rgba(255,255,255,.45) !important;
+  backdrop-filter:blur(6px) !important;
+}
+#pageTopBottomBtn:hover{
+  background:linear-gradient(145deg,#ed6f89,#b94760) !important;
+  transform:translateY(-4px) scale(1.04) !important;
+  box-shadow:0 12px 25px rgba(155,58,80,.32), inset 0 1px 0 rgba(255,255,255,.5) !important;
+}
+#pageTopBottomBtn:active{
+  transform:translateY(-1px) scale(.96) !important;
+}
+@media(max-width:768px){
+  #pageTopBottomBtn{
+    width:42px !important;
+    height:42px !important;
+    right:14px !important;
+    bottom:70px !important;
+    border-radius:13px !important;
+    font-size:22px !important;
+  }
+}
+</style>
+
+
+<style id="HERO-DARKER-SOFT-FINAL">
+/* Slightly darker hero for stronger visual separation */
+.hero,
+.hero-section,
+#home.hero,
+section.hero{
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,.16), transparent 35%),
+    linear-gradient(135deg,#f1c7d1 0%,#e9b6c3 48%,#dca5b5 100%) !important;
+}
+.hero::before,
+.hero-section::before{
+  opacity:.16 !important;
+}
+.hero h1,
+.hero h2,
+.hero-section h1,
+.hero-section h2{
+  color:#542f3d !important;
+}
+.hero p,
+.hero-section p{
+  color:#5f414c !important;
+}
+.hero .sagun-intro-card{
+  background:rgba(255,250,252,.92) !important;
+  border-color:#dcaebc !important;
+  box-shadow:0 14px 32px rgba(90,45,65,.14) !important;
+}
+@media(max-width:768px){
+  .hero,
+  .hero-section,
+  #home.hero,
+  section.hero{
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,255,255,.14), transparent 38%),
+      linear-gradient(145deg,#efc2ce,#dda9b8) !important;
+  }
+}
+</style>
+
+
+<style id="GET-STARTED-HIGHLIGHT-FINAL">
+/* Stronger highlight for the primary Get Started button */
+.hero a[href*="register"],
+.hero a[href*="signup"],
+.hero a[href*="register.html"],
+.hero .btn-primary,
+.hero .primary-btn,
+.hero .cta-primary,
+.hero .hero-cta a:first-child{
+  background:linear-gradient(135deg,#ffb347 0%,#ff7b6b 100%) !important;
+  color:#fff !important;
+  border:1px solid #f06d5d !important;
+  box-shadow:0 8px 20px rgba(235,105,70,.28) !important;
+  font-weight:900 !important;
+}
+.hero a[href*="register"]:hover,
+.hero a[href*="signup"]:hover,
+.hero a[href*="register.html"]:hover,
+.hero .btn-primary:hover,
+.hero .primary-btn:hover,
+.hero .cta-primary:hover,
+.hero .hero-cta a:first-child:hover{
+  background:linear-gradient(135deg,#ff9e32 0%,#ff625d 100%) !important;
+  transform:translateY(-3px) scale(1.02) !important;
+  box-shadow:0 12px 25px rgba(235,105,70,.36) !important;
+}
+</style>
+
 </body>
 </html>
+<!-- MOBILE-LANGUAGE-COMPACT -->
+<style>
+@media (max-width: 768px){
+  header .lang-switch{
+    display:inline-flex !important;
+    align-items:center !important;
+    gap:3px !important;
+    padding:3px !important;
+    margin:0 !important;
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+  }
+  header .lang-switch button{
+    min-width:auto !important;
+    padding:5px 7px !important;
+    font-size:10px !important;
+    line-height:1.1 !important;
+    border-radius:10px !important;
+    white-space:nowrap !important;
+  }
+}
+</style>
+<script>
+(function(){
+  function compactLanguageLabels(){
+    const en=document.getElementById('langEnBtn');
+    const hi=document.getElementById('langHiBtn');
+    if(!en || !hi) return;
+    if(window.matchMedia('(max-width: 768px)').matches){
+      en.textContent='English';
+      hi.textContent='हिंदी';
+    }else{
+      en.textContent='English में देखें';
+      hi.textContent='हिंदी में देखें';
+    }
+  }
+  document.addEventListener('DOMContentLoaded', compactLanguageLabels);
+  window.addEventListener('resize', compactLanguageLabels);
+  window.addEventListener('load', compactLanguageLabels);
+})();
+</script>
