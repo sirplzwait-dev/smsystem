@@ -7,27 +7,143 @@
 <link rel="stylesheet" href="../css/premium-calendar.css">
 <link rel="stylesheet" href="../css/sgunms-global-background.css">
   <link rel="stylesheet" href="../css/process-ui.css">
+
+<style>
+:root{
+  --maroon:#8b1230; --maroon2:#a9163d; --gold:#e6a928;
+  --cream:#fffaf5; --pink:#fff0f4; --line:#ead7dc;
+  --text:#283047; --muted:#756d73; --white:#fff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:"Noto Sans Devanagari","DM Sans",Arial,sans-serif;color:var(--text)}
+body{
+  background:
+    radial-gradient(circle at 10% 10%,rgba(255,220,190,.55),transparent 25%),
+    radial-gradient(circle at 90% 20%,rgba(255,205,220,.45),transparent 28%),
+    linear-gradient(135deg,#fffaf6 0%,#fff4f5 52%,#fffaf1 100%);
+}
+body:before,body:after{
+  content:"";position:fixed;z-index:-1;pointer-events:none;opacity:.35;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(230,169,40,.18),transparent 68%);
+}
+body:before{left:-80px;top:120px} body:after{right:-90px;bottom:40px}
+
+.topbar{
+  position:sticky;top:0;z-index:1000;height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 18px;
+  color:#fff;background:linear-gradient(90deg,#74102a,#95143a,#74102a);
+  border-bottom:3px solid var(--gold);box-shadow:0 5px 18px rgba(88,15,39,.18)
+}
+.topbar .logo{font-weight:800;font-size:15px;letter-spacing:.2px}
+.top-actions{display:flex;gap:8px}
+.top-actions button{
+  border:1px solid rgba(255,255,255,.55);color:#fff;background:rgba(255,255,255,.10);
+  border-radius:999px;padding:8px 15px;font-weight:800;cursor:pointer;transition:.2s
+}
+.top-actions button:hover{background:#fff;color:var(--maroon);transform:translateY(-1px)}
+
+.given-page{width:min(1120px,calc(100% - 28px));margin:20px auto 35px}
+.given-hero{
+  position:relative;overflow:hidden;display:flex;align-items:center;gap:18px;
+  min-height:108px;padding:18px 24px;margin-bottom:15px;
+  border:1px solid #efd9df;border-radius:24px;
+  background:linear-gradient(110deg,#fffdf9,#fff1f4 55%,#fff9ed);
+  box-shadow:0 10px 30px rgba(103,35,54,.08)
+}
+.given-hero:after{
+  content:"";position:absolute;right:-55px;top:-80px;width:250px;height:250px;
+  border:32px solid rgba(230,169,40,.10);border-radius:50%;
+}
+.given-icon{
+  width:62px;height:62px;display:grid;place-items:center;flex:none;
+  border-radius:18px;background:linear-gradient(145deg,#fff0b7,#ffd9e2);
+  color:var(--maroon);font-size:28px;box-shadow:0 7px 18px rgba(139,18,48,.10)
+}
+.eyebrow{font-size:11px;font-weight:900;letter-spacing:2px;color:#b36a1c}
+.given-hero h1{margin:2px 0 3px;font-size:31px;color:var(--maroon);line-height:1.15}
+.given-hero p{margin:0;color:var(--muted);font-size:13px}
+
+.form-card,.list-card{
+  background:rgba(255,255,255,.94);border:1px solid #eddce1;border-radius:22px;
+  box-shadow:0 12px 35px rgba(74,30,45,.08);padding:22px;margin-bottom:15px
+}
+.form-card h2,.list-card h2{margin:0;color:var(--maroon);font-size:21px}
+.form-card h2{padding-bottom:15px;border-bottom:1px solid #f0e2e5}
+.form-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin-top:16px
+}
+.form-grid label{
+  display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:800;color:#343246
+}
+.form-grid .wide{grid-column:1/-1}
+.form-grid input,.form-grid select,.form-grid textarea{
+  width:100%;border:1px solid #dfcdd3;border-radius:12px;background:#fff;
+  color:#263044;padding:11px 13px;font:inherit;font-size:14px;outline:none;
+  transition:border-color .18s,box-shadow .18s,background .18s
+}
+.form-grid input::placeholder,.form-grid textarea::placeholder{color:#968a90}
+.form-grid input:focus,.form-grid select:focus,.form-grid textarea:focus{
+  border-color:#c63c62;background:#fffafb;box-shadow:0 0 0 3px rgba(198,60,98,.11)
+}
+.date-row{display:grid;grid-template-columns:1fr auto;gap:7px}
+.date-row button{
+  border:1px solid #e6c8a3;background:#fff7e7;color:#9b5c18;
+  border-radius:11px;padding:0 13px;font-weight:800;cursor:pointer
+}
+.actions{display:flex;gap:9px;margin-top:15px}
+.actions button,.list-head button{
+  border:0;border-radius:11px;padding:10px 16px;font-weight:900;cursor:pointer;transition:.2s
+}
+.actions .save{background:linear-gradient(135deg,#a9143d,#7d102d);color:#fff;box-shadow:0 7px 16px rgba(139,18,48,.18)}
+.actions .clear{background:#f4edf0;color:#6d5960}
+.actions button:hover,.list-head button:hover{transform:translateY(-1px)}
+#msg{margin-top:8px;font-size:13px}
+.list-card{padding-bottom:18px}
+.list-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.list-head h2{margin:0}
+.list-head small{color:#8a7b82}
+.list-head button{background:#fff0f3;color:#9b1839}
+#list{min-height:62px;border-radius:14px;background:#fafbfc;padding:10px}
+.hidden-field{display:none!important}
+
+@media(max-width:760px){
+  .topbar{height:auto;min-height:56px;padding:7px 10px;gap:6px}
+  .topbar .logo{font-size:12px}.top-actions button{padding:7px 10px;font-size:12px}
+  .given-page{width:min(100% - 16px,680px);margin:10px auto 20px}
+  .given-hero{min-height:90px;padding:14px 15px;border-radius:18px}
+  .given-icon{width:48px;height:48px;border-radius:14px;font-size:22px}
+  .given-hero h1{font-size:24px}.given-hero p{font-size:12px}
+  .form-card,.list-card{padding:15px;border-radius:17px}
+  .form-grid{grid-template-columns:1fr;gap:10px}
+  .form-grid .wide{grid-column:auto}
+  .actions{flex-wrap:wrap}.actions button{flex:1;min-width:120px}
+  .list-head{align-items:flex-start;flex-direction:column}
+}
+</style>
+
 </head>
 <body>
-<header class="topbar"><div class="logo">📤 SHAGUN DIYA</div><div class="top-actions"><button onclick="location.href='shagun.html'">🎁 Shagun</button><button onclick="location.href='home.html'">🏠 Home</button></div></header>
+<header class="topbar"><div class="logo">SHAGUN DIYA</div><div class="top-actions"><button onclick="location.href='shagun.html'">Shagun</button><button onclick="location.href='home.html'">Home</button></div></header>
 <main class="given-page">
-<section class="given-hero"><div class="given-icon">📤</div><div><div class="eyebrow">OUTGOING SHAGUN</div><h1>शगुन दिया</h1><p>जब आप किसी शादी या समारोह में जाएँ, तो आपने क्या शगुन दिया — यहाँ दर्ज करें।</p></div></section>
+<section class="given-hero"><div class="given-icon">↗</div><div><div class="eyebrow">OUTGOING SHAGUN</div><h1>शगुन दिया</h1><p>जब आप किसी शादी या समारोह में जाएँ, तो आपने क्या शगुन दिया — यहाँ दर्ज करें।</p></div></section>
 <section class="form-card">
-<h2>📝 शगुन की Entry</h2>
+<h2>शगुन की Entry</h2>
 <div class="form-grid">
 <label>किसको दिया?<input id="person" required placeholder="नाम" maxlength="100"></label>
 <label>समारोह / कहाँ दिया?<input id="occasion" placeholder="जैसे शादी, तिलक, रिसेप्शन" maxlength="120"></label>
 <label>दिनांक<div class="date-row"><input id="date" type="date"><button type="button" id="todayBtn" title="आज की तारीख">आज</button></div></label>
 <label>रिश्ता<input id="relation" placeholder="जैसे भाई, मित्र, रिश्तेदार" maxlength="80"></label>
 <label>गाँव / शहर<input id="place" placeholder="स्थान" maxlength="100"></label>
-<label>शगुन का प्रकार<select id="type"><option value="Cash">💵 Cash</option><option value="Gift">🎁 Gift</option><option value="Cash+Gift">💵🎁 Cash + Gift</option></select></label>
+<label>शगुन का प्रकार<select id="type"><option value="Cash">Cash</option><option value="Gift">Gift</option><option value="Cash+Gift">Cash + Gift</option></select></label>
 <label id="amountField">राशि ₹<input id="amount" type="number" min="0" step="1" placeholder="Cash की राशि"></label>
 <label id="giftField" class="hidden-field">Gift / वस्तु का विवरण<input id="gift" placeholder="जैसे कपड़े, सामान आदि" maxlength="160"></label>
 <label class="wide">Remark<textarea id="remark" rows="3" placeholder="कोई अतिरिक्त जानकारी" maxlength="300"></textarea></label>
 </div>
-<div class="actions"><button class="save" id="save">✅ Entry Save करें</button><button class="clear" id="clear">↺ Clear</button></div><div id="msg"></div>
+<div class="actions"><button class="save" id="save">Entry Save करें</button><button class="clear" id="clear">↺ Clear</button></div><div id="msg"></div>
 </section>
-<section class="list-card"><div class="list-head"><div><h2>📜 शगुन दिया — Entries</h2><small id="count">0 entries</small></div><button onclick="clearAll()">🗑️ सभी हटाएँ</button></div><div id="list"></div></section>
+<section class="list-card"><div class="list-head"><div><h2>शगुन दिया — Entries</h2><small id="count">0 entries</small></div><button onclick="clearAll()">सभी हटाएँ</button></div><div id="list"></div></section>
 </main>
 <script src="../js/guest-auth.js"></script><script src="../js/shagun-given.js"></script><script src="../js/topbar.js"></script>
 <script src="../js/premium-calendar.js"></script>

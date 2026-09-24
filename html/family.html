@@ -22,12 +22,155 @@
 .head-choice{background:#fff8e1;border:1px solid #f0c75e;padding:10px 12px;border-radius:12px}.head-choice label{display:flex;align-items:center;gap:8px;font-weight:700}.head-choice input{accent-color:#8b1230}.head-choice small{display:block;margin-top:4px;color:#7a6a52}.head-badge{display:inline-block;background:#fff0b8;color:#8b1230;border-radius:999px;padding:3px 7px;font-size:10px;margin-left:4px}.head-relation-note{background:#fff8e1;border:1px solid #f0c75e;border-radius:12px;padding:10px 12px}.head-relation-note label{font-weight:800}.head-relation-note div{margin-top:4px;color:#6b5b43} </style>
 <link rel="stylesheet" href="../css/sgunms-global-background.css">
   <link rel="stylesheet" href="../css/process-ui.css">
+
+<style>
+/* FINAL FAMILY UI — clean pastel design, no hero image */
+:root{--fm-maroon:#8f1238;--fm-maroon2:#b3194d;--fm-ink:#253247;--fm-muted:#68758a;--fm-cream:#fffaf4;--fm-border:#f0ddd4}
+body{background:linear-gradient(135deg,#fffaf4 0%,#fdf7f8 52%,#fff5f0 100%)!important;color:var(--fm-ink)!important}
+.family-page{min-height:100vh;padding-bottom:40px}
+.family-wrap{max-width:1440px;margin:0 auto;padding:28px 22px 50px}
+.family-hero{position:relative;display:grid!important;grid-template-columns:1.15fr 2fr 180px;align-items:center;gap:22px;min-height:250px;padding:34px 36px!important;border-radius:28px!important;border:1px solid #f0d7c8!important;background:linear-gradient(135deg,#fffdf9 0%,#fff5f4 55%,#fff8ed 100%)!important;box-shadow:0 18px 55px rgba(105,54,45,.10)!important;overflow:hidden}
+.family-hero:before{content:"";position:absolute;left:-70px;bottom:-90px;width:260px;height:190px;border:2px solid rgba(239,157,111,.22);border-radius:50%;transform:rotate(-10deg)}
+.family-hero:after{content:"";position:absolute;right:-60px;top:-80px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(244,174,191,.18),transparent 68%);pointer-events:none}
+.family-hero-copy,.family-hero-features,.hero-stat{position:relative;z-index:1}
+.family-hero .kicker{display:inline-flex!important;letter-spacing:2px;font-size:13px!important;font-weight:800!important;color:#b75c1a!important;margin-bottom:8px}
+.family-hero h1{font-size:56px!important;line-height:1.02!important;margin:4px 0 12px!important;font-weight:800!important;color:var(--fm-ink)!important}
+.family-hero h1 span{color:#273246}.family-hero h1 strong{color:var(--fm-maroon);font-weight:850}
+.family-hero p{font-size:17px!important;line-height:1.55!important;color:#657187!important;margin:0!important;font-weight:500}
+.family-hero-features{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:center}
+.hero-feature{min-height:118px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 8px;border-right:1px solid rgba(150,100,100,.12)}
+.hero-feature:last-child{border-right:0}.hero-feature-icon{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;font-size:30px;margin-bottom:7px;box-shadow:0 8px 18px rgba(0,0,0,.05)}
+.feature-members .hero-feature-icon{background:#f4e7ff}.feature-relatives .hero-feature-icon{background:#fff0cf}.feature-tree .hero-feature-icon{background:#e8f5df}.feature-relation .hero-feature-icon{background:#eee9ff}
+.hero-feature b{font-size:14px;color:#273246}.hero-feature span{font-size:11px;color:#778296;margin-top:3px}
+.hero-stat{height:156px;border:1px solid #eee1db;border-radius:24px;background:rgba(255,255,255,.86);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 12px 28px rgba(95,55,45,.08);backdrop-filter:blur(4px)}
+.hero-stat-icon{width:48px;height:48px;border-radius:14px;background:#fff1d6;display:grid;place-items:center;font-size:25px;margin-bottom:5px}.hero-stat b{font-size:40px;line-height:1;color:var(--fm-maroon)}.hero-stat span{margin-top:8px;color:#68758a;font-size:13px}
+.family-toolbar{margin-top:18px!important;border:1px solid #eee0db!important;box-shadow:0 10px 30px rgba(80,45,40,.07)!important;border-radius:22px!important;padding:9px!important;background:rgba(255,255,255,.92)!important}
+.family-tabs{gap:8px!important}.family-tab{border-radius:14px!important;padding:12px 17px!important;font-weight:700!important;color:#5d6a80!important}.family-tab.active{background:var(--fm-maroon)!important;color:#fff!important;box-shadow:0 8px 18px rgba(143,18,56,.18)!important}
+.family-search{border:1px solid #e8d9d4!important;background:#fff!important;border-radius:14px!important;min-width:300px}.family-search input{background:transparent!important;color:#263246!important}
+.family-tab-content{margin-top:20px!important;background:#fff!important;border:1px solid #eee0db!important;border-radius:24px!important;padding:28px!important;box-shadow:0 12px 36px rgba(70,40,35,.07)!important;min-height:390px}
+.section-head h2{color:var(--fm-maroon)!important;font-size:29px!important}.section-head p{color:#748096!important}.sg-btn{background:var(--fm-maroon)!important;border-radius:13px!important;padding:12px 19px!important;box-shadow:0 8px 18px rgba(143,18,56,.16)!important}.sg-btn:hover{background:var(--fm-maroon2)!important;transform:translateY(-1px)}
+#membersList:empty{min-height:270px;border:1px solid #f0e3de;border-radius:20px;background:linear-gradient(135deg,#fff 0%,#fffaf8 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+#membersList:empty:before{content:"👥";width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg,#f5e4ff,#fff0d8);display:grid;place-items:center;font-size:38px;position:absolute;top:55px}
+#membersList:empty:after{content:"अभी कोई family member नहीं है।\A + सदस्य जोड़ें से पहला सदस्य जोड़ें।";white-space:pre;text-align:center;color:#56647a;font-weight:600;line-height:1.7;position:absolute;top:150px}
+@media(max-width:1050px){.family-hero{grid-template-columns:1fr 1.5fr 145px;padding:28px!important}.family-hero h1{font-size:45px!important}.family-hero-features{gap:2px}.hero-feature{padding:10px 4px}.hero-feature-icon{width:52px;height:52px;font-size:25px}}
+@media(max-width:760px){.family-wrap{padding:14px 10px 35px}.family-hero{grid-template-columns:1fr!important;min-height:auto!important;text-align:center;padding:25px 18px 22px!important;gap:18px}.family-hero h1{font-size:40px!important}.family-hero p{font-size:14px!important}.family-hero-features{grid-template-columns:repeat(2,1fr);gap:6px}.hero-feature{border-right:0;min-height:100px}.hero-stat{width:150px;height:125px;margin:0 auto}.hero-stat b{font-size:34px}.family-toolbar{flex-direction:column!important;align-items:stretch!important}.family-tabs{display:grid!important;grid-template-columns:repeat(2,1fr);width:100%}.family-tab{width:100%!important}.family-search{width:100%!important;min-width:0!important}.family-tab-content{padding:18px!important}.section-head{gap:12px!important;flex-direction:column!important;align-items:stretch!important}.section-head .sg-btn{align-self:flex-start}.section-head h2{font-size:23px!important}}
+@media(max-width:420px){.family-hero h1{font-size:34px!important}.family-hero-features{grid-template-columns:repeat(2,1fr)}.hero-feature-icon{width:46px;height:46px;font-size:22px}.hero-feature b{font-size:12px}.hero-feature span{font-size:10px}}
+</style>
+
+<style>
+/* THIN FAMILY HERO — final */
+.family-hero{
+  min-height:150px!important;
+  height:150px!important;
+  grid-template-columns:1.05fr 2.25fr 135px!important;
+  gap:14px!important;
+  padding:18px 26px!important;
+  border-radius:22px!important;
+}
+.family-hero .kicker{font-size:11px!important;margin-bottom:3px!important;letter-spacing:1.6px!important}
+.family-hero h1{font-size:40px!important;line-height:.98!important;margin:2px 0 7px!important}
+.family-hero p{font-size:13px!important;line-height:1.35!important}
+.family-hero-features{gap:2px!important}
+.hero-feature{min-height:88px!important;padding:7px 5px!important}
+.hero-feature-icon{width:44px!important;height:44px!important;border-radius:13px!important;font-size:23px!important;margin-bottom:4px!important}
+.hero-feature b{font-size:11px!important}.hero-feature span{font-size:9px!important;margin-top:1px!important}
+.hero-stat{height:108px!important;border-radius:18px!important}
+.hero-stat-icon{width:38px!important;height:38px!important;border-radius:11px!important;font-size:20px!important;margin-bottom:3px!important}
+.hero-stat b{font-size:31px!important}.hero-stat span{margin-top:4px!important;font-size:11px!important}
+@media(max-width:1050px){
+ .family-hero{min-height:135px!important;height:135px!important;grid-template-columns:1fr 1.7fr 115px!important;padding:15px 18px!important}
+ .family-hero h1{font-size:34px!important}.family-hero p{font-size:12px!important}
+ .hero-feature{min-height:76px!important}.hero-feature-icon{width:38px!important;height:38px!important;font-size:20px!important}
+ .hero-stat{height:94px!important}.hero-stat b{font-size:27px!important}
+}
+@media(max-width:760px){
+ .family-hero{height:auto!important;min-height:0!important;grid-template-columns:1fr!important;padding:18px 14px!important;gap:10px!important}
+ .family-hero h1{font-size:34px!important}.family-hero p{font-size:13px!important}
+ .family-hero-features{grid-template-columns:repeat(2,1fr)!important}
+ .hero-feature{min-height:82px!important}
+ .hero-stat{width:130px!important;height:92px!important}
+}
+</style>
+
+<style>
+/* COMPACT BEAUTIFUL MEMBER MODAL */
+#memberModal .modal-card{
+  width:min(760px,calc(100vw - 28px))!important;
+  max-height:88vh!important;
+  overflow-y:auto!important;
+  padding:0!important;
+  border-radius:24px!important;
+  background:linear-gradient(180deg,#fffdfb 0%,#fff 100%)!important;
+  border:1px solid #efd9d4!important;
+  box-shadow:0 24px 70px rgba(70,25,35,.24)!important;
+}
+#memberModal .modal-card>h2{
+  margin:0!important;
+  padding:18px 24px 12px!important;
+  color:#8f1238!important;
+  font-size:26px!important;
+  font-weight:800!important;
+  border-bottom:1px solid #f1e4df!important;
+  background:linear-gradient(135deg,#fff8f6,#fffdf8)!important;
+}
+#memberModal .modal-card>h2:after{content:'  परिवार के सदस्य की जानकारी';display:block;font-size:11px;font-weight:600;color:#7a8798;margin-top:3px}
+#memberModal .modal-close{top:14px!important;right:16px!important;width:36px!important;height:36px!important;border-radius:50%!important;background:#fff1eb!important;color:#8f1238!important;font-size:23px!important;z-index:3}
+#memberModal .sg-form{
+  padding:16px 24px 20px!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:12px!important;
+}
+#memberModal .sg-form>div{min-width:0!important}
+#memberModal .sg-form .full{grid-column:1/-1!important}
+#memberModal .sg-form label{display:block!important;margin:0 0 5px!important;color:#273246!important;font-size:12px!important;font-weight:800!important}
+#memberModal .sg-form input,#memberModal .sg-form select,#memberModal .sg-form textarea{
+  width:100%!important;box-sizing:border-box!important;
+  min-height:43px!important;padding:10px 12px!important;
+  border:1px solid #e7d5d0!important;border-radius:11px!important;
+  background:#fff!important;color:#253247!important;font-size:14px!important;
+  outline:none!important;transition:.18s ease!important;
+}
+#memberModal .sg-form textarea{min-height:72px!important;resize:vertical!important}
+#memberModal .sg-form input:focus,#memberModal .sg-form select:focus,#memberModal .sg-form textarea:focus{border-color:#b3194d!important;box-shadow:0 0 0 3px rgba(179,25,77,.10)!important;background:#fffafc!important}
+#memberModal .head-choice{
+  padding:11px 14px!important;border-radius:13px!important;
+  background:linear-gradient(135deg,#fff9e8,#fff4d2)!important;
+  border:1px solid #edc65d!important;
+}
+#memberModal .head-choice label{display:flex!important;align-items:center!important;gap:8px!important;margin:0!important;font-size:13px!important;color:#8f1238!important}
+#memberModal .head-choice input{width:17px!important;min-height:17px!important;accent-color:#8f1238!important}
+#memberModal .head-choice small{display:block!important;margin:5px 0 0 25px!important;color:#75684f!important;font-size:10.5px!important;line-height:1.35!important}
+#memberModal .modal-actions{display:flex!important;justify-content:flex-end!important;gap:9px!important;padding-top:2px!important}
+#memberModal .modal-actions .sg-btn{min-height:42px!important;padding:9px 18px!important}
+#memberModal .modal-actions .alt{background:#fff1f0!important;color:#8f1238!important;border:1px solid #f1d3d0!important}
+@media(max-width:600px){
+ #memberModal .modal-card{width:calc(100vw - 18px)!important;max-height:92vh!important;border-radius:18px!important}
+ #memberModal .modal-card>h2{padding:15px 17px 10px!important;font-size:22px!important}
+ #memberModal .sg-form{padding:13px 16px 16px!important;grid-template-columns:1fr!important;gap:10px!important}
+ #memberModal .sg-form .full{grid-column:auto!important}
+ #memberModal .head-choice{grid-column:auto!important}
+ #memberModal .modal-actions{flex-direction:row!important}
+ #memberModal .modal-actions .sg-btn{flex:1!important}
+}
+</style>
+
 </head>
 <body>
 <main class="family-page"><div class="family-wrap">
 <section class="family-hero">
-  <div><span class="kicker">👨‍👩‍👧 FAMILY MANAGEMENT</span><h1>Family / परिवार</h1><p>परिवार के सदस्य, रिश्तेदार और उनके संबंध एक ही जगह पर रखें।</p></div>
-  <div class="hero-stat"><b id="memberCount">0</b><span>Family Members</span></div>
+  <div class="family-hero-copy">
+    <span class="kicker">FAMILY MANAGEMENT</span>
+    <h1><span>Family /</span> <strong>परिवार</strong></h1>
+    <p>परिवार के सदस्य, रिश्तेदार और उनके संबंध<br>एक ही जगह पर रखें।</p>
+  </div>
+  <div class="family-hero-features">
+    <div class="hero-feature feature-members"><div class="hero-feature-icon">👥</div><b>सभी सदस्य</b><span>एक साथ देखें</span></div>
+    <div class="hero-feature feature-relatives"><div class="hero-feature-icon">🤝</div><b>रिश्तेदार</b><span>संबंध के साथ</span></div>
+    <div class="hero-feature feature-tree"><div class="hero-feature-icon">🌳</div><b>परिवार वृक्ष</b><span>आसानी से देखें</span></div>
+    <div class="hero-feature feature-relation"><div class="hero-feature-icon">🔗</div><b>संबंध प्रबंधन</b><span>स्पष्ट व व्यवस्थित</span></div>
+  </div>
+  <div class="hero-stat"><div class="hero-stat-icon">👥</div><b id="memberCount">0</b><span>Family Members</span></div>
 </section>
 
 <section class="family-toolbar">
@@ -72,4 +215,37 @@
 <script src="../js/family.js"></script>
 <script src="../js/premium-calendar.js"></script>
   <script src="../js/process-ui.js"></script>
+
+<script>
+/* Keep only one Head of Family visible/selectable. Existing page logic remains unchanged. */
+(function(){
+  const modal=document.getElementById('memberModal');
+  const form=document.getElementById('memberForm');
+  const head=document.getElementById('mHead');
+  const list=document.getElementById('membersList');
+  if(!modal||!form||!head||!list) return;
+  function hasExistingHead(){
+    const text=(list.innerText||'').toLowerCase();
+    return text.includes('head of family') || !!list.querySelector('.head-badge,[data-head="true"],[data-is-head="true"]');
+  }
+  function updateHeadLock(){
+    const editing=(document.getElementById('memberId')||{}).value||'';
+    const already=hasExistingHead();
+    const isEditingCurrent=!!editing && !!head.checked;
+    if(already && !isEditingCurrent){
+      head.disabled=true;
+      const box=head.closest('.head-choice');
+      if(box){box.classList.add('head-locked'); let b=box.querySelector('.head-badge'); if(!b){b=document.createElement('span');b.className='head-badge';b.textContent='एक ही होगा';box.querySelector('label')?.appendChild(b)}}
+    }else{
+      head.disabled=false;
+      const b=head.closest('.head-choice')?.querySelector('.head-badge'); if(b) b.remove();
+    }
+  }
+  const observer=new MutationObserver(updateHeadLock); observer.observe(list,{childList:true,subtree:true,characterData:true});
+  document.getElementById('openMemberBtn')?.addEventListener('click',()=>setTimeout(updateHeadLock,50));
+  document.getElementById('memberModal')?.addEventListener('click',()=>setTimeout(updateHeadLock,50));
+  updateHeadLock();
+})();
+</script>
+
 </body></html>
