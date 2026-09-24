@@ -19,6 +19,119 @@
 <script src="offline-test.js"></script>
   <link rel="stylesheet" href="../css/sgunms-global-background.css">
   <link rel="stylesheet" href="../css/process-ui.css" data-sagun-process-css="1">
+
+<style id="sagun-wedding-bg-final">
+/* FINAL: supplied wedding artwork as the actual page background */
+html, body { min-height:100% !important; }
+body {
+  margin:0 !important;
+  min-height:100vh !important;
+  min-height:100svh !important;
+  display:flex !important;
+  align-items:flex-start !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+  padding:24px 24px 30px !important;
+  position:relative !important;
+  isolation:isolate !important;
+  overflow-x:hidden !important;
+  background-color:#fffaf6 !important;
+  background-image:linear-gradient(rgba(255,250,246,.48),rgba(255,250,246,.48)), url('./../assets/images/login-wedding-bg.png') !important;
+  background-repeat:no-repeat !important;
+  background-position:center center !important;
+  background-size:cover !important;
+}
+/* Keep the login panel clear and readable */
+.login-box {
+  position:relative !important;
+  z-index:5 !important;
+  width:min(430px,100%) !important;
+  max-width:430px !important;
+  margin:0 auto !important;
+  transform:none !important;
+  box-sizing:border-box !important;
+  background:rgba(255,255,255,.96) !important;
+  color:#34232b !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  border:1px solid rgba(225,166,177,.55) !important;
+  box-shadow:0 18px 55px rgba(92,50,58,.20) !important;
+  backdrop-filter:blur(2px) !important;
+  -webkit-backdrop-filter:blur(2px) !important;
+}
+.login-box h2,
+.login-box .subtitle,
+.login-box .subtitle b,
+.login-box .version,
+.login-box .links,
+.login-box .links a {
+  opacity:1 !important;
+  visibility:visible !important;
+  -webkit-text-fill-color:currentColor !important;
+}
+.login-box h2 { color:#7f2038 !important; }
+.login-box .subtitle { color:#5d4b53 !important; }
+.login-box .subtitle b { color:#8b2944 !important; }
+.login-box .version { color:#6b5b62 !important; }
+.login-box .links a { color:#9a2948 !important; }
+.login-box .guest-note {
+  color:#6f2e42 !important;
+  background:#fff1f4 !important;
+  border:1px solid #efc3cf !important;
+}
+.login-box input {
+  color:#2f2730 !important;
+  -webkit-text-fill-color:#2f2730 !important;
+}
+.login-box input::placeholder {
+  color:#7d7076 !important;
+  -webkit-text-fill-color:#7d7076 !important;
+  opacity:1 !important;
+}
+#togglePass { opacity:1 !important; }
+
+@media (max-width:700px) {
+  body {
+    align-items:center !important;
+    padding:14px 10px !important;
+    background-image:linear-gradient(rgba(255,250,246,.56),rgba(255,250,246,.56)), url('./../assets/images/login-wedding-bg.png') !important;
+    background-position:center center !important;
+    background-size:cover !important;
+  }
+  .login-box {
+    width:calc(100% - 24px) !important;
+    max-width:360px !important;
+    max-height:calc(100svh - 20px) !important;
+    overflow:auto !important;
+    margin:auto !important;
+    transform:none !important;
+  }
+}
+@media (max-width:420px) {
+  body { padding:8px !important; }
+  .login-box { width:calc(100% - 16px) !important; max-width:360px !important; transform:none !important; }
+}
+</style>
+
+<!-- FINAL CENTER POSITION — login panel stays centered on desktop and mobile -->
+<style id="sagun-login-center-final">
+  body {
+    align-items:center !important;
+    justify-content:center !important;
+  }
+  .login-box {
+    margin-left:auto !important;
+    margin-right:auto !important;
+    transform:none !important;
+  }
+  @media (max-width:700px) {
+    body { align-items:center !important; justify-content:center !important; }
+    .login-box { transform:none !important; margin-left:auto !important; margin-right:auto !important; }
+  }
+  @media (max-width:420px) {
+    .login-box { transform:none !important; }
+  }
+</style>
 </head>
 <body>
 
