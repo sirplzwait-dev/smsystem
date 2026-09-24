@@ -79,14 +79,34 @@ body {
   background:#fff1f4 !important;
   border:1px solid #efc3cf !important;
 }
+.login-box .input-box input {
+  color:#2f2730 !important;
+  -webkit-text-fill-color:#2f2730 !important;
+  text-align:left !important;
+  direction:ltr !important;
+  padding-left:16px !important;
+  padding-right:44px !important;
+  box-sizing:border-box !important;
+}
+.login-box .input-box input::placeholder {
+  color:#7d7076 !important;
+  -webkit-text-fill-color:#7d7076 !important;
+  opacity:1 !important;
+  text-align:left !important;
+}
 .login-box input {
   color:#2f2730 !important;
   -webkit-text-fill-color:#2f2730 !important;
+  text-align:left !important;
+  direction:ltr !important;
+  padding-left:16px !important;
+  padding-right:44px !important;
 }
 .login-box input::placeholder {
   color:#7d7076 !important;
   -webkit-text-fill-color:#7d7076 !important;
   opacity:1 !important;
+  text-align:left !important;
 }
 #togglePass { opacity:1 !important; }
 
@@ -131,6 +151,33 @@ body {
   @media (max-width:420px) {
     .login-box { transform:none !important; }
   }
+</style>
+
+<style id="login-input-color-final">
+/* Input boxes: warm cream/pink theme */
+.login-box .input-box {
+  background: #fff8f5 !important;
+  border: 1.5px solid #e7c7cf !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(126, 62, 82, 0.06) !important;
+  transition: all .18s ease !important;
+}
+.login-box .input-box:focus-within {
+  background: #fff1f5 !important;
+  border-color: #c85b78 !important;
+  box-shadow: 0 0 0 3px rgba(200, 91, 120, .12) !important;
+}
+.login-box .input-box input {
+  background: transparent !important;
+  color: #30252a !important;
+  -webkit-text-fill-color: #30252a !important;
+  text-align: left !important;
+}
+.login-box .input-box input::placeholder {
+  color: #806c74 !important;
+  -webkit-text-fill-color: #806c74 !important;
+  opacity: 1 !important;
+}
 </style>
 </head>
 <body>
