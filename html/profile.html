@@ -10,7 +10,7 @@
 <style>
 :root{--maroon:#7d1235;--gold:#d7a61b;--ink:#1f2937;--muted:#64748b;--card:#fff;--soft:#fff8ef}
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#fffaf2,#f7f7f8 55%,#fff5f0);min-height:100vh}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#fff7f3 url("../assets/images/auth-family-bg.png") center/cover fixed no-repeat;min-height:100vh}
 .settings-single{max-width:980px;margin:0 auto;padding:34px 20px 60px}
 .settings-single .hero{background:linear-gradient(135deg,#fff8ee,#fffdf9);border:1px solid #ead7bd;border-radius:26px;padding:30px;box-shadow:0 18px 50px rgba(60,40,20,.09);position:relative;overflow:hidden}
 .settings-single .hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-60px;top:-60px;background:rgba(215,166,27,.10)}
@@ -36,6 +36,30 @@ input:focus{border-color:#b77b25;box-shadow:0 0 0 3px rgba(183,123,37,.12)}
 .warning{padding:16px;border-radius:15px;background:#fff4f4;border:1px solid #f2c5ca;color:#7b1e2b;line-height:1.55;margin-bottom:18px}
 .back-link{display:inline-flex;margin-top:18px;text-decoration:none;color:var(--maroon);font-weight:800}
 @media(max-width:700px){.settings-single{padding:20px 12px 40px}.hero h1{font-size:28px}.panel-card{padding:20px}.form-grid,.info-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}}
+</style>
+
+<style id="sagun-auth-theme-final">
+:root{--sagun-maroon:#8b2448;--sagun-pink:#e58aa6;--sagun-gold:#f2b900;--sagun-ink:#2f2730;--sagun-muted:#6f6670;}
+html,body{min-height:100%;}
+body{margin:0;background:#fff7f3 url("../assets/images/auth-family-bg.png") center/cover fixed no-repeat;color:var(--sagun-ink);font-family:Poppins,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;}
+body::before{content:"";position:fixed;inset:0;background:rgba(255,249,246,.46);backdrop-filter:blur(1.5px);z-index:-1;}
+.box{width:min(460px,calc(100vw - 28px));margin:clamp(18px,5vh,54px) auto 24px;padding:24px 24px 22px;border:1px solid rgba(255,255,255,.88);border-radius:24px;background:rgba(255,250,248,.91);box-shadow:0 18px 55px rgba(86,42,50,.18);backdrop-filter:blur(10px);color:var(--sagun-ink);}
+.box h2{margin:0 0 8px;text-align:center;color:var(--sagun-maroon);font-size:clamp(24px,4vw,32px);line-height:1.15;}
+.box p,.box>p{margin:0 0 18px;text-align:center;color:#5d535a;line-height:1.5;}
+.box input,.box textarea,.box select{width:100%;box-sizing:border-box;text-align:left;padding:12px 14px;margin:0 0 11px;border:1.5px solid #decfd2;border-radius:13px;background:#fffdfd;color:#302a30;font-size:15px;line-height:1.25;outline:none;box-shadow:0 3px 10px rgba(85,45,55,.05);transition:.18s ease;}
+.box input::placeholder{color:#7b7278;opacity:1;text-align:left;}
+.box input:focus,.box textarea:focus,.box select:focus{border-color:#d65d83;background:#fff8fb;box-shadow:0 0 0 3px rgba(214,93,131,.14);transform:translateY(-1px);}
+.box button{width:100%;border:0;border-radius:13px;padding:12px 14px;margin-top:4px;background:linear-gradient(135deg,#ffd21a,#ffbd00);color:#5b2100;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 8px 20px rgba(245,180,0,.22);}
+.box button:hover{filter:brightness(1.03);transform:translateY(-1px);}
+.box a{color:var(--sagun-maroon);font-weight:700;}
+#resend{background:#fff;color:var(--sagun-maroon);border:1.5px solid #efc3cf;box-shadow:none;}
+@media(max-width:600px){body{background-position:center center;background-attachment:scroll;}body::before{background:rgba(255,249,246,.62);}.box{width:calc(100vw - 24px);margin:12px auto 16px;padding:19px 16px;border-radius:20px;max-height:calc(100vh - 24px);overflow-y:auto;}.box h2{font-size:24px}.box input,.box textarea,.box select{padding:11px 13px;margin-bottom:9px;font-size:14px}.box button{padding:11px 13px;font-size:14px;}}
+/* Profile page */
+.settings-single{max-width:980px;margin:0 auto;padding:26px 16px 40px;}
+.settings-single .hero,.settings-single .panel-card{background:rgba(255,250,248,.92)!important;backdrop-filter:blur(10px);}
+.settings-single input{background:#fffdfd!important;color:#302a30!important;text-align:left!important;border:1.5px solid #decfd2!important;}
+.settings-single input:focus{border-color:#d65d83!important;background:#fff8fb!important;box-shadow:0 0 0 3px rgba(214,93,131,.14)!important;}
+@media(max-width:700px){.settings-single{padding:16px 12px 30px}.settings-single .hero h1{font-size:28px}}
 </style>
 </head>
 <body>
