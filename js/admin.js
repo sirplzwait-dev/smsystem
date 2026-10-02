@@ -40,7 +40,7 @@ window.onload = async () => {
 async function loadData() {
     if (!currentUserId) return;
 
-    const { data, error } = await sb.from("guests").select("*").eq("user_id", currentUserId).order('created_at', { ascending: false });
+    let { data, error } = await sb.from("guests").select("*").eq("user_id", currentUserId).order('created_at', { ascending: false });
     if(error) { console.error("Error:", error); return; }
 
     const seen=new Set();

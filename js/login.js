@@ -10,18 +10,23 @@
 
 // Registered users use a persistent Supabase session.
 // This is separate from Guest Mode and survives page/browser restarts.
-const client = window.supabase.createClient(
-  "https://rdlliurzgwwfjscgwssa.supabase.co",
-  "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc",
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-      storageKey: "sgunms-auth-session"
-    }
-  }
-);
+const client = (window.client && typeof window.client.auth === "object")
+  ? window.client
+  : window.supabase.createClient(
+      "https://rdlliurzgwwfjscgwssa.supabase.co",
+      "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc",
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          storageKey: "sgunms-auth-session"
+        }
+      }
+    );
+
+// Share this ONE client with visitor.js so it never creates another GoTrueClient.
+window.client = client;
 
 // Toggle Password Visibility
 document.getElementById("togglePass").onclick = function () {
@@ -104,6 +109,7 @@ async function redirectRegisteredUser(user){
 
 async function checkLogin(){
   const btn = document.getElementById("loginBtn");
+  if (btn?.disabled) return;
   const email = document.getElementById("email").value.trim().toLowerCase();
   const password = document.getElementById("pass").value;
 

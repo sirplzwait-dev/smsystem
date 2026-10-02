@@ -399,10 +399,11 @@
   async function setLoggedInUserName(){
     try{
       if(!window.supabase || !window.supabase.createClient) return;
-      const client=window.supabase.createClient(
+      const client=window.__sgunmsCloudClient || (window.__sgunmsCloudClient=window.supabase.createClient(
         "https://rdlliurzgwwfjscgwssa.supabase.co",
-        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
-      );
+        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc",
+        {auth:{persistSession:true,storageKey:"sgunms-auth-session",autoRefreshToken:true,detectSessionInUrl:true}}
+      ));
       const {data:{user}}=await client.auth.getUser();
       if(!user) return;
 
@@ -517,7 +518,7 @@ function openHomeEvent(page){window.location.href=page;}</script>
    if(seq!==homeRenderSeq)return;
    const seen=new Set();events=events.filter(e=>{const k=id(e);if(!k||seen.has(k))return false;seen.add(k);return true});events.sort((a,b)=>new Date(b?.created_at||b?.createdAt||0)-new Date(a?.created_at||a?.createdAt||0));
    eventCache.push(...events); const total=document.getElementById('totalEvents');if(total)total.textContent=events.length;const badge=document.getElementById('homeEventCountBadge');if(badge)badge.textContent=events.length+' Event'+(events.length===1?'':'s');
-   if(!events.length){box.innerHTML='<div class="sagun-event-empty">अभी कोई Event नहीं है। <b>Add Event</b> से Event बनाइए।</div>';updateEventCountFromCards?.();return;}
+   if(!events.length){box.innerHTML='<div class="sagun-event-empty">अभी कोई Event नहीं है। <b>Add Event</b> से Event बनाइए।</div>';if(typeof updateEventCountFromCards==='function')updateEventCountFromCards();return;}
    box.innerHTML=''; events.forEach(e=>{const ei=info(e),eid=id(e),date=e?.event_date||e?.eventDate||e?.date||'Date not set',card=document.createElement('div');card.className='event-card-premium type-'+type(e).replace(/\s+/g,'-');card.tabIndex=0;const go=()=>{localStorage.setItem('currentEventId',eid);localStorage.setItem('sgunmsActiveEvent',JSON.stringify(e));location.href='event-report.html?event_id='+encodeURIComponent(eid)};card.onclick=go;card.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();go()}};const eventEmoji={tilak:'🪔',barat:'🥁',reception:'🎉',birthday:'🎂',anniversary:'💐',engagement:'💍',mundan:'👶',griha_pravesh:'🏠'}[type(e)]||'🎊';card.innerHTML='<div class="event-card-top"><span class="event-big-icon">'+eventEmoji+'</span><span class="event-open">›</span></div><div class="event-card-title">'+esc(ei.n)+'</div><div class="event-card-date">📅 '+esc(date)+'</div>'+(ei.p?'<div class="event-card-person">👤 '+esc(ei.p)+'</div>':'')+'<div class="event-card-footer"><span class="home-entry-count">👥 0 Entries</span><span class="home-entry-amount">₹0</span><button type="button" class="home-event-report-btn">📊 Report</button><button type="button" class="home-event-delete-btn">🗑️ Delete</button></div>';card.querySelector('.home-event-report-btn').onclick=ev=>{ev.stopPropagation();go()};card.querySelector('.home-event-delete-btn').onclick=ev=>{ev.stopPropagation();const i=eventCache.indexOf(e);if(window.openDeleteConfirm)window.openDeleteConfirm(i)};box.appendChild(card)});
    let entries=[];try{if(window.SagunStore?.getEntries)entries=await window.SagunStore.getEntries()||[]}catch(e){console.warn(e)}
    if(seq!==homeRenderSeq)return;
@@ -740,6 +741,12 @@ function openHomeEvent(page){window.location.href=page;}</script>
  window.addEventListener("storage",renderMyEvents);
  window.addEventListener("pageshow",renderMyEvents);
  window.addEventListener("load",()=>setTimeout(renderMyEvents,250));
+ // Re-render after SagunStore finishes cloud hydration/realtime updates.
+ window.addEventListener("sagun:cloud-hydrated",()=>renderMyEvents());
+ window.addEventListener("sagun:data-changed",(ev)=>{
+   const kind=ev?.detail?.kind;
+   if(kind==="events" || kind==="all") renderMyEvents();
+ });
 })();
 
 (function(){

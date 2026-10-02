@@ -4,11 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sagun Management System | Login</title>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
-
-
+<!-- Google Analytics: enabled only on the live Sagun domain; localhost uses a safe no-op. -->
+<script>
+window.dataLayer = window.dataLayer || [];
+window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
+(function(){
+  var host = window.location.hostname;
+  if(host === "sgunms.in" || host === "www.sgunms.in"){
+    var s=document.createElement("script");
+    s.async=true;
+    s.src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09";
+    document.head.appendChild(s);
+    gtag("js", new Date());
+    gtag("config", "G-PSQRN0SV09");
+  }
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -178,6 +189,52 @@ body {
   opacity: 1 !important;
 }
 </style>
+
+<style id="sagun-login-loading-fix">
+  #loginBtn:disabled, #googleLoginBtn:disabled {
+    cursor: wait !important;
+    opacity: .82 !important;
+  }
+  .sagun-login-spinner {
+    display:inline-block;
+    width:14px;
+    height:14px;
+    margin-right:7px;
+    vertical-align:-2px;
+    border:2px solid currentColor;
+    border-right-color:transparent;
+    border-radius:50%;
+    animation:sagunLoginSpin .7s linear infinite;
+  }
+  @keyframes sagunLoginSpin { to { transform:rotate(360deg); } }
+</style>
+<script>
+// Prevent repeated Login/Google clicks while authentication is in progress.
+window.addEventListener('DOMContentLoaded', function(){
+  const loginBtn = document.getElementById('loginBtn');
+  const googleBtn = document.getElementById('googleLoginBtn');
+
+  if(loginBtn){
+    loginBtn.addEventListener('click', function(){
+      if(this.disabled) return;
+      const email = document.getElementById('email');
+      const pass = document.getElementById('pass');
+      if(!email || !pass || !email.value.trim() || !pass.value) return;
+      this.disabled = true;
+      this.innerHTML = '<span class="sagun-login-spinner"></span>Logging in...';
+    }, true);
+  }
+
+  if(googleBtn){
+    googleBtn.addEventListener('click', function(){
+      if(this.disabled) return;
+      this.disabled = true;
+      this.innerHTML = '<span class="sagun-login-spinner"></span>Connecting...';
+    }, true);
+  }
+});
+</script>
+
 </head>
 <body>
 
@@ -207,9 +264,9 @@ body {
 </div>
 
 
-<script src="../js/visitor.js"></script>
-    <script src="../js/sagun-store.js"></script>
-    <script src="../js/login.js" defer></script>
+<!-- Login page uses ONE Supabase client from login.js. Unused store/guest clients are not loaded here. -->
+    <script src="../js/login.js"></script>
+    <script src="../js/visitor.js"></script>
   <script src="../js/process-ui.js" data-sagun-process-js="1"></script>
 </body>
 </html>

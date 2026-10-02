@@ -853,37 +853,53 @@ function updateGraph(){
 
 function setupReportDetails(e,t,title){
  const out=[];
- const add=(label,value)=>out.push([label,(value===undefined||value===null||String(value).trim()==='')?'—':String(value)]);
+ const add=(label,value)=>{
+   const v=(value===undefined||value===null||String(value).trim()==='')?'—':String(value);
+   out.push([label,v]);
+ };
  const welcome=e?.welcome_name||e?.welcomeName||e?.welcome_by||e?.welcomeBy||'';
- const date=eventDate(e)||'';
+ const date=eventDate(e)||e?.setup_date||'';
+
+ // Event Setup में भरी गई सभी non-photo details यहाँ दिखाई जाएँगी।
+ // Photo / QR fields जानबूझकर report में नहीं दिखाए जाते।
  if(t==='tilak'||t==='barat'||t==='reception'||t==='marriage'){
    add('कार्यक्रम',t==='tilak'?'तिलक':t==='barat'?'बरात':t==='reception'?'Reception':'Marriage');
    add('दिनांक',date);
-   add('दूल्हा',e?.groom_name||e?.groomName||e?.dulha_name||e?.dulhaName||'');
-   add('दुल्हन',e?.bride_name||e?.brideName||e?.dulhan_name||e?.dulhanName||'');
+   add('दूल्हा',e?.groom_name||e?.groomName||e?.dulha_name||e?.dulhaName||e?.person1||'');
+   add('दुल्हन',e?.bride_name||e?.brideName||e?.dulhan_name||e?.dulhanName||e?.person2||'');
    add('स्वागतकर्ता',welcome);
  }else if(t==='engagement'){
    add('समारोह','Engagement / सगाई');
-   add('लड़के का नाम',e?.groom_name||e?.groomName||e?.boy_name||e?.boyName||'');
-   add('लड़की का नाम',e?.bride_name||e?.brideName||e?.girl_name||e?.girlName||'');
+   add('लड़के का नाम',e?.groom_name||e?.groomName||e?.boy_name||e?.boyName||e?.person1||'');
+   add('लड़की का नाम',e?.bride_name||e?.brideName||e?.girl_name||e?.girlName||e?.person2||'');
    add('सगाई की तारीख',date);
    add('स्वागतकर्ता',welcome);
  }else if(t==='birthday'){
    add('समारोह','Birthday / जन्मदिन');
-   add('Birthday Boy / Girl',e?.birthday_name||e?.birthdayName||e?.name||'');
-   add('जन्मदिन की तारीख',e?.birthday_date||date);
+   add('Birthday Boy / Girl',e?.birthday_name||e?.birthdayName||e?.name||e?.person1||'');
+   add('जन्मदिन की तारीख',e?.birthday_date||e?.birthdayDate||date);
    add('स्वागतकर्ता',welcome);
  }else if(t==='anniversary'){
    add('समारोह','Anniversary / सालगिरह');
-   add('पति / Husband',e?.husband_name||e?.husbandName||e?.groom_name||'');
-   add('पत्नी / Wife',e?.wife_name||e?.wifeName||e?.bride_name||'');
-   add('विवाह की तारीख',e?.anniversary_date||date);
-   if(e?.anniversary_number) add('कितवीं Anniversary',e.anniversary_ordinal||e.anniversary_number);
+   add('पति / Husband',e?.husband_name||e?.husbandName||e?.groom_name||e?.groomName||'');
+   add('पत्नी / Wife',e?.wife_name||e?.wifeName||e?.bride_name||e?.brideName||'');
+   add('विवाह की तारीख',e?.anniversary_date||e?.anniversaryDate||date);
+   add('कितवीं Anniversary',e?.anniversary_ordinal||e?.anniversary_number||e?.anniversaryNumber||'');
    add('स्वागतकर्ता',welcome);
  }else if(t==='griha_pravesh'){
    add('समारोह','गृह प्रवेश / Griha Pravesh');
-   add('गृह स्वामी / परिवार',e?.griha_name||e?.grihaName||e?.name||'');
+   add('गृह स्वामी / परिवार',e?.griha_name||e?.grihaName||e?.name||e?.person1||'');
    add('गृह प्रवेश की तारीख',date);
+   add('स्वागतकर्ता',welcome);
+ }else if(t==='mundan'){
+   add('समारोह','मुंडन / Mundan');
+   add('मुख्य व्यक्ति / परिवार',e?.name||e?.event_name||e?.eventName||e?.person1||'');
+   add('कार्यक्रम की तारीख',date);
+   add('स्वागतकर्ता',welcome);
+ }else if(t==='naming'){
+   add('समारोह','नामकरण / Naming');
+   add('मुख्य व्यक्ति / परिवार',e?.name||e?.event_name||e?.eventName||e?.person1||'');
+   add('कार्यक्रम की तारीख',date);
    add('स्वागतकर्ता',welcome);
  }else{
    add('समारोह',title);

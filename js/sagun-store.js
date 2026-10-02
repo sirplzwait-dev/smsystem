@@ -34,9 +34,18 @@
 
   function cloud(){
     try{
-      if(!window.supabase?.createClient) return null;
+      // Reuse the page's already-created client when available.
+      // This keeps the same authenticated session/JWT for RLS-protected writes.
       if(window.__sgunmsCloudClient) return window.__sgunmsCloudClient;
-      window.__sgunmsCloudClient=window.supabase.createClient(SUPA_URL,SUPA_KEY,{auth:{persistSession:true,storageKey:AUTH_STORAGE,autoRefreshToken:true,detectSessionInUrl:true}});
+      if(window.client && typeof window.client.from==='function' && window.client.auth){
+        window.__sgunmsCloudClient=window.client;
+        return window.__sgunmsCloudClient;
+      }
+      if(!window.supabase?.createClient) return null;
+      window.__sgunmsCloudClient=window.supabase.createClient(
+        SUPA_URL,SUPA_KEY,
+        {auth:{persistSession:true,storageKey:AUTH_STORAGE,autoRefreshToken:true,detectSessionInUrl:true}}
+      );
       return window.__sgunmsCloudClient;
     }catch(e){ console.warn('Supabase client:',e); return null; }
   }
@@ -53,6 +62,24 @@
     }catch(_){ }
     return null;
   }
+  async function syncAuthUser(sb, expectedId){
+    try{
+      if(!sb?.auth) return null;
+      let sessionResult=await sb.auth.getSession();
+      let u=sessionResult?.data?.session?.user||null;
+      if(u?.id && String(u.id)===String(expectedId)) return u;
+
+      // A stale access token can make an otherwise valid write look like an RLS failure.
+      try{ await sb.auth.refreshSession(); }catch(_){}
+      sessionResult=await sb.auth.getSession();
+      u=sessionResult?.data?.session?.user||null;
+      if(u?.id && String(u.id)===String(expectedId)) return u;
+    }catch(_){}
+    return null;
+  }
+
+  const syncBlockedUntil=new Map();
+
   async function scope(){
     const u=await currentUser(); if(u)return 'user:'+u.id;
     if(guestActive())return 'guest:'+guestId();
@@ -137,32 +164,99 @@
 
   async function syncLocalEvents(userId, localRows){
     const sb=cloud(); if(!sb||!userId||!navigator.onLine)return;
+    const authUser=await syncAuthUser(sb,userId);
+    if(!authUser)return;
+
+    const blockedKey='events:'+userId;
+    if((syncBlockedUntil.get(blockedKey)||0)>Date.now())return;
+
     for(const x of localRows){
-      const row=eventRow(userId,x); if(!row.event_name||!row.event_type)continue;
+      const row=eventRow(authUser.id,x); if(!row.event_name||!row.event_type)continue;
       try{
-        const q=row.id ? sb.from('events').upsert(row,{onConflict:'id'}) : sb.from('events').insert(row);
-        const r=await q;
-        if(r.error) console.warn('Cloud event sync:',r.error.message);
-      }catch(e){console.warn('Cloud event sync:',e)}
+        let r=row.id
+          ? await sb.from('events').upsert(row,{onConflict:'id'})
+          : await sb.from('events').insert(row);
+
+        if(r.error && (r.status===401 || r.status===403 || /row-level security|permission denied/i.test(r.error.message||''))){
+          try{ await sb.auth.refreshSession(); }catch(_){}
+          const retryUser=await syncAuthUser(sb,userId);
+          if(retryUser){
+            row.user_id=retryUser.id;
+            r=row.id
+              ? await sb.from('events').upsert(row,{onConflict:'id'})
+              : await sb.from('events').insert(row);
+          }
+        }
+
+        if(r.error){
+          if(r.status===401 || r.status===403 || /row-level security|permission denied/i.test(r.error.message||'')){
+            syncBlockedUntil.set(blockedKey,Date.now()+300000);
+            console.warn('Cloud event sync paused: Supabase RLS/auth rejected the write. Local data is safe.');
+            break;
+          }
+          console.warn('Cloud event sync:',r.error.message);
+        }
+      }catch(e){
+        console.warn('Cloud event sync:',e);
+      }
     }
   }
 
   async function syncLocalEntries(userId, localRows){
     const sb=cloud(); if(!sb||!userId||!navigator.onLine)return;
-    const p=parse(ENTRIES), key='user:'+userId, list=Array.isArray(p[key])?p[key]:[];
+    const authUser=await syncAuthUser(sb,userId);
+    if(!authUser)return;
+
+    const p=parse(ENTRIES), key='user:'+authUser.id, list=Array.isArray(p[key])?p[key]:[];
     let changed=false;
+    const blockedKey='guests:'+authUser.id;
+    if((syncBlockedUntil.get(blockedKey)||0)>Date.now())return;
+
     for(const x of localRows){
       const eid=String(x?.event_id||x?.eventId||'').trim(); if(!eid||!uuidRe.test(eid))continue;
       if(x.__cloudSynced && x.__cloudId)continue;
-      const row=entryRow(userId,x,eid);
+
+      // Always use the authenticated Supabase user for the RLS-owned column.
+      const row=entryRow(authUser.id,x,eid);
+
       try{
-        const r=row.id ? await sb.from('guests').upsert(row,{onConflict:'id'}) : await sb.from('guests').insert(row).select('id').single();
+        let r=row.id
+          ? await sb.from('guests').upsert(row,{onConflict:'id'})
+          : await sb.from('guests').insert(row).select('id').single();
+
+        if(r.error && (r.status===401 || r.status===403 || /row-level security|permission denied/i.test(r.error.message||''))){
+          // Refresh once and retry with the refreshed authenticated user's ID.
+          try{ await sb.auth.refreshSession(); }catch(_){}
+          const retryUser=await syncAuthUser(sb,userId);
+          if(retryUser){
+            row.user_id=retryUser.id;
+            r=row.id
+              ? await sb.from('guests').upsert(row,{onConflict:'id'})
+              : await sb.from('guests').insert(row).select('id').single();
+          }
+        }
+
         if(!r.error){
           const localId=entryId(x);
           const idx=list.findIndex(z=>entryId(z)===localId);
-          if(idx>=0){list[idx]={...list[idx],__cloudSynced:true,__cloudId:r.data?.id||row.id||''};changed=true;}
-        }else console.warn('Cloud entry sync:',r.error.message);
-      }catch(e){console.warn('Cloud entry sync:',e)}
+          if(idx>=0){
+            list[idx]={...list[idx],__cloudSynced:true,__cloudId:r.data?.id||row.id||''};
+            changed=true;
+          }
+        }else{
+          const isRls=r.status===401 || r.status===403 || /row-level security|permission denied/i.test(r.error.message||'');
+          if(isRls){
+            // Do not spam the console or hammer Supabase when RLS rejects a write.
+            // The local-first copy remains untouched and will be eligible again later.
+            syncBlockedUntil.set(blockedKey,Date.now()+300000);
+            console.warn('Cloud entry sync paused: Supabase RLS/auth rejected the write. Local data is safe.');
+            break;
+          }
+          console.warn('Cloud entry sync:',r.error.message);
+        }
+      }catch(e){
+        console.warn('Cloud entry sync:',e);
+      }
     }
     if(changed)put(ENTRIES,{...p,[key]:list});
   }
