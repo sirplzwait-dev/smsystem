@@ -1,42 +1,51 @@
-/* Extracted from index.html - functionality unchanged */
-
+/* Sagun Management System - index.js
+   Mobile/desktop safe version.
+*/
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-PSQRN0SV09');
 
-
-
 function toggleMenu(){
-    document.getElementById("navMenu").classList.toggle("show");
+    const nav = document.getElementById("navMenu");
+    if (nav) nav.classList.toggle("show");
 }
 
 function openNoticeModal() {
-    document.getElementById("websiteNoticeModal").style.display = 'flex';
+    const el = document.getElementById("websiteNoticeModal");
+    if (el) el.style.display = 'flex';
 }
 
 function closeNoticeModal() {
-    document.getElementById("websiteNoticeModal").style.display = 'none';
+    const el = document.getElementById("websiteNoticeModal");
+    if (el) el.style.display = 'none';
 }
 
 function openLegalModal(modalId) {
-    document.getElementById(modalId).style.display = 'flex';
+    const el = document.getElementById(modalId);
+    if (el) el.style.display = 'flex';
 }
 
 function closeLegalModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
+    const el = document.getElementById(modalId);
+    if (el) el.style.display = 'none';
 }
 
-window.onclick = function(event) {
-    if (event.target.classList.contains('legal-modal') || event.target.classList.contains('notice-modal')) {
-        event.target.style.display = 'none';
+window.addEventListener('click', function(event) {
+    const target = event.target;
+    if (target && target.classList &&
+        (target.classList.contains('legal-modal') ||
+         target.classList.contains('notice-modal'))) {
+        target.style.display = 'none';
     }
-}
+});
 
 // Language Switcher Logic (English / हिंदी)
 function setLanguage(lang) {
     const enBtn = document.getElementById("langEnBtn");
     const hiBtn = document.getElementById("langHiBtn");
+
+    if (!enBtn || !hiBtn) return;
 
     if(lang === 'hi') {
         hiBtn.style.background = "#FFD700";
@@ -73,37 +82,45 @@ function setLanguage(lang) {
 window.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem("selectedLang") || "en";
     setLanguage(savedLang);
+
+    // Preview/lightbox handlers are attached only after the DOM exists.
+    const images = document.querySelectorAll(".preview-card img");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+
+    if (lightbox && lightboxImg) {
+        images.forEach(function(img){
+            img.addEventListener("click", function(){
+                lightboxImg.src = this.src;
+                lightbox.classList.add("active");
+                lightbox.style.display = "flex";
+            });
+        });
+
+        lightbox.addEventListener("click", function(){
+            lightbox.classList.remove("active");
+            lightbox.style.display = "none";
+        });
+    }
+
+    if (window.AOS && typeof window.AOS.init === "function") {
+        AOS.init({ duration: 1000, once: true });
+    }
 });
 
-window.onscroll = function() {
-    let btn = document.getElementById("scrollTopBtn");
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        btn.style.display = "flex";
-    } else {
-        btn.style.display = "none";
-    }
-};
+// The old #scrollTopBtn is intentionally removed by the page's newer
+// top/bottom button code. Keep this handler only if that element exists.
+window.addEventListener('scroll', function() {
+    const btn = document.getElementById("scrollTopBtn");
+    if (!btn) return;
+
+    const y = window.pageYOffset ||
+              document.documentElement.scrollTop ||
+              document.body.scrollTop || 0;
+
+    btn.style.display = y > 300 ? "flex" : "none";
+});
 
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
-const images = document.querySelectorAll(".preview-card img");
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightboxImg");
-
-images.forEach(function(img){
-    img.addEventListener("click", function(){
-        lightbox.style.display = "flex";
-        lightboxImg.src = this.src;
-    });
-});
-
-lightbox.addEventListener("click", function(){
-    lightbox.style.display = "none";
-});
-
-
-
-AOS.init({ duration: 1000, once: true });
-

@@ -338,7 +338,35 @@ document.addEventListener("DOMContentLoaded", async () => {
             
             .footer-left{ font-size:9px; padding:0 5px; }
         }
-    </style>
+    
+/* ===== Keyboard-friendly mobile entry ===== */
+@media (max-width:768px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  body{min-height:100dvh;padding-bottom:0 !important}
+  .card{min-height:100dvh !important;height:auto !important;padding-bottom:12px !important}
+  .main-content{padding-bottom:12px !important}
+  .form-section{scroll-margin-top:48px;scroll-margin-bottom:20px}
+  .input-box,.submit-btn{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  #guestAmount{font-variant-numeric:tabular-nums}
+  /* When the phone keyboard opens, remove the fixed footer that can cover the form. */
+  body.keyboard-open .footer-area,
+  body.keyboard-open .bottom-footer{display:none !important}
+  body.keyboard-open{padding-bottom:0 !important}
+  body.keyboard-open .card{padding-bottom:8px !important}
+  /* Keep the entry area comfortably above the keyboard. */
+  body.keyboard-open .form-section{
+    margin-bottom:12px !important;
+    position:relative;
+    z-index:50;
+  }
+}
+@media (max-width:390px){
+  body.keyboard-open .form-section{padding:8px !important;gap:7px !important}
+  body.keyboard-open .input-box{height:42px !important;min-height:42px !important;font-size:.86rem !important}
+  body.keyboard-open .submit-btn{height:42px !important;min-height:42px !important}
+}
+
+</style>
 
 <style id="mobile-entry-polish">
 /* ===== Entry Page Responsive Polish ===== */
@@ -1133,5 +1161,72 @@ document.getElementById("logoutBtn").onclick = async () => {
 <script src="../js/topbar.js"></script>
 <script src="../js/premium-calendar.js"></script>
   <script src="../js/process-ui.js"></script>
+
+<script id="mobile-keyboard-entry">
+(function(){
+  const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+  const form = document.querySelector('.form-section');
+  const name = document.getElementById('guestName');
+  const village = document.getElementById('guestVillage');
+  const amount = document.getElementById('guestAmount');
+  const payment = document.getElementById('paymentMode');
+
+  function keyboardState(){
+    if(!isMobile()) return;
+    const vv = window.visualViewport;
+    const keyboardOpen = !!vv && (window.innerHeight - vv.height > 140);
+    document.body.classList.toggle('keyboard-open', keyboardOpen);
+    if(keyboardOpen) setTimeout(keepFocusedVisible, 80);
+  }
+
+  function keepFocusedVisible(){
+    if(!isMobile()) return;
+    const el = document.activeElement;
+    if(!el || !['INPUT','SELECT','TEXTAREA'].includes(el.tagName)) return;
+    const vv = window.visualViewport;
+    if(!vv) return;
+    const r = el.getBoundingClientRect();
+    const safeTop = Math.max(48, vv.offsetTop + 8);
+    const safeBottom = vv.height - 12;
+    if(r.bottom > safeBottom || r.top < safeTop){
+      el.scrollIntoView({behavior:'smooth', block:'center', inline:'nearest'});
+    }
+  }
+
+  [name,village,amount,payment].forEach(el => {
+    if(!el) return;
+    el.addEventListener('focus', () => {
+      document.body.classList.add('keyboard-open');
+      setTimeout(keepFocusedVisible, 120);
+      setTimeout(keepFocusedVisible, 350);
+    }, {passive:true});
+    el.addEventListener('click', () => setTimeout(keepFocusedVisible, 80), {passive:true});
+  });
+
+  /* Fast entry: Enter moves to the next field instead of submitting early. */
+  if(name) name.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); village?.focus(); }
+  });
+  if(village) village.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); amount?.focus(); }
+  });
+  if(amount) amount.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); payment?.focus(); }
+  });
+  if(payment) payment.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); if(typeof window.saveGuest === 'function') window.saveGuest(); }
+  });
+
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize', keyboardState, {passive:true});
+    window.visualViewport.addEventListener('scroll', () => setTimeout(keepFocusedVisible, 40), {passive:true});
+  }
+  window.addEventListener('resize', keyboardState, {passive:true});
+  document.addEventListener('focusin', () => setTimeout(keyboardState, 50));
+  document.addEventListener('focusout', () => setTimeout(keyboardState, 250));
+  keyboardState();
+})();
+</script>
+
 </body>
 </html>

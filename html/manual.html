@@ -1,5 +1,53 @@
 <!DOCTYPE html><html lang="hi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Sagun Management System - User Manual</title><style>
 :root{--primary:#800000;--gold:#ffd700;--bg:#fff8f2;--card:#fff;--text:#333;--muted:#777;--border:#efdcc8}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,'Noto Sans Devanagari',sans-serif;line-height:1.7;padding-bottom:60px}header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,#500000,#800000);color:#fff;padding:12px 5%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 3px 15px #0003}.brand{font-weight:800;color:var(--gold)}header a{color:#800000;background:var(--gold);padding:7px 14px;border-radius:20px;text-decoration:none;font-weight:700}.layout{max-width:1350px;margin:20px auto;display:grid;grid-template-columns:250px 1fr;gap:18px;padding:0 12px}.side{background:#fff;border:1px solid var(--border);border-radius:15px;padding:15px;position:sticky;top:80px;height:calc(100vh - 100px);overflow:auto}.side h3{color:var(--primary);font-size:15px}.side a{display:block;text-decoration:none;color:#444;padding:7px 9px;border-radius:8px;font-size:13px}.side a:hover{background:#fff0e5;color:var(--primary)}main{background:#fff;border:1px solid var(--border);border-radius:18px;padding:25px;box-shadow:0 8px 30px #8000000d}h1{color:var(--primary);text-align:center;margin:0 0 5px}h2{color:var(--primary);border-bottom:2px solid var(--gold);padding-bottom:5px;margin-top:30px}h3{color:#7a2b2b}.intro{text-align:center;color:var(--muted)}.flow{background:#fff7df;border:1px solid #f1d37c;border-radius:12px;padding:15px;text-align:center;font-weight:700;color:var(--primary)}.box{background:#fffaf5;border:1px solid var(--border);border-left:5px solid var(--primary);padding:14px;border-radius:10px;margin:12px 0}.tip{background:#effaf0;border-left-color:#198754}.warn{background:#fff3cd;border-left-color:#e0a800}.field{display:grid;grid-template-columns:180px 1fr;gap:8px;border-bottom:1px dashed #ead8c7;padding:7px 0}.shot{text-align:center;margin:18px 0}.shot img{max-width:100%;max-height:520px;border:1px solid var(--border);border-radius:12px;cursor:zoom-in;box-shadow:0 8px 25px #80000014}.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}.gallery .shot{background:#fffaf7;border:1px solid var(--border);border-radius:14px;padding:10px;margin:0}.gallery .shot img{width:100%;max-height:460px;object-fit:contain}.gallery .mobile img{max-height:520px;max-width:360px}.screen-title{font-weight:800;color:var(--primary);margin-bottom:5px}.click-note{text-align:center;color:var(--muted);font-size:12px;margin-top:5px}@media(max-width:850px){.gallery{grid-template-columns:1fr}}.small{font-size:12px;color:var(--muted)}table{width:100%;border-collapse:collapse;margin:10px 0}th,td{border:1px solid var(--border);padding:8px;text-align:left;font-size:13px}th{background:#fff0df;color:var(--primary)}.stepnum{display:inline-block;background:var(--primary);color:#fff;border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;margin-right:7px}.footer{position:fixed;bottom:0;left:0;right:0;background:var(--primary);color:#fff;text-align:center;padding:8px;font-size:12px}@media(max-width:850px){.layout{grid-template-columns:1fr}.side{position:relative;height:auto;top:0}.field{grid-template-columns:1fr}main{padding:15px}h1{font-size:22px}}
+
+/* Mobile Responsive Improvements */
+html{scroll-behavior:smooth}
+img{max-width:100%;height:auto}
+pre,code{max-width:100%;overflow-x:auto}
+@media (max-width:850px){
+  body{font-size:14px;padding-bottom:48px;overflow-x:hidden}
+  header{padding:10px 12px;gap:10px;align-items:center}
+  header>div{min-width:0}
+  .brand{font-size:16px;white-space:normal;line-height:1.25}
+  header small{font-size:11px}
+  header a{padding:6px 10px;font-size:12px;white-space:nowrap}
+  .layout{display:block;margin:10px auto;padding:0 8px}
+  .side{position:relative;top:auto;height:auto;max-height:none;padding:10px;border-radius:12px;margin-bottom:12px}
+  .side h3{margin:3px 0 7px}
+  .side a{display:inline-block;padding:6px 8px;margin:2px 1px;font-size:12px;background:#fffaf5;border:1px solid #efdcc8}
+  main{padding:14px 11px;border-radius:14px;box-shadow:none}
+  h1{font-size:21px;line-height:1.35}
+  h2{font-size:18px;margin-top:24px}
+  h3{font-size:16px}
+  .intro{font-size:13px}
+  .flow{padding:11px 8px;font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+  .box{padding:11px;margin:10px 0}
+  .field{grid-template-columns:1fr;gap:2px;padding:8px 0}
+  .field b{font-size:13px}
+  .gallery{grid-template-columns:1fr;gap:12px}
+  .gallery .shot{padding:8px}
+  .gallery .shot img,.shot img{width:100%;max-width:100%;max-height:none;object-fit:contain}
+  .gallery .mobile img{max-width:100%;max-height:none}
+  .screen-title{font-size:14px}
+  .click-note{font-size:11px}
+  table{display:block;width:100%;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+  th,td{font-size:12px;padding:6px}
+  .footer{font-size:11px;padding:7px 5px}
+}
+@media (max-width:480px){
+  body{font-size:13px}
+  header{padding:9px 10px}
+  .brand{font-size:14px}
+  header a{font-size:11px;padding:5px 8px}
+  .layout{padding:0 6px;margin:7px auto}
+  main{padding:12px 9px}
+  h1{font-size:19px}
+  h2{font-size:17px}
+  .side a{font-size:11px;padding:5px 7px}
+  .flow{font-size:12px}
+  .stepnum{width:25px;height:25px;line-height:25px}
+}
 </style></head><body><header><div><div class="brand">Sagun Management System</div><small>Complete User Manual</small></div><a href="../index.html">⌂ Home</a></header><div class="layout"><aside class="side"><h3>📖 Quick Navigation</h3><a href="#start">1. शुरुआत</a><a href="#register">2. Registration</a><a href="#login">3. Login Types</a><a href="#event">4. Event चुनना</a><a href="#marriage">5. Marriage</a><a href="#setup">6. Event Setup</a><a href="#guest">7. Guest Entry</a><a href="#dashboard">8. Dashboard</a><a href="#cash">9. Cash/UPI</a><a href="#counter">10. Cash Counter</a><a href="#book">11. Cash Book</a><a href="#report">12. Report</a><a href="#export">13. PDF/Excel</a><a href="#family">14. Family/Reminder</a><a href="#delete">15. Delete Event</a><a href="#offline">16. Offline/Sync</a><a href="#admin">17. Super Admin</a><a href="#security">18. Security</a><a href="#faq">19. FAQ</a></aside><main>
 <h1>📖 Sagun Management System – User Manual</h1><p class="intro">कौन-सी जानकारी कब भरनी है, किस बटन का उपयोग करना है और event पूरा होने के बाद report कैसे निकालनी है — पूरी step-by-step जानकारी।</p>
 <div class="flow">Register → Email Verify → Login → Event चुनें → Event Setup → Guest/Shagun Entry → Dashboard → Cash/UPI Check → Report → PDF/Excel</div>
