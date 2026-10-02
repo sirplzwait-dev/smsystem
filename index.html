@@ -38,8 +38,26 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09"></script>
+<!-- Google Analytics: load only on the live SGUNMS domain.
+     This prevents localhost/devtools from generating failed Analytics POST requests. -->
+<script>
+(function(){
+  const host = window.location.hostname;
+  const isLiveSite = host === 'sgunms.in' || host === 'www.sgunms.in';
+  if (!isLiveSite) return;
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ window.dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag('js', new Date());
+  gtag('config', 'G-PSQRN0SV09');
+
+  const ga = document.createElement('script');
+  ga.async = true;
+  ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-PSQRN0SV09';
+  document.head.appendChild(ga);
+})();
+</script>
 
 
 <!-- Google Fonts -->
