@@ -661,6 +661,108 @@ header .lang-switch button#langHiBtn[style*="linear-gradient"]{
 }
 </style>
 
+
+<style id="HOW-TO-USE-SCREENSHOT-SECTION">
+.how-to-use-section{
+  padding:52px 20px!important;
+  background:linear-gradient(135deg,#fffaf5 0%,#fff4f8 52%,#fffdf0 100%)!important;
+}
+.how-to-use-wrap{
+  max-width:1180px;
+  margin:auto;
+}
+.how-to-use-heading{text-align:center;margin-bottom:28px;}
+.how-to-use-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 14px;border-radius:999px;
+  background:#fff;border:1px solid #ead1d8;
+  color:#b45d7d;font-size:12px;font-weight:800;
+  box-shadow:0 5px 15px rgba(90,60,70,.07);
+}
+.how-to-use-heading h2{
+  margin:11px 0 6px!important;
+  color:#693e52!important;
+  font-size:clamp(25px,3vw,35px)!important;
+}
+.how-to-use-heading p{
+  margin:0;color:#65565c;font-size:14px;line-height:1.6;
+}
+.how-to-steps{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+.how-step{
+  display:grid;
+  grid-template-columns:54px 42% 1fr;
+  align-items:center;
+  gap:14px;
+  min-height:190px;
+  padding:14px;
+  background:rgba(255,255,255,.92);
+  border:1px solid #ead7dc;
+  border-radius:20px;
+  box-shadow:0 8px 25px rgba(84,54,64,.08);
+  transition:.25s ease;
+}
+.how-step:hover{
+  transform:translateY(-5px);
+  box-shadow:0 16px 32px rgba(84,54,64,.13);
+  border-color:#e2afc0;
+}
+.how-step-number{
+  width:45px;height:45px;border-radius:14px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,#e98cab,#c96788);
+  color:#fff;font-size:14px;font-weight:800;
+  box-shadow:0 7px 15px rgba(201,103,136,.22);
+}
+.how-step-image{
+  overflow:hidden;border-radius:14px;
+  background:#f7edf1;border:1px solid #ead7dc;
+  height:160px;
+}
+.how-step-image img{
+  width:100%;height:100%;object-fit:cover;
+  display:block;cursor:zoom-in;
+  transition:transform .3s ease;
+}
+.how-step:hover .how-step-image img{transform:scale(1.035);}
+.how-step-content span{
+  display:inline-block;color:#b35d7b;font-size:11px;
+  font-weight:800;margin-bottom:5px;
+}
+.how-step-content h3{
+  margin:0 0 7px!important;color:#563d49!important;
+  font-size:16px!important;
+}
+.how-step-content p{
+  margin:0!important;color:#665960!important;
+  font-size:12px!important;line-height:1.6!important;
+}
+.how-to-tip{
+  margin-top:18px;padding:12px 16px;border-radius:14px;
+  text-align:center;background:linear-gradient(90deg,#fff0f5,#fff8dc);
+  border:1px solid #ead8c8;color:#76525f;font-size:12px;
+}
+@media(max-width:850px){
+  .how-steps{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .how-to-use-section{padding:38px 12px!important;}
+  .how-step{
+    grid-template-columns:42px 1fr;
+    gap:10px;
+    min-height:auto;padding:12px;
+  }
+  .how-step-image{grid-column:1/-1;grid-row:2;height:190px;}
+  .how-step-content{grid-column:1/-1;grid-row:3;}
+  .how-step-number{width:38px;height:38px;border-radius:12px;font-size:12px;}
+  .how-step-content h3{font-size:15px!important;}
+  .how-step-content p{font-size:11.5px!important;}
+}
+</style>
+
 </head>
 
 <body>
@@ -693,7 +795,7 @@ header .lang-switch button#langHiBtn[style*="linear-gradient"]{
         <a href="#about" onclick="toggleMenu()" data-en="About" data-hi="परिचय">About</a>
         <a href="#developer" onclick="toggleMenu()" data-en="Developer" data-hi="डेवलपर">Developer</a>
         <a href="#faq" onclick="toggleMenu()" data-en="FAQ" data-hi="सामान्य प्रश्न">FAQ</a>
-        <a href="html/manual.html" style="color: #FFD700; font-weight: 600;" onclick="toggleMenu()" data-en="<i class='fas fa-book-open'></i> User Manual" data-hi="<i class='fas fa-book-open'></i> यूजर मैनुअल"><i class="fas fa-book-open"></i> User Manual</a>
+        <a href="#how-to-use" onclick="toggleMenu()" data-en="<i class='fas fa-book-open'></i> How to Use" data-hi="<i class='fas fa-book-open'></i> कैसे इस्तेमाल करें"><i class="fas fa-book-open"></i> How to Use</a>
         <a href="#contact" onclick="toggleMenu()" data-en="Contact" data-hi="संपर्क">Contact</a>
         <a href="html/login.html" class="login-btn top-login-highlight" data-en="Login" data-hi="लॉगिन"><i class="fas fa-right-to-bracket"></i> Login</a>
     </nav>
@@ -810,17 +912,139 @@ header .lang-switch button#langHiBtn[style*="linear-gradient"]{
     </div>
 </section>
 
-<!-- ================= VIDEO DEMO ================= -->
-<section class="preview" data-aos="fade-right">
-<h4 class="section-tag" data-en="🎥 LIVE DEMO & WALKTHROUGH" data-hi="🎥 लाइव डेमो और वॉकथ्रू">🎥 LIVE DEMO & WALKTHROUGH</h4>
-<h2 class="section-title" data-en="Watch How sagun Management System Works" data-hi="देखें सगुन मैनेजमेंट सिस्टम कैसे काम करता है">Watch How sagun Management System Works</h2>
-<p class="section-text" data-en="Take a comprehensive video tour of our platform to understand how every feature helps you manage your family celebrations smoothly." data-hi="यह समझने के लिए हमारे प्लेटफॉर्म का एक व्यापक वीडियो टूर लें कि प्रत्येक सुविधा आपको अपने पारिवारिक समारोहों को सुचारू रूप से प्रबंधित करने में कैसे मदद करती है।">Take a comprehensive video tour of our platform to understand how every feature helps you manage your family celebrations smoothly.</p>
-<div style="max-width:950px;margin:auto;border-radius:20px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,.25);border:2px solid #f2e2d0;">
-    <video width="100%" controls poster="../assets/images/home.jpg">
-        <source src="demo.mp4" type="video/mp4">
-        Your browser does not support video playback.
-    </video>
-</div>
+
+<!-- ================= HOW TO USE ================= -->
+<section id="how-to-use" class="how-to-use-section" data-aos="fade-up">
+  <div class="how-to-use-wrap">
+    <div class="how-to-use-heading">
+      <span class="how-to-use-badge">📖 HOW TO USE</span>
+      <h2 data-en="How to Use Sagun Management System"
+          data-hi="Sagun Management System कैसे इस्तेमाल करें">
+          Sagun Management System कैसे इस्तेमाल करें
+      </h2>
+      <p data-en="Learn the complete process step-by-step with real application screenshots."
+         data-hi="Real application के screenshots देखकर पूरा process step-by-step सीखें।">
+         Real application के screenshots देखकर पूरा process step-by-step सीखें।
+      </p>
+    </div>
+
+    <div class="how-to-steps">
+
+      <article class="how-step">
+        <div class="how-step-number">01</div>
+        <div class="how-step-image">
+          <img src="assets/images/howto/registration.png" alt="Registration screen" onclick="openHowToImage(this.src)">
+        </div>
+        <div class="how-step-content">
+          <span>📝 Step 1</span>
+          <h3 data-en="Create Your Account" data-hi="सबसे पहले Account बनाएं">सबसे पहले Account बनाएं</h3>
+          <p data-en="Open Register and enter your name, state, mobile number, email and password. Then click Register."
+             data-hi="Register खोलें और अपना नाम, State, Mobile Number, Email तथा Password भरें। इसके बाद Register पर क्लिक करें।">
+             Register खोलें और अपना नाम, State, Mobile Number, Email तथा Password भरें। इसके बाद Register पर क्लिक करें।
+          </p>
+        </div>
+      </article>
+
+      <article class="how-step">
+        <div class="how-step-number">02</div>
+        <div class="how-step-image">
+          <img src="assets/images/howto/login.png" alt="Login screen" onclick="openHowToImage(this.src)">
+        </div>
+        <div class="how-step-content">
+          <span>🔐 Step 2</span>
+          <h3 data-en="Login to Your Account" data-hi="अपने Account में Login करें">अपने Account में Login करें</h3>
+          <p data-en="Enter your registered email and password and click Login. You can also use the available Guest or Google option."
+             data-hi="Registered Email और Password डालकर Login करें। उपलब्ध Guest या Google option भी इस्तेमाल कर सकते हैं।">
+             Registered Email और Password डालकर Login करें। उपलब्ध Guest या Google option भी इस्तेमाल कर सकते हैं।
+          </p>
+        </div>
+      </article>
+
+      <article class="how-step">
+        <div class="how-step-number">03</div>
+        <div class="how-step-image">
+          <img src="assets/images/howto/event-select.png" alt="Choose event screen" onclick="openHowToImage(this.src)">
+        </div>
+        <div class="how-step-content">
+          <span>🎉 Step 3</span>
+          <h3 data-en="Choose Your Event" data-hi="अपना समारोह चुनें">अपना समारोह चुनें</h3>
+          <p data-en="Select the type of event you want to manage: Marriage, Engagement, Griha Pravesh, Anniversary or Birthday."
+             data-hi="जिस समारोह को manage करना है उसे चुनें — शादी, सगाई, गृह प्रवेश, वर्षगांठ या जन्मदिन।">
+             जिस समारोह को manage करना है उसे चुनें — शादी, सगाई, गृह प्रवेश, वर्षगांठ या जन्मदिन।
+          </p>
+        </div>
+      </article>
+
+      <article class="how-step">
+        <div class="how-step-number">04</div>
+        <div class="how-step-image">
+          <img src="assets/images/howto/event-details.png" alt="Marriage event details screen" onclick="openHowToImage(this.src)">
+        </div>
+        <div class="how-step-content">
+          <span>💍 Step 4</span>
+          <h3 data-en="Select the Event Program" data-hi="शादी में कार्यक्रम चुनें">शादी में कार्यक्रम चुनें</h3>
+          <p data-en="For Marriage, choose the program where guest entries will be recorded, such as Tilak, Barat or Reception."
+             data-hi="Marriage में वह कार्यक्रम चुनें जिसमें Guest Entry होगी — जैसे Tilak, Barat या Reception।">
+             Marriage में वह कार्यक्रम चुनें जिसमें Guest Entry होगी — जैसे Tilak, Barat या Reception।
+          </p>
+        </div>
+      </article>
+
+      <article class="how-step">
+        <div class="how-step-number">05</div>
+        <div class="how-step-image">
+          <img src="assets/images/howto/event-setup.png" alt="Event setup screen" onclick="openHowToImage(this.src)">
+        </div>
+        <div class="how-step-content">
+          <span>⚙️ Step 5</span>
+          <h3 data-en="Fill Event Details & Save" data-hi="Event की जानकारी भरकर Save करें">Event की जानकारी भरकर Save करें</h3>
+          <p data-en="Enter the required event information, upload photos and payment QR where applicable, then click Save Setup Details."
+             data-hi="जरूरी Event जानकारी भरें, जहाँ आवश्यक हो वहाँ Photo और Payment QR लगाएँ और फिर Save Setup Details पर क्लिक करें।">
+             जरूरी Event जानकारी भरें, जहाँ आवश्यक हो वहाँ Photo और Payment QR लगाएँ और फिर Save Setup Details पर क्लिक करें।
+          </p>
+        </div>
+      </article>
+
+      <article class="how-step">
+        <div class="how-step-number">06</div>
+        <div class="how-step-image">
+          <img src="assets/images/howto/tilak-entry.png" alt="Tilak guest entry screen" onclick="openHowToImage(this.src)">
+        </div>
+        <div class="how-step-content">
+          <span>💰 Step 6</span>
+          <h3 data-en="Enter Guest & Shagun Details" data-hi="Guest और Shagun की Entry करें">Guest और Shagun की Entry करें</h3>
+          <p data-en="Enter the guest name, location, Shagun amount and payment mode, then click the entry button to save the record."
+             data-hi="Guest का नाम, स्थान, Shagun की राशि और Payment Mode भरें और Entry button दबाकर record save करें।">
+             Guest का नाम, स्थान, Shagun की राशि और Payment Mode भरें और Entry button दबाकर record save करें।
+          </p>
+        </div>
+      </article>
+
+      <article class="how-step">
+        <div class="how-step-number">07</div>
+        <div class="how-step-image">
+          <img src="assets/images/howto/setup-details.png" alt="Detailed setup screen" onclick="openHowToImage(this.src)">
+        </div>
+        <div class="how-step-content">
+          <span>📌 Step 7</span>
+          <h3 data-en="Review the Setup Before Starting Entries" data-hi="Entry शुरू करने से पहले Setup जाँचें">Entry शुरू करने से पहले Setup जाँचें</h3>
+          <p data-en="Check the selected program, names, date and payment information shown on the setup screen before saving."
+             data-hi="Save करने से पहले चुना गया कार्यक्रम, नाम, तारीख और Payment information एक बार जरूर जाँचें।">
+             Save करने से पहले चुना गया कार्यक्रम, नाम, तारीख और Payment information एक बार जरूर जाँचें।
+          </p>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="how-to-tip">
+      <strong>💡 Quick Tip:</strong>
+      <span data-en="Click any screenshot to open a larger view."
+            data-hi="किसी भी Screenshot पर क्लिक करके उसे बड़ा और साफ देख सकते हैं।">
+            किसी भी Screenshot पर क्लिक करके उसे बड़ा और साफ देख सकते हैं।
+      </span>
+    </div>
+  </div>
 </section>
 
 <!-- ================= APPLICATION PREVIEW ================= -->
@@ -2357,6 +2581,27 @@ section.hero{
   box-shadow:0 12px 25px rgba(235,105,70,.36) !important;
 }
 </style>
+
+
+<script id="HOW-TO-USE-IMAGE-ZOOM">
+function openHowToImage(src){
+  const box=document.getElementById('lightbox');
+  const img=document.getElementById('lightboxImg');
+  if(!box || !img) return;
+  img.src=src;
+  box.classList.add('active');
+  box.style.display='flex';
+}
+document.addEventListener('DOMContentLoaded',function(){
+  const box=document.getElementById('lightbox');
+  if(box){
+    box.addEventListener('click',function(){
+      box.classList.remove('active');
+      box.style.display='none';
+    });
+  }
+});
+</script>
 
 </body>
 </html>

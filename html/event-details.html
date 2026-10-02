@@ -515,6 +515,60 @@ input[type="text"]::placeholder{color:#b39aa7!important}
 })();
 </script>
 
+
+<style id="sagun-event-bg">
+html,body{background:#fff9f5!important;}
+body{position:relative;isolation:isolate;}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:url("../assets/event-background.png") center center/cover no-repeat;
+  opacity:.30;
+}
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:rgba(255,248,244,.40);
+}
+</style>
+
+
+<style id="required-fields-style">
+.field-missing{border:2px solid #c21f4f!important;box-shadow:0 0 0 4px rgba(194,31,79,.12)!important;background:#fff7f9!important}
+.contains-missing{border-color:rgba(194,31,79,.45)!important}
+</style>
+
+<style id="marriage-payment-corrected">
+.payment-qr-box{margin-top:14px;padding:14px 16px;border:1px solid #ecd6dc;border-radius:15px;background:linear-gradient(135deg,#fffaf5,#fff1f4)}
+.payment-qr-title{font-size:15px;font-weight:900;color:#8b1230;margin-bottom:8px}
+.payment-qr-row{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.payment-qr-label{font-weight:800;color:#343246}
+.payment-qr-row small{display:block;color:#756d73;margin-top:3px}
+.payment-qr-upload{width:90px;height:90px;flex:none;border:2px dashed #d7a8b7;border-radius:12px;background:#fff;display:grid;place-items:center;cursor:pointer;overflow:hidden}
+.payment-qr-upload img{width:100%;height:100%;object-fit:cover}
+#firstSection h3,#secondSection h3{color:#8b1230}
+@media(max-width:700px){.payment-qr-row{align-items:flex-start}.payment-qr-upload{width:78px;height:78px}}
+</style>
+
+
+<style id="small-photo-hints">
+.photo-upload-hint{
+  display:block;
+  margin-top:4px;
+  text-align:center;
+  color:#8b1230;
+  font-size:10px;
+  font-weight:700;
+  line-height:1.3;
+}
+</style>
+
 </head>
 <body>
 
@@ -585,6 +639,7 @@ input[type="text"]::placeholder{color:#b39aa7!important}
                     <img id="firstPreview" src="https://placehold.co/85x85?text=Photo">
                 </div>
                 <input type="file" id="firstPhoto" accept="image/*" style="display:none">
+                <small class="photo-upload-hint" id="firstPhotoHint">दूल्हे का फोटो अपलोड करें</small>
             </div>
 
             <div class="section-box grid-col" id="secondSection">
@@ -595,6 +650,7 @@ input[type="text"]::placeholder{color:#b39aa7!important}
                     <img id="secondPreview" src="https://placehold.co/85x85?text=Photo">
                 </div>
                 <input type="file" id="secondPhoto" accept="image/*" style="display:none">
+                <small class="photo-upload-hint" id="secondPhotoHint">दुल्हन का फोटो अपलोड करें</small>
             </div>
         </div>
 
@@ -605,10 +661,16 @@ input[type="text"]::placeholder{color:#b39aa7!important}
             <label>📅 कार्यक्रम की तिथि</label>
             <input type="date" id="eventDate" class="custom-calendar" placeholder="तारीख चुनें">
 
-            <div style="text-align:center;margin-top:8px;">
-                <label>पेमेंट QR</label>
-                <div class="image-upload-wrapper" style="width:65px;height:65px;margin:4px auto;" onclick="document.getElementById('qrPhoto').click()">
-                    <img id="qrPreview" src="https://placehold.co/65x65?text=QR">
+            <div class="payment-qr-box">
+                <div class="payment-qr-title">Payment QR</div>
+                <div class="payment-qr-row">
+                    <div>
+                        <div class="payment-qr-label">इस QR पर Shagun / Payment लिया जाएगा</div>
+                        <small>अपना UPI QR photo यहाँ लगाएँ</small>
+                    </div>
+                    <div class="payment-qr-upload" onclick="document.getElementById('qrPhoto').click()">
+                        <img id="qrPreview" src="https://placehold.co/90x90?text=QR">
+                    </div>
                 </div>
                 <input type="file" id="qrPhoto" accept="image/*" style="display:none">
             </div>
@@ -724,6 +786,116 @@ input[type="text"]::placeholder{color:#b39aa7!important}
     </div>
   </div>
 </div>
+
+
+<script id="all-fields-required-validation">
+(function(){
+  const reasons={
+    mainEvent:"समारोह का प्रकार चुनना जरूरी है ताकि सही event form और report बने।",
+    marriageEvent:"तिलक, बरात या Reception में से सही कार्यक्रम चुनना जरूरी है।",
+    firstName:"पहले व्यक्ति का नाम जरूरी है ताकि event में सही व्यक्ति की पहचान रहे।",
+    firstPhoto:"पहली फोटो जरूरी है ताकि event record में व्यक्ति की फोटो सुरक्षित रहे।",
+    secondName:"दूसरे व्यक्ति का नाम जरूरी है ताकि दोनों पक्षों की जानकारी पूरी रहे।",
+    secondPhoto:"दूसरी फोटो जरूरी है ताकि event record में दूसरे व्यक्ति की फोटो सुरक्षित रहे।",
+    welcomeBy:"स्वागतकर्ता का नाम जरूरी है ताकि event की जिम्मेदारी/पहचान पूरी रहे।",
+    eventDate:"कार्यक्रम की तारीख जरूरी है ताकि event सही तारीख पर record हो।",
+    qrPhoto:"पेमेंट QR फोटो जरूरी है ताकि event में QR जानकारी उपलब्ध रहे।",
+    engagementGroom:"लड़के का नाम जरूरी है ताकि सगाई की जानकारी पूरी रहे।",
+    engagementBride:"लड़की का नाम जरूरी है ताकि सगाई की जानकारी पूरी रहे।",
+    engagementDate:"सगाई की तारीख जरूरी है ताकि event सही तारीख पर record हो।",
+    engagementWelcome:"स्वागतकर्ता का नाम जरूरी है ताकि event की पहचान पूरी रहे।",
+    grihaName:"गृह स्वामी/परिवार का नाम जरूरी है ताकि गृह प्रवेश सही परिवार से जुड़े।",
+    grihaDate:"गृह प्रवेश की तारीख जरूरी है ताकि event सही तारीख पर record हो।",
+    grihaWelcome:"स्वागतकर्ता का नाम जरूरी है ताकि event की पहचान पूरी रहे।",
+    birthdayName:"Birthday वाले व्यक्ति का नाम जरूरी है ताकि सही व्यक्ति का record बने।",
+    birthdayDate:"Birthday की तारीख जरूरी है ताकि reminder और event date सही रहे।",
+    birthdayPhoto:"Birthday फोटो जरूरी है ताकि व्यक्ति का record पूरा रहे।",
+    birthdayWelcome:"स्वागतकर्ता का नाम जरूरी है ताकि event की पहचान पूरी रहे।",
+    anniversaryHusband:"पति का नाम जरूरी है ताकि anniversary record पूरा रहे।",
+    anniversaryWife:"पत्नी का नाम जरूरी है ताकि anniversary record पूरा रहे।",
+    anniversaryDate:"विवाह की तारीख जरूरी है ताकि anniversary की गणना हो सके।",
+    anniversaryWelcome:"स्वागतकर्ता का नाम जरूरी है ताकि event की पहचान पूरी रहे।",
+    genericName:"मुख्य व्यक्ति/परिवार का नाम जरूरी है ताकि event की पहचान रहे।",
+    genericDate:"कार्यक्रम की तारीख जरूरी है ताकि event सही तारीख पर record हो।",
+    genericWelcome:"स्वागतकर्ता का नाम जरूरी है ताकि event की पहचान पूरी रहे।"
+  };
+
+  const labels={
+    mainEvent:"समारोह", marriageEvent:"Marriage का कार्यक्रम", firstName:"पहला नाम", firstPhoto:"पहली फोटो",
+    secondName:"दूसरा नाम", secondPhoto:"दूसरी फोटो", welcomeBy:"स्वागतकर्ता का नाम", eventDate:"कार्यक्रम की तारीख",
+    qrPhoto:"पेमेंट QR फोटो", engagementGroom:"लड़के का नाम", engagementBride:"लड़की का नाम", engagementDate:"सगाई की तारीख",
+    engagementWelcome:"स्वागतकर्ता का नाम", grihaName:"गृह स्वामी / परिवार का नाम", grihaDate:"गृह प्रवेश की तारीख",
+    grihaWelcome:"स्वागतकर्ता का नाम", birthdayName:"Birthday का नाम", birthdayDate:"Birthday की तारीख",
+    birthdayPhoto:"Birthday फोटो", birthdayWelcome:"स्वागतकर्ता का नाम", anniversaryHusband:"पति का नाम",
+    anniversaryWife:"पत्नी का नाम", anniversaryDate:"विवाह की तारीख", anniversaryWelcome:"स्वागतकर्ता का नाम",
+    genericName:"मुख्य व्यक्ति / परिवार का नाम", genericDate:"कार्यक्रम की तारीख", genericWelcome:"स्वागतकर्ता का नाम"
+  };
+
+  function getEl(id){return document.getElementById(id)}
+  function empty(id){const el=getEl(id); return !el || !(el.value||'').trim()}
+  function emptyFile(id){const el=getEl(id); return !el || !el.files || !el.files.length}
+
+  function clearError(el){
+    if(!el)return;
+    el.classList.remove('field-missing');
+    const wrap=el.closest('.section-box,.grid-col');
+    if(wrap)wrap.classList.remove('contains-missing');
+  }
+  function showMissing(missing){
+    document.querySelectorAll('.field-missing,.contains-missing').forEach(e=>e.classList.remove('field-missing','contains-missing'));
+    missing.forEach(m=>{
+      const el=getEl(m.id);
+      if(el){
+        el.classList.add('field-missing');
+        const wrap=el.closest('.section-box,.grid-col');
+        if(wrap)wrap.classList.add('contains-missing');
+      }
+    });
+    if(!missing.length)return true;
+    const list=missing.map((m,i)=>`<div style="text-align:left;margin:7px 0;padding:8px 10px;border-radius:9px;background:#fff5f7;border-left:4px solid #c21f4f"><b>${i+1}. ${m.label}</b><br><span style="font-size:12px;color:#725866">क्यों: ${m.reason}</span></div>`).join('');
+    const first=getEl(missing[0].id);
+    if(window.Swal){
+      Swal.fire({title:'अभी कुछ जानकारी बाकी है',html:`<div style="font-size:13px;margin-bottom:8px">Submit करने से पहले नीचे दी गई जानकारी पूरी करें:</div>${list}`,icon:'warning',confirmButtonText:'ठीक है',confirmButtonColor:'#8b102d',width:520}).then(()=>{
+        if(first){
+          const target=first.closest('.image-upload-wrapper') || first;
+          target.scrollIntoView({behavior:'smooth',block:'center'});
+          if(first.type!=='file')first.focus();
+        }
+      });
+    }else{
+      alert(missing.map(m=>m.label+' — '+m.reason).join('\n'));
+      if(first){(first.closest('.image-upload-wrapper')||first).scrollIntoView({behavior:'smooth',block:'center'});if(first.type!=='file')first.focus();}
+    }
+    return false;
+  }
+
+  window.validateAllRequiredFields=function(type){
+    const ids=[];
+    const add=(id)=>{ids.push(id)};
+    add('mainEvent');
+    if(type==='marriage') ids.push('marriageEvent','firstName','firstPhoto','secondName','secondPhoto','welcomeBy','eventDate','qrPhoto');
+    else if(type==='engagement') ids.push('engagementGroom','engagementBride','engagementDate','engagementWelcome');
+    else if(type==='griha_pravesh') ids.push('grihaName','grihaDate','grihaWelcome');
+    else if(type==='birthday') ids.push('birthdayName','birthdayDate','birthdayPhoto','birthdayWelcome');
+    else if(type==='anniversary') ids.push('anniversaryHusband','anniversaryWife','anniversaryDate','anniversaryWelcome');
+    else ids.push('genericName','genericDate','genericWelcome');
+
+    const missing=[];
+    ids.forEach(id=>{
+      const isFile=['firstPhoto','secondPhoto','qrPhoto','birthdayPhoto'].includes(id);
+      const bad=isFile?emptyFile(id):empty(id);
+      if(bad)missing.push({id,label:labels[id]||id,reason:reasons[id]||'यह जानकारी जरूरी है ताकि event record पूरा रहे।'});
+    });
+    return showMissing(missing);
+  };
+
+  // Typing/selecting a field clears only that field's red warning. Nothing blocks normal mouse/tab navigation.
+  Object.keys(labels).forEach(id=>{
+    const el=getEl(id); if(!el)return;
+    ['input','change'].forEach(ev=>el.addEventListener(ev,()=>clearError(el)));
+  });
+})();
+</script>
 
 <script>
 // Event cards select the existing event selector without changing existing forms.
@@ -848,14 +1020,41 @@ function chooseMarriageEvent(){
   const al=document.getElementById("firstLabel"), bl=document.getElementById("secondLabel");
   const f=document.getElementById("firstName"), s=document.getElementById("secondName");
   const config={
-    tilak:{title:"🪔 लड़के का तिलक / Tilak",a:"🤵 वर पक्ष / Groom Side",al:"लड़के का नाम / Groom Name",fp:"लड़के का नाम लिखें / Enter groom name",b:"👰 वधू पक्ष / Bride Side",bl:"लड़की का नाम / Bride Name",sp:"लड़की का नाम लिखें / Enter bride name"},
-    barat:{title:"🥁 बरात / Barat",a:"👰 वधू पक्ष / Bride Side",al:"लड़की का नाम / Bride Name",fp:"लड़की का नाम लिखें / Enter bride name",b:"🤵 बरात पक्ष / Groom Side",bl:"लड़के का नाम / Groom Name",sp:"लड़के का नाम लिखें / Enter groom name"},
-    reception:{title:"🎉 रिसेप्शन / Reception",a:"🤵 दूल्हा / Groom",al:"दूल्हे का नाम / Groom Name",fp:"दूल्हे का नाम लिखें / Enter groom name",b:"👰 दुल्हन / Bride",bl:"दुल्हन का नाम / Bride Name",sp:"दुल्हन का नाम लिखें / Enter bride name"}
+    tilak:{
+          title:"🪔 तिलक",
+          a:"🤵 दूल्हा",
+          al:"दूल्हे का नाम",
+          fp:"दूल्हे का नाम लिखें",
+          b:"👰 दुल्हन",
+          bl:"दुल्हन का नाम",
+          sp:"दुल्हन का नाम लिखें"
+        },
+        barat:{
+          title:"🥁 बरात",
+          a:"🤵 दूल्हा",
+          al:"दूल्हे का नाम",
+          fp:"दूल्हे का नाम लिखें",
+          b:"👰 दुल्हन",
+          bl:"दुल्हन का नाम",
+          sp:"दुल्हन का नाम लिखें"
+        },
+        reception:{
+          title:"🎉 रिसेप्शन",
+          a:"🤵 दूल्हा",
+          al:"दूल्हे का नाम",
+          fp:"दूल्हे का नाम लिखें",
+          b:"👰 दुल्हन",
+          bl:"दुल्हन का नाम",
+          sp:"दुल्हन का नाम लिखें"
+        }
   };
   const c=config[v]; if(!c)return;
   const t=document.getElementById("mainTitle"); if(t)t.textContent=c.title;
   if(a)a.textContent=c.a; if(al)al.textContent=c.al; if(f)f.placeholder=c.fp;
   if(b)b.textContent=c.b; if(bl)bl.textContent=c.bl; if(s)s.placeholder=c.sp;
+  const fh=document.getElementById("firstPhotoHint"), sh=document.getElementById("secondPhotoHint");
+  if(fh) fh.textContent = "दूल्हे का फोटो अपलोड करें";
+  if(sh) sh.textContent = "दुल्हन का फोटो अपलोड करें";
 }
 
 async function saveCanonicalEvent(data){
@@ -866,6 +1065,7 @@ async function saveCanonicalEvent(data){
 }
 
 async function saveMarriage(){
+  if(!validateAllRequiredFields("marriage")) return;
   const type=document.getElementById("marriageEvent").value;
   const n1=document.getElementById("firstName").value.trim();
   const n2=document.getElementById("secondName").value.trim();
@@ -881,11 +1081,10 @@ async function saveMarriage(){
   const p2=await fileData(cropped.secondPreview);
   const qr=await fileData(cropped.qrPreview);
 
-  const brideFirst = type==="barat";
-  const groom = brideFirst ? n2 : n1;
-  const bride = brideFirst ? n1 : n2;
-  const groomPhoto = brideFirst ? p2 : p1;
-  const bridePhoto = brideFirst ? p1 : p2;
+  const groom = n1;
+  const bride = n2;
+  const groomPhoto = p1;
+  const bridePhoto = p2;
 
   const data={
     event_group:"marriage", event_type:type,
@@ -905,6 +1104,7 @@ async function saveMarriage(){
 }
 
 async function saveEngagement(){
+  if(!validateAllRequiredFields("engagement")) return;
   const groom=document.getElementById("engagementGroom").value.trim();
   const bride=document.getElementById("engagementBride").value.trim();
   const date=document.getElementById("engagementDate").value.trim();
@@ -922,6 +1122,7 @@ async function saveEngagement(){
 }
 
 async function saveGrihaPravesh(){
+  if(!validateAllRequiredFields("griha_pravesh")) return;
   const name=document.getElementById("grihaName").value.trim();
   const date=document.getElementById("grihaDate").value.trim();
   const welcome=document.getElementById("grihaWelcome").value.trim();
@@ -937,6 +1138,7 @@ async function saveGrihaPravesh(){
 }
 
 async function saveBirthday(){
+  if(!validateAllRequiredFields("birthday")) return;
   const name=document.getElementById("birthdayName").value.trim();
   const date=document.getElementById("birthdayDate").value.trim();
   const welcome=document.getElementById("birthdayWelcome").value.trim();
@@ -1050,6 +1252,7 @@ function updateAnniversaryCount(){
   if(el){el.addEventListener('change',updateAnniversaryCount);el.addEventListener('input',updateAnniversaryCount);}
 })();
 async function saveAnniversary(){
+  if(!validateAllRequiredFields("anniversary")) return;
   const husband=document.getElementById('anniversaryHusband').value.trim();
   const wife=document.getElementById('anniversaryWife').value.trim();
   const date=document.getElementById('anniversaryDate').value;
@@ -1071,6 +1274,7 @@ async function saveAnniversary(){
 }
 
 async function saveGenericEvent(){
+  if(!validateAllRequiredFields("generic")) return;
   const type=localStorage.getItem('pendingEventType')||'other';
   const name=document.getElementById('genericName').value.trim();
   const date=document.getElementById('genericDate').value.trim();
