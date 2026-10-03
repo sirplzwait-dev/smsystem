@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.sb ||
     window.supabase.createClient(
         "https://rdlliurzgwwfjscgwssa.supabase.co",
-        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc",
+        { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: "sgunms-auth-session" } }
     );
     
     if (!dbClient) {
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Restrict access strictly to the Admin Email
-    if (data.user.email !== "shashi841505@gmail.com") {
+    if (String(data.user.email || "").trim().toLowerCase() !== "shashi841505@gmail.com") {
         await dbClient.auth.signOut();
         alert("Access Denied!");
         window.location.href = "../index.html";
@@ -209,7 +210,8 @@ function safeText(v){ return String(v ?? "-").replace(/[&<>'"]/g, c => ({"&":"&a
 async function loadCompleteData(){
     const c = window.client || window.supabaseClient || window.sb || window.supabase.createClient(
         "https://rdlliurzgwwfjscgwssa.supabase.co",
-        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc",
+        { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: "sgunms-auth-session" } }
     );
     const getCount = async (table) => { try { const r=await c.from(table).select("id",{count:"exact",head:true}); return r.error?0:(r.count||0); } catch(e){return 0;} };
     const getRows = async (table, columns, order="created_at") => { try { const r=await c.from(table).select(columns).order(order,{ascending:false}).limit(100); return r.error?[]:(r.data||[]); } catch(e){return [];} };

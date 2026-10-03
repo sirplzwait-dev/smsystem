@@ -291,6 +291,9 @@ async function syncData(){
     }
 
     let guests = JSON.parse(localStorage.getItem("offlineGuests") || "[]");
+    // Make retrying sync idempotent: assign IDs before any network write and persist them.
+    guests = guests.map(g => ({...g, id: g.id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+"-"+Math.random().toString(36).slice(2))}));
+    localStorage.setItem("offlineGuests", JSON.stringify(guests));
 
     for(let g of guests){
         const result = await sb.auth.getUser();

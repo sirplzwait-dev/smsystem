@@ -159,6 +159,9 @@ async function syncData(){
 
     if(window.SagunStore) return;
     let guests = JSON.parse(localStorage.getItem("offlineGuests") || "[]");
+    // Make retrying sync idempotent: assign IDs before any network write and persist them.
+    guests = guests.map(g => ({...g, id: g.id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+"-"+Math.random().toString(36).slice(2))}));
+    localStorage.setItem("offlineGuests", JSON.stringify(guests));
 
     for(let g of guests){
         const result = sb ? await sb.auth.getUser() : {data:{user:null}};
@@ -170,7 +173,9 @@ async function syncData(){
            continue;
         }
           
+        g.id = g.id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+"-"+Math.random().toString(36).slice(2));
         const guestData = {
+          id: g.id,
           user_id: g.user_id,
           name: g.name,
           amount: g.amount,
@@ -180,7 +185,7 @@ async function syncData(){
           payment_mode: g.payment_mode
         };
 
-        const { error } = await sb.from("guests").insert([guestData]);
+        const { error } = await sb.from("guests").upsert([guestData], { onConflict: "id" });
 
         if(error){
            console.log("FULL ERROR =", error);

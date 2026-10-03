@@ -42,3 +42,7 @@ The Super Admin Dashboard then shows:
 - Operating system
 - Screen size
 - Latest login for each user
+
+
+## Super Admin
+The configured Super Admin email is `shashi841505@gmail.com`. The dashboard uses the same Supabase auth storage key as the login page and normalizes the email comparison (trim + lowercase), so a valid session is not rejected due to client mismatch or capitalization/whitespace.

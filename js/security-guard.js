@@ -103,7 +103,7 @@
         localStorage.removeItem('sagunGuestSession');
       }
 
-      if(adminPages.has(file) && String(user.email||"").toLowerCase()!=="shashi841505@gmail.com"){
+      if(adminPages.has(file) && String(user.email||"").trim().toLowerCase()!=="shashi841505@gmail.com"){
         location.replace("home.html");
         return;
       }

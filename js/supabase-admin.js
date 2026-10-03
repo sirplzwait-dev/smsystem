@@ -6,7 +6,8 @@
 
 const client = window.supabase.createClient(
     "https://rdlliurzgwwfjscgwssa.supabase.co",
-    "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+    "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc",
+    { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: "sgunms-auth-session" } }
 );
 
 window.client = client;
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        if (data.user.email !== "shashi841505@gmail.com") {
+        if (String(data.user.email || "").trim().toLowerCase() !== "shashi841505@gmail.com") {
 
             await client.auth.signOut();
 
