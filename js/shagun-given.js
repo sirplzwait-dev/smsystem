@@ -23,9 +23,7 @@
   $('todayBtn').onclick=function(){
     const d=new Date(); const m=String(d.getMonth()+1).padStart(2,'0'); const day=String(d.getDate()).padStart(2,'0');
     $('date').value=`${d.getFullYear()}-${m}-${day}`;
-    if($('date').showPicker) try{$('date').showPicker()}catch(e){}
   };
-  $('date').addEventListener('click',function(){if(this.showPicker) try{this.showPicker()}catch(e){}});
   $('save').onclick=function(){const person=$('person').value.trim();if(!person){$('msg').textContent='⚠️ कृपया नाम भरें।';$('person').focus();return}const type=$('type').value;if((type==='Cash'||type==='Cash+Gift')&&!$('amount').value){$('msg').textContent='⚠️ Cash चुना है, कृपया राशि भरें।';$('amount').focus();return}if((type==='Gift'||type==='Cash+Gift')&&!$('gift').value.trim()){$('msg').textContent='⚠️ Gift चुना है, कृपया Gift का विवरण लिखें।';$('gift').focus();return}const x={id:Date.now(),person,occasion:$('occasion').value.trim(),date:$('date').value,relation:$('relation').value.trim(),place:$('place').value.trim(),type:$('type').value,amount:$('amount').value,gift:$('gift').value.trim(),remark:$('remark').value.trim(),createdAt:new Date().toISOString()};const a=get();a.push(x);put(a);$('msg').textContent='✅ शगुन की Entry save हो गई।';$('person').value='';$('occasion').value='';$('date').value='';$('relation').value='';$('place').value='';$('amount').value='';$('gift').value='';$('remark').value='';render();};
   $('clear').onclick=function(){$('person').value='';$('occasion').value='';$('date').value='';$('relation').value='';$('place').value='';$('amount').value='';$('gift').value='';$('remark').value='';$('msg').textContent='';};
   window.removeEntry=function(index){const a=get().sort((x,y)=>new Date(y.date||0)-new Date(x.date||0));a.splice(index,1);put(a);render()};

@@ -9,6 +9,9 @@
   function initInput(input){
     if(input.dataset.sgPremiumCalendar==='1')return;
     input.dataset.sgPremiumCalendar='1';
+    input.classList.add('sg-date-input');
+    input.setAttribute('readonly','readonly');
+    input.setAttribute('inputmode','none');
     const wrap=document.createElement('div');wrap.className='sg-date-wrap';input.parentNode.insertBefore(wrap,input);wrap.appendChild(input);
     const icon=document.createElement('button');icon.type='button';icon.className='sg-date-icon';icon.innerHTML='📅';icon.setAttribute('aria-label','Calendar खोलें');wrap.appendChild(icon);
     const pop=document.createElement('div');pop.className='sg-premium-calendar';pop.hidden=true;
@@ -26,7 +29,7 @@
     function open(){close();view=parse(input.value);ms.value=view.getMonth();ys.value=view.getFullYear();draw();pop.hidden=false;active={pop,wrap};position();}
     function position(){const r=input.getBoundingClientRect(),pw=Math.min(360,window.innerWidth-24),ph=Math.min(pop.scrollHeight||430,window.innerHeight-24);let left=Math.max(12,Math.min(r.left,window.innerWidth-pw-12)),top=r.bottom+8;if(top+ph>window.innerHeight-10)top=Math.max(10,r.top-ph-8);pop.style.left=left+'px';pop.style.top=top+'px';}
     function set(v){input.value=v;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));}
-    icon.onclick=open;input.addEventListener('click',e=>{e.preventDefault();open()});input.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
+    icon.onclick=open;input.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();open()});input.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
     pop.addEventListener('click',e=>{const nav=e.target.closest('[data-nav]');if(nav){view=new Date(+ys.value,+ms.value,+nav.dataset.nav,1);ms.value=view.getMonth();ys.value=view.getFullYear();draw();return}const day=e.target.closest('[data-date]');if(day){set(day.dataset.date);close();return}if(e.target.closest('.sg-cal-today')){const d=new Date();set(iso(d.getFullYear(),d.getMonth(),d.getDate()));close();return}if(e.target.closest('.sg-cal-clear')){set('');close();return}if(e.target.closest('.sg-cal-close'))close()});
     ms.onchange=draw;ys.onchange=draw;window.addEventListener('resize',()=>{if(active?.pop===pop)position()});window.addEventListener('scroll',()=>{if(active?.pop===pop)position()},{passive:true});
   }

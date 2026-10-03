@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+    <script src="../js/security-guard.js"></script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>शगुन दिया | Sagun Management System</title>
 <link rel="stylesheet" href="../css/topbar.css"><link rel="stylesheet" href="../css/shagun-given.css">
@@ -123,6 +124,7 @@ body:before{left:-80px;top:120px} body:after{right:-90px;bottom:40px}
 }
 </style>
 
+<link rel="stylesheet" href="../css/mobile-responsive.css">
 </head>
 <body>
 <header class="topbar"><div class="logo">SHAGUN DIYA</div><div class="top-actions"><button onclick="location.href='shagun.html'">Shagun</button><button onclick="location.href='home.html'">Home</button></div></header>
@@ -133,7 +135,7 @@ body:before{left:-80px;top:120px} body:after{right:-90px;bottom:40px}
 <div class="form-grid">
 <label>किसको दिया?<input id="person" required placeholder="नाम" maxlength="100"></label>
 <label>समारोह / कहाँ दिया?<input id="occasion" placeholder="जैसे शादी, तिलक, रिसेप्शन" maxlength="120"></label>
-<label>दिनांक<div class="date-row"><input id="date" type="date"><button type="button" id="todayBtn" title="आज की तारीख">आज</button></div></label>
+<label>दिनांक<div class="date-row"><input id="date" type="date" class="sg-date-input"><button type="button" id="todayBtn" title="आज की तारीख">आज</button></div></label>
 <label>रिश्ता<input id="relation" placeholder="जैसे भाई, मित्र, रिश्तेदार" maxlength="80"></label>
 <label>गाँव / शहर<input id="place" placeholder="स्थान" maxlength="100"></label>
 <label>शगुन का प्रकार<select id="type"><option value="Cash">Cash</option><option value="Gift">Gift</option><option value="Cash+Gift">Cash + Gift</option></select></label>
@@ -148,4 +150,5 @@ body:before{left:-80px;top:120px} body:after{right:-90px;bottom:40px}
 <script src="../js/guest-auth.js"></script><script src="../js/shagun-given.js"></script><script src="../js/topbar.js"></script>
 <script src="../js/premium-calendar.js"></script>
   <script src="../js/process-ui.js"></script>
+<script src="../js/mobile-keyboard.js"></script>
 </body></html>

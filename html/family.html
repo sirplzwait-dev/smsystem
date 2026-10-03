@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="hi">
 <head>
+    <script src="../js/security-guard.js"></script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Family | SGUNMS</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -155,6 +156,7 @@ body{background:linear-gradient(135deg,#fffaf4 0%,#fdf7f8 52%,#fff5f0 100%)!impo
 }
 </style>
 
+<link rel="stylesheet" href="../css/mobile-responsive.css">
 </head>
 <body>
 <main class="family-page"><div class="family-wrap">
@@ -204,7 +206,7 @@ body{background:linear-gradient(135deg,#fffaf4 0%,#fdf7f8 52%,#fff5f0 100%)!impo
 </section>
 
 <div id="memberModal" class="modal-backdrop" hidden><div class="modal-card"><button class="modal-close" data-close="memberModal">×</button><h2 id="memberModalTitle">सदस्य जोड़ें</h2>
-<form id="memberForm" class="sg-form"><input type="hidden" id="memberId"><div><label>नाम *</label><input id="mName" required></div><div class="full head-choice"><label><input type="checkbox" id="mHead"> 👑 Head of Family — मुख्य सदस्य</label><small>एक परिवार में केवल एक Head of Family होगा। बाकी सभी सदस्यों का संबंध इसी Head से सेट होगा।</small></div><div><label>मोबाइल</label><input id="mMobile" inputmode="tel"></div><div><label>पता</label><input id="mAddress" placeholder="पूरा पता"></div><div><label>जन्मदिन</label><input id="mBirthday" type="date"></div><div><label>Anniversary</label><input id="mAnniversary" type="date"></div><div><label>Head से संबंध</label><select id="mRelationToHead"><option value="">Head of Family</option><option value="father">पिता</option><option value="mother">माता</option><option value="husband">पति</option><option value="wife">पत्नी</option><option value="son">बेटा</option><option value="daughter">बेटी</option><option value="brother">भाई</option><option value="sister">बहन</option><option value="chacha">चाचा</option><option value="chachi">चाची</option><option value="bua">बुआ</option><option value="fufa">फूफा</option><option value="mama">मामा</option><option value="mami">मामी</option><option value="mausi">मौसी</option><option value="other">अन्य</option></select></div><div class="full"><label>Notes</label><textarea id="mNotes" rows="3"></textarea></div><div class="full modal-actions"><button type="button" class="sg-btn alt" data-close="memberModal">रद्द करें</button><button class="sg-btn">💾 Save Member</button></div></form></div></div>
+<form id="memberForm" class="sg-form"><input type="hidden" id="memberId"><div><label>नाम *</label><input id="mName" required></div><div class="full head-choice"><label><input type="checkbox" id="mHead"> 👑 Head of Family — मुख्य सदस्य</label><small>एक परिवार में केवल एक Head of Family होगा। बाकी सभी सदस्यों का संबंध इसी Head से सेट होगा।</small></div><div><label>मोबाइल</label><input id="mMobile" inputmode="tel"></div><div><label>पता</label><input id="mAddress" placeholder="पूरा पता"></div><div><label>जन्मदिन</label><input id="mBirthday" type="date" class="sg-date-input"></div><div><label>Anniversary</label><input id="mAnniversary" type="date" class="sg-date-input"></div><div><label>Head से संबंध</label><select id="mRelationToHead"><option value="">Head of Family</option><option value="father">पिता</option><option value="mother">माता</option><option value="husband">पति</option><option value="wife">पत्नी</option><option value="son">बेटा</option><option value="daughter">बेटी</option><option value="brother">भाई</option><option value="sister">बहन</option><option value="chacha">चाचा</option><option value="chachi">चाची</option><option value="bua">बुआ</option><option value="fufa">फूफा</option><option value="mama">मामा</option><option value="mami">मामी</option><option value="mausi">मौसी</option><option value="other">अन्य</option></select></div><div class="full"><label>Notes</label><textarea id="mNotes" rows="3"></textarea></div><div class="full modal-actions"><button type="button" class="sg-btn alt" data-close="memberModal">रद्द करें</button><button class="sg-btn">💾 Save Member</button></div></form></div></div>
 
 <div id="relationModal" class="modal-backdrop" hidden><div class="modal-card"><button class="modal-close" data-close="relationModal">×</button><h2>🔗 संबंध जोड़ें</h2>
 <form id="relationForm" class="sg-form"><div class="full head-relation-note"><label>👑 Head of Family</label><div id="headRelationInfo">पहले एक Head of Family चुनें।</div></div><div style="display:none"><select id="personA"></select></div><div><label>Relation *</label><select id="relationCode" required><option value="father">पिता</option><option value="mother">माता</option><option value="son">बेटा</option><option value="daughter">बेटी</option><option value="brother">भाई</option><option value="sister">बहन</option><option value="husband">पति</option><option value="wife">पत्नी</option><option value="chacha">चाचा</option><option value="chachi">चाची</option><option value="bua">बुआ</option><option value="fufa">फूफा</option><option value="mama">मामा</option><option value="mami">मामी</option><option value="mausi">मौसी</option><option value="other">अन्य</option></select></div><div><label>Family Member *</label><select id="personB" required></select></div><div class="full"><label>Remark</label><input id="relationRemark" placeholder="वैकल्पिक विवरण"></div><div class="full modal-actions"><button type="button" class="sg-btn alt" data-close="relationModal">रद्द करें</button><button class="sg-btn">🔗 Save Relationship</button></div></form></div></div>
@@ -248,4 +250,5 @@ body{background:linear-gradient(135deg,#fffaf4 0%,#fdf7f8 52%,#fff5f0 100%)!impo
 })();
 </script>
 
+<script src="../js/mobile-keyboard.js"></script>
 </body></html>

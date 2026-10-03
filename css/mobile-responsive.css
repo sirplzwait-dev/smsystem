@@ -1,0 +1,48 @@
+/* SGUNMS mobile responsive + single calendar + keyboard-safe entry */
+*,*::before,*::after{box-sizing:border-box}
+html{width:100%;min-width:0;overflow-x:hidden;scroll-padding-bottom:35vh}
+body{width:100%;min-width:0;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;}
+img,video,canvas,svg{max-width:100%;height:auto}
+input,select,textarea,button{max-width:100%;font:inherit}
+input,select,textarea{font-size:16px!important}
+/* One SGUNMS calendar only: hide the phone's native date UI. */
+input[type="date"].sg-date-input,
+input[type="date"][data-sg-premium-calendar="1"]{
+  -webkit-appearance:none!important;appearance:none!important;
+  color-scheme:light;
+}
+input[type="date"].sg-date-input::-webkit-calendar-picker-indicator,
+input[type="date"][data-sg-premium-calendar="1"]::-webkit-calendar-picker-indicator{
+  opacity:0!important;display:none!important;width:0!important;height:0!important;
+}
+input[type="date"].sg-date-input::-webkit-inner-spin-button,
+input[type="date"][data-sg-premium-calendar="1"]::-webkit-inner-spin-button{display:none!important}
+.sg-date-wrap{min-width:0!important}
+.sg-date-wrap>input{padding-right:48px!important}
+.sg-date-icon{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.sg-premium-calendar{max-width:calc(100vw - 20px)!important;max-height:calc(100dvh - 20px)!important;overflow:auto!important;overscroll-behavior:contain}
+/* Keep forms usable on narrow screens. */
+form,.form-container,.form-card,.entry-form,.setup-form,.panel,.card,.module-wrap{max-width:100%}
+@media(max-width:768px){
+  body{font-size:14px}
+  .container,.page-container,.content,.main-content,.module-wrap,.form-container{width:100%!important;max-width:100%!important;margin-left:auto!important;margin-right:auto!important;padding-left:12px!important;padding-right:12px!important}
+  .grid,.form-grid,.fields,.form-row,.entry-grid{grid-template-columns:1fr!important}
+  .full,.full-width{grid-column:1/-1!important}
+  table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .modal,.popup,.dialog{max-width:calc(100vw - 20px)!important}
+  .topbar,.header,.navbar{max-width:100vw;overflow:hidden}
+  button,a,input,select,textarea{touch-action:manipulation}
+  .sg-premium-calendar{width:min(340px,calc(100vw - 20px))!important;padding:10px!important;border-radius:16px!important}
+  .sg-cal-days{gap:3px!important}
+  .sg-cal-day{min-height:34px!important;height:34px!important}
+}
+@media(max-width:420px){
+  .container,.page-container,.content,.main-content,.module-wrap,.form-container{padding-left:9px!important;padding-right:9px!important}
+  .sg-premium-calendar{width:calc(100vw - 14px)!important;left:7px!important}
+  .sg-cal-selects select{min-width:0!important;width:100%!important;font-size:12px!important}
+  .sg-cal-selects{display:grid!important;grid-template-columns:1fr 82px!important;gap:5px!important}
+  .sg-cal-foot{gap:4px!important}
+  .sg-cal-foot button{padding:7px 5px!important;font-size:12px!important}
+}
+/* When the software keyboard opens, focused controls stay above it. */
+@supports (height:100dvh){body{min-height:100dvh}}

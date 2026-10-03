@@ -163,7 +163,7 @@ loadProfile();
 // Open the requested settings panel when coming from the Home profile menu.
 try{
   const hash=(location.hash||'').replace(/^#/,'');
-  const map={profile:'profilePanel','data-security':'securityPanel','sync:'syncPanel','pwa:'pwaPanel'};
+  const map={profile:'profilePanel','data-security':'securityPanel',sync:'syncPanel',pwa:'pwaPanel'};
   const panelId=map[hash];
   if(panelId) setTimeout(()=>openPanel(panelId),0);
 }catch(e){}
