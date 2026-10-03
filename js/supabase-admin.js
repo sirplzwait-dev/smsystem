@@ -218,6 +218,63 @@ browserTable.innerHTML+=`
 
 }
 // -------------------------------
+// Login History
+// -------------------------------
+const { data: loginLogs, error: loginLogError } = await client
+  .from("login_logs")
+  .select("name,email,login_at,device,browser,os,screen_size")
+  .order("login_at", { ascending: false })
+  .limit(200);
+
+if (loginLogError) {
+  console.warn("Login history not available:", loginLogError.message);
+} else {
+  const loginTable = document.getElementById("loginHistoryTable");
+  if (loginTable) {
+    loginTable.innerHTML = loginLogs.length ? loginLogs.map((l, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${escapeHtml(l.name || "-")}</td>
+        <td>${escapeHtml(l.email || "-")}</td>
+        <td>${new Date(l.login_at).toLocaleString("en-IN")}</td>
+        <td>${escapeHtml(l.device || "-")}</td>
+        <td>${escapeHtml(l.browser || "-")}</td>
+        <td>${escapeHtml(l.os || "-")}</td>
+        <td>${escapeHtml(l.screen_size || "-")}</td>
+      </tr>`).join("") : `<tr><td colspan="8" style="text-align:center">अभी कोई login history नहीं है।</td></tr>`;
+  }
+
+  const todayStart = new Date();
+  todayStart.setHours(0,0,0,0);
+  const todayLoginCount = loginLogs.filter(l => new Date(l.login_at) >= todayStart).length;
+  const todayLoginEl = document.getElementById("todayLoginCount");
+  const totalLoginEl = document.getElementById("totalLoginCount");
+  if (todayLoginEl) todayLoginEl.textContent = todayLoginCount;
+  if (totalLoginEl) totalLoginEl.textContent = loginLogs.length;
+
+  const latestByUser = new Map();
+  loginLogs.forEach(l => {
+    if (!latestByUser.has(l.email)) latestByUser.set(l.email, l);
+  });
+  const lastLoginTable = document.getElementById("lastLoginTable");
+  if (lastLoginTable) {
+    lastLoginTable.innerHTML = latestByUser.size ? [...latestByUser.values()].map((l, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${escapeHtml(l.name || "-")}</td>
+        <td>${escapeHtml(l.email || "-")}</td>
+        <td>${new Date(l.login_at).toLocaleString("en-IN")}</td>
+        <td>${escapeHtml(l.device || "-")}</td>
+        <td>${escapeHtml(l.browser || "-")}</td>
+      </tr>`).join("") : `<tr><td colspan="6" style="text-align:center">कोई user नहीं मिला।</td></tr>`;
+  }
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c]));
+}
+
+// -------------------------------
 // Latest Registration
 // -------------------------------
 

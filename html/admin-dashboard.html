@@ -37,9 +37,12 @@
         <ul>
             <li class="menu-item active" data-page="dashboard">🏠 Dashboard</li>
             <li class="menu-item" data-page="registrations">👤 Registrations</li>
+            <li class="menu-item" data-page="logins">🔐 Login History</li>
             <li class="menu-item" data-page="guest">🎉 Guest Entry</li>
             <li class="menu-item" data-page="collection">💰 Collection</li>
             <li class="menu-item" data-page="analytics">📊 Analytics</li>
+            <li class="menu-item" data-page="alldata">📦 All Data</li>
+
             <li class="menu-item" data-page="settings">⚙ Settings</li>
             <li id="logoutBtn">🚪 Logout</li>
         </ul>
@@ -238,6 +241,52 @@
             </div>
         </section>
 
+        <!-- ================= Login History Section ================= -->
+        <section class="page-section" id="logins" style="display:none;">
+            <div class="cards" style="margin-bottom:18px;">
+                <div class="card">
+                    <span>🔐</span>
+                    <h4>Total Login Records</h4>
+                    <h2 id="totalLoginCount">0</h2>
+                    <p>Successful logins</p>
+                </div>
+                <div class="card">
+                    <span>📅</span>
+                    <h4>Today's Logins</h4>
+                    <h2 id="todayLoginCount">0</h2>
+                    <p>Successful logins today</p>
+                </div>
+            </div>
+
+            <div class="table-box" style="margin-bottom:18px;">
+                <div class="box-header">
+                    <h3>🟢 हर User का Latest Login</h3>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr>
+                            <th>#</th><th>Name</th><th>Email</th><th>Last Login</th><th>Device</th><th>Browser</th>
+                        </tr></thead>
+                        <tbody id="lastLoginTable"><tr><td colspan="6">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-box">
+                <div class="box-header">
+                    <h3>📋 पूरा Login History</h3>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr>
+                            <th>#</th><th>Name</th><th>Email</th><th>Login Date & Time</th><th>Device</th><th>Browser</th><th>OS</th><th>Screen</th>
+                        </tr></thead>
+                        <tbody id="loginHistoryTable"><tr><td colspan="8">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
         <!-- ================= Guest Entry Section ================= -->
         <section class="page-section" id="guest" style="display:none;">
             <div class="table-box">
@@ -350,6 +399,60 @@ Loading...
     </div>
 
 </section>
+
+        <!-- ================= All Data Section ================= -->
+        <section class="page-section" id="alldata" style="display:none;">
+            <div class="cards data-cards">
+                <div class="card"><span>👤</span><h4>Users</h4><h2 id="dataUsers">0</h2><p>Registered accounts</p></div>
+                <div class="card"><span>🎉</span><h4>Events</h4><h2 id="dataEvents">0</h2><p>Total events</p></div>
+                <div class="card"><span>📝</span><h4>Guest Entries</h4><h2 id="dataGuests">0</h2><p>Total entries</p></div>
+                <div class="card"><span>💰</span><h4>Total Collection</h4><h2 id="dataCollection">₹0</h2><p>All guest amounts</p></div>
+                <div class="card"><span>💵</span><h4>Cash</h4><h2 id="dataCash">₹0</h2><p>Cash collection</p></div>
+                <div class="card"><span>📲</span><h4>UPI</h4><h2 id="dataUpi">₹0</h2><p>UPI collection</p></div>
+                <div class="card"><span>🎁</span><h4>Gift Entries</h4><h2 id="dataGift">0</h2><p>Gift records</p></div>
+                <div class="card"><span>👨‍👩‍👧‍👦</span><h4>Families</h4><h2 id="dataFamilies">0</h2><p>Family records</p></div>
+                <div class="card"><span>🧑</span><h4>Family Members</h4><h2 id="dataMembers">0</h2><p>Members</p></div>
+                <div class="card"><span>💳</span><h4>Cash Transactions</h4><h2 id="dataTransactions">0</h2><p>Cash in/out records</p></div>
+                <div class="card"><span>🔔</span><h4>Reminders</h4><h2 id="dataReminders">0</h2><p>Reminder records</p></div>
+                <div class="card"><span>🧾</span><h4>Activity Logs</h4><h2 id="dataActivity">0</h2><p>System activities</p></div>
+                <div class="card"><span>🔐</span><h4>Login Records</h4><h2 id="dataLogins">0</h2><p>Successful logins</p></div>
+                <div class="card"><span>🌐</span><h4>Visitors</h4><h2 id="dataVisitors">0</h2><p>Website visits</p></div>
+            </div>
+
+            <div class="box" style="margin-top:18px;">
+                <div class="box-header"><h3>📊 Data Summary</h3><button id="dataRefreshBtn" type="button">🔄 Refresh Data</button></div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>Category</th><th>Total</th><th>Details</th></tr></thead>
+                        <tbody id="dataSummaryTable"><tr><td colspan="3">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="box" style="margin-top:18px;">
+                <div class="box-header"><h3>👥 Latest Users</h3></div>
+                <div class="table-responsive">
+                    <table><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Created</th></tr></thead>
+                    <tbody id="allUsersTable"><tr><td colspan="4">Loading...</td></tr></tbody></table>
+                </div>
+            </div>
+
+
+            <div class="box" style="margin-top:18px;">
+                <div class="box-header"><h3>👤 User-wise Data</h3><small>किस user ने कितना data डाला</small></div>
+                <div class="table-responsive">
+                    <table><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Events</th><th>Guest Entries</th><th>Collection</th><th>Latest Login</th></tr></thead>
+                    <tbody id="userDataTable"><tr><td colspan="7">Loading...</td></tr></tbody></table>
+                </div>
+            </div>
+            <div class="box" style="margin-top:18px;">
+                <div class="box-header"><h3>🎉 Latest Events</h3></div>
+                <div class="table-responsive">
+                    <table><thead><tr><th>#</th><th>Event</th><th>Type</th><th>Date</th><th>Created</th></tr></thead>
+                    <tbody id="allEventsTable"><tr><td colspan="5">Loading...</td></tr></tbody></table>
+                </div>
+            </div>
+        </section>
         <!-- ================= Settings Section ================= -->
         <section class="page-section" id="settings" style="display:none;">
             <div class="box">

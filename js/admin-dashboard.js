@@ -198,3 +198,50 @@ function openAnalytics() {
     );
 
 }
+
+
+// =======================================
+// Complete Data Overview (Super Admin)
+// =======================================
+function moneyINR(n){ return "₹" + Number(n || 0).toLocaleString("en-IN"); }
+function safeText(v){ return String(v ?? "-").replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c])); }
+
+async function loadCompleteData(){
+    const c = window.client || window.supabaseClient || window.sb || window.supabase.createClient(
+        "https://rdlliurzgwwfjscgwssa.supabase.co",
+        "sb_publishable_HX1QmjO0SPyW3rUoihZkkQ_tRTE1bLc"
+    );
+    const getCount = async (table) => { try { const r=await c.from(table).select("id",{count:"exact",head:true}); return r.error?0:(r.count||0); } catch(e){return 0;} };
+    const getRows = async (table, columns, order="created_at") => { try { const r=await c.from(table).select(columns).order(order,{ascending:false}).limit(100); return r.error?[]:(r.data||[]); } catch(e){return [];} };
+    const getAmounts = async () => {
+        try{
+            const r=await c.from("guests").select("amount,payment_mode,paymentMode").limit(10000);
+            if(r.error) return {total:0,cash:0,upi:0,gift:0,giftCount:0};
+            let total=0,cash=0,upi=0,gift=0,giftCount=0;
+            (r.data||[]).forEach(x=>{const a=Number(x.amount||0); const p=String(x.payment_mode||x.paymentMode||"").toLowerCase(); total+=a; if(p.includes("cash"))cash+=a; else if(p.includes("upi"))upi+=a; else if(p.includes("gift")){gift+=a;giftCount++;}});
+            return {total,cash,upi,gift,giftCount};
+        }catch(e){return {total:0,cash:0,upi:0,gift:0,giftCount:0};}
+    };
+    const [users,events,guests,gifts,families,members,transactions,reminders,activity,logins,visitors,amounts] = await Promise.all([
+        getCount("profiles"),getCount("events"),getCount("guests"),getCount("gifts"),getCount("families"),getCount("family_members"),getCount("cash_transactions"),getCount("reminders"),getCount("activity_logs"),getCount("login_logs"),getCount("visitor_logs"),getAmounts()
+    ]);
+    const values={dataUsers:users,dataEvents:events,dataGuests:guests,dataCollection:moneyINR(amounts.total),dataCash:moneyINR(amounts.cash),dataUpi:moneyINR(amounts.upi),dataGift:amounts.giftCount,dataFamilies:families,dataMembers:members,dataTransactions:transactions,dataReminders:reminders,dataActivity:activity,dataLogins:logins,dataVisitors:visitors};
+    Object.entries(values).forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.textContent=v;});
+    const summary=[
+      ["Registered Users",users,"Profiles / registrations"],["Events",events,"All created events"],["Guest Entries",guests,"All guest records"],["Collection",moneyINR(amounts.total),"Cash + UPI + other amounts"],["Cash Collection",moneyINR(amounts.cash),"Payment mode: Cash"],["UPI Collection",moneyINR(amounts.upi),"Payment mode: UPI"],["Gift Records",gifts,"Gift table records"],["Families",families,"Family records"],["Family Members",members,"Family member records"],["Cash Transactions",transactions,"Cash IN / OUT records"],["Reminders",reminders,"Reminder records"],["Activity Logs",activity,"System activity records"],["Login Records",logins,"Successful login records"],["Website Visitors",visitors,"Visitor log records"]
+    ];
+    const st=document.getElementById("dataSummaryTable"); if(st) st.innerHTML=summary.map(x=>`<tr><td>${safeText(x[0])}</td><td><b>${safeText(x[1])}</b></td><td>${safeText(x[2])}</td></tr>`).join("");
+    const u=await getRows("profiles","id,name,email,created_at"); const ut=document.getElementById("allUsersTable"); if(ut)ut.innerHTML=u.length?u.map((x,i)=>`<tr><td>${i+1}</td><td>${safeText(x.name)}</td><td>${safeText(x.email)}</td><td>${x.created_at?new Date(x.created_at).toLocaleString("en-IN"):"-"}</td></tr>`).join(""):"<tr><td colspan=4>No users found</td></tr>";
+    try {
+      const ur=await c.rpc("sgunms_admin_user_stats");
+      const rows=ur.error?[]:(ur.data||[]); const ud=document.getElementById("userDataTable");
+      if(ud) ud.innerHTML=rows.length?rows.map((x,i)=>`<tr><td>${i+1}</td><td>${safeText(x.name)}</td><td>${safeText(x.email)}</td><td>${x.events||0}</td><td>${x.guests||0}</td><td>${moneyINR(x.collection||0)}</td><td>${x.last_login?new Date(x.last_login).toLocaleString("en-IN"):"-"}</td></tr>`).join(""):"<tr><td colspan=7>No user data found</td></tr>";
+    } catch(e) { const ud=document.getElementById("userDataTable"); if(ud)ud.innerHTML="<tr><td colspan=7>Run ADMIN_COMPLETE_DATA.sql in Supabase</td></tr>"; }
+
+    const e=await getRows("events","event_name,event_type,event_date,created_at"); const et=document.getElementById("allEventsTable"); if(et)et.innerHTML=e.length?e.map((x,i)=>`<tr><td>${i+1}</td><td>${safeText(x.event_name)}</td><td>${safeText(x.event_type)}</td><td>${safeText(x.event_date)}</td><td>${x.created_at?new Date(x.created_at).toLocaleString("en-IN"):"-"}</td></tr>`).join(""):"<tr><td colspan=5>No events found</td></tr>";
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+    const b=document.getElementById("dataRefreshBtn"); if(b)b.addEventListener("click",loadCompleteData);
+    setTimeout(loadCompleteData,700);
+});

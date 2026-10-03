@@ -47,6 +47,49 @@
       const user=data?.user;
       if(error || !user?.id){ goLogin(); return; }
 
+      // Record each new successful auth session once. The marker is tied to
+      // Supabase's last_sign_in_at, so refreshing pages does not create duplicates.
+      try {
+        const loginMarker = `sgunms-login:${user.id}:${user.last_sign_in_at || user.updated_at || "session"}`;
+        if (localStorage.getItem("sgunms-last-login-marker") !== loginMarker) {
+          let profileName = "";
+          try {
+            const { data: profile } = await sb.from("profiles").select("name").eq("id", user.id).maybeSingle();
+            profileName = profile?.name || "";
+          } catch (_) {}
+
+          const ua = navigator.userAgent || "";
+          const device = /Android|iPhone|iPad|Mobile/i.test(ua) ? "Mobile" : "Desktop";
+          let browser = "Unknown";
+          if (/Edg\//i.test(ua)) browser = "Edge";
+          else if (/Chrome\//i.test(ua)) browser = "Chrome";
+          else if (/Firefox\//i.test(ua)) browser = "Firefox";
+          else if (/Safari\//i.test(ua)) browser = "Safari";
+          let os = "Unknown";
+          if (/Windows/i.test(ua)) os = "Windows";
+          else if (/Android/i.test(ua)) os = "Android";
+          else if (/iPhone/i.test(ua)) os = "iPhone";
+          else if (/iPad/i.test(ua)) os = "iPad";
+          else if (/Mac OS/i.test(ua)) os = "macOS";
+
+          const { error: logError } = await sb.from("login_logs").insert({
+            user_id: user.id,
+            email: user.email || "",
+            name: profileName,
+            login_at: new Date().toISOString(),
+            device,
+            browser,
+            os,
+            screen_size: `${screen.width}x${screen.height}`,
+            user_agent: ua.slice(0, 500)
+          });
+          if (!logError) localStorage.setItem("sgunms-last-login-marker", loginMarker);
+        }
+      } catch (loginLogError) {
+        // Login history must never block the application.
+        console.warn("Login history unavailable:", loginLogError?.message || loginLogError);
+      }
+
       if(window.SagunStore?.prepareUserContext) window.SagunStore.prepareUserContext(user.id);
       else {
         const previous=String(localStorage.getItem('sagunLastAuthUserId')||'').trim();

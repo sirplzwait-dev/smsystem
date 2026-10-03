@@ -28,3 +28,17 @@ After deployment, test:
 - Logged-in user -> protected pages open.
 - User A cannot read User B's events/guests.
 - Admin page rejects non-admin users.
+
+## Login History (Super Admin)
+
+Run `supabase/LOGIN_HISTORY.sql` once in the Supabase SQL Editor. It creates the append-only `login_logs` table and policies so users can record only their own successful login while only `shashi841505@gmail.com` can read login history.
+
+The Super Admin Dashboard then shows:
+- Every successful login
+- Name and email
+- Login date/time
+- Device (Mobile/Desktop)
+- Browser
+- Operating system
+- Screen size
+- Latest login for each user
